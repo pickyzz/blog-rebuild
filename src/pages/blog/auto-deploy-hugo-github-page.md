@@ -1,0 +1,89 @@
+---
+layout: "@/templates/BasePost.astro"
+title: ทำ auto deploy Hugo บน Github page
+description: เมื่อเราทำการ push อัพเดทไปยัง repo ที่ใช้เก็บไฟล์ hugo ที่ยังไม่ได้
+  compile หน้าเว็บ ทันทีที่พบ new commit, ตัว script จะรันคำสั่ง hugo ไปยัง repo ที่ใส่
+  public key ไว้ทันที สามารถตรวจสอบผลได้ที่ Action ของ repo เก็บ hugo ได้เลย
+pubDate: 2020-05-13T09:00:00+07:00
+imgSrc: "/assets/images/blog/photo-1498050108023-c5249f4df085.jpeg"
+imgAlt: ''
+
+---
+[github.io](https://github.io/) โฮสต์เว็บเพจได้ฟรีเหมือนกัน แต่ส่วนใหญ่แล้วจะง่ายต่อ Static web ประเภท Jekyll มากกว่าตัวอื่น เพราะมันสามารถ Deploy ได้จากตัวเองเลย ในขณะที่คู่แข่งอย่าง Hugo นั้นต้องอาศัยกาารเล่นท่ายากสักหน่อย แต่ก็ใช่ว่าจะ auto deploy ไม่ได้นะ
+
+บอกไว้ก่อนเลยว่าวิธีการนี้ได้มาจากชาวญี่ปุ่นท่านนึง(ref. ด้านล่าง) ด้วยความที่ไปหาข้อมูลในเว็บนอกแล้วโซนฝั่งเขาแนะนำอีกวิธีหนึ่งซึ่งมันกึ่งๆอัตโนมัติ แต่มันก็ต้องไปรันคำสั่งเองอีกที ส่วนตัวคิดว่าเอาเวลาที่รันคำสั่งนั้น ไปกด push repo ตัวที่เป็น output หน้าเว็บมันก็เหมือนกัน เลยไม่ซื้อวิธีดังกล่าว
+
+**ไอเดียและสิ่งที่ต้องมีหลักๆ คือ**
+
+1. จำเป็นต้องมี ssh key ของ github ทั้ง private กับ public เลย (หรือใครจะใช้ personal access token ก็ได้ ส่วนตัวไม่ถนัดเลยเลือก SSH key แทน)
+2. แยก repository กันระหว่างตัว Hugo กับ Repository ที่แสดงผลเว็บ (ส่วนของธีมจะแยกหรือไม่ก็ได้)
+3. อาศัย action ของ github
+
+**ก่อนอื่นเลย** สร้าง repo แยกกันให้หมดเลย ตามที่เขียนไว้ด้านบน โดยในที่นี้จะสร้างไว้เป็น 2 อันแยกกัน **hugo_files** เก็บไฟล์ของ Hugo ทั้งหมด, **(username).github.io** เอาไว้ให้ hugo เก็บไฟล์เว็บเวลาสั่งรัน (นึกถึงตอนใช้คำสั่ง **`hugo`** แล้วมันสร้างโฟลเดอร์ public ที่มีหน้าเว็บมาให้ หลักการเหมือนกัน เพียงแต่เราจะให้มันมาสร้างที่ Repo ที่ไว้เก็บเว็บเพจแทน อย่างงนะ)
+
+### **1. สร้าง ssh key**
+
+1. ทำการ generate key **public** และ **privat** ด้วยคำสั่ง
+
+   ssh-keygen -t rsa -b 4096 -C "$(git config user.email)" -f gh-pages -N ""\\
+
+จะได้ไฟล์ 2 ตัวโผล่มา คือ **`gh-pages`** และ **`gh-pages.pub`** (สั่งรัน bash จากที่ไหนไฟล์จะเก็บอยู่ที่นั่น)
+
+1. ไปที่ Repo **`hugo_files`** (อย่างอื่นก็ได้แค่จำได้ว่าเก็บไฟล์ hugo ก็พอ) และไปที่ **`setting > secret > New repository secret`** โดยตั้งชื่อ Secret ที่สร้างขึ้นว่า **`ACTIONS_DEPLOY_KEY`** และเปิดไฟล์ **`gh-page`** **ที่ไม่มี .pub** ด้วยโปรแกรม text editor อันไหนก็ได้ notepad ก็ได้ และทำการ copy เนื้อหาข้างใน**ทั้งหมด** ใส่ลงไปในส่วน Value
+2. ไปที่ repo ชื่อ **`(username).github.io`** ไปที่ **`setting > deploy keys > add deploy key`** ในส่วน title ใส่ชื่ออะไรก็ได้ เปิดไฟล์ **`gh-pages.pub`** ในส่วนนี้จะเป็น public key ทำการ copy ทั้งหมด มาใส่ในส่วน **`key`** **อย่าลืมติ๊กช่อง `Allow`**
+
+### **2. สร้าง Directory ไว้รัน Action script**
+
+สร้าง directory ใน repo **`hugo_files`** จะใช้วิธีสร้างบน git หรือสร้างบน local แล้ว push ก็ได้ โดย directory ที่ต้องการคือ **`.github/workflows`** และในโฟลเดอร์ Workflows นี้ให้ทำการสร้างไฟล์ใหม่ขึ้นมา 1 ไฟล์ **`ชื่อไฟล์อะไรก็ได้.yml`**
+
+### **3. ทำการ config เพื่อใช้ action ของ github**
+
+ในไฟล์ **`ชื่อไฟล์อะไรก็ได้.yml`** ที่สร้างขึ้นเมื่อสักครู่ ให้ทำการใส่ action script ดังนี้
+
+```yaml
+    name: GitHub Pages
+    
+    on:
+      push:
+        branches:
+        - master
+    
+    jobs:
+      build-deploy:
+        runs-on: ubuntu-18.04
+        steps:
+        - name: Fix up git URLs
+          run: echo -e '[url "<https://github.com/>"]\\n  insteadOf = "git@github.com:"' >> ~/.gitconfig
+    
+        - name: Checkout
+          uses: actions/checkout@v2.3.4
+          with:
+            submodules: true
+    
+        - name: Hugo setup
+          uses: peaceiris/actions-hugo@v2.4.13
+    
+        - name: Build
+          run: hugo --gc --minify --cleanDestinationDir
+          env:
+            TZ: 'Asia/Bangkok'
+    
+        - name: Deploy
+          uses: peaceiris/actions-gh-pages@v2
+          env:
+            ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+            # uncomment ข้างล่างในกรณีใช้ personal access token
+            #PERSONAL_TOKEN: ${{ secrets.MY_GITHUB_ACCESS_TOKEN }}
+            EXTERNAL_REPOSITORY: pickyzz/pickyzz.github.io
+            PUBLISH_BRANCH: main
+            PUBLISH_DIR: ./public
+            TZ: 'Asia/Bangkok'
+```
+
+### ผลที่ได้
+
+เมื่อเราทำการ push อัพเดทไปยัง repo ที่ใช้เก็บไฟล์ hugo ที่ยังไม่ได้ compile หน้าเว็บ ทันทีที่พบ new commit, ตัว script จะรันคำสั่ง hugo ไปยัง repo ที่ใส่ public key ไว้ทันที สามารถตรวจสอบผลได้ที่ Action ของ repo เก็บ hugo ได้เลย
+
+#### reference
+
+[https://suihan74.github.io](https://suihan74.github.io/posts/2020/01_29_00_deploy_with_github_actions/ "suihan74.github.io")

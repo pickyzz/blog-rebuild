@@ -1,0 +1,78 @@
+---
+import { Footer } from '@/partials/Footer';
+import { Navbar } from '@/partials/Navbar';
+import { AppConfig } from '@/utils/AppConfig';
+
+export interface Props {
+  head: {
+    title: string;
+    description: string;
+  };
+}
+
+const {
+  head: { title, description },
+} = Astro.props as Props;
+
+const socialImage = 'https://og.pickyzz.dev/Pickyzz.dev.png?theme=light&md=1&fontSize=75px&images=https%3A%2F%2Fpickyzz.dev%2Fassets%2Fimages%2Favatar.png&widths=375&heights=375';
+---
+
+<html lang='en' data-theme="autumn">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KP5D5J3');
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Netlify-cli -->
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- End Netlify-cli -->
+    <meta charset='UTF-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name='robots' content='follow, index' />
+    <title>{title}</title>
+    <meta name='description' content={description} />
+    <meta property='article:author' content={AppConfig.author}  />
+    <meta property='og:site_name' content={AppConfig.site_name} />
+    <meta property='og:title' content={title} />
+    <meta property='og:description' content={description} />
+    <meta property='og:type' content='article' />
+    <meta property="og:image" content={socialImage} />
+    <meta name='twitter:card' content='summary_large_image' />
+    <meta name='twitter:title' content={title} />
+    <meta name='twitter:description' content={description} />
+    <meta name="twitter:creator" content="@p1ckyzz" />
+    <meta name="twitter:image" content={socialImage} >
+
+    <link rel='alternate' type='application/rss+xml' href='/feed' />
+    <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KP5D5J3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <Navbar />
+
+    <slot></slot>
+
+    <Footer />
+    <!-- Netlify-cli -->
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

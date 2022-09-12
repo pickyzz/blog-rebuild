@@ -1,0 +1,23 @@
+---
+import type { IFrontmatter } from '@/components';
+
+import { Hero } from '@/partials/Hero';
+import { ProjectList } from '@/partials/ProjectList';
+import { RecentPosts } from '@/partials/RecentPosts';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+
+const allPosts = await Astro.glob<IFrontmatter>('./blog/*.md');
+const sortedPosts = sortByDate(allPosts);
+const lastSixPosts = sortedPosts.slice(0, 6);
+
+const { title } = AppConfig;
+const { description } = AppConfig;
+---
+
+<Base head={{ title, description }}>
+  <Hero />
+  <RecentPosts postList={lastSixPosts} />
+  <ProjectList />
+</Base>

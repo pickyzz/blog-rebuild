@@ -1,0 +1,15 @@
+---
+import { AboutPage } from '@/partials/AboutPage';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { Section } from '@/components'
+
+const { title } = AppConfig;
+const { description } = AppConfig;
+---
+
+<Base head={{ title, description }}>
+  <Section>
+    <AboutPage />
+  </Section>
+</Base>
