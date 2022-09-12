@@ -6,7 +6,6 @@ import robotsTxt from 'astro-robots-txt';
 import tailwind from "@astrojs/tailwind";
 
 import compress from "astro-compress";
-import { astroImageTools } from "astro-imagetools";
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,7 +29,6 @@ export default defineConfig({
     sitemap(),
     react(),
     tailwind(),
-    astroImageTools,
     robotsTxt(), 
     compress({
       css: true,
