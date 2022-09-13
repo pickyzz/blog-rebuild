@@ -29,7 +29,7 @@ export default defineConfig({
     sitemap(),
     react(),
     tailwind(),
-    robotsTxt(), 
+    robotsTxt(),
     compress({
       css: true,
       html: true,

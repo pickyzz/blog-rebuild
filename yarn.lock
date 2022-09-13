@@ -116,10 +116,10 @@
     "@babel/core" ">=7.0.0-0 <8.0.0"
     "@babel/plugin-transform-react-jsx" "^7.17.12"
 
-"@astrojs/rss@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/rss/-/rss-1.0.0.tgz#6d9db543793ac6e33da3058f27156122d5a951a6"
-  integrity sha512-vOPocf/SC0TfHsCwQXupvLGm0y3oIwpRCnnF2igDP3gFSxQEOk4nmsuVTEU2N87hYyX1/5uxbjJhixuSV/L8Cw==
+"@astrojs/rss@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/rss/-/rss-1.0.1.tgz#a2d928c2ea2eeac47df207c63f978151bbbc4c08"
+  integrity sha512-CgfL1vSnHKZDUoSWVuRd6Z/s/2Hrazt9J3f4lKxTF/SwN28zJ+81e2obnOoxGhw5SfLNOqN/VEyHrGSJofaIRQ==
   dependencies:
     fast-xml-parser "^4.0.8"
 
@@ -1355,10 +1355,10 @@ astro-robots-txt@^0.3.8:
     valid-filename "^4.0.0"
     zod "^3.18.0"
 
-astro@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.1.tgz#34882d93291e1f9c082026dc9e973f0f40479033"
-  integrity sha512-bNWrYALx2o15QPfF0QKUI6UXZa6FQgprH4hQI742VHl4FGSizCPb1CVejyrIt4pKDvGcM2LUW/J2A5yZ8eIU1A==
+astro@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/astro/-/astro-1.2.2.tgz#e87b06de1ab16ce3bbce22537da10d7c80e21309"
+  integrity sha512-qfK7Ch7dSO0CJEwkcEx/oxMxEuaDcaHCcrJ1PGMWFzdjBXrT45tDgnXXis06yT+AuolLSOIbPhpEi3QWsGqvuQ==
   dependencies:
     "@astrojs/compiler" "^0.24.0"
     "@astrojs/language-server" "^0.23.0"
