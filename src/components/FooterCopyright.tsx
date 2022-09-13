@@ -5,7 +5,7 @@ type IFooterCopyrightProps = {
   const FooterCopyright = (props: IFooterCopyrightProps) => (
     <div className="flex justify-center border-t border-gray-400 pt-5">
       <div className="text-sm text-gray-700">
-        © Copyright {new Date().getFullYear()} by {props.site_name}. Built with ♥
+        © {new Date().getFullYear()} {props.site_name}. Built with 🍜
         and{' '}
         <a
           className="text-cyan-500 hover:underline"
