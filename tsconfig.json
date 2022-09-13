@@ -42,6 +42,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "src/pages/feed.js"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"],
   "extends": "astro/tsconfigs/strict"
 }
