@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "date-fns": "2.29.2"
+    "date-fns": "2.29.3"
   },
   "devDependencies": {
     "@astrojs/mdx": "0.11.1",
