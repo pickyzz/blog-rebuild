@@ -24,7 +24,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@master
       with:
-        version: 16.x
+        node-version: 16
 
     - name: Use cached node_modules
       uses: actions/cache@master
