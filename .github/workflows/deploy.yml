@@ -45,9 +45,9 @@ jobs:
     - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v1.2
       with:
-          publish-dir: './dist'
-          production-branch: main
-          deploy-message: '${{ github.event.head_commit.message }}'
+        publish-dir: './dist'
+        production-branch: main
+        deploy-message: '${{ github.event.head_commit.message }}'
       env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
