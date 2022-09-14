@@ -20,7 +20,7 @@
     "@astrojs/react": "1.1.2",
     "@astrojs/rss": "1.0.1",
     "@astrojs/sitemap": "1.0.0",
-    "@astrojs/tailwind": "1.0.0",
+    "@astrojs/tailwind": "1.0.1",
     "@commitlint/cli": "17.1.2",
     "@commitlint/config-conventional": "17.1.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
