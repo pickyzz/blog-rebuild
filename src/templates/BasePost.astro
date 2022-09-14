@@ -3,6 +3,7 @@ import type { IFrontmatter } from '@/components';
 
 import { BlogPost } from '@/partials/BlogPost';
 import Base from '@/templates/Base.astro';
+import Disqus from '@/partials/Disqus.astro'
 import { AppConfig } from '@/utils/AppConfig';
 
 export interface Props {
@@ -17,4 +18,5 @@ const title = `${content.title} - ${AppConfig.site_name}`;
   <BlogPost frontmatter={content}>
     <slot></slot>
   </BlogPost>
+  <Disqus></Disqus>
 </Base>
