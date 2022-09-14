@@ -27,12 +27,12 @@ jobs:
         version: 16.x
 
     - name: Use cached node_modules
-        uses: actions/cache@master
-        with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            nodeModules-
+      uses: actions/cache@master
+      with:
+        path: node_modules
+        key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          nodeModules-
 
     - name: Install dependencies
       run: yarn install
