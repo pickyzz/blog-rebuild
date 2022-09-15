@@ -1,14 +1,15 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: เพิ่มฟ้อนต์ไทยให้ og-image ของ vercel
-description: Open Graph Image as a Service ซึ่งเป็นบริการที่เราสามารถเขียน API เพื่อให้ทางเว็บ
+description:
+  Open Graph Image as a Service ซึ่งเป็นบริการที่เราสามารถเขียน API เพื่อให้ทางเว็บ
   auto generate รูป Open Graph และ Twitter card ให้ ซึ่งเป็นเรื่องที่ดีครับ แต่สิ่งหนึ่งที่ไม่ดีเลยก็คือ
   "pim thai mai dai
 pubDate: 2021-12-13T00:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1607706189992-eae578626c86-2022-09-09.jpeg"
+imgSrc: '/assets/images/blog/photo-1607706189992-eae578626c86-2022-09-09.jpeg'
 imgAlt: ''
-
 ---
+
 ใครที่ใช้บริการ Vercel อยู่บ้างจะเห็นว่าทาง Vercel มีบริการมากมายเลือกใช้งานกันไม่ถูก หนึ่งในนั้นก็คือทำ [**Open Graph Image as a Service**](https://og-image.vercel.app/) ซึ่งเป็นบริการที่เราสามารถเขียน API เพื่อให้ทางเว็บ auto generate รูป Open Graph และ Twitter card ให้ ซึ่งเป็นเรื่องที่ดีครับ แต่สิ่งหนึ่งที่ไม่ดีเลยก็คือ "pim thai mai dai (พิมพ์ไทยไม่ได้)"
 
 ![](/assets/images/blog/image-36-2022-09-09.png)  
@@ -49,13 +50,15 @@ imgAlt: ''
 1. ที่ไฟล์ `api/_lib/template.ts` และเพิ่มฟ้อนต์ที่เรานำไปวางในขั้นตอนที่ 1 ด้วยแพทเทิร์นเดียวกับที่มีอยู่แล้ว
 
 ```javascript
-const noto = readFileSync(`${__dirname}/../_fonts/NotoSansThai-Black.ttf`).toString('base64');
+const noto = readFileSync(
+  `${__dirname}/../_fonts/NotoSansThai-Black.ttf`
+).toString('base64');
 ```
 
 ในไฟล์เดียวกัน ที่ส่วนของ @font-face ให้ทำการเรียกใช้ฟ้อนต์ที่ const ไว้ด้านบน
 
 ```javascript
-@font-face 
+@font-face
 		{
         font-family: 'Noto Sans Thai';
         font-style: normal;
@@ -74,4 +77,4 @@ font-family: 'Inter', 'Noto Sans Thai', sans-serif;
 
 สำหรับการเพิ่มไอคอนของตัวเอง ผมจะเขียนคราวหน้านะครับ (ถ้าไม่ลืม) หรือใครสนใจจะไปนั่งแกะจาก repository ของผมก็ได้[ตามลิงค์นี้](https://github.com/pickyzz/og-image)เลยครับ
 
-หรือแวะไปลองเล่นตัวอย่างที่ทำเสร็จแล้วได้ที่ [https://og.pickyzz.dev](https://og.pickyzz.dev "https://og.pickyzz.dev") ครับ
+หรือแวะไปลองเล่นตัวอย่างที่ทำเสร็จแล้วได้ที่ [https://og.pickyzz.dev](https://og.pickyzz.dev 'https://og.pickyzz.dev') ครับ

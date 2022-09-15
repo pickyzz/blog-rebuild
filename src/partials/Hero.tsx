@@ -1,9 +1,4 @@
-import {
-  GradientText,
-  HeroAvatar,
-  HeroSocial,
-  Section,
-} from '@/components';
+import { GradientText, HeroAvatar, HeroSocial, Section } from '@/components';
 
 const Hero = () => (
   <Section>
@@ -14,9 +9,7 @@ const Hero = () => (
         </>
       }
       description={
-        <>
-          Self-taught front-end developer.{' '} Never stop learning about code.
-        </>
+        <>Self-taught front-end developer. Never stop learning about code.</>
       }
       avatar={
         <img

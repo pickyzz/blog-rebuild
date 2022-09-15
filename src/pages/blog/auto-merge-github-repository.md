@@ -1,13 +1,14 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: ทำ Auto merge บน github repository
-description: ถ้าเรามีโปรเจ็กต์อยู่เยอะแยะเต็มมือไปหมด แล้วเราต้องคอยไปดูทีละ repository
+description:
+  ถ้าเรามีโปรเจ็กต์อยู่เยอะแยะเต็มมือไปหมด แล้วเราต้องคอยไปดูทีละ repository
   มีอะไรอัพเดท แล้วคอยกด merge ทีละอัน มันต้องใช้เวลามหาศาลเลยทีเดียว
 pubDate: 2021-12-22T00:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1630514969818-94aefc42ec47-2022-09-09.jpeg"
+imgSrc: '/assets/images/blog/photo-1630514969818-94aefc42ec47-2022-09-09.jpeg'
 imgAlt: ''
-
 ---
+
 เนื่องจากครั้งที่แล้วผมโดน Vercel limit deploy ไปเพราะ dependabot ทำการอัพเดท dependencies แล้วรันทดสอบรัวๆ พอมันเกิดการเปิด Pull Request เต็มไปหมด แล้วเราก็ต้องมาไล่ merge เข้า branch หลักของเราทีละอันๆ ทำให้เราเสียเวลาไม่น้อยเลย
 
 ถ้าสมมุติว่าเรามีโปรเจ็กต์อยู่เยอะแยะเต็มมือไปหมด แล้วเราต้องคอยไปดูทีละ repository มีอะไรอัพเดท แล้วคอยกด merge ทีละอัน มันต้องใช้เวลามหาศาลเลยทีเดียว
@@ -26,15 +27,15 @@ imgAlt: ''
 
 ### วิธีตั้งค่า
 
-_1. ไปที่_ [_https://github.com/settings/tokens_](https://github.com/settings/tokens "https://github.com/settings/tokens") _และ คลิก Generate new token_
+_1. ไปที่_ [_https://github.com/settings/tokens_](https://github.com/settings/tokens 'https://github.com/settings/tokens') _และ คลิก Generate new token_
 
 ![](/assets/images/blog/image-29-2022-09-09.png)  
 โดยตั้งค่าในส่วนของ note ตามที่ต้องการให้อ่านแล้วนึกออกว่าใช้ key ทำอะไร
 
 ในส่วนของ scope นั้น เงื่อนไขดังนี้
 
-* ถ้าเป็น private repo ให้เลือกเป็น repo ด้านบน
-* ถ้าเป็น Public repo ให้เลือกเป็น public_repo
+- ถ้าเป็น private repo ให้เลือกเป็น repo ด้านบน
+- ถ้าเป็น Public repo ให้เลือกเป็น public_repo
 
 ![](/assets/images/blog/image-30-2022-09-09.png)  
 กรณีนี้ผมเลือก repo เผื่อไว้ใช้กับ private repo ในอนาคตด้วย ขี้เกียจสร้างใหม่บ่อยๆ
@@ -81,8 +82,8 @@ jobs:
 ![](/assets/images/blog/image-33-2022-09-09.png)  
 โดยพื้นฐานเงื่อนไขการทำงานของโค้ดด้านบนผมได้กล่าวถึงไปแล้วขั้นต้น รายละเอียดอื่นๆของ workflow ตัวนี้ รวมถึงการโค้ดและการใช้งานโดยละเอียดกว่านี้ สามารถศึกษาเพิ่มเติมได้ที่
 
-* [https://github.com/ahmadnassri/action-dependabot-auto-merge](https://github.com/ahmadnassri/action-dependabot-auto-merge "https://github.com/ahmadnassri/action-dependabot-auto-merge")
-* [https://mknepprath.com/writing/the-bots-replaced-me](https://mknepprath.com/writing/the-bots-replaced-me "https://mknepprath.com/writing/the-bots-replaced-me")
+- [https://github.com/ahmadnassri/action-dependabot-auto-merge](https://github.com/ahmadnassri/action-dependabot-auto-merge 'https://github.com/ahmadnassri/action-dependabot-auto-merge')
+- [https://mknepprath.com/writing/the-bots-replaced-me](https://mknepprath.com/writing/the-bots-replaced-me 'https://mknepprath.com/writing/the-bots-replaced-me')
 
 ### สรุป
 

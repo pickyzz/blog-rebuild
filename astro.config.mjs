@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import react from "@astrojs/react";
+import react from '@astrojs/react';
 import robotsTxt from 'astro-robots-txt';
-import tailwind from "@astrojs/tailwind";
+import tailwind from '@astrojs/tailwind';
 
-import compress from "astro-compress";
+import compress from 'astro-compress';
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,7 +35,7 @@ export default defineConfig({
       html: true,
       js: true,
       img: true,
-      svg: true,
+      svg: true
     })
   ]
 });

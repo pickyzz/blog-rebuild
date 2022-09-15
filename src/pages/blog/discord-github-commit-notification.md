@@ -1,13 +1,14 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: แจ้งเตือนใน Discord เมื่อมี Commit ใหม่
-description: มีคนบอกว่าเราสามารถเราสามารถเอา webhook ที่ได้จาก discord ไปใส่ที่ setting
+description:
+  มีคนบอกว่าเราสามารถเราสามารถเอา webhook ที่ได้จาก discord ไปใส่ที่ setting
   ของ Repository ฝั่ง github ได้เลย
 pubDate: 2022-04-08T00:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1614680376739-414d95ff43df-2022-09-09.jpeg"
+imgSrc: '/assets/images/blog/photo-1614680376739-414d95ff43df-2022-09-09.jpeg'
 imgAlt: ''
-
 ---
+
 สวัสดีครับคุณผู้อ่านทุกท่าน หลังจากที่หายหน้าหายตาไปสักพักใหญ่เพราะไม่รู้ว่าจะเขียนอะไรดี หรือบางเรื่องที่อยากเขียนแต่ก็ไม่มีเวลาเขียนสักที เคลียร์แต่งานพอจบงานก็ลืมไปแล้วว่าจะเขียนเรื่องอะไร (ซะอย่างนั้น)
 
 เหตุเกิดจากผมได้ใช้ Dependabot ในการ auto bump version ของ dependencies ที่ใช้งานในโปรเจ็กต์ของบล็อกนี้อยู่ แต่ว่าจะเข้ามานั่งตรวจเองทุกวันๆว่าวันนี้มีอัพเดทไหมก็ขี้เกียจทำ (สารภาพตามตรง) ประกอบด้วยโปรเจ็กต์ที่มากขึ้น ทำให้เราไม่มีเวลาเข้ามาตรวจสอบตรงนี้บ่อยๆ
@@ -50,4 +51,4 @@ _11. คลิก Update webhook_
 
 ### Reference
 
-* [ardalis.com](https://ardalis.com/integrate-github-and-discord-with-webhooks/ "https://ardalis.com/integrate-github-and-discord-with-webhooks/")
+- [ardalis.com](https://ardalis.com/integrate-github-and-discord-with-webhooks/ 'https://ardalis.com/integrate-github-and-discord-with-webhooks/')

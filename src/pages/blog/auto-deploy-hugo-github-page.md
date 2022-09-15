@@ -1,14 +1,15 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: ทำ auto deploy Hugo บน Github page
-description: เมื่อเราทำการ push อัพเดทไปยัง repo ที่ใช้เก็บไฟล์ hugo ที่ยังไม่ได้
+description:
+  เมื่อเราทำการ push อัพเดทไปยัง repo ที่ใช้เก็บไฟล์ hugo ที่ยังไม่ได้
   compile หน้าเว็บ ทันทีที่พบ new commit, ตัว script จะรันคำสั่ง hugo ไปยัง repo ที่ใส่
   public key ไว้ทันที สามารถตรวจสอบผลได้ที่ Action ของ repo เก็บ hugo ได้เลย
 pubDate: 2020-05-13T09:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1498050108023-c5249f4df085.jpeg"
+imgSrc: '/assets/images/blog/photo-1498050108023-c5249f4df085.jpeg'
 imgAlt: ''
-
 ---
+
 [github.io](https://github.io/) โฮสต์เว็บเพจได้ฟรีเหมือนกัน แต่ส่วนใหญ่แล้วจะง่ายต่อ Static web ประเภท Jekyll มากกว่าตัวอื่น เพราะมันสามารถ Deploy ได้จากตัวเองเลย ในขณะที่คู่แข่งอย่าง Hugo นั้นต้องอาศัยกาารเล่นท่ายากสักหน่อย แต่ก็ใช่ว่าจะ auto deploy ไม่ได้นะ
 
 บอกไว้ก่อนเลยว่าวิธีการนี้ได้มาจากชาวญี่ปุ่นท่านนึง(ref. ด้านล่าง) ด้วยความที่ไปหาข้อมูลในเว็บนอกแล้วโซนฝั่งเขาแนะนำอีกวิธีหนึ่งซึ่งมันกึ่งๆอัตโนมัติ แต่มันก็ต้องไปรันคำสั่งเองอีกที ส่วนตัวคิดว่าเอาเวลาที่รันคำสั่งนั้น ไปกด push repo ตัวที่เป็น output หน้าเว็บมันก็เหมือนกัน เลยไม่ซื้อวิธีดังกล่าว
@@ -41,43 +42,43 @@ imgAlt: ''
 ในไฟล์ **`ชื่อไฟล์อะไรก็ได้.yml`** ที่สร้างขึ้นเมื่อสักครู่ ให้ทำการใส่ action script ดังนี้
 
 ```yaml
-    name: GitHub Pages
-    
-    on:
-      push:
-        branches:
-        - master
-    
-    jobs:
-      build-deploy:
-        runs-on: ubuntu-18.04
-        steps:
-        - name: Fix up git URLs
-          run: echo -e '[url "<https://github.com/>"]\\n  insteadOf = "git@github.com:"' >> ~/.gitconfig
-    
-        - name: Checkout
-          uses: actions/checkout@v2.3.4
-          with:
-            submodules: true
-    
-        - name: Hugo setup
-          uses: peaceiris/actions-hugo@v2.4.13
-    
-        - name: Build
-          run: hugo --gc --minify --cleanDestinationDir
-          env:
-            TZ: 'Asia/Bangkok'
-    
-        - name: Deploy
-          uses: peaceiris/actions-gh-pages@v2
-          env:
-            ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-            # uncomment ข้างล่างในกรณีใช้ personal access token
-            #PERSONAL_TOKEN: ${{ secrets.MY_GITHUB_ACCESS_TOKEN }}
-            EXTERNAL_REPOSITORY: pickyzz/pickyzz.github.io
-            PUBLISH_BRANCH: main
-            PUBLISH_DIR: ./public
-            TZ: 'Asia/Bangkok'
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Fix up git URLs
+        run: echo -e '[url "<https://github.com/>"]\\n  insteadOf = "git@github.com:"' >> ~/.gitconfig
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          submodules: true
+
+      - name: Hugo setup
+        uses: peaceiris/actions-hugo@v2.4.13
+
+      - name: Build
+        run: hugo --gc --minify --cleanDestinationDir
+        env:
+          TZ: 'Asia/Bangkok'
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          # uncomment ข้างล่างในกรณีใช้ personal access token
+          #PERSONAL_TOKEN: ${{ secrets.MY_GITHUB_ACCESS_TOKEN }}
+          EXTERNAL_REPOSITORY: pickyzz/pickyzz.github.io
+          PUBLISH_BRANCH: main
+          PUBLISH_DIR: ./public
+          TZ: 'Asia/Bangkok'
 ```
 
 ### ผลที่ได้
@@ -86,4 +87,4 @@ imgAlt: ''
 
 #### reference
 
-[https://suihan74.github.io](https://suihan74.github.io/posts/2020/01_29_00_deploy_with_github_actions/ "suihan74.github.io")
+[https://suihan74.github.io](https://suihan74.github.io/posts/2020/01_29_00_deploy_with_github_actions/ 'suihan74.github.io')

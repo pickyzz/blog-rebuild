@@ -13,9 +13,9 @@ publish_mode: editorial_workflow
 media_folder: 'public/assets/images/blog' # Folder where user uploaded files should go
 public_folder: '/assets/images/blog'
 slug:
-  encoding: "ascii"
+  encoding: 'ascii'
   clean_accents: true
-  sanitize_replacement: "-"
+  sanitize_replacement: '-'
 
 collections: # A list of collections the CMS should be able to edit
   - name: 'post' # Used in routes, ie.: /admin/collections/:slug/edit
@@ -24,9 +24,19 @@ collections: # A list of collections the CMS should be able to edit
     create: true # Allow users to create new documents in this collection
     slug: '{{slug}}'
     fields: # The fields each document in this collection have
-      - { label: "Layout", name: "layout", widget: "hidden", default: "@/templates/BasePost.astro" }
+      - {
+          label: 'Layout',
+          name: 'layout',
+          widget: 'hidden',
+          default: '@/templates/BasePost.astro'
+        }
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Description', name: 'description', widget: 'text' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
       - { label: 'Publish Date', name: 'pubDate', widget: 'datetime' }
-      - { label: 'Cover Image', name: 'imgSrc', widget: 'image', allow_multiple: false }
+      - {
+          label: 'Cover Image',
+          name: 'imgSrc',
+          widget: 'image',
+          allow_multiple: false
+        }

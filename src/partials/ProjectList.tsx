@@ -1,10 +1,4 @@
-import {
-  ColorTags,
-  GradientText,
-  Project,
-  Section,
-  Tags,
-} from '@/components';
+import { ColorTags, GradientText, Project, Section, Tags } from '@/components';
 
 const ProjectList = () => (
   <Section
@@ -21,7 +15,7 @@ const ProjectList = () => (
         link="https://github.com/pickyzz/svelte-duply"
         img={{
           src: '/assets/images/project/svelte_logo.png',
-          alt: 'Svelte',
+          alt: 'Svelte'
         }}
         category={
           <>

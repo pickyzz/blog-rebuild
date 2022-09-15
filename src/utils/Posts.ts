@@ -1,7 +1,4 @@
-import type {
-  IFrontmatter,
-  MarkdownInstance,
-} from '@/components';
+import type { IFrontmatter, MarkdownInstance } from '@/components';
 
 export const sortByDate = (posts: MarkdownInstance<IFrontmatter>[]) => {
   return posts.sort(

@@ -6,37 +6,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        name: 'Checkout Source Code'
 
-    - uses: actions/checkout@v3
-      name: "Checkout Source Code"
-      
-    - name: Setup Node.js environment
-      uses: actions/setup-node@master
-      with:
-        node-version: 16
+      - name: Setup Node.js environment
+        uses: actions/setup-node@master
+        with:
+          node-version: 16
 
-    - name: Use cached node_modules
-      uses: actions/cache@master
-      with:
-        path: node_modules
-        key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          nodeModules-
+      - name: Use cached node_modules
+        uses: actions/cache@master
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
 
-    - name: Install dependencies
-      run: yarn install
-      env:
-        CI: true
+      - name: Install dependencies
+        run: yarn install
+        env:
+          CI: true
 
-    - name: Build Development
-      run: yarn build
+      - name: Build Development
+        run: yarn build
 
-    - name: Deploy to Netlify
-      uses: nwtgck/actions-netlify@v1.2
-      with:
-        publish-dir: './dist'
-        production-branch: main
-        deploy-message: '${{ github.event.head_commit.message }}'
-      env:
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: './dist'
+          production-branch: main
+          deploy-message: '${{ github.event.head_commit.message }}'
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

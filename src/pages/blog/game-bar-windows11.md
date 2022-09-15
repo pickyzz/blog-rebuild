@@ -1,13 +1,14 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: ปิด Game Bar ใน Windows11
-description: บางทีมันก็มีปัญหากับเกมบางเกม และส่วนตัวแล้วใช้โปรแกรมอัดจอแยกต่างหากอยู่แล้วด้วยก็เลยไม่จำเป็นที่จะต้องเปิดมัน
+description:
+  บางทีมันก็มีปัญหากับเกมบางเกม และส่วนตัวแล้วใช้โปรแกรมอัดจอแยกต่างหากอยู่แล้วด้วยก็เลยไม่จำเป็นที่จะต้องเปิดมัน
   แต่พอเป็น Windows 11 ไอ้เจ้า setting ที่ให้เปิดปิดมันดันหายไปซะอย่างนั้น
 pubDate: 2021-10-29T00:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1531923261682-53ef27714b13-2022-09-09.jpeg"
+imgSrc: '/assets/images/blog/photo-1531923261682-53ef27714b13-2022-09-09.jpeg'
 imgAlt: ''
-
 ---
+
 ปกติแล้วใน Windows 10 เราจะสามารถปิด Gamebar (ลูกเล่นที่กดปุ่ม win + G ในเกมแล้วมี HUD โผล่ขึ้นมา) ซึ่งมันจะมีตัวเลือกให้เปิดหรือปิดอยู่ใน setting เลย
 
 ![](/assets/images/blog/image-37-2022-09-09.png)  
@@ -35,4 +36,4 @@ Get-AppxPackage Microsoft.XboxGamingOverlay | Remove-AppxPackage
 
 #### Reference
 
-* [How to Remove the Xbox Game Bar with Powershell on Windows 10 (github.com)](https://gist.github.com/joshschmelzle/04c57d957c5bb92e85ae9180021b26dc)
+- [How to Remove the Xbox Game Bar with Powershell on Windows 10 (github.com)](https://gist.github.com/joshschmelzle/04c57d957c5bb92e85ae9180021b26dc)

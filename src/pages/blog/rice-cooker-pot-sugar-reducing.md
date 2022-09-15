@@ -1,12 +1,12 @@
 ---
-layout: "@/templates/BasePost.astro"
+layout: '@/templates/BasePost.astro'
 title: เรื่องข้าวๆ และหม้อหุงข้าวลดน้ำตาล
 description: ฟังแล้วก็นึกแปลกใจว่า แค่หุงข้าวจะสามารถลดน้ำตาลได้ยังไง? ถ้ามันดีจริงๆจะยอมควักเงินซื้อสักใบติดบ้านไว้เลย
 pubDate: 2022-01-21T00:00:00+07:00
-imgSrc: "/assets/images/blog/photo-1551982932-92d213f565a7-2022-09-09.jpeg"
+imgSrc: '/assets/images/blog/photo-1551982932-92d213f565a7-2022-09-09.jpeg'
 imgAlt: ''
-
 ---
+
 เรื่องนี้เกิดขึ้นเพราะไปได้ยินวลีหนึ่งจากโทรทัศน์รายการหนึ่งว่ามีการแจกสินค้าต่างๆในรายการ ก็เปิดดูระหว่างมื้ออาหารกลางวันตามปกติ แต่ก็ต้องสะดุดหูกับคำว่า “หม้อหุงข้าวลดน้ำตาล” ฟังแล้วก็นึกแปลกใจว่า แค่หุงข้าวจะสามารถลดน้ำตาลได้ยังไง? ก็เลยหาข้อมูลเพิ่มเติมด้วยความสงสัย บวกกับแม่ของตัวเองเป็นเบาหวานอยู่ด้วย ถ้ามันดีจริงๆจะยอมควักเงินซื้อสักใบติดบ้านไว้เลย
 
 ต่อไปนี้คือสิ่งที่ผมคิดไว้ข้างต้น ตั้งสมมุติฐานไว้เบื้องต้นจากสิ่งที่เห็นกันอยู่ทุกวันคือการหุงข้าวด้วยหม้อหุงข้าวปกติ ซึ่งเป็นการหุงด้วยการนำข้าวสารมาใส่น้ำในสัดส่วนหนึ่ง แล้วปล่อยให้หม้อดำเนินกรรมวิธีที่เหลือโดยการให้ความร้อน จนข้าวสุก ซึ่งการนำข้าวมาแช่น้ำโดยปกติ ไม่น่าจะทำให้เกิดการเปลี่ยนสถานะของแป้งในเมล็ดข้าวให้เป็นน้ำตาลได้ เพราะฉะนั้นจึงคาดการณ์ไว้ว่าไม่น่าจะเป็นไปได้จริงในแง่ของการลดน้ำตาล
@@ -16,12 +16,12 @@ imgAlt: ''
 ซึ่งอันที่จริงแล้วก็มีจะมีการออกแบบต่างๆกันออกไปในแต่ละแบรนด์ บางแบรนด์ก็จะเป็นการแยกน้ำออกไปด้านล่างและแยกข้าวอยู่ด้านบน
 
 ![](/assets/images/blog/image-5-2022-09-09.png)  
-ที่มา [ottostore.com.au](https://ottostore.com.au/products/daewoo-desugared-rice-cooker-household-zongzi-low-sugar-rice-soup-separated-4l "ottostore.com.au")
+ที่มา [ottostore.com.au](https://ottostore.com.au/products/daewoo-desugared-rice-cooker-household-zongzi-low-sugar-rice-soup-separated-4l 'ottostore.com.au')
 
 บางแบรนด์ก็เพิ่มตัวดักไอน้ำไว้ที่ด้านบนอีกชั้นหนึ่ง เพื่อไม่ให้ไอน้ำที่เชื่อวานมีน้ำตาลอยู่วนกลับมาควบแน่นและตกลงมารวมกับชั้นข้าวด้านล่าง
 
 ![](/assets/images/blog/image-24-2022-09-09.png)  
-ที่มา [wenghingelectrical.com](https://wenghingelectrical.com/cooker/elba-low-sugar-rice-cooker-erc-k2050d-bk-black-2l-500w "https://wenghingelectrical.com")
+ที่มา [wenghingelectrical.com](https://wenghingelectrical.com/cooker/elba-low-sugar-rice-cooker-erc-k2050d-bk-black-2l-500w 'https://wenghingelectrical.com')
 
 แต่โดยหลักการแล้ว ส่วนสำคัญคือการแยกข้าว และน้ำออกจากกัน เพราะเชื่อว่าจะเป็นการลดน้ำตาลได้ ซึ่งเมื่อคิดโดยอ้างอิงจากหลักการนี้แล้ว ก็จะคล้ายกับการนำข้าวไปนึ่งดีๆนี่เอง
 
@@ -35,7 +35,7 @@ imgAlt: ''
 
 ### References
 
-* [researchgate.net](https://www.researchgate.net "https://www.researchgate.net")
-* [thaiware.com](https://www.researchgate.net "https://www.researchgate.net")
-* [blogsdit.com](https://www.blogsdit.com/2021/04/desugarricecooker.html "https://www.blogsdit.com/2021/04/desugarricecooker.html")
-* [chinanews.com.cn](https://www.chinanews.com.cn/cj/2020/10-31/9326997.shtml "https://www.chinanews.com.cn/cj/2020/10-31/9326997.shtml")
+- [researchgate.net](https://www.researchgate.net 'https://www.researchgate.net')
+- [thaiware.com](https://www.researchgate.net 'https://www.researchgate.net')
+- [blogsdit.com](https://www.blogsdit.com/2021/04/desugarricecooker.html 'https://www.blogsdit.com/2021/04/desugarricecooker.html')
+- [chinanews.com.cn](https://www.chinanews.com.cn/cj/2020/10-31/9326997.shtml 'https://www.chinanews.com.cn/cj/2020/10-31/9326997.shtml')

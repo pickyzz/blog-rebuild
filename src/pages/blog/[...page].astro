@@ -1,13 +1,6 @@
 ---
-import type {
-  FrontmatterPage,
-  IFrontmatter,
-} from '@/components';
-import {
-  NewerOlderPagination,
-  PaginationHeader,
-  Section,
-} from '@/components';
+import type { FrontmatterPage, IFrontmatter } from '@/components';
+import { NewerOlderPagination, PaginationHeader, Section } from '@/components';
 
 import { BlogGallery } from '@/components/BlogGallery';
 
@@ -35,15 +28,14 @@ const { page } = Astro.props as Props;
 const titleSuffix = ` - ${AppConfig.site_name}`;
 const titleBase = `Blog page ${page.currentPage}`;
 const title = titleBase + titleSuffix;
-const description =
-  'Just writing. Nothing else.';
+const description = 'Just writing. Nothing else.';
 ---
 
 <Base head={{ title, description }}>
   <Section>
     <PaginationHeader
-      title='All Posts'
-      description='Just writing. Nothing else.'
+      title="All Posts"
+      description="Just writing. Nothing else."
     />
   </Section>
 
