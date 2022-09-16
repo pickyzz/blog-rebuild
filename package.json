@@ -31,7 +31,6 @@
     "astro": "1.2.5",
     "astro-compress": "1.0.8",
     "astro-eslint-parser": "0.6.1",
-    "astro-og-image": "^1.0.5",
     "astro-robots-txt": "0.3.9",
     "daisyui": "2.28.0",
     "eslint": "8.23.1",
