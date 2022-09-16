@@ -6,6 +6,7 @@ import robotsTxt from 'astro-robots-txt';
 import tailwind from '@astrojs/tailwind';
 
 import compress from 'astro-compress';
+import astroOGImage from 'astro-og-image';
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,6 +37,12 @@ export default defineConfig({
       js: true,
       img: true,
       svg: true
-    })
+    }),
+    astroOGImage({
+      config: {
+        path: "/blog", // change this value to the folder where your posts are
+        // NOTE: index.md file will not get proccesed, so please avoid it
+      },
+    }),
   ]
 });
