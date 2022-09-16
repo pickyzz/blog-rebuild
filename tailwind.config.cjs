@@ -15,6 +15,7 @@ module.exports = {
     base: true,
     utils: true,
     logs: false,
-    rtl: false
+    rtl: false,
+    darkTheme: "autumn",
   }
 };
