@@ -36,6 +36,6 @@ export default defineConfig({
       js: true,
       img: true,
       svg: true
-    })
+    }),
   ]
 });

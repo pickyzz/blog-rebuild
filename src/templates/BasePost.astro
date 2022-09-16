@@ -14,7 +14,7 @@ const { content } = Astro.props as Props;
 const title = `${content.title} - ${AppConfig.site_name}`;
 ---
 
-<Base head={{ title, description: content.description }}>
+<Base head={{ title, description: content.description,  imgSrc: content.imgSrc }}>
   <BlogPost frontmatter={content}>
     <slot />
   </BlogPost>
