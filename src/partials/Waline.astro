@@ -9,11 +9,13 @@ import { Section } from '@/components';
             Waline.init({
             el: '#waline',
             serverURL: 'https://0onqf7.deta.dev',
+            path: [window.location.pathname.replace(/\/$/,'')],
             lang: "en-us",
             meta: ['nick', 'mail'],
             imageUploader: false,
             requiredMeta: ['nick', 'mail'],
             copyright: false,
+            emoji:['https://unpkg.com/@waline/emojis@1.1.0/alus'],
             });
         </script>
     </div>
