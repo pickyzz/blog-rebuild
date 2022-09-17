@@ -15,6 +15,7 @@ const {
   head: { title, description, imgSrc }
 } = Astro.props as Props;
 
+const coverImageUrl = new URL(`${imgSrc}`, Astro.url)
 const socialImage = `https://og.pickyzz.dev/${title}.png?theme=light&md=1&fontSize=75px&images=https%3A%2F%2Fpickyzz.dev%2Fassets%2Fimages%2Favatar.png&widths=600&heights=600`;
 ---
 
@@ -63,12 +64,12 @@ const socialImage = `https://og.pickyzz.dev/${title}.png?theme=light&md=1&fontSi
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
-    <meta property="og:image" content={imgSrc !== undefined ? `${imgSrc}` : `${socialImage}`} />
+    <meta property="og:image" content={imgSrc !== undefined ? `${coverImageUrl}` : `${socialImage}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:creator" content="@p1ckyzz" />
-    <meta name="twitter:image" content={imgSrc !== undefined ? `${imgSrc}` : `${socialImage}`} />
+    <meta name="twitter:image" content={imgSrc !== undefined ? `${coverImageUrl}` : `${socialImage}`} />
 
     <link rel="alternate" type="application/rss+xml" href="/feed" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
