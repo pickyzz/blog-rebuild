@@ -101,7 +101,7 @@
     uvu "^0.5.0"
     vfile-message "^3.0.0"
 
-"@astrojs/partytown@^1.0.0":
+"@astrojs/partytown@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-1.0.0.tgz#31cc6e43c546b96422e10f3279e9e2a9ebba3852"
   integrity sha512-rco5tOtBmmZ7mpoHFyARrMb5yKVJPwLghN9lFvl+R867E+0xRp6ZzP5o7pMySgZCUq093qzd1bkAsVS2I/8gpg==
