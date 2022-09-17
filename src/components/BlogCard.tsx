@@ -9,7 +9,7 @@ type IBlogCardProps = {
 
 const BlogCard = (props: IBlogCardProps) => (
   <a className="hover:translate-y-1" href={props.instance.url}>
-    <div className="overflow-hidden rounded-md bg-cyan-100">
+    <div className="overflow-hidden rounded-md bg-base-300/50">
       <div className="aspect-w-3 aspect-h-2">
         <img
           className="h-full w-full object-cover object-center"
@@ -24,7 +24,7 @@ const BlogCard = (props: IBlogCardProps) => (
           {props.instance.frontmatter.title}
         </h2>
 
-        <div className="mt-1 text-xs text-gray-400">
+        <div className="mt-1 text-xs text-primary-focus">
           {format(new Date(props.instance.frontmatter.pubDate), 'LLL d, yyyy')}
         </div>
 
