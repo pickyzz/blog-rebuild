@@ -4,8 +4,8 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import robotsTxt from 'astro-robots-txt';
 import tailwind from '@astrojs/tailwind';
-
 import compress from 'astro-compress';
+import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,6 +30,12 @@ export default defineConfig({
     react(),
     tailwind(),
     robotsTxt(),
+    partytown({
+      // Example: Add dataLayer.push as a forwarding-event.
+      config: { 
+        forward: ["dataLayer.push"] 
+      },
+    }),
     compress({
       css: true,
       html: true,
