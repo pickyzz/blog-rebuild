@@ -18,16 +18,16 @@ const ContactForm = () => (
       </p>
 
         <div>
-          <p className='text-center text-md font-semibold mb-2'>Your Name</p>
-          <input className='input input-bordered w-full max-w-sm mb-2' type="text" name="name" />
+          <p className='text-center text-md font-semibold mb-2'>Name</p>
+          <input className='input input-bordered input-primary w-full max-w-sm mb-2' type="text" name="name" />
         </div>
         <div>
-          <p className='text-center text-md font-semibold mb-2'>Your Email</p>
-          <input className='input input-bordered w-full max-w-sm mb-2' type="email" name="email" />
+          <p className='text-center text-md font-semibold mb-2'>Email</p>
+          <input className='input input-bordered input-primary w-full max-w-sm mb-2' type="email" name="email" />
         </div>
         <div>
           <p className='text-center text-md font-semibold mb-2'>Message</p>
-            <textarea className='input input-bordered h-[72px] w-full max-w-sm mb-2' name="message"></textarea>
+            <textarea className='input input-bordered input-primary input-lg h-[140px] w-full max-w-sm mb-2' name="message"></textarea>
         </div>
         <div className='text-center'>
           <button className='btn btn-success' type="submit">Send</button>
