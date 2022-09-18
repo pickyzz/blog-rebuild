@@ -11,7 +11,7 @@ const ContactForm = () => (
     <div className='flex justify-center'>
       <form name="contact" method="POST" netlify-honeypot="bot-field" data-netlify="true">
       {/* https://docs.netlify.com/forms/spam-filters/ */}
-      <p class="hidden">
+      <p className="hidden">
         <label>
           Don’t fill this out if you’re human: <input name="bot-field" />
         </label>
