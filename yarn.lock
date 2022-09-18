@@ -1356,6 +1356,13 @@ astro-compress@1.0.8:
     svgo "2.8.0"
     terser "5.15.0"
 
+astro-compressor@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/astro-compressor/-/astro-compressor-0.1.2.tgz#2befe202cd137ed2c485b5f4437478e034d4ee5d"
+  integrity sha512-zpqVY7YY4U20YsCC+PLO1Ab7TGKjLaf2uqGrmwjHZ16O+SXlM0QLLDUUXF1h+IuFLUSjKIBETFmYQOja6NhSMg==
+  dependencies:
+    globby "13.1.2"
+
 astro-eslint-parser@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.6.1.tgz#e404b1d3674846db28926589dafee323c2d238fc"
@@ -3235,6 +3242,17 @@ globalyzer@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/globalyzer/-/globalyzer-0.1.0.tgz#cb76da79555669a1519d5a8edf093afaa0bf1465"
   integrity sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==
+
+globby@13.1.2:
+  version "13.1.2"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-13.1.2.tgz#29047105582427ab6eca4f905200667b056da515"
+  integrity sha512-LKSDZXToac40u8Q1PQtZihbNdTYSNMuWe+K5l+oa6KgDzSvVrHXlJy40hUP522RjAIoNLJYBJi7ow+rbFpIhHQ==
+  dependencies:
+    dir-glob "^3.0.1"
+    fast-glob "^3.2.11"
+    ignore "^5.2.0"
+    merge2 "^1.4.1"
+    slash "^4.0.0"
 
 globby@^11.1.0:
   version "11.1.0"
