@@ -1356,7 +1356,7 @@ astro-compress@1.0.8:
     svgo "2.8.0"
     terser "5.15.0"
 
-astro-compressor@^0.1.2:
+astro-compressor@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/astro-compressor/-/astro-compressor-0.1.2.tgz#2befe202cd137ed2c485b5f4437478e034d4ee5d"
   integrity sha512-zpqVY7YY4U20YsCC+PLO1Ab7TGKjLaf2uqGrmwjHZ16O+SXlM0QLLDUUXF1h+IuFLUSjKIBETFmYQOja6NhSMg==
