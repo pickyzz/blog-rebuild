@@ -38,6 +38,7 @@ const Navbar = () => (
         <NavMenuItem href="/">🏠 Home</NavMenuItem>
         <NavMenuItem href="/blog">📝 Blog</NavMenuItem>
         <NavMenuItem href="/about">🧤 About</NavMenuItem>
+        <NavMenuItem href="/contact">📨 Contact</NavMenuItem>
       </NavMenu>
     </NavbarTwoColumns>
   </Section>
