@@ -9,7 +9,14 @@ const ContactForm = () => (
       </GradientText>
     </p>
     <div className='flex justify-center'>
-      <form name="contact" method="POST" data-netlify="true">
+      <form name="contact" method="POST" netlify-honeypot="bot-field" data-netlify="true">
+      {/* https://docs.netlify.com/forms/spam-filters/ */}
+      <p class="hidden">
+        <label>
+          Don’t fill this out if you’re human: <input name="bot-field" />
+        </label>
+      </p>
+
         <div>
           <p className='text-center text-md font-semibold mb-2'>Your Name</p>
           <input className='input input-bordered w-full max-w-sm mb-2' type="text" name="name" />
