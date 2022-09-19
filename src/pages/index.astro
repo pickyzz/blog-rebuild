@@ -8,7 +8,7 @@ import Base from '@/templates/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import { sortByDate } from '@/utils/Posts';
 
-const allPosts = await Astro.glob<IFrontmatter>('./blog/*.md');
+const allPosts = await Astro.glob<IFrontmatter>('./blog/*.mdx');
 const sortedPosts = sortByDate(allPosts);
 const lastSixPosts = sortedPosts.slice(0, 6);
 

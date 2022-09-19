@@ -6,5 +6,5 @@ export const get = () =>
     title: AppConfig.title,
     description: AppConfig.description,
     site: import.meta.env.SITE,
-    items: import.meta.glob('./**/*.md')
+    items: import.meta.glob('./**/*.mdx')
   });
