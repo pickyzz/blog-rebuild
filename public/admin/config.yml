@@ -25,7 +25,6 @@ collections: # A list of collections the CMS should be able to edit
     extension: mdx
     slug: '{{slug}}'
     format: frontmatter
-    frontmatter_delimiter: ['---', '---']
     fields: # The fields each document in this collection have
       - {
           label: 'Layout',
