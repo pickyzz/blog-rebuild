@@ -24,7 +24,7 @@ collections: # A list of collections the CMS should be able to edit
     create: true # Allow users to create new documents in this collection
     extension: mdx
     slug: '{{slug}}'
-    format: yaml-frontmatter
+    format: frontmatter
     frontmatter_delimiter: ['---', '---']
     fields: # The fields each document in this collection have
       - {
