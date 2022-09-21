@@ -27,11 +27,11 @@ const AboutPage = () => (
         <p className="my-1">
           <span className="font-bold">E-mail</span> :{' '}
           <a
-            href="https://mailhide.io/e/Hym8RjoA"
+            href="mailto:contact@pickyzz.dev"
             target="_blank"
             rel="noreferrer"
           >
-            p......@gmail.com
+            contact@pickyzz.dev
           </a>
         </p>
         <p className="my-1">
