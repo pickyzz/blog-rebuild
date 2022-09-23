@@ -16,6 +16,6 @@ module.exports = {
     utils: true,
     logs: false,
     rtl: false,
-    darkTheme: "halloween",
+    darkTheme: "business",
   }
 };
