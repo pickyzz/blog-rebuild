@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "5.39.0",
     "@typescript-eslint/parser": "5.39.0",
     "astro": "1.4.4",
-    "astro-compress": "1.0.9",
+    "astro-compress": "1.0.10",
     "astro-compressor": "0.1.2",
     "astro-eslint-parser": "0.6.2",
     "astro-robots-txt": "0.3.9",
