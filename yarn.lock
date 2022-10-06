@@ -10,15 +10,20 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@astrojs/compiler@0.18 - 0.25 || ^0.25.0", "@astrojs/compiler@^0.25.0":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.25.1.tgz#0b55aa29fea5673deb5d47899ad86e2dbcb4cb79"
-  integrity sha512-rDuTM9p8HVeHB0/qUiBHgEHRBf/3otcP+wLs3kRXk/quJs0vpCruq42vGsmE1ZFuBi8Ie5mz8fWGm7F6nHhXaQ==
+"@astrojs/compiler@0.18 - 0.26 || ^0.26.0":
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.26.0.tgz#289395d8ff00e997bfa84aa7fe80702158f6f7a3"
+  integrity sha512-we6XcJp4BnG2+1HhKYwIqfM6xt/T0nrhBkNSZNcrY/g449t2TyA6H/j0dRadiV8CGIE27T6q3sEq7Nm2Qfi6oQ==
 
 "@astrojs/compiler@^0.23.4":
   version "0.23.5"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.23.5.tgz#ea57a2b994b2930e3b3d2d524f10866698fef4f1"
   integrity sha512-vBMPy9ok4iLapSyCCT1qsZ9dK7LkVFl9mObtLEmWiec9myGHS9h2kQY2xzPeFNJiWXUf9O6tSyQpQTy5As/p3g==
+
+"@astrojs/compiler@^0.25.0":
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.25.1.tgz#0b55aa29fea5673deb5d47899ad86e2dbcb4cb79"
+  integrity sha512-rDuTM9p8HVeHB0/qUiBHgEHRBf/3otcP+wLs3kRXk/quJs0vpCruq42vGsmE1ZFuBi8Ie5mz8fWGm7F6nHhXaQ==
 
 "@astrojs/language-server@^0.26.2":
   version "0.26.2"
@@ -1367,12 +1372,12 @@ astro-compressor@0.1.2:
   dependencies:
     globby "13.1.2"
 
-astro-eslint-parser@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.6.2.tgz#e5a2fe44aa092c3585a01ffd3dca1e90c288ba70"
-  integrity sha512-ckbxDuAh+XqwR3ZXXdPeVGMn03xAV/Bj43FL49ro9fJ+07pBxEi0Cs/H/lC2EYe3f7g3FH5VyxaVetqbdUmp4w==
+astro-eslint-parser@0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.6.3.tgz#03ba1245a6b7515b5357674630718f095971ec9b"
+  integrity sha512-lwGKdR1HqCbdF1NNuj0JL6tSVcJvLF63CGm7PaFFYAa6WTKj6Wa/TknNJK3JM/s433OGGFpnykIQaBZ74K+apg==
   dependencies:
-    "@astrojs/compiler" "0.18 - 0.25 || ^0.25.0"
+    "@astrojs/compiler" "0.18 - 0.26 || ^0.26.0"
     "@typescript-eslint/types" "^5.25.0"
     astrojs-compiler-sync "^0.2.0"
     debug "^4.3.4"
