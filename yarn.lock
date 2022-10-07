@@ -110,12 +110,12 @@
     uvu "^0.5.0"
     vfile-message "^3.0.0"
 
-"@astrojs/partytown@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-1.0.0.tgz#31cc6e43c546b96422e10f3279e9e2a9ebba3852"
-  integrity sha512-rco5tOtBmmZ7mpoHFyARrMb5yKVJPwLghN9lFvl+R867E+0xRp6ZzP5o7pMySgZCUq093qzd1bkAsVS2I/8gpg==
+"@astrojs/partytown@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-1.0.1.tgz#763733ba3a905a8381fe6e93041445fd0c21acf2"
+  integrity sha512-JVmKwQa2aWMAmz3tkNHtg5hw7gOTI6ROyFIYcUQtN6j8aysEiWKnt4xzz67RvDWId1h7sIde87UeH+4YoEyGug==
   dependencies:
-    "@builder.io/partytown" "^0.4.5"
+    "@builder.io/partytown" "^0.7.1"
     mrmime "^1.0.0"
 
 "@astrojs/prism@^1.0.0", "@astrojs/prism@^1.0.1":
@@ -403,10 +403,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@builder.io/partytown@^0.4.5":
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/@builder.io/partytown/-/partytown-0.4.5.tgz#3c85e25a7102336b7da4c71a46e77722da052e74"
-  integrity sha512-HcHlmMYSpOxfJ0lFVxgZrvgIjz1Q8knlGuWkBpvjIp68j+xVWg969+sn7BCfyKhcGaYlnVOY/CEBHapQBcl0jw==
+"@builder.io/partytown@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@builder.io/partytown/-/partytown-0.7.1.tgz#aa13b56022609ba2a4d61cf8bf282a94221c1133"
+  integrity sha512-hvu2gG9NDtCa5aoL4JkvDe3E5SegXlHAkhtA+Az96uTtFA0PYuEPjDYGiayGTkZuRKUmxetebWjIFgSDNdlBOw==
 
 "@commitlint/cli@17.1.2":
   version "17.1.2"
