@@ -20,10 +20,10 @@
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.23.5.tgz#ea57a2b994b2930e3b3d2d524f10866698fef4f1"
   integrity sha512-vBMPy9ok4iLapSyCCT1qsZ9dK7LkVFl9mObtLEmWiec9myGHS9h2kQY2xzPeFNJiWXUf9O6tSyQpQTy5As/p3g==
 
-"@astrojs/compiler@^0.27.0 || ^0.28.0":
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.28.1.tgz#06a547d32d675d0be5a54bf45912ab38fd1ea548"
-  integrity sha512-rcuQs5kcT6OshfJxXkZ2Tn61V4/5UAmvZKma/qmNhpAdBkGk6J/1gJ/Gxa2sAS6WNUjUyVo5BRrdsNGW36qkoQ==
+"@astrojs/compiler@^0.27.0 || ^0.28.0 || ^0.29.0":
+  version "0.29.1"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.29.1.tgz#a7c0879e17f6704698a6e82e811989f5b1b38b5c"
+  integrity sha512-EXeXWQ0pW2HYJ8unzAoX2XCE1uHfdgjCooOhnV8ztvhRvtvcC4PfCHDQX+D8WzvYSR5rEEqRX4+Pw2h2dQDTkg==
 
 "@astrojs/language-server@^0.26.2":
   version "0.26.2"
@@ -1374,12 +1374,12 @@ astro-compressor@0.1.2:
   dependencies:
     globby "13.1.2"
 
-astro-eslint-parser@0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.7.3.tgz#2f402a411697fec8d0bf9db5291874ffd33fbf25"
-  integrity sha512-zH6nouHaR3xKXdh35M0zH2hijhsD6uUCJkLZhUnyWvAeQdJEsoySYYA4PdLe5TlyDT1yas93uJaTt2yik8eAvw==
+astro-eslint-parser@0.7.4:
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.7.4.tgz#2c5cea6548c64b4b056a38da68a67608e4ea094f"
+  integrity sha512-fvT1Nzrw5Tt1tAU+2ShngdIML+Km1Tv90ap7f4iyfaZ57wpM+7Spe4NtO7KuT8NAMERzjn4NPnUWoSsZwqE3xw==
   dependencies:
-    "@astrojs/compiler" "^0.27.0 || ^0.28.0"
+    "@astrojs/compiler" "^0.27.0 || ^0.28.0 || ^0.29.0"
     "@typescript-eslint/types" "^5.25.0"
     astrojs-compiler-sync "^0.3.0"
     debug "^4.3.4"
