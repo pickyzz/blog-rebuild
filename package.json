@@ -26,7 +26,7 @@
     "@commitlint/config-conventional": "17.1.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/typography": "0.5.7",
-    "@types/react": "18.0.23",
+    "@types/react": "18.0.24",
     "@typescript-eslint/eslint-plugin": "5.41.0",
     "@typescript-eslint/parser": "5.41.0",
     "astro": "1.5.3",
