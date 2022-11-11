@@ -1367,17 +1367,17 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.3.tgz#53b488c931b6d763cd83fbecdb6b21becf656990"
-  integrity sha512-y714f9IWLIugIl3mno9awypDkOG11yrBGBpqCCqw+Jlb1TrVYJ6dvS0zDPiDtz90shCSiCSpFIaJGMcvFFhoMg==
+astro-compress@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.4.tgz#9ba8f717d1322a934ce5c976636e4a29553bb5a1"
+  integrity sha512-ak64VDJ2lCj+54zgbSk4b3f0YY4SigFVQnEphi+AZ+gsvyd3NY0VJcNaVjUd3h6SBDQnc8UASmUrB9TxWVKMhA==
   dependencies:
     csso "5.0.5"
     deepmerge-ts "4.2.2"
     fast-glob "3.2.12"
     html-minifier-terser "7.0.0"
     sharp "0.31.2"
-    svgo "3.0.0"
+    svgo "3.0.1"
     terser "5.15.1"
 
 astro-compressor@0.1.2:
@@ -6296,10 +6296,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-svgo@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-3.0.0.tgz#f1d0af463f746aae9dff53806cbcf935f3b39037"
-  integrity sha512-mSqPn6RDeNqJvCeqHERlfWJjd4crP/2PgFelil9WpTwC4D3okAUopPsH3lnEyl7ONXfDVyISOihDjO0uK8YVAA==
+svgo@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/svgo/-/svgo-3.0.1.tgz#873f3341d04a08980ad8366780e8d04143b9fc2c"
+  integrity sha512-6kiDrstRCmA600TySGBu4VNA/FdEriOv7PKQRDOyIaVYUNamWvDSZjgMsM+mB0r0y5T7S3P5DkZJSIBQ/9QEsg==
   dependencies:
     "@trysound/sax" "0.2.0"
     commander "^7.2.0"
