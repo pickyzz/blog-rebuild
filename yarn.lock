@@ -1367,10 +1367,10 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.4.tgz#9ba8f717d1322a934ce5c976636e4a29553bb5a1"
-  integrity sha512-ak64VDJ2lCj+54zgbSk4b3f0YY4SigFVQnEphi+AZ+gsvyd3NY0VJcNaVjUd3h6SBDQnc8UASmUrB9TxWVKMhA==
+astro-compress@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.5.tgz#4c66c1f124804c2f70a66cbd47460af155c24767"
+  integrity sha512-Lp1BvKivu2MsAk3dbnNOnrpTcsM0Pn0aNt9aWSLAxuFqsXT3bj2L0lCWaCNBgDQ2j7FJtM8CrN2wITBRmspFHQ==
   dependencies:
     csso "5.0.5"
     deepmerge-ts "4.2.2"
