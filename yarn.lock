@@ -1403,10 +1403,10 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.9.tgz#788f1a29c4ae5a26739baa632cd67ed8874bd325"
-  integrity sha512-3cdyd98Mksd55t5DQBTEd+qfx+ErV82yn9TEx/NMaaJf8GYcaqsRx0jLvQeTG+rI3BdfR13f/VEmiACul9bSUg==
+astro-compress@1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.10.tgz#c3ccc04d3293235ade8bac396ea9ad4680c23c22"
+  integrity sha512-1RNkXToF7t9qWoWStb17F1IHWa7GOopONM96hkdP5tJfMR0z4ZMl/zld9Uu4Xsc76PbEhsyDmUjkfg+Z2TqyJA==
   dependencies:
     "@nikolarhristov/pipeline" "0.0.2"
 
