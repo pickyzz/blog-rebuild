@@ -110,10 +110,10 @@
     uvu "^0.5.0"
     vfile-message "^3.0.0"
 
-"@astrojs/partytown@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-1.0.1.tgz#763733ba3a905a8381fe6e93041445fd0c21acf2"
-  integrity sha512-JVmKwQa2aWMAmz3tkNHtg5hw7gOTI6ROyFIYcUQtN6j8aysEiWKnt4xzz67RvDWId1h7sIde87UeH+4YoEyGug==
+"@astrojs/partytown@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@astrojs/partytown/-/partytown-1.0.2.tgz#e31f44e366b070815c68c7ede9fe567b8c75316c"
+  integrity sha512-+pUjLxdp0SYqUO+X+FjFN95KxK7w4Rs5gIMQ7scKUWd2073D3/5hTlij9qNmX5Bk/tFHUfTivKIZ5p233Lpa9Q==
   dependencies:
     "@builder.io/partytown" "^0.7.1"
     mrmime "^1.0.0"
