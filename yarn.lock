@@ -739,10 +739,10 @@
     source-map "^0.7.0"
     vfile "^5.0.0"
 
-"@nikolarhristov/pipeline@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@nikolarhristov/pipeline/-/pipeline-0.0.2.tgz#0cba8e5b4ffa5ba9a862228aee8d0ccc620126dc"
-  integrity sha512-E4CxzjaKT1bd3aclF1ieR4QW0wyl1n6ZXSZ5TYx7JEtAJehj8ygThluXPnYcBAXMThZmKK535yB8f59YszoSzQ==
+"@nikolarhristov/pipeline@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@nikolarhristov/pipeline/-/pipeline-0.0.6.tgz#16c04a62c9ebd428a053952c44e5bc4ac28340e7"
+  integrity sha512-OQTD2pbG3KXy1S3DsXyj8HALfL/Zn+k/+iVnIPUiS7emjrPkc+rO7XzWD2FDWuK3sI97qPXE8yfxJmXn6tp37w==
   dependencies:
     critters "0.0.16"
     csso "5.0.5"
@@ -751,7 +751,7 @@
     html-minifier-terser "7.1.0"
     sharp "0.31.2"
     svgo "3.0.2"
-    terser "5.15.1"
+    terser "5.16.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1403,12 +1403,12 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.10:
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.10.tgz#c3ccc04d3293235ade8bac396ea9ad4680c23c22"
-  integrity sha512-1RNkXToF7t9qWoWStb17F1IHWa7GOopONM96hkdP5tJfMR0z4ZMl/zld9Uu4Xsc76PbEhsyDmUjkfg+Z2TqyJA==
+astro-compress@1.1.11:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.11.tgz#3e35f8119f99ee0fbb1e52f94c7c94bc5ddc7333"
+  integrity sha512-jeG/lgxJLh1AUu0A7qzWXDweZEAhpsWth/a2wvFy1aIw6euLlBU4FP+N+adsLG8PaN2YiWaeCcGonPwM4Cksjg==
   dependencies:
-    "@nikolarhristov/pipeline" "0.0.2"
+    "@nikolarhristov/pipeline" "0.0.6"
 
 astro-compressor@0.1.2:
   version "0.1.2"
@@ -6565,7 +6565,17 @@ tar-stream@^2.1.4:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-terser@5.15.1, terser@^5.15.1:
+terser@5.16.0:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.16.0.tgz#29362c6f5506e71545c73b069ccd199bb28f7f54"
+  integrity sha512-KjTV81QKStSfwbNiwlBXfcgMcOloyuRdb62/iLFPGBcVNF4EXjhdYBhYHmbJpiBrVxZhDvltE11j+LBQUxEEJg==
+  dependencies:
+    "@jridgewell/source-map" "^0.3.2"
+    acorn "^8.5.0"
+    commander "^2.20.0"
+    source-map-support "~0.5.20"
+
+terser@^5.15.1:
   version "5.15.1"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.15.1.tgz#8561af6e0fd6d839669c73b92bdd5777d870ed6c"
   integrity sha512-K1faMUvpm/FBxjBXud0LWVAGxmvoPbZbfTCYbSgaaYQaIXI3/TdI7a7ZGA73Zrou6Q8Zmz3oeUTsp/dj+ag2Xw==
