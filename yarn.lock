@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@astrojs/compiler@^0.27.0 || ^0.28.0 || ^0.29.0":
-  version "0.29.1"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.29.1.tgz#a7c0879e17f6704698a6e82e811989f5b1b38b5c"
-  integrity sha512-EXeXWQ0pW2HYJ8unzAoX2XCE1uHfdgjCooOhnV8ztvhRvtvcC4PfCHDQX+D8WzvYSR5rEEqRX4+Pw2h2dQDTkg==
+"@astrojs/compiler@^0.27.0 || ^0.28.0 || ^0.29.0 || ^0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.30.0.tgz#dc790a8ccf79358211f93eaffd89775949d78f9c"
+  integrity sha512-av2HV5NuyzI5E12hpn4k7XNEHbfF81/JUISPu6CclC5yKCxTS7z64hRU68tA8k7dYLATcxvjQtvN2H/dnxHaMw==
 
 "@astrojs/compiler@^0.29.15":
   version "0.29.17"
@@ -1450,12 +1450,12 @@ astro-compressor@0.1.2:
   dependencies:
     globby "13.1.2"
 
-astro-eslint-parser@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.9.0.tgz#bc330d9618cca263e1912252025deb577e223c3d"
-  integrity sha512-IJCIVQ9ON9MWc9SbIHnX6ljqmlNBC6nimsga486duI+tLXPX1ZG4mOWnqwvvh77Xpg1CVkRACrPvYRiaTsOCtg==
+astro-eslint-parser@0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.9.1.tgz#1dbe68f56edd283e76a7c9e44e2714223bcddb32"
+  integrity sha512-R/btk3SCGkarTRMXsP8EIby+5mTYmYzpMcKK+vzAf+M/D4ra1CfnSGXxris0MEbWBHT4G4MZm+MfWojDScYINg==
   dependencies:
-    "@astrojs/compiler" "^0.27.0 || ^0.28.0 || ^0.29.0"
+    "@astrojs/compiler" "^0.27.0 || ^0.28.0 || ^0.29.0 || ^0.30.0"
     "@typescript-eslint/types" "^5.25.0"
     astrojs-compiler-sync "^0.3.0"
     debug "^4.3.4"
