@@ -740,10 +740,10 @@
     source-map "^0.7.0"
     vfile "^5.0.0"
 
-"@nikolarhristov/pipeline@0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@nikolarhristov/pipeline/-/pipeline-0.1.6.tgz#4f2a23f96c60142375065beb3782d55108ba072e"
-  integrity sha512-gqPvOQ61uRJOoHGy1l0pqBIfzSkJWXkoa8kIyiCGh0Z+LbGB3edQ1svDcDnPy2dTTR0nN60uO6NeIqXcb0+IVQ==
+"@nikolarhristov/pipeline@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@nikolarhristov/pipeline/-/pipeline-0.1.7.tgz#0a3c074acf579a2c1450f9854d06bd30448020fb"
+  integrity sha512-ImQX3HW9VqL6koGyR8zkTUWFGcASiAooULyfN+9IdKyPo1eje0uTe3eogNErzvd2okKYXsrONNwIvpccaywuiA==
   dependencies:
     "@types/csso" "5.0.0"
     "@types/html-minifier-terser" "7.0.0"
@@ -1431,12 +1431,12 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.21:
-  version "1.1.21"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.21.tgz#da4aaa6a4ae4b93f4533f894ddd182a9374df6d2"
-  integrity sha512-O9imSPw8zPqIYnbHpDy1FOt3xwNZ3/lXean4bc0gEdrJMObapitHVOwBYmrwPTSYirXAOyUoFqctCkPMThjWig==
+astro-compress@1.1.22:
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.22.tgz#355ffee47c52dd2283c98ffb8c4391dc6e0a8f9e"
+  integrity sha512-8gcYqN8nOC/JwH6dxcoLHTQQaAQNe7tS/yd4uc3dmO93n684ZdMXuPfr6KvjkQEOTEuYYS/lqkC8gjObVtFN1g==
   dependencies:
-    "@nikolarhristov/pipeline" "0.1.6"
+    "@nikolarhristov/pipeline" "0.1.7"
 
 astro-compressor@0.1.2:
   version "0.1.2"
