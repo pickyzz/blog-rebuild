@@ -740,23 +740,6 @@
     source-map "^0.7.0"
     vfile "^5.0.0"
 
-"@nikolarhristov/pipeline@0.1.7":
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/@nikolarhristov/pipeline/-/pipeline-0.1.7.tgz#0a3c074acf579a2c1450f9854d06bd30448020fb"
-  integrity sha512-ImQX3HW9VqL6koGyR8zkTUWFGcASiAooULyfN+9IdKyPo1eje0uTe3eogNErzvd2okKYXsrONNwIvpccaywuiA==
-  dependencies:
-    "@types/csso" "5.0.0"
-    "@types/html-minifier-terser" "7.0.0"
-    "@types/sharp" "0.31.0"
-    critters "0.0.16"
-    csso "5.0.5"
-    deepmerge-ts "4.2.2"
-    fast-glob "3.2.12"
-    html-minifier-terser "7.1.0"
-    sharp "0.31.2"
-    svgo "3.0.2"
-    terser "5.16.1"
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1431,12 +1414,12 @@ astring@^1.8.0:
   resolved "https://registry.yarnpkg.com/astring/-/astring-1.8.3.tgz#1a0ae738c7cc558f8e5ddc8e3120636f5cebcb85"
   integrity sha512-sRpyiNrx2dEYIMmUXprS8nlpRg2Drs8m9ElX9vVEXaCB4XEAJhKfs7IcX0IwShjuOAjLR6wzIrgoptz1n19i1A==
 
-astro-compress@1.1.22:
-  version "1.1.22"
-  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.22.tgz#355ffee47c52dd2283c98ffb8c4391dc6e0a8f9e"
-  integrity sha512-8gcYqN8nOC/JwH6dxcoLHTQQaAQNe7tS/yd4uc3dmO93n684ZdMXuPfr6KvjkQEOTEuYYS/lqkC8gjObVtFN1g==
+astro-compress@1.1.23:
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/astro-compress/-/astro-compress-1.1.23.tgz#28206b2418669f65346a3b52cdd4185490b19f03"
+  integrity sha512-F2oAtIhwEzqZwq168vpI3D3sxFXAIRhh4Do0Sgd55A2ElAhDjPszzw7ZQ7u69D6jrGZjTI3MugZcOC09z707fA==
   dependencies:
-    "@nikolarhristov/pipeline" "0.1.7"
+    files-pipeline "0.0.1"
 
 astro-compressor@0.1.2:
   version "0.1.2"
@@ -3200,6 +3183,23 @@ filename-reserved-regex@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/filename-reserved-regex/-/filename-reserved-regex-3.0.0.tgz#3d5dd6d4e2d73a3fed2ebc4cd0b3448869a081f7"
   integrity sha512-hn4cQfU6GOT/7cFHXBqeBg2TbrMBgdD0kcjLhvSQYYwm3s4B6cjvBfb7nBALJLAXqmU5xajSa7X2NnUud/VCdw==
+
+files-pipeline@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/files-pipeline/-/files-pipeline-0.0.1.tgz#d1be2a239b48de08ef0bbfe4aaa2460aabbb615d"
+  integrity sha512-QmIYklS5CsQfjOuO2aQYtwD5zvuQlMo7bx6oC9mxQZg7pDKkkKTNfMkRMOsBTSc3xeL1DzyuGVrMQZRAyrqHGA==
+  dependencies:
+    "@types/csso" "5.0.0"
+    "@types/html-minifier-terser" "7.0.0"
+    "@types/sharp" "0.31.0"
+    critters "0.0.16"
+    csso "5.0.5"
+    deepmerge-ts "4.2.2"
+    fast-glob "3.2.12"
+    html-minifier-terser "7.1.0"
+    sharp "0.31.2"
+    svgo "3.0.2"
+    terser "5.16.1"
 
 fill-range@^7.0.1:
   version "7.0.1"
