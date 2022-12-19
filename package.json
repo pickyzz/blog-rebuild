@@ -29,7 +29,7 @@
     "@types/react": "18.0.26",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
-    "astro": "1.6.15",
+    "astro": "1.7.2",
     "astro-compress": "1.1.23",
     "astro-compressor": "0.1.2",
     "astro-eslint-parser": "0.9.2",
