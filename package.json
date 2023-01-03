@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@astrojs/prefetch": "^0.1.1",
     "date-fns": "2.29.3"
   },
   "devDependencies": {
