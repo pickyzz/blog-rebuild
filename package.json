@@ -13,12 +13,12 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@astrojs/prefetch": "^0.1.1",
     "date-fns": "2.29.3"
   },
   "devDependencies": {
     "@astrojs/mdx": "0.14.0",
     "@astrojs/partytown": "1.0.2",
+    "@astrojs/prefetch": "^0.1.1",
     "@astrojs/react": "1.2.2",
     "@astrojs/rss": "2.0.0",
     "@astrojs/sitemap": "1.0.0",
