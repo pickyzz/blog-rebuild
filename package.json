@@ -2,6 +2,15 @@
   "name": "pickyzz-blog-rebuild",
   "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pickyzz/pickyzz.dev.git"
+  },
+  "author": {
+    "name": "pickyzz",
+    "email": "contact@pickyzz.dev",
+    "url": "http://pickyzz.dev"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -57,5 +66,7 @@
     "react-dom": "^18.0.0",
     "tailwindcss": "3.2.4"
   },
-  "author": "pickyzz (https://github.com/pickyzz)"
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md,mdx}": "prettier --write"
+  }
 }
