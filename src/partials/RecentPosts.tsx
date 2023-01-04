@@ -15,7 +15,7 @@ const RecentPosts = (props: IRecentPostsProps) => (
           Recent <GradientText>Posts</GradientText>
         </div>
 
-        <div className="text-sm">
+        <div className="text-sm btn btn-sm btn-ghost">
           <a href="/blog">View all Posts →</a>
         </div>
       </div>

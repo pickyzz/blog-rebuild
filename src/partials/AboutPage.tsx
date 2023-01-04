@@ -6,7 +6,7 @@ const AboutPage = () => (
 
     <div className="grid grid-cols-2 gap-2 my-4">
       <img
-        className="text-center h-auto w-[70%] rounded-full"
+        className="text-center h-auto w-[70%] mask mask-squircle"
         src="/assets/images/profile.jpg"
         alt="Avatar image"
         loading="lazy"
