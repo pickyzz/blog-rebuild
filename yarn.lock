@@ -10,15 +10,20 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@astrojs/compiler@^0.27.0 || ^0.28.0 || ^0.29.0 || ^0.30.0 || ^0.31.0", "@astrojs/compiler@^0.31.0":
-  version "0.31.0"
-  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.31.0.tgz#b026ec0e5ffa0eb4a99713530c74e05f50f9c29b"
-  integrity sha512-V8/Re/wXgXTZzpfWs4KZBLU5dRhnO6kSd4e3vObGuj+HFGHjaD11wws1zvaC9cXLQyQsM5CSrGagFGYlRZKvVQ==
+"@astrojs/compiler@0.27.0 - 0.32.0 || ^0.32.0":
+  version "0.32.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.32.0.tgz#b97275d8ec0baa707be8cb99c82f9ff905a61cf4"
+  integrity sha512-QL5qMGkfsC1/kDjJF4RRagz8/hACBUb19cHWrQ8AROphS42qXM6JhoO1Og5FohV3p2VfT5CdEJspn4uNsgZvmw==
 
 "@astrojs/compiler@^0.29.3":
   version "0.29.4"
   resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.29.4.tgz#ed3cbc8345b1320285bdcc9c5a8339ee82c9d41b"
   integrity sha512-MN0+AcKeZXXpC8AiEiYQljR5IU4LUgGU7NjGvEOXQ419PfRybUd1op4KoilkA1L0QEVYSoePcPnUVDoWN4HpYQ==
+
+"@astrojs/compiler@^0.31.0":
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/@astrojs/compiler/-/compiler-0.31.0.tgz#b026ec0e5ffa0eb4a99713530c74e05f50f9c29b"
+  integrity sha512-V8/Re/wXgXTZzpfWs4KZBLU5dRhnO6kSd4e3vObGuj+HFGHjaD11wws1zvaC9cXLQyQsM5CSrGagFGYlRZKvVQ==
 
 "@astrojs/compiler@^0.31.3":
   version "0.31.3"
@@ -1447,12 +1452,12 @@ astro-compressor@0.2.2:
   resolved "https://registry.yarnpkg.com/astro-compressor/-/astro-compressor-0.2.2.tgz#87706b0249d3002a816b277fd4333099786fa25d"
   integrity sha512-oltIyQQwefvBtR9uRqFUYJSrdKuk3QcgT/sTegau7kxdsxkt0g0l39Amb7E5Qz1jXkg+zILBvuR6GAv7ttdYCw==
 
-astro-eslint-parser@0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.9.3.tgz#2ad281f6fd43efef1277f2ee894de7a2b0fd3f46"
-  integrity sha512-w0Z8ydKT58l4950AikxDkuWmtBACen2nJWY8GjwhMcJGtGgKw+Kbbr5/RJsXu0BnCxo9Ks+5o4JZjQpzRUMYCg==
+astro-eslint-parser@0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/astro-eslint-parser/-/astro-eslint-parser-0.9.4.tgz#c9da730fb03463f456902b23d15142ab3ce182ea"
+  integrity sha512-hTndQbL2sQlAWIK79/kMV/Ddx0RYoat4ZIYUdAGBTQx4E4u7rqf4V2C0OmYcGfXxWFh7Md94O5sORcZosFIjVQ==
   dependencies:
-    "@astrojs/compiler" "^0.27.0 || ^0.28.0 || ^0.29.0 || ^0.30.0 || ^0.31.0"
+    "@astrojs/compiler" "0.27.0 - 0.32.0 || ^0.32.0"
     "@typescript-eslint/types" "^5.25.0"
     astrojs-compiler-sync "^0.3.0"
     debug "^4.3.4"
