@@ -42,7 +42,7 @@
     "astro": "1.9.2",
     "astro-compress": "1.1.25",
     "astro-compressor": "0.2.2",
-    "astro-eslint-parser": "0.9.3",
+    "astro-eslint-parser": "0.9.4",
     "astro-robots-txt": "0.3.11",
     "daisyui": "2.46.1",
     "eslint": "8.31.0",
