@@ -17,7 +17,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "clean": "rimraf dist",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx,.astro .",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "build-types": "tsc --noEmit --pretty",
     "prepare": "husky install"
   },
@@ -66,6 +66,7 @@
     "tailwindcss": "3.2.4"
   },
   "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.{js,jsx,ts,tsx,css,md,mdx,astro}": "prettier --write"
   }
 }
