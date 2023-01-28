@@ -106,5 +106,6 @@ const config = {
     },
   };
 
+// eslint-disable-next-line no-undef
 let cc = initCookieConsent();
 cc.run(config);
