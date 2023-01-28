@@ -11,23 +11,21 @@ import prefetch from '@astrojs/prefetch';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://pickyzz.dev',
-  // Important!
-  // Only official '@astrojs/*' integrations are currently supported by Astro.
-  // Add 'experimental.integrations: true' to make 'astro-robots-txt' working
-  // with 'astro build' command.
-  experimental: {
-    integrations: true
-  },
+  site: 'https://pickyzz.dev/',
   markdown: {
+    syntaxHighlight: 'shiki',
     shikiConfig: {
       // Choose from Shiki's built-in themes (or add your own)
       // https://github.com/shikijs/shiki/blob/main/docs/themes.md
-      theme: 'github-dark-dimmed'
+      theme: 'nord'
     }
   },
   integrations: [
-    mdx(),
+    mdx({
+      extendMarkdownConfig: false,
+      smartypants: true,
+      gfm: true,
+    }),
     sitemap(),
     react(),
     tailwind(),

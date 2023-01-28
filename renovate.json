@@ -9,13 +9,7 @@
     }
   ],
   "platformAutomerge": true,
-  "ignoreDeps": [
-    "next",
-    "@next/bundle-analyzer",
-    "eslint-config-next",
-    "react",
-    "react-dom"
-  ],
+  "ignoreDeps": [],
   "schedule": ["after 6pm"],
   "timezone": "Asia/Bangkok"
 }
