@@ -5,7 +5,6 @@ import react from '@astrojs/react';
 import robotsTxt from 'astro-robots-txt';
 import tailwind from '@astrojs/tailwind';
 import compress from 'astro-compress';
-import compressor from 'astro-compressor';
 import partytown from '@astrojs/partytown';
 import prefetch from '@astrojs/prefetch';
 
@@ -40,10 +39,9 @@ export default defineConfig({
       css: true,
       html: true,
       js: true,
-      img: false,
+      img: true,
       svg: true
     }),
-    prefetch(),
-    compressor() //must in last position.
+    prefetch()
   ]
 });
