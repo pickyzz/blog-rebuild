@@ -4,5 +4,5 @@ export const AppConfig = {
   description: 'Just learning about code',
   author: 'Pickyzz',
   locale_region: 'en-us',
-  locale: 'en'
+  locale: 'en',
 };

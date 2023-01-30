@@ -2,17 +2,17 @@ import { GradientText, Section } from '@/components';
 
 const AboutPage = () => (
   <Section>
-    <p className="text-center font-bold text-[2.2em] mb-8 -mt-2">About me</p>
+    <p className="mb-8 -mt-2 text-center text-[2.2em] font-bold">About me</p>
 
-    <div className="grid grid-cols-2 gap-2 my-4">
+    <div className="my-4 grid grid-cols-2 gap-2">
       <img
-        className="text-center h-auto w-[70%] mask mask-squircle"
+        className="mask mask-squircle h-auto w-[70%] text-center"
         src="/assets/images/profile.jpg"
         alt="Avatar image"
         loading="lazy"
       />
       <div className="">
-        <p className="text-3xl font-bold mb-4">
+        <p className="mb-4 text-3xl font-bold">
           <GradientText>Parinya T.</GradientText>
         </p>
         <p className="my-1">
@@ -26,11 +26,7 @@ const AboutPage = () => (
         </p>
         <p className="my-1">
           <span className="font-bold">E-mail</span> :{' '}
-          <a
-            href="mailto:contact@pickyzz.dev"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="mailto:contact@pickyzz.dev" target="_blank" rel="noreferrer">
             contact@pickyzz.dev
           </a>
         </p>
@@ -71,7 +67,7 @@ const AboutPage = () => (
 
     <div className="mt-12 flex justify-center ">
       <img
-        className="text-center h-auto w-[65%]"
+        className="h-auto w-[65%] text-center"
         src="/assets/images/fcc-cert-1.png"
         alt="Avatar image"
         loading="lazy"
@@ -79,7 +75,7 @@ const AboutPage = () => (
     </div>
     <div className="mt-12 flex justify-center ">
       <img
-        className="text-center h-auto w-[65%]"
+        className="h-auto w-[65%] text-center"
         src="/assets/images/fcc-cert-2.png"
         alt="Avatar image"
         loading="lazy"

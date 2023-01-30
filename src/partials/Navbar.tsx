@@ -1,9 +1,9 @@
 import {
   Logo,
-  Section,
   NavbarTwoColumns,
   NavMenu,
-  NavMenuItem
+  NavMenuItem,
+  Section,
 } from '@/components';
 
 const Navbar = () => (
@@ -13,7 +13,7 @@ const Navbar = () => (
         <Logo
           icon={
             <svg
-              className="mr-3 w-8 h-8"
+              className="mr-3 h-8 w-8"
               id="fi_2809425"
               enableBackground="new 0 0 24 24"
               height="128"

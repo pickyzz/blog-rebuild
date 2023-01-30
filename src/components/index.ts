@@ -19,30 +19,30 @@ import type {
   FrontmatterPage,
   IFrontmatter,
   MarkdownInstance,
-  Page
+  Page,
 } from './types/IFrontMatter';
 
 export {
-  type FrontmatterPage,
-  type IFrontmatter,
-  type MarkdownInstance,
-  type Page,
   BlogCard,
   BlogGallery,
+  ColorTags,
   FooterCopyright,
+  type FrontmatterPage,
   GradientText,
   HeroAvatar,
   HeroSocial,
+  type IFrontmatter,
   Logo,
+  type MarkdownInstance,
   NavbarTwoColumns,
   NavMenu,
   NavMenuItem,
   NewerOlderPagination,
+  type Page,
   PaginationHeader,
   PostContent,
   PostHeader,
   Project,
   Section,
   Tags,
-  ColorTags
 };

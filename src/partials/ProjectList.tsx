@@ -15,7 +15,7 @@ const ProjectList = () => (
         link="https://github.com/pickyzz/svelte-duply"
         img={{
           src: '/assets/images/project/svelte_logo.png',
-          alt: 'Svelte'
+          alt: 'Svelte',
         }}
         category={
           <>

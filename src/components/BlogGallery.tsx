@@ -1,6 +1,7 @@
 import type { MarkdownInstance } from 'astro';
 
 import type { IFrontmatter } from '@/components';
+
 import { BlogCard } from './BlogCard';
 
 type IRecentPostsProps = {
@@ -9,7 +10,7 @@ type IRecentPostsProps = {
 
 const BlogGallery = (props: IRecentPostsProps) => (
   <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-    {props.postList.map(elt => (
+    {props.postList.map((elt) => (
       <BlogCard key={elt.url} instance={elt} />
     ))}
   </div>

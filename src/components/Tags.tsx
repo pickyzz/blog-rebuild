@@ -24,7 +24,7 @@ export const ColorTags = {
   PURPLE: 'PURPLE',
   FUCHSIA: 'FUCHSIA',
   PINK: 'PINK',
-  ROSE: 'ROSE'
+  ROSE: 'ROSE',
 } as const;
 
 type ITagsProps = {
@@ -54,7 +54,7 @@ const colorToClassMap = {
   [ColorTags.PURPLE]: 'bg-purple-400 text-purple-900',
   [ColorTags.FUCHSIA]: 'bg-fuchsia-400 text-fuchsia-900',
   [ColorTags.PINK]: 'bg-pink-400 text-pink-900',
-  [ColorTags.ROSE]: 'bg-rose-400 text-rose-900'
+  [ColorTags.ROSE]: 'bg-rose-400 text-rose-900',
 };
 
 const Tags = (props: ITagsProps) => (

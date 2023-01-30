@@ -16,7 +16,10 @@ const HeroAvatar = (props: IHeroAvatarProps) => (
 
       <div className="mt-6 flex gap-1">{props.socialButtons}</div>
     </div>
-    <div className="tooltip tooltip-left tooltip-info md:flex hidden" data-tip="Hello~">
+    <div
+      className="tooltip tooltip-left tooltip-info hidden md:flex"
+      data-tip="Hello~"
+    >
       <div className="shrink-0">{props.avatar}</div>
     </div>
   </div>

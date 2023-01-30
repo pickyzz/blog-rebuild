@@ -1,7 +1,7 @@
-import type { IFrontmatter } from '@/components';
-import { PostContent, PostHeader, Section } from '@/components';
 import type { ReactNode } from 'react';
 
+import type { IFrontmatter } from '@/components';
+import { PostContent, PostHeader, Section } from '@/components';
 import { AppConfig } from '@/utils/AppConfig';
 
 type IBlogPostProps = {

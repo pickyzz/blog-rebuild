@@ -1,4 +1,5 @@
 import type { MarkdownInstance } from 'astro';
+
 import type { IFrontmatter } from '@/components';
 import { GradientText, Section } from '@/components';
 import { BlogGallery } from '@/components/BlogGallery';
@@ -15,7 +16,7 @@ const RecentPosts = (props: IRecentPostsProps) => (
           Recent <GradientText>Posts</GradientText>
         </div>
 
-        <div className="text-sm btn btn-sm btn-ghost">
+        <div className="btn btn-sm btn-ghost text-sm">
           <a href="/blog">View all Posts →</a>
         </div>
       </div>
