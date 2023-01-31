@@ -16,8 +16,8 @@ export default defineConfig({
     shikiConfig: {
       // Choose from Shiki's built-in themes (or add your own)
       // https://github.com/shikijs/shiki/blob/main/docs/themes.md
-      theme: 'nord'
-    }
+      theme: 'nord',
+    },
   },
   integrations: [
     mdx({
@@ -31,17 +31,17 @@ export default defineConfig({
     robotsTxt(),
     partytown({
       // Example: Add dataLayer.push as a forwarding-event.
-      config: { 
-        forward: ["dataLayer.push"] 
+      config: {
+        forward: ['dataLayer.push'],
       },
     }),
     compress({
       css: true,
       html: true,
       js: true,
-      img: true,
-      svg: true
+      img: false,
+      svg: true,
     }),
-    prefetch()
-  ]
+    prefetch(),
+  ],
 });
