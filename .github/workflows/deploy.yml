@@ -14,23 +14,36 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: 'Use cached node_modules'
+      - name: 'Install pnpm'
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      - name: 'Get pnpm store directory'
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: 'Setup pnpm cache'
         uses: actions/cache@v3
         id: cache
         with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            nodeModules-
+            ${{ runner.os }}-pnpm-store-
 
       - name: 'Install dependencies'
         if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn install
+        run: pnpm install
         env:
           CI: true
 
       - name: 'Build Development'
-        run: yarn build
+        run: pnpm build
 
       - name: 'Deploy to Netlify'
         uses: nwtgck/actions-netlify@v2.0
