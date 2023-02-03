@@ -31,9 +31,12 @@ jobs:
         uses: actions/cache@v3
         id: cache
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          path: |
+            node_modules
+            ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
+            ${{ runner.os }}-nodeModules-
             ${{ runner.os }}-pnpm-store-
 
       - name: 'Install dependencies'
