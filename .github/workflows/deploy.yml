@@ -41,7 +41,7 @@ jobs:
 
       - name: 'Install dependencies'
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pnpm install
+        run: pnpm i --shamefully-hoist --prefer-offline
         env:
           CI: true
 
