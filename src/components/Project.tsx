@@ -30,7 +30,7 @@ const Project = (props: IProjectProps) => (
           className="hover:text-cyan-400"
           href={props.link}
           target="_blank"
-          rel="noopener noreferrer"
+          rel="noreferrer"
         >
           <div className="text-xl font-semibold">{props.name}</div>
         </a>

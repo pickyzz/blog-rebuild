@@ -10,7 +10,7 @@ const FooterCopyright = (props: IFooterCopyrightProps) => (
         className="text-cyan-500 hover:underline"
         href="https://astro.build"
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noreferrer"
       >
         Astro
       </a>

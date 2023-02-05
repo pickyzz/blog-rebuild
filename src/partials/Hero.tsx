@@ -25,7 +25,7 @@ const Hero = () => (
           <a
             href="https://twitter.com/p1ckyzz"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noreferrer"
           >
             <HeroSocial
               src="/assets/images/twitter-icon.svg"
@@ -35,18 +35,14 @@ const Hero = () => (
           <a
             href="https://facebook.com/iiipik"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noreferrer"
           >
             <HeroSocial
               src="/assets/images/facebook-icon.svg"
               alt="Facebook icon"
             />
           </a>
-          <a
-            href="https://github.com/pickyzz"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://github.com/pickyzz" target="_blank" rel="noreferrer">
             <HeroSocial
               src="/assets/images/github-icon.svg"
               alt="Github icon"

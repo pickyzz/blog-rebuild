@@ -3,7 +3,6 @@ lockfileVersion: 5.4
 specifiers:
   '@astrojs/mdx': 0.16.0
   '@astrojs/partytown': 1.0.3
-  '@astrojs/prefetch': ^0.1.1
   '@astrojs/react': ^2.0.1
   '@astrojs/rss': ^2.1.0
   '@astrojs/sitemap': 1.0.1
@@ -49,7 +48,6 @@ dependencies:
 devDependencies:
   '@astrojs/mdx': 0.16.0_astro@2.0.6
   '@astrojs/partytown': 1.0.3
-  '@astrojs/prefetch': 0.1.2
   '@astrojs/react': 2.0.2_5ndqzdd6t4rivxsukjv3i3ak2q
   '@astrojs/rss': 2.1.0
   '@astrojs/sitemap': 1.0.1
@@ -179,12 +177,6 @@ packages:
     dependencies:
       '@builder.io/partytown': 0.7.5
       mrmime: 1.0.1
-    dev: true
-
-  /@astrojs/prefetch/0.1.2:
-    resolution: {integrity: sha512-Plf1GLKDyvTHjEKVMH922wc1AmvlFYvEXrbdaMAlgJuoqTRXirP1CennildFHndTetH8swWMlVGwxdG57dN7cA==}
-    dependencies:
-      throttles: 1.0.1
     dev: true
 
   /@astrojs/prism/2.0.0:
@@ -6574,11 +6566,6 @@ packages:
 
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
-    dev: true
-
-  /throttles/1.0.1:
-    resolution: {integrity: sha512-fab7Xg+zELr9KOv4fkaBoe/b3L0GMGLd0IBSCn16GoE/Qx6/OfCr1eGNyEcDU2pUA79qQfZ8kPQWlRuok4YwTw==}
-    engines: {node: '>=6'}
     dev: true
 
   /through/2.3.8:

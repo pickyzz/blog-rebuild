@@ -9,7 +9,7 @@ const NewerOlderPagination = (props: INewerOlderPaginationProps) => (
     {props.page.url.prev && (
       <a
         href={props.page.url.prev}
-        rel="prefetch"
+        rel="noreferrer"
         className="btn btn-sm btn-ghost text-sm"
       >
         ← Newer Posts
@@ -18,7 +18,7 @@ const NewerOlderPagination = (props: INewerOlderPaginationProps) => (
     {props.page.url.next && (
       <a
         href={props.page.url.next}
-        rel="prefetch"
+        rel="noreferrer"
         className="btn btn-sm btn-ghost text-sm"
       >
         Older Posts →

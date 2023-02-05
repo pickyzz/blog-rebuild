@@ -6,7 +6,7 @@ type INavMenuItemProps = {
 const NavMenuItem = (props: INavMenuItemProps) => (
   <li className="hover:text-gray-500">
     <button className="btn lg:btn-sm btn-xs btn-ghost">
-      <a href={props.href} rel="prefetch">
+      <a href={props.href} rel="noreferrer">
         {props.children}
       </a>
     </button>
