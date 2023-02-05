@@ -17,9 +17,7 @@ const RecentPosts = (props: IRecentPostsProps) => (
         </div>
 
         <div className="btn btn-sm btn-ghost text-sm">
-          <a href="/blog" rel="noreferrer">
-            View all Posts →
-          </a>
+          <a href="/blog">View all Posts →</a>
         </div>
       </div>
     }
