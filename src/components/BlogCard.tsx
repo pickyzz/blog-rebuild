@@ -9,7 +9,7 @@ type IBlogCardProps = {
 
 const BlogCard = (props: IBlogCardProps) => (
   <a className="hover:translate-y-1" href={props.instance.url} rel="prefetch">
-    <div className="bg-base-300/50 overflow-hidden rounded-md">
+    <div className="bg-base-300/30 h-full overflow-hidden rounded-md">
       <div className="aspect-w-3 aspect-h-2">
         <img
           className="h-full w-full object-cover object-center"
@@ -20,16 +20,16 @@ const BlogCard = (props: IBlogCardProps) => (
       </div>
 
       <div className="px-3 pt-4 pb-6 text-center">
-        <h2 className="text-xl font-semibold">
+        <h2 className="h-16 text-xl font-semibold">
           {props.instance.frontmatter.title}
         </h2>
 
-        <div className="text-primary-focus mt-1 text-xs">
-          {format(new Date(props.instance.frontmatter.pubDate), 'LLL d, yyyy')}
+        <div className="line-clamp-3 mt-2 text-sm ">
+          {props.instance.frontmatter.description}
         </div>
 
-        <div className="mt-2 text-sm">
-          {props.instance.frontmatter.description}
+        <div className="text-primary-focus mt-4 text-center text-xs">
+          {format(new Date(props.instance.frontmatter.pubDate), 'LLL d, yyyy')}
         </div>
       </div>
     </div>
