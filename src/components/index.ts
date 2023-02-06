@@ -16,14 +16,15 @@ import { Project } from './Project';
 import { Section } from './Section';
 import { ColorTags, Tags } from './Tags';
 import type {
+  BlogFrontmatter,
   FrontmatterPage,
-  IFrontmatter,
   MarkdownInstance,
   Page,
-} from './types/IFrontMatter';
+} from './types/BlogFrontmatter';
 
 export {
   BlogCard,
+  type BlogFrontmatter,
   BlogGallery,
   ColorTags,
   FooterCopyright,
@@ -31,7 +32,6 @@ export {
   GradientText,
   HeroAvatar,
   HeroSocial,
-  type IFrontmatter,
   Logo,
   type MarkdownInstance,
   NavbarTwoColumns,

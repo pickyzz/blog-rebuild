@@ -1,11 +1,11 @@
 import type { MarkdownInstance } from 'astro';
 
-import type { IFrontmatter } from '@/components';
+import type { BlogFrontmatter } from '@/components';
 import { GradientText, Section } from '@/components';
 import { BlogGallery } from '@/components/BlogGallery';
 
 type IRecentPostsProps = {
-  postList: MarkdownInstance<IFrontmatter>[];
+  postList: MarkdownInstance<BlogFrontmatter>[];
 };
 
 const RecentPosts = (props: IRecentPostsProps) => (

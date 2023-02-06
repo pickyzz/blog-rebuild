@@ -1,5 +1,5 @@
 ---
-import type { IFrontmatter } from '@/components';
+import type { BlogFrontmatter } from '@/components';
 import { Hero } from '@/partials/Hero';
 import { ProjectList } from '@/partials/ProjectList';
 import { RecentPosts } from '@/partials/RecentPosts';
@@ -7,7 +7,7 @@ import Base from '@/templates/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import { sortByDate } from '@/utils/Posts';
 
-const allPosts = await Astro.glob<IFrontmatter>('./blog/*.{md,mdx}');
+const allPosts = await Astro.glob<BlogFrontmatter>('./blog/*.{md,mdx}');
 const sortedPosts = sortByDate(allPosts);
 const lastSixPosts = sortedPosts.slice(0, 6);
 

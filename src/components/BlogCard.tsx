@@ -1,10 +1,10 @@
 import type { MarkdownInstance } from 'astro';
 import { format } from 'date-fns';
 
-import type { IFrontmatter } from '@/components';
+import type { BlogFrontmatter } from '@/components';
 
 type IBlogCardProps = {
-  instance: MarkdownInstance<IFrontmatter>;
+  instance: MarkdownInstance<BlogFrontmatter>;
 };
 
 const BlogCard = (props: IBlogCardProps) => (

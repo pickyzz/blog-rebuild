@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
 
-import type { IFrontmatter } from './types/IFrontMatter';
+import type { BlogFrontmatter } from './types/BlogFrontmatter';
 
 type IPostHeaderProps = {
-  content: IFrontmatter;
+  content: BlogFrontmatter;
   author: string;
 };
 

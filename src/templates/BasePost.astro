@@ -1,5 +1,5 @@
 ---
-import type { IFrontmatter } from '@/components';
+import type { BlogFrontmatter } from '@/components';
 
 import { BlogPost } from '@/partials/BlogPost';
 import Base from '@/templates/Base.astro';
@@ -7,7 +7,7 @@ import Waline from '@/partials/Waline.astro';
 import { AppConfig } from '@/utils/AppConfig';
 
 export interface Props {
-  content: IFrontmatter;
+  content: BlogFrontmatter;
 }
 
 const { content } = Astro.props as Props;
