@@ -20,11 +20,11 @@ const BlogCard = (props: IBlogCardProps) => (
       </div>
 
       <div className="px-3 pt-4 pb-6 text-center">
-        <h2 className="h-16 text-xl font-semibold">
+        <h2 className="line-clamp-2 h-14 text-xl font-semibold">
           {props.instance.frontmatter.title}
         </h2>
 
-        <div className="line-clamp-3 mt-2 text-sm ">
+        <div className="line-clamp-2 mt-2 text-sm ">
           {props.instance.frontmatter.description}
         </div>
 
