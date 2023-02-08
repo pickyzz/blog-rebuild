@@ -16,7 +16,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': 5.51.0
   '@typescript-eslint/parser': 5.51.0
   astro: 2.0.8
-  astro-compress: 1.1.29
+  astro-compress: 1.1.31
   astro-eslint-parser: ^0.11.0
   astro-robots-txt: 0.3.11
   daisyui: 2.50.0
@@ -61,7 +61,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.51.0_yzj2n2b43wonjwaifya6xmk2zy
   '@typescript-eslint/parser': 5.51.0_eslint@8.33.0
   astro: 2.0.8
-  astro-compress: 1.1.29
+  astro-compress: 1.1.31
   astro-eslint-parser: 0.11.0
   astro-robots-txt: 0.3.11
   daisyui: 2.50.0
@@ -1270,7 +1270,7 @@ packages:
   /@types/sax/1.2.4:
     resolution: {integrity: sha512-pSAff4IAxJjfAXUG6tFkO7dsSbTmf8CtUpfhhZ5VhkRpC4628tJhh3+V6H1E+/Gs9piSzYKT5yzHO5M4GG9jkw==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 18.11.18
     dev: true
 
   /@types/scheduler/0.16.2:
@@ -1675,8 +1675,8 @@ packages:
     hasBin: true
     dev: true
 
-  /astro-compress/1.1.29:
-    resolution: {integrity: sha512-iR6zLxsh37H4RshK63mcSERwGDk7oE43fCSezK3LDIf6Lgagkau0eOpBikpBO6HtcQi+mgGrfSfGaV5EJYQTNQ==}
+  /astro-compress/1.1.31:
+    resolution: {integrity: sha512-Kr87S0+N32S+56KPRZ9uMiYK1rhBv6YIkBIps2bC5nhj4f1ustUHYffxvG83AcRl4XtQrSlVg/Uz+jufabbBQg==}
     dependencies:
       '@types/csso': 5.0.0
       '@types/html-minifier-terser': 7.0.0
@@ -1686,7 +1686,7 @@ packages:
       html-minifier-terser: 7.1.0
       sharp: 0.31.3
       svgo: 3.0.2
-      terser: 5.16.2
+      terser: 5.16.3
     dev: true
 
   /astro-eslint-parser/0.11.0:
@@ -3758,7 +3758,7 @@ packages:
       entities: 4.4.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.16.2
+      terser: 5.16.3
     dev: true
 
   /html-void-elements/2.0.1:
@@ -6573,8 +6573,8 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /terser/5.16.2:
-    resolution: {integrity: sha512-JKuM+KvvWVqT7muHVyrwv7FVRPnmHDwF6XwoIxdbF5Witi0vu99RYpxDexpJndXt3jbZZmmWr2/mQa6HvSNdSg==}
+  /terser/5.16.3:
+    resolution: {integrity: sha512-v8wWLaS/xt3nE9dgKEWhNUFP6q4kngO5B8eYFUuebsu7Dw/UNAnpUod6UHo04jSSkv8TzKHjZDSd7EXdDQAl8Q==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
