@@ -36,7 +36,7 @@ specifiers:
   eslint-plugin-unused-imports: 2.0.0
   husky: 8.0.3
   lint-staged: 13.1.1
-  prettier: 2.8.3
+  prettier: 2.8.4
   prettier-plugin-astro: 0.8.0
   react: ^18.0.0
   react-dom: ^18.0.0
@@ -72,7 +72,7 @@ devDependencies:
   eslint-plugin-import: 2.27.5_yzj2n2b43wonjwaifya6xmk2zy
   eslint-plugin-jsx-a11y: 6.7.1_eslint@8.33.0
   eslint-plugin-mdx: 2.0.5_eslint@8.33.0
-  eslint-plugin-prettier: 4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq
+  eslint-plugin-prettier: 4.2.1_qa2thblfovmfepmgrc7z2owbo4
   eslint-plugin-react: 7.32.2_eslint@8.33.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.33.0
   eslint-plugin-simple-import-sort: 10.0.0_eslint@8.33.0
@@ -80,7 +80,7 @@ devDependencies:
   eslint-plugin-unused-imports: 2.0.0_nvprg6vkh5ygsdwfa2izsa3vfm
   husky: 8.0.3
   lint-staged: 13.1.1
-  prettier: 2.8.3
+  prettier: 2.8.4
   prettier-plugin-astro: 0.8.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -114,7 +114,7 @@ packages:
     dependencies:
       '@vscode/emmet-helper': 2.8.6
       events: 3.3.0
-      prettier: 2.8.3
+      prettier: 2.8.4
       prettier-plugin-astro: 0.7.2
       source-map: 0.7.4
       vscode-css-languageservice: 6.2.3
@@ -2950,7 +2950,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_jqplj6qf3uqpxpu4gdyhwwasnq:
+  /eslint-plugin-prettier/4.2.1_qa2thblfovmfepmgrc7z2owbo4:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -2963,7 +2963,7 @@ packages:
     dependencies:
       eslint: 8.33.0
       eslint-config-prettier: 8.6.0_eslint@8.33.0
-      prettier: 2.8.3
+      prettier: 2.8.4
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -5672,7 +5672,7 @@ packages:
     engines: {node: ^14.15.0 || >=16.0.0, pnpm: '>=7.14.0'}
     dependencies:
       '@astrojs/compiler': 0.31.4
-      prettier: 2.8.3
+      prettier: 2.8.4
       sass-formatter: 0.7.5
       synckit: 0.8.5
     dev: true
@@ -5682,13 +5682,13 @@ packages:
     engines: {node: ^14.15.0 || >=16.0.0, pnpm: '>=7.14.0'}
     dependencies:
       '@astrojs/compiler': 1.0.1
-      prettier: 2.8.3
+      prettier: 2.8.4
       sass-formatter: 0.7.5
       synckit: 0.8.5
     dev: true
 
-  /prettier/2.8.3:
-    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
