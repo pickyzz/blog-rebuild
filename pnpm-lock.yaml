@@ -16,7 +16,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': 5.51.0
   '@typescript-eslint/parser': 5.51.0
   astro: 2.0.10
-  astro-compress: 1.1.31
+  astro-compress: 1.1.32
   astro-eslint-parser: ^0.11.0
   astro-robots-txt: 0.3.11
   daisyui: 2.50.0
@@ -61,7 +61,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.51.0_yzj2n2b43wonjwaifya6xmk2zy
   '@typescript-eslint/parser': 5.51.0_eslint@8.33.0
   astro: 2.0.10
-  astro-compress: 1.1.31
+  astro-compress: 1.1.32
   astro-eslint-parser: 0.11.0
   astro-robots-txt: 0.3.11
   daisyui: 2.50.0
@@ -1675,8 +1675,8 @@ packages:
     hasBin: true
     dev: true
 
-  /astro-compress/1.1.31:
-    resolution: {integrity: sha512-Kr87S0+N32S+56KPRZ9uMiYK1rhBv6YIkBIps2bC5nhj4f1ustUHYffxvG83AcRl4XtQrSlVg/Uz+jufabbBQg==}
+  /astro-compress/1.1.32:
+    resolution: {integrity: sha512-JzaQqydjM3cWhYn5vAAcQpqHjhd7YECoHXY2oXoBZfyaOKncfvcoyW4VbZX8qI6CdA9tQ1n2lib46/TLfZgltg==}
     dependencies:
       '@types/csso': 5.0.0
       '@types/html-minifier-terser': 7.0.0
