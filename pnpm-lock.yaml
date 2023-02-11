@@ -12,7 +12,7 @@ specifiers:
   '@tailwindcss/aspect-ratio': 0.4.2
   '@tailwindcss/line-clamp': ^0.4.2
   '@tailwindcss/typography': 0.5.9
-  '@types/react': 18.0.27
+  '@types/react': 18.0.28
   '@typescript-eslint/eslint-plugin': 5.51.0
   '@typescript-eslint/parser': 5.51.0
   astro: 2.0.10
@@ -48,7 +48,7 @@ dependencies:
 devDependencies:
   '@astrojs/mdx': 0.16.0_astro@2.0.10
   '@astrojs/partytown': 1.0.3
-  '@astrojs/react': 2.0.2_5ndqzdd6t4rivxsukjv3i3ak2q
+  '@astrojs/react': 2.0.2_zula6vjvt3wdocc4mwcxqa6nzi
   '@astrojs/rss': 2.1.0
   '@astrojs/sitemap': 1.0.1
   '@astrojs/tailwind': 3.0.1_4f5srnz5te7bft5a35u2wwbs3u
@@ -57,7 +57,7 @@ devDependencies:
   '@tailwindcss/aspect-ratio': 0.4.2_tailwindcss@3.2.4
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.4
-  '@types/react': 18.0.27
+  '@types/react': 18.0.28
   '@typescript-eslint/eslint-plugin': 5.51.0_yzj2n2b43wonjwaifya6xmk2zy
   '@typescript-eslint/parser': 5.51.0_eslint@8.33.0
   astro: 2.0.10
@@ -190,7 +190,7 @@ packages:
       prismjs: 1.29.0
     dev: true
 
-  /@astrojs/react/2.0.2_5ndqzdd6t4rivxsukjv3i3ak2q:
+  /@astrojs/react/2.0.2_zula6vjvt3wdocc4mwcxqa6nzi:
     resolution: {integrity: sha512-UmQNvzJul5M/Q9aZJXnqz4z0ODZXkLuaNvgsYoKB7OdM8c2v85FsTjMZZJ7BvFo4On31jJ0rL/gwTaCeuYqmpw==}
     engines: {node: '>=16.12.0'}
     peerDependencies:
@@ -201,7 +201,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@babel/plugin-transform-react-jsx': 7.20.13_@babel+core@7.20.12
-      '@types/react': 18.0.27
+      '@types/react': 18.0.28
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:
@@ -1255,8 +1255,8 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
 
-  /@types/react/18.0.27:
-    resolution: {integrity: sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==}
+  /@types/react/18.0.28:
+    resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
