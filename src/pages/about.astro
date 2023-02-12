@@ -1,15 +1,102 @@
 ---
-import { AboutPage } from '@/partials/AboutPage';
-import Base from '@/templates/Base.astro';
-import { AppConfig } from '@/utils/AppConfig';
-import { Section } from '@/components';
-
-const title = `About - ${AppConfig.site_name}`;
-const { description } = AppConfig;
+import Layout from "@layouts/Layout.astro";
+import Breadcrumbs from "@components/Breadcrumbs.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { SITE } from "@config";
 ---
 
-<Base head={{ title, description }}>
-  <Section>
-    <AboutPage />
-  </Section>
-</Base>
+<Layout title={`About | ${SITE.title}`}>
+  <Header activeNav="about" />
+  <Breadcrumbs />
+  <main id="main-content">
+    <section id="about" class="prose mb-28 max-w-3xl prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">About me</h1>
+
+      <div class="my-12 grid grid-cols-2 gap-2">
+        <img
+          class="mask mask-squircle h-auto w-[80%] text-center"
+          src="/assets/images/profile.jpg"
+          alt="Avatar image"
+          loading="lazy"
+        />
+        <div class="">
+          <p class="mb-4 text-3xl font-bold">Parinya T.</p>
+          <p class="my-1">
+            Bachelor’s of Science degree (B. Sc.) KMUTNB, Thailand
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Language</span> : TH, EN
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Date of birth</span> : 30 - 09 - 1993
+          </p>
+          <p class="my-1">
+            <span class="font-bold">E-mail</span> :{" "}
+            <a
+              href="mailto:contact@pickyzz.dev"
+              target="_blank"
+              rel="noreferrer"
+            >
+              contact@pickyzz.dev
+            </a>
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Twitter</span> :{" "}
+            <a
+              href="https://twitter.com/p1ckyzz"
+              target="_blank"
+              rel="noreferrer"
+            >
+              @p1ckyzz
+            </a>
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Github</span> :{" "}
+            <a
+              href="https://github.com/pickyzz"
+              target="_blank"
+              rel="noreferrer"
+            >
+              github.com/pickyzz
+            </a>
+          </p>
+          <p class="my-1">
+            <span class="font-bold">FCC</span> :{" "}
+            <a
+              href="https://freecodecamp.org/pickyzz"
+              target="_blank"
+              rel="noreferrer"
+            >
+              freecodecamp.org/pickyzz
+            </a>
+          </p>
+          <div class="my-4">
+            <p class="text-2xl">My skill</p>
+            <p class="my-1">
+              Lua, HTML, CSS, JavaScript, React, NextJs, Tailwind CSS
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 flex justify-center">
+        <img
+          class="h-auto w-[65%] text-center"
+          src="/assets/images/fcc-cert-1.png"
+          alt="Avatar image"
+          loading="lazy"
+        />
+      </div>
+      <div class="mt-12 flex justify-center">
+        <img
+          class="h-auto w-[65%] text-center"
+          src="/assets/images/fcc-cert-2.png"
+          alt="Avatar image"
+          loading="lazy"
+        />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
