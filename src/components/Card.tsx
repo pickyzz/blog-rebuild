@@ -16,7 +16,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
         <img
-          className="w-full overflow-hidden rounded-lg object-cover object-center md:h-48"
+          className="h-[15rem] w-full overflow-hidden rounded-lg object-cover object-center md:h-[10rem]"
           src={ogImage}
           loading="lazy"
         />

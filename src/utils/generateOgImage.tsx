@@ -116,7 +116,7 @@ const ogImage = (text: string) => {
 const options: SatoriOptions = {
   width: 1200,
   height: 630,
-  embedFont: true,
+  embedFont: false,
   fonts: [
     {
       name: "IBM Plex Mono",
