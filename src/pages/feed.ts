@@ -1,11 +1,19 @@
-import rss, { pagesGlobToRssItems } from '@astrojs/rss';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { SITE } from "@config";
+import slugify from "@utils/slugify";
 
-import { AppConfig } from '@/utils/AppConfig';
-
-export const get = async () =>
-  rss({
-    title: AppConfig.title,
-    description: AppConfig.description,
-    site: import.meta.env.SITE,
-    items: await pagesGlobToRssItems(import.meta.glob('./**/*.{md,mdx}')),
+export async function get() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return rss({
+    title: SITE.title,
+    description: SITE.desc,
+    site: SITE.website,
+    items: posts.map(({ data }) => ({
+      link: `posts/${slugify(data)}`,
+      title: data.title,
+      description: data.description,
+      pubDate: new Date(data.pubDatetime),
+    })),
   });
+}
