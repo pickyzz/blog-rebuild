@@ -19,7 +19,7 @@ export default defineConfig({
     react(),
     sitemap(),
     mdx({
-      extendMarkdownConfig: false,
+      extendMarkdownConfig: true,
       smartypants: true,
       gfm: true,
     }),
