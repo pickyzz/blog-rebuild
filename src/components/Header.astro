@@ -7,7 +7,7 @@ import logoICO from "/favicon.ico";
 import logoSVG from "/favicon.svg";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search";
+  activeNav?: "posts" | "tags" | "about" | "search" | "guestbook";
 }
 
 const { activeNav } = Astro.props;
@@ -53,6 +53,14 @@ const { activeNav } = Astro.props;
           <li>
             <a href="/tags" class={activeNav === "tags" ? "active" : ""}>
               Tags
+            </a>
+          </li>
+          <li>
+            <a
+              href="/guestbook"
+              class={activeNav === "guestbook" ? "active" : ""}
+            >
+              Guestbook
             </a>
           </li>
           <li>
@@ -129,7 +137,7 @@ const { activeNav } = Astro.props;
     @apply flex w-full flex-col items-center bg-skin-fill sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
   }
   nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-4 gap-y-2 gap-x-2 sm:mt-0 sm:ml-0 sm:w-auto sm:gap-y-0 sm:gap-x-5;
+    @apply mt-4 w-44 grid-cols-2 grid-rows-4 gap-y-2 gap-x-2 sm:mt-0 sm:ml-0 sm:w-auto sm:gap-y-0 sm:gap-x-5;
   }
   nav ul li {
     @apply col-span-2 flex items-center justify-center;
