@@ -68,7 +68,7 @@
     }
   },
   "lint-staged": {
-    "*": [
+    "*.{.js,.jsx,.ts,.tsx,.astro}": [
       "prettier --plugin-search-dir=. --write"
     ]
   }

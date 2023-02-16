@@ -5,7 +5,7 @@ export const SITE = {
   author: "Parinya T.",
   desc: "Just a pieces of code",
   title: "Pickyzz",
-  ogImage: "pickyzz-og.jpg",
+  ogImage: "pickyzz-og.png",
   lightAndDarkMode: true,
   postPerPage: 8,
 };
