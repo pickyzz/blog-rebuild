@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 import compress from 'astro-compress';
-import critters from "astro-critters";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
@@ -14,13 +13,12 @@ export default defineConfig({
   site: "https://pickyzz.dev/",
   integrations: [
     compress({
-      css: false,
+      css: true,
 			html: true,
 			img: false,
 			js: true,
 			svg: false,
     }),
-    critters(),
     tailwind({
       config: {
         applyBaseStyles: false,
