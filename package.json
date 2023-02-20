@@ -42,6 +42,7 @@
     "@typescript-eslint/parser": "^5.51.0",
     "astro": "^2.0.8",
     "astro-compress": "1.1.33",
+    "astro-critters": "1.1.29",
     "astro-eslint-parser": "^0.11.0",
     "astro-robots-txt": "^0.4.0",
     "commitizen": "^4.3.0",
