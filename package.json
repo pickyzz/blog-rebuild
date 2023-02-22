@@ -23,7 +23,8 @@
     "cz": "cz",
     "prepare": "husky install",
     "lint": "eslint .",
-    "commitlint": "npx commitlint --from HEAD~1 --to HEAD --verbose"
+    "commitlint": "npx commitlint --from HEAD~1 --to HEAD --verbose",
+    "proxy": "npx @staticcms/proxy-server"
   },
   "devDependencies": {
     "@astrojs/mdx": "^0.17.0",
@@ -34,6 +35,7 @@
     "@astrojs/tailwind": "^3.0.1",
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
+    "@staticcms/proxy-server": "^2.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
