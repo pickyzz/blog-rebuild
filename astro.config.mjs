@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import compress from 'astro-compress';
+import compress from "astro-compress";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import remarkToc from "remark-toc";
@@ -14,10 +14,10 @@ export default defineConfig({
   integrations: [
     compress({
       css: true,
-			html: true,
-			img: false,
-			js: true,
-			svg: false,
+      html: true,
+      img: false,
+      js: true,
+      svg: false,
     }),
     tailwind({
       config: {

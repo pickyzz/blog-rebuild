@@ -41,10 +41,10 @@ const ogUrl = new URL(ogImage ? ogImage : `${title}.svg`, Astro.url.origin)
     <p class="text-xs font-light">By : {author}</p>
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <img
-          class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
-          src={ogUrl}
-          loading="lazy"
-        />
+        class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
+        src={ogUrl}
+        loading="lazy"
+      />
       <Content />
     </article>
 
