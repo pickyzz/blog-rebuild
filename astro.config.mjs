@@ -31,7 +31,13 @@ export default defineConfig({
       smartypants: true,
       gfm: true,
     }),
-    robotsTxt(),
+    robotsTxt({
+      policy: [{
+          userAgent: '*',
+          disallow: ['/search', '/admin'],
+          crawlDelay: 10,
+        }]
+    }),
   ],
   markdown: {
     remarkPlugins: [
