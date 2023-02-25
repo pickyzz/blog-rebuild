@@ -17,7 +17,7 @@ specifiers:
   '@types/react': ^18.0.27
   '@typescript-eslint/parser': ^5.51.0
   astro: ^2.0.8
-  astro-compress: 1.1.33
+  astro-compress: 1.1.34
   astro-eslint-parser: ^0.11.0
   astro-robots-txt: ^0.4.0
   commitizen: ^4.3.0
@@ -55,7 +55,7 @@ devDependencies:
   '@types/react': 18.0.28
   '@typescript-eslint/parser': 5.51.0_eslint@8.34.0
   astro: 2.0.10
-  astro-compress: 1.1.33
+  astro-compress: 1.1.34
   astro-eslint-parser: 0.11.0
   astro-robots-txt: 0.4.0
   commitizen: 4.3.0
@@ -1607,18 +1607,18 @@ packages:
     hasBin: true
     dev: true
 
-  /astro-compress/1.1.33:
-    resolution: {integrity: sha512-i9LuEzQAeYPs9Vn+FbN9bdPDa/g2PYddT1GOkoUacFpAZCl9qIYFFvacULjeZIMMKhrRkPZ5f9lZVC3RJP7Qpg==}
+  /astro-compress/1.1.34:
+    resolution: {integrity: sha512-To7O9z+vhllvP/qSWszJBjVYZgf8g3omkUq8IOroPjElqur1W+bPTq01RNO/aLp9bQ6YqBpwa2j+cSwa/j3FxQ==}
     dependencies:
       '@types/csso': 5.0.0
       '@types/html-minifier-terser': 7.0.0
       '@types/sharp': 0.31.1
       csso: 5.0.5
-      files-pipeline: 0.0.3
+      files-pipeline: 0.0.4
       html-minifier-terser: 7.1.0
       sharp: 0.31.3
       svgo: 3.0.2
-      terser: 5.16.3
+      terser: 5.16.5
     dev: true
 
   /astro-eslint-parser/0.11.0:
@@ -2473,11 +2473,6 @@ packages:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
     dev: true
 
-  /deepmerge-ts/4.2.2:
-    resolution: {integrity: sha512-Ka3Kb21tiWjvQvS9U+1Dx+aqFAHsdTnMdYptLTmC2VAmDFMugWMY1e15aTODstipmCun8iNuqeSfcx6rsUUk0Q==}
-    engines: {node: '>=12.4.0'}
-    dev: true
-
   /deepmerge-ts/4.3.0:
     resolution: {integrity: sha512-if3ZYdkD2dClhnXR5reKtG98cwyaRT1NeugQoAPTTfsOpV9kqyeiBF9Qa5RHjemb3KzD5ulqygv6ED3t5j9eJw==}
     engines: {node: '>=12.4.0'}
@@ -3318,10 +3313,10 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
-  /files-pipeline/0.0.3:
-    resolution: {integrity: sha512-dtHt96Rs0qsNBnIlPuHUP8vd5xPRGbMYgywMfA2Qy83QPz8feoWsoXSuxxLsWYv4vag+vAhNZ4YOHL0pdyGKFA==}
+  /files-pipeline/0.0.4:
+    resolution: {integrity: sha512-eHbXa8YGUui/qGnxES+SwwQVpQpi4xz2VR1VrJz1HFflnRWo8+zCQCseRqDAzMinH1B6iI9ckVWpFgoWnTH9nA==}
     dependencies:
-      deepmerge-ts: 4.2.2
+      deepmerge-ts: 4.3.0
       fast-glob: 3.2.12
     dev: true
 
@@ -3782,7 +3777,7 @@ packages:
       entities: 4.4.0
       param-case: 3.0.4
       relateurl: 0.2.7
-      terser: 5.16.3
+      terser: 5.16.5
     dev: true
 
   /html-void-elements/2.0.1:
@@ -6670,8 +6665,8 @@ packages:
       readable-stream: 3.6.0
     dev: true
 
-  /terser/5.16.3:
-    resolution: {integrity: sha512-v8wWLaS/xt3nE9dgKEWhNUFP6q4kngO5B8eYFUuebsu7Dw/UNAnpUod6UHo04jSSkv8TzKHjZDSd7EXdDQAl8Q==}
+  /terser/5.16.5:
+    resolution: {integrity: sha512-qcwfg4+RZa3YvlFh0qjifnzBHjKGNbtDo9yivMqMFDy9Q6FSaQWSB/j1xKhsoUFJIqDOM3TsN6D5xbrMrFcHbg==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
