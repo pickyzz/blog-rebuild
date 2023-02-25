@@ -1,5 +1,6 @@
 name: Netlify Builds
 on:
+  workflow_dispatch:
   push:
 
 # Automatically cancel in-progress actions on the same branch
