@@ -11,9 +11,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      
     steps:
       - uses: actions/checkout@v3
         name: "Checkout Source Code"
+        with:
+          submodules: true
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: "Setup Node.js environment"
         uses: actions/setup-node@v3
@@ -32,7 +38,6 @@ jobs:
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
       - name: "Setup pnpm cache"
         uses: actions/cache@v3
         id: cache
@@ -44,7 +49,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nodeModules-
             ${{ runner.os }}-pnpm-store-
-
       - name: "Install dependencies"
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm i --shamefully-hoist --prefer-offline

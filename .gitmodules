@@ -1,0 +1,6 @@
+[submodule "src/content/blog"]
+	path = src/content/blog
+	url = https://github.com/pickyzz/blog-posts
+[submodule "public/assets/images"]
+	path = public/assets/images
+	url = https://github.com/pickyzz/blog-images
