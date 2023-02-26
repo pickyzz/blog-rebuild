@@ -34,7 +34,7 @@ export default defineConfig({
     robotsTxt({
       policy: [{
           userAgent: '*',
-          disallow: ['/search', '/admin'],
+          disallow: ['/search'],
           crawlDelay: 10,
         }]
     }),
