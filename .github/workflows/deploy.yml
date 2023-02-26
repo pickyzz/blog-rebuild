@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: "Checkout Source Code"
+        with:
+          submodules: true
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: "Setup Node.js environment"
         uses: actions/setup-node@v3
