@@ -32,11 +32,13 @@ export default defineConfig({
       gfm: true,
     }),
     robotsTxt({
-      policy: [{
-          userAgent: '*',
-          disallow: ['/search'],
+      policy: [
+        {
+          userAgent: "*",
+          disallow: ["/search"],
           crawlDelay: 10,
-        }]
+        },
+      ],
     }),
   ],
   markdown: {

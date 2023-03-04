@@ -4,7 +4,7 @@
 
 ### Requirements
 
-- Node.js and npm (or Yarn)
+- Node.js and npm (or yarn, pnpm)
 
 ### Getting started
 
@@ -35,14 +35,16 @@ prefer.
 
 All commands are run from the root of the project, from a terminal:
 
-| Command           | Action                                       |
-| :---------------- | :------------------------------------------- |
-| `npm install`     | Installs dependencies                        |
-| `npm run dev`     | Starts local dev server at `localhost:3000`  |
-| `npm run build`   | Build your production site to `./dist/`      |
-| `npm run preview` | Preview your build locally, before deploying |
-| `npm run clean`   | Remove `./dist` folder                       |
-| `npm run lint`    | Run ESLint and report styling error          |
+| Command            | Action                                       |
+| :----------------- | :------------------------------------------- |
+| `npm install`      | Installs dependencies                        |
+| `npm run dev`      | Starts local dev server at `localhost:3000`  |
+| `npm run build`    | Build your production site to `./dist/`      |
+| `npm run preview`  | Preview your build locally, before deploying |
+| `npm run clean`    | Remove `./dist` folder                       |
+| `npm run format`   | Run ESLint and report styling error          |
+| `npm run newpost`  | create new blog post                         |
+| `npm run fastpost` | create new blog post but faster              |
 
 ### Additional Checks
 

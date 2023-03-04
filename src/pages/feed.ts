@@ -10,12 +10,16 @@ export async function get() {
     description: SITE.desc,
     site: SITE.website,
     items: posts
-       .sort((a, b) => new Date(b.data.pubDatetime).getTime() - new Date(a.data.pubDatetime).getTime())
-       .map(({ data }) => ({
-          link: `blog/${slugify(data)}`,
-          title: data.title,
-          description: data.description,
-          pubDate: new Date(data.pubDatetime),
-        })),
+      .sort(
+        (a, b) =>
+          new Date(b.data.pubDatetime).getTime() -
+          new Date(a.data.pubDatetime).getTime()
+      )
+      .map(({ data }) => ({
+        link: `blog/${slugify(data)}`,
+        title: data.title,
+        description: data.description,
+        pubDate: new Date(data.pubDatetime),
+      })),
   });
 }

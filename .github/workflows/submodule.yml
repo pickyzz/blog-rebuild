@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with: 
+        with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
