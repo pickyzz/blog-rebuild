@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@astrojs/mdx': ^0.17.0
-  '@astrojs/prefetch': ^0.1.2
+  '@astrojs/prefetch': ^0.2.0
   '@astrojs/react': ^2.0.2
   '@astrojs/rss': ^2.1.0
   '@astrojs/sitemap': ^1.0.1
@@ -44,7 +44,7 @@ specifiers:
 
 devDependencies:
   '@astrojs/mdx': 0.17.0_astro@2.0.10
-  '@astrojs/prefetch': 0.1.2
+  '@astrojs/prefetch': 0.2.0
   '@astrojs/react': 2.0.2_zula6vjvt3wdocc4mwcxqa6nzi
   '@astrojs/rss': 2.1.0
   '@astrojs/sitemap': 1.0.1
@@ -170,8 +170,8 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/prefetch/0.1.2:
-    resolution: {integrity: sha512-Plf1GLKDyvTHjEKVMH922wc1AmvlFYvEXrbdaMAlgJuoqTRXirP1CennildFHndTetH8swWMlVGwxdG57dN7cA==}
+  /@astrojs/prefetch/0.2.0:
+    resolution: {integrity: sha512-q68916tIId0tnRFphNL2OcORgoATnfVItaQAugz7wfIq4ghivNISG1scN86uAyF/md1N1YcKu6XPukT5f2lShQ==}
     dependencies:
       throttles: 1.0.1
     dev: true
