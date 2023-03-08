@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@astrojs/mdx': ^0.17.0
+  '@astrojs/mdx': ^0.18.0
   '@astrojs/prefetch': ^0.2.0
   '@astrojs/react': ^2.0.2
   '@astrojs/rss': ^2.1.0
@@ -43,7 +43,7 @@ specifiers:
   ts-node: ^10.9.1
 
 devDependencies:
-  '@astrojs/mdx': 0.17.2_astro@2.1.0
+  '@astrojs/mdx': 0.18.0_astro@2.1.0
   '@astrojs/prefetch': 0.2.0
   '@astrojs/react': 2.0.2_zula6vjvt3wdocc4mwcxqa6nzi
   '@astrojs/rss': 2.1.0
@@ -148,8 +148,8 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/mdx/0.17.2_astro@2.1.0:
-    resolution: {integrity: sha512-mol57cw1jJMcQgKMRGn7p6cewajq6JTNtqj5aAZgROWam/phVDSOCbXj/WU3O9+3qFnyKtpczoufQKwJTQltAw==}
+  /@astrojs/mdx/0.18.0_astro@2.1.0:
+    resolution: {integrity: sha512-mgICosefMpl67O7ER6Yi6ylT9Hk8ZAO6GhTlx4pYXIMOWFMQlP0NXQ9teZwPhOWzBcHWnsHEF+AzVZWbiC2EBg==}
     engines: {node: '>=16.12.0'}
     dependencies:
       '@astrojs/markdown-remark': 2.1.0_astro@2.1.0
