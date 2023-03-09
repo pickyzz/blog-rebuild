@@ -4,12 +4,22 @@
   "baseBranches": ["main"],
   "packageRules": [
     {
-      "matchDepTypes": ["dependencies", "devDependencies"],
+      "matchDepTypes": ["devDependencies"],
       "rangeStrategy": "pin",
-      "matchUpdateTypes": ["patch", "pin", "digest"],
-      "automerge": true
     }
   ],
+  "lockFileMaintenance": {
+    "automerge": true
+  },
+  "minor": {
+    "automerge": true
+  },
+  "patch": {
+    "automerge": true
+  },
+  "pin": {
+    "automerge": true
+  },
   "platformAutomerge": true,
   "ignoreDeps": [],
   "timezone": "Asia/Bangkok"
