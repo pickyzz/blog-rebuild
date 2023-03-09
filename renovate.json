@@ -5,7 +5,7 @@
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],
-      "rangeStrategy": "pin",
+      "rangeStrategy": "pin"
     }
   ],
   "lockFileMaintenance": {
