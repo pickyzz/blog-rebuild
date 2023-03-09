@@ -10,6 +10,5 @@
   ],
   "platformAutomerge": true,
   "ignoreDeps": [],
-  "schedule": ["after 6pm"],
   "timezone": "Asia/Bangkok"
 }
