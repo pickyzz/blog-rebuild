@@ -20,6 +20,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
           className="h-[10rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
           src={ogImage}
           loading="lazy"
+          alt=""
         />
         {secHeading ? (
           <h2 className="my-4 h-14 text-center text-lg font-medium decoration-dashed line-clamp-2 hover:underline">
