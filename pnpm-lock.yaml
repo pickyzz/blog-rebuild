@@ -4,7 +4,7 @@ specifiers:
   '@astrojs/mdx': 0.18.1
   '@astrojs/prefetch': 0.2.1
   '@astrojs/react': 2.1.0
-  '@astrojs/rss': 2.2.0
+  '@astrojs/rss': 2.3.0
   '@astrojs/sitemap': 1.2.1
   '@astrojs/tailwind': 3.1.1
   '@commitlint/cli': 17.4.4
@@ -46,7 +46,7 @@ devDependencies:
   '@astrojs/mdx': 0.18.1_astro@2.1.3
   '@astrojs/prefetch': 0.2.1
   '@astrojs/react': 2.1.0_zula6vjvt3wdocc4mwcxqa6nzi
-  '@astrojs/rss': 2.2.0
+  '@astrojs/rss': 2.3.0
   '@astrojs/sitemap': 1.2.1
   '@astrojs/tailwind': 3.1.1_nprpnr3evufp3bxcs7nv5l6miy
   '@commitlint/cli': 17.4.4
@@ -202,8 +202,8 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/rss/2.2.0:
-    resolution: {integrity: sha512-U/OdXpUT4wWJ+fKEoyzUlniOR99P6TyIAsk6nYxLf472vcW8Md6XSdNb6B6kmdqytgiJ9khChYkm1hY+JgMGCw==}
+  /@astrojs/rss/2.3.0:
+    resolution: {integrity: sha512-80K92r68sGeyvP7Nq4yvIo1yb31M3pDz6U+e5dujknHJIiIsvMvXA1S+1DHPQ7cVcpD4+rY3EiQs2DgRNhgNPA==}
     dependencies:
       fast-xml-parser: 4.1.2
       kleur: 4.1.5
