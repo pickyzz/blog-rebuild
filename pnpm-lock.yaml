@@ -5,7 +5,7 @@ specifiers:
   '@astrojs/prefetch': 0.2.1
   '@astrojs/react': 2.1.0
   '@astrojs/rss': 2.2.0
-  '@astrojs/sitemap': 1.2.0
+  '@astrojs/sitemap': 1.2.1
   '@astrojs/tailwind': 3.1.0
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
@@ -47,7 +47,7 @@ devDependencies:
   '@astrojs/prefetch': 0.2.1
   '@astrojs/react': 2.1.0_zula6vjvt3wdocc4mwcxqa6nzi
   '@astrojs/rss': 2.2.0
-  '@astrojs/sitemap': 1.2.0
+  '@astrojs/sitemap': 1.2.1
   '@astrojs/tailwind': 3.1.0_kpfkftb7oeh2sou3dg6fzx5gw4
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
@@ -209,8 +209,8 @@ packages:
       kleur: 4.1.5
     dev: true
 
-  /@astrojs/sitemap/1.2.0:
-    resolution: {integrity: sha512-v4Esbchc7QcbDilDcZ80BrW29o7SoWnuX80dndH+rE92cpiRwdJw5w1bfI17mtmjlt3NjgFxyjVB93ycD9s66A==}
+  /@astrojs/sitemap/1.2.1:
+    resolution: {integrity: sha512-nlKP1qc1ENZ61w+ep5RdsObjYWso4QdLGC5WyzssnKkgVDijHT61s/tHFfBWHhxqdjcw4x1V1um/eSQZPDTR3Q==}
     dependencies:
       sitemap: 7.1.1
       zod: 3.20.6
