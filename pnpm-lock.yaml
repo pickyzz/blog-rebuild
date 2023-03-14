@@ -6,7 +6,7 @@ specifiers:
   '@astrojs/react': 2.1.0
   '@astrojs/rss': 2.2.0
   '@astrojs/sitemap': 1.2.1
-  '@astrojs/tailwind': 3.1.0
+  '@astrojs/tailwind': 3.1.1
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
   '@divriots/jampack': 0.9.4
@@ -48,7 +48,7 @@ devDependencies:
   '@astrojs/react': 2.1.0_zula6vjvt3wdocc4mwcxqa6nzi
   '@astrojs/rss': 2.2.0
   '@astrojs/sitemap': 1.2.1
-  '@astrojs/tailwind': 3.1.0_kpfkftb7oeh2sou3dg6fzx5gw4
+  '@astrojs/tailwind': 3.1.1_kpfkftb7oeh2sou3dg6fzx5gw4
   '@commitlint/cli': 17.4.4
   '@commitlint/config-conventional': 17.4.4
   '@divriots/jampack': 0.9.4
@@ -216,10 +216,10 @@ packages:
       zod: 3.20.6
     dev: true
 
-  /@astrojs/tailwind/3.1.0_kpfkftb7oeh2sou3dg6fzx5gw4:
-    resolution: {integrity: sha512-eNflzlCdCtLZjc8pK0xQb/hXYnN/mVGVJFRAMWStrFwg8Tsvj6WVCPyRy77D5NL2tQ1piS2wiouOzAgiy1Dsiw==}
+  /@astrojs/tailwind/3.1.1_kpfkftb7oeh2sou3dg6fzx5gw4:
+    resolution: {integrity: sha512-Wx/ZtVnmtfqHWGVzvUEYZm8rufVKVgDIef0q6fzwUxoT1EpTTwBkTbpnzooogewMLOh2eTscasGe3Ih2HC1wVA==}
     peerDependencies:
-      astro: ^2.1.0
+      astro: ^2.1.3
       tailwindcss: ^3.0.24
     dependencies:
       '@proload/core': 0.3.3
