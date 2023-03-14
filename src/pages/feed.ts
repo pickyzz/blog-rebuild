@@ -21,5 +21,6 @@ export async function get() {
         description: data.description,
         pubDate: new Date(data.pubDatetime),
       })),
+    trailingSlash: false,
   });
 }
