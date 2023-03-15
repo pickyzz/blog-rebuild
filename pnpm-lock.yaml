@@ -23,7 +23,7 @@ specifiers:
   astro-robots-txt: 0.4.0
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
-  daisyui: 2.51.3
+  daisyui: 2.51.4
   eslint: 8.36.0
   eslint-plugin-astro: 0.24.0
   fuse.js: 6.6.2
@@ -65,7 +65,7 @@ devDependencies:
   astro-robots-txt: 0.4.0
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
-  daisyui: 2.51.3_ts-node@10.9.1
+  daisyui: 2.51.4_ts-node@10.9.1
   eslint: 8.36.0
   eslint-plugin-astro: 0.24.0_eslint@8.36.0
   fuse.js: 6.6.2
@@ -2615,8 +2615,8 @@ packages:
       - '@swc/wasm'
     dev: true
 
-  /daisyui/2.51.3_ts-node@10.9.1:
-    resolution: {integrity: sha512-AQa9exq/DsnvjyDi6bwOqHExQr9LJJag0iKRXNvRRtHXPo1gaAQ3ASJWylUB8J8KMH2M9zIpr7cvPHc7yGckyQ==}
+  /daisyui/2.51.4_ts-node@10.9.1:
+    resolution: {integrity: sha512-TGYD2BQCduxkKbDALlaWWaUdi33tryUuO/MxxBtAmLJ9zKn04gF6xduMxbrAUesR4AFr6LZW187TqF2H5c1AoA==}
     peerDependencies:
       autoprefixer: ^10.0.2
       postcss: ^8.1.6
