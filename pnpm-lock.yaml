@@ -25,7 +25,7 @@ specifiers:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.4
   eslint: 8.36.0
-  eslint-plugin-astro: 0.24.0
+  eslint-plugin-astro: 0.25.0
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -67,7 +67,7 @@ devDependencies:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.4_ts-node@10.9.1
   eslint: 8.36.0
-  eslint-plugin-astro: 0.24.0_eslint@8.36.0
+  eslint-plugin-astro: 0.25.0_eslint@8.36.0
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -3168,17 +3168,17 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-plugin-astro/0.24.0_eslint@8.36.0:
-    resolution: {integrity: sha512-oRGBMZPAFHhAHD8cyZez4OA5LRkgxLA+RtCIInC4nzw8thO/uojMdKXDri+sy2IFsGcu2PpOw70Uik0U5/izug==}
+  /eslint-plugin-astro/0.25.0_eslint@8.36.0:
+    resolution: {integrity: sha512-uSitJCU2g4Lv1vats5cfCtEL2lIqAU5MuHrIVCrBUTuIb3BZWAbij8TY9kW9PcRE386erw6uifOSVZ/fLLu/8A==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
+      '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
       '@jridgewell/sourcemap-codec': 1.4.14
-      '@typescript-eslint/types': 5.54.1
+      '@typescript-eslint/types': 5.55.0
       astro-eslint-parser: 0.12.0
       eslint: 8.36.0
-      eslint-utils: 3.0.0_eslint@8.36.0
       postcss: 8.4.21
       postcss-selector-parser: 6.0.11
     transitivePeerDependencies:
@@ -3191,21 +3191,6 @@ packages:
     dependencies:
       esrecurse: 4.3.0
       estraverse: 5.3.0
-    dev: true
-
-  /eslint-utils/3.0.0_eslint@8.36.0:
-    resolution: {integrity: sha512-uuQC43IGctw68pJA1RgbQS8/NP7rch6Cwd4j3ZBtgo4/8Flj4eGE7ZYSZRN3iq5pVUv6GPdW5Z1RFleo84uLDA==}
-    engines: {node: ^10.0.0 || ^12.0.0 || >= 14.0.0}
-    peerDependencies:
-      eslint: '>=5'
-    dependencies:
-      eslint: 8.36.0
-      eslint-visitor-keys: 2.1.0
-    dev: true
-
-  /eslint-visitor-keys/2.1.0:
-    resolution: {integrity: sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==}
-    engines: {node: '>=10'}
     dev: true
 
   /eslint-visitor-keys/3.3.0:
