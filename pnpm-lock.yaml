@@ -25,7 +25,7 @@ specifiers:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.4
   eslint: 8.36.0
-  eslint-plugin-astro: 0.25.0
+  eslint-plugin-astro: 0.26.0
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -67,7 +67,7 @@ devDependencies:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.4_ts-node@10.9.1
   eslint: 8.36.0
-  eslint-plugin-astro: 0.25.0_eslint@8.36.0
+  eslint-plugin-astro: 0.26.0_eslint@8.36.0
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -1627,25 +1627,12 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/scope-manager/5.54.1:
-    resolution: {integrity: sha512-zWKuGliXxvuxyM71UA/EcPxaviw39dB2504LqAmFDjmkpO8qNLHcmzlh6pbHs1h/7YQ9bnsO8CCcYCSA8sykUg==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      '@typescript-eslint/types': 5.54.1
-      '@typescript-eslint/visitor-keys': 5.54.1
-    dev: true
-
   /@typescript-eslint/scope-manager/5.55.0:
     resolution: {integrity: sha512-OK+cIO1ZGhJYNCL//a3ROpsd83psf4dUJ4j7pdNVzd5DmIk+ffkuUIX2vcZQbEW/IR41DYsfJTB19tpCboxQuw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.55.0
       '@typescript-eslint/visitor-keys': 5.55.0
-    dev: true
-
-  /@typescript-eslint/types/5.54.1:
-    resolution: {integrity: sha512-G9+1vVazrfAfbtmCapJX8jRo2E4MDXxgm/IMOF4oGh3kq7XuK3JRkOg6y2Qu1VsTRmWETyTkWt1wxy7X7/yLkw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
   /@typescript-eslint/types/5.55.0:
@@ -1671,14 +1658,6 @@ packages:
       tsutils: 3.21.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@typescript-eslint/visitor-keys/5.54.1:
-    resolution: {integrity: sha512-q8iSoHTgwCfgcRJ2l2x+xCbu8nBlRAlsQ33k24Adj8eoVBE0f8dUeI+bAa8F84Mv05UGbAx57g2zrRsYIooqQg==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      '@typescript-eslint/types': 5.54.1
-      eslint-visitor-keys: 3.3.0
     dev: true
 
   /@typescript-eslint/visitor-keys/5.55.0:
@@ -1869,21 +1848,6 @@ packages:
   /astring/1.8.4:
     resolution: {integrity: sha512-97a+l2LBU3Op3bBQEff79i/E4jMD2ZLFD8rHx9B6mXyB2uQwhJQYfiDqUwtfjF4QA1F2qs//N6Cw8LetMbQjcw==}
     hasBin: true
-    dev: true
-
-  /astro-eslint-parser/0.12.0:
-    resolution: {integrity: sha512-1r8TXPHoUk6OSNzeGOGpklmPedleYVpZU50jIPfsQjzrGMs+XpCSCc8+AATnKraPYnTvkmNClhjafSY6w3H90g==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    dependencies:
-      '@astrojs/compiler': 1.2.0
-      '@typescript-eslint/scope-manager': 5.54.1
-      '@typescript-eslint/types': 5.54.1
-      astrojs-compiler-sync: 0.3.1_@astrojs+compiler@1.2.0
-      debug: 4.3.4
-      eslint-visitor-keys: 3.3.0
-      espree: 9.4.1
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /astro-eslint-parser/0.13.0:
@@ -3184,8 +3148,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-plugin-astro/0.25.0_eslint@8.36.0:
-    resolution: {integrity: sha512-uSitJCU2g4Lv1vats5cfCtEL2lIqAU5MuHrIVCrBUTuIb3BZWAbij8TY9kW9PcRE386erw6uifOSVZ/fLLu/8A==}
+  /eslint-plugin-astro/0.26.0_eslint@8.36.0:
+    resolution: {integrity: sha512-izKb6/3Y/unEAy6xVNqahMe5cQ1rDYz4+ItliwTXyuM46IMSieaSH3OSOOD/NfcWaEi1wt/1pwqYGeqDQBwMeg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=7.0.0'
@@ -3193,7 +3157,7 @@ packages:
       '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
       '@jridgewell/sourcemap-codec': 1.4.14
       '@typescript-eslint/types': 5.55.0
-      astro-eslint-parser: 0.12.0
+      astro-eslint-parser: 0.13.0
       eslint: 8.36.0
       postcss: 8.4.21
       postcss-selector-parser: 6.0.11
@@ -3261,15 +3225,6 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /espree/9.4.1:
-    resolution: {integrity: sha512-XwctdmTO6SIvCzd9810yyNzIrOrqNYV9Koizx4C/mRhf9uq0o4yHoCEU/670pOxOL/MSraektvSAji79kX90Vg==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      acorn: 8.8.2
-      acorn-jsx: 5.3.2_acorn@8.8.2
-      eslint-visitor-keys: 3.3.0
     dev: true
 
   /espree/9.5.0:
