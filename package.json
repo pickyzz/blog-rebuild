@@ -13,8 +13,8 @@
     "url": "http://pickyzz.dev"
   },
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
+    "dev": "astro check --watch & astro dev",
+    "start": "astro check --watch & astro dev",
     "build": "astro build && jampack ./dist",
     "preview": "astro preview",
     "sync": "astro sync",
