@@ -38,7 +38,7 @@ specifiers:
   react-dom: 18.2.0
   remark-collapse: 0.1.2
   remark-toc: 8.0.1
-  satori: 0.4.3
+  satori: 0.4.4
   tailwindcss: 3.2.7
   ts-node: 10.9.1
 
@@ -80,7 +80,7 @@ devDependencies:
   react-dom: 18.2.0_react@18.2.0
   remark-collapse: 0.1.2
   remark-toc: 8.0.1
-  satori: 0.4.3
+  satori: 0.4.4
   tailwindcss: 3.2.7_ts-node@10.9.1
   ts-node: 10.9.1
 
@@ -6359,8 +6359,8 @@ packages:
       suf-log: 2.5.3
     dev: true
 
-  /satori/0.4.3:
-    resolution: {integrity: sha512-gGiXXD52Rk0vkknf0ntf7Bmn0BzoMp9bU/wVdQiUFTf1vRLpxixlsMlT4hP6oqF+Z7sb98+dNtLGJ3ZVVPDyrg==}
+  /satori/0.4.4:
+    resolution: {integrity: sha512-UCgoY7CXibFQmgI4ay4QSWUOca07nI9pY56w8NKrBq+bkGgiMbcPXZWj9bxukyJkEl/cgAICGjjxvwlDF2NYRw==}
     engines: {node: '>=16'}
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
@@ -6370,7 +6370,7 @@ packages:
       emoji-regex: 10.2.1
       linebreak: 1.1.0
       postcss-value-parser: 4.2.0
-      yoga-wasm-web: 0.3.1
+      yoga-wasm-web: 0.3.3
     dev: true
 
   /sax/1.2.4:
@@ -7471,8 +7471,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /yoga-wasm-web/0.3.1:
-    resolution: {integrity: sha512-J74OxJtRb5GLW/GH+ibYpb0/0zixk9qp0EOIuKKkavk0w0cMHIQ76YPkca4cRBUW+d+r+GFSM9Q3a+HXQd4b8g==}
+  /yoga-wasm-web/0.3.3:
+    resolution: {integrity: sha512-N+d4UJSJbt/R3wqY7Coqs5pcV0aUj2j9IaQ3rNj9bVCLld8tTGKRa2USARjnvZJWVx1NDmQev8EknoczaOQDOA==}
     dev: true
 
   /zod/3.20.6:
