@@ -10,6 +10,7 @@ import tailwind from "@astrojs/tailwind";
 // https://astro.build/config
 export default defineConfig({
   site: "https://pickyzz.dev/",
+  trailingSlash: "never",
   integrations: [
     tailwind({
       config: {
