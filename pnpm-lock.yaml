@@ -25,7 +25,7 @@ specifiers:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.5
   eslint: 8.36.0
-  eslint-plugin-astro: 0.26.0
+  eslint-plugin-astro: 0.26.1
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -67,7 +67,7 @@ devDependencies:
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.5_ts-node@10.9.1
   eslint: 8.36.0
-  eslint-plugin-astro: 0.26.0_eslint@8.36.0
+  eslint-plugin-astro: 0.26.1_eslint@8.36.0
   fuse.js: 6.6.2
   github-slugger: 2.0.0
   husky: 8.0.3
@@ -1658,11 +1658,6 @@ packages:
       '@typescript-eslint/visitor-keys': 5.56.0
     dev: true
 
-  /@typescript-eslint/types/5.55.0:
-    resolution: {integrity: sha512-M4iRh4AG1ChrOL6Y+mETEKGeDnT7Sparn6fhZ5LtVJF1909D5O4uqK+C5NPbLmpfZ0XIIxCdwzKiijpZUOvOug==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
-
   /@typescript-eslint/types/5.56.0:
     resolution: {integrity: sha512-JyAzbTJcIyhuUhogmiu+t79AkdnqgPUEsxMTMc/dCZczGMJQh1MK2wgrju++yMN6AWroVAy2jxyPcPr3SWCq5w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -3176,15 +3171,15 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /eslint-plugin-astro/0.26.0_eslint@8.36.0:
-    resolution: {integrity: sha512-izKb6/3Y/unEAy6xVNqahMe5cQ1rDYz4+ItliwTXyuM46IMSieaSH3OSOOD/NfcWaEi1wt/1pwqYGeqDQBwMeg==}
+  /eslint-plugin-astro/0.26.1_eslint@8.36.0:
+    resolution: {integrity: sha512-FEZOrOQ5ahenbwjKz5LYJpeOZUggDM54idrq5bTJdL4GsXy1xx2eyKy5UjGhh8NwddowCCPqfDHFfDz9oNj/ew==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
       '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
       '@jridgewell/sourcemap-codec': 1.4.14
-      '@typescript-eslint/types': 5.55.0
+      '@typescript-eslint/types': 5.56.0
       astro-eslint-parser: 0.13.1
       eslint: 8.36.0
       postcss: 8.4.21
