@@ -20,7 +20,7 @@ specifiers:
   '@typescript-eslint/parser': 5.56.0
   astro: 2.1.5
   astro-eslint-parser: 0.13.1
-  astro-robots-txt: 0.4.0
+  astro-robots-txt: 0.4.1
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.5
@@ -62,7 +62,7 @@ devDependencies:
   '@typescript-eslint/parser': 5.56.0_eslint@8.36.0
   astro: 2.1.5
   astro-eslint-parser: 0.13.1
-  astro-robots-txt: 0.4.0
+  astro-robots-txt: 0.4.1
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
   daisyui: 2.51.5_ts-node@10.9.1
@@ -583,30 +583,6 @@ packages:
       '@commitlint/rules': 17.4.4
       '@commitlint/types': 17.4.4
     dev: true
-
-  /@commitlint/load/17.4.4:
-    resolution: {integrity: sha512-z6uFIQ7wfKX5FGBe1AkOF4l/ShOQsaa1ml/nLMkbW7R/xF8galGS7Zh0yHvzVp/srtfS0brC+0bUfQfmpMPFVQ==}
-    engines: {node: '>=v14'}
-    dependencies:
-      '@commitlint/config-validator': 17.4.4
-      '@commitlint/execute-rule': 17.4.0
-      '@commitlint/resolve-extends': 17.4.4
-      '@commitlint/types': 17.4.4
-      '@types/node': 18.13.0
-      chalk: 4.1.2
-      cosmiconfig: 8.0.0
-      cosmiconfig-typescript-loader: 4.3.0_p7cp6dsfhdrlk7mvuxd3wodbsu
-      lodash.isplainobject: 4.0.6
-      lodash.merge: 4.6.2
-      lodash.uniq: 4.5.0
-      resolve-from: 5.0.0
-      ts-node: 10.9.1_4bewfcp2iebiwuold25d6rgcsy
-      typescript: 4.9.5
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-    dev: true
-    optional: true
 
   /@commitlint/load/17.5.0:
     resolution: {integrity: sha512-l+4W8Sx4CD5rYFsrhHH8HP01/8jEP7kKf33Xlx2Uk2out/UKoKPYMOIRcDH5ppT8UXLMV+x6Wm5osdRKKgaD1Q==}
@@ -1150,7 +1126,7 @@ packages:
   /@proload/core/0.3.3:
     resolution: {integrity: sha512-7dAFWsIK84C90AMl24+N/ProHKm4iw0akcnoKjRvbfHifJZBLhaDsDus1QJmhG12lXj4e/uB/8mB/0aduCW+NQ==}
     dependencies:
-      deepmerge: 4.3.0
+      deepmerge: 4.3.1
       escalade: 3.1.1
     dev: true
 
@@ -1912,14 +1888,14 @@ packages:
       - supports-color
     dev: true
 
-  /astro-robots-txt/0.4.0:
-    resolution: {integrity: sha512-tzZUnSXNC5gtSaLvF/LGC0A6cxt7lW5J0tuuQfM84/Vj2/dIdsvxHUp1JI1APhdpwP6TvH05aJnJFnGHn/pZlQ==}
+  /astro-robots-txt/0.4.1:
+    resolution: {integrity: sha512-YujWFocCHcOA+sDlaiqVsUH7eeHDOn9WrtsyT7KPW3JOHn1dZB1KwoshsPGTJiZ0PeeAqPcHOz+M9xjzc/tjsQ==}
     dependencies:
       '@proload/core': 0.3.3
       '@proload/plugin-tsm': 0.2.1_@proload+core@0.3.3
-      deepmerge: 4.3.0
+      deepmerge: 4.3.1
       valid-filename: 4.0.0
-      zod: 3.20.6
+      zod: 3.21.4
     dev: true
 
   /astro/2.1.5:
@@ -2634,7 +2610,7 @@ packages:
       longest: 2.0.1
       word-wrap: 1.2.3
     optionalDependencies:
-      '@commitlint/load': 17.4.4
+      '@commitlint/load': 17.5.0
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -2715,8 +2691,8 @@ packages:
     engines: {node: '>=12.4.0'}
     dev: true
 
-  /deepmerge/4.3.0:
-    resolution: {integrity: sha512-z2wJZXrmeHdvYJp/Ux55wIjqo81G5Bp4c+oELTW+7ar6SogWHajt5a9gO3s3IDaGSAXjDk0vlQKN3rms8ab3og==}
+  /deepmerge/4.3.1:
+    resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -7464,6 +7440,10 @@ packages:
 
   /zod/3.20.6:
     resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
+    dev: true
+
+  /zod/3.21.4:
+    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
     dev: true
 
   /zwitch/2.0.4:
