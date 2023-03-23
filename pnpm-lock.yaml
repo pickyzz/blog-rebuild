@@ -36,6 +36,7 @@ specifiers:
   prompts: 2.4.2
   react: 18.2.0
   react-dom: 18.2.0
+  rehype-external-links: ^2.0.1
   remark-collapse: 0.1.2
   remark-toc: 8.0.1
   satori: 0.4.4
@@ -78,6 +79,7 @@ devDependencies:
   prompts: 2.4.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  rehype-external-links: 2.0.1
   remark-collapse: 0.1.2
   remark-toc: 8.0.1
   satori: 0.4.4
@@ -4041,6 +4043,11 @@ packages:
       wrap-ansi: 7.0.0
     dev: true
 
+  /is-absolute-url/4.0.1:
+    resolution: {integrity: sha512-/51/TKE88Lmm7Gc4/8btclNXWS+g50wXhYJq8HWIBAGUBnoAdRu1aXeh364t/O7wXDAcTJDP8PNuNKWUDWie+A==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dev: true
+
   /is-alphabetical/2.0.1:
     resolution: {integrity: sha512-FWyyY60MeTNyeSRpkM2Iry0G9hpr7/9kD40mD/cGQEuilcZYS4okz8SN2Q6rLCJ8gbCt6fN+rC+6tMGS99LaxQ==}
     dev: true
@@ -6048,6 +6055,17 @@ packages:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
+    dev: true
+
+  /rehype-external-links/2.0.1:
+    resolution: {integrity: sha512-u2dNypma+ps12SJWlS23zvbqwNx0Hl24t0YHXSM/6FCZj/pqWETCO3WyyrvALv4JYvRtuPjhiv2Lpen15ESqbA==}
+    dependencies:
+      '@types/hast': 2.3.4
+      extend: 3.0.2
+      is-absolute-url: 4.0.1
+      space-separated-tokens: 2.0.2
+      unified: 10.1.2
+      unist-util-visit: 4.1.2
     dev: true
 
   /rehype-parse/8.0.4:

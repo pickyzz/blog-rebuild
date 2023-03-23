@@ -14,7 +14,7 @@
   },
   "scripts": {
     "dev": "astro check --watch & astro dev",
-    "start": "astro check --watch & astro dev",
+    "start": "astro dev",
     "build": "astro build && jampack ./dist",
     "preview": "astro preview",
     "sync": "astro sync",
@@ -65,6 +65,7 @@
     "prompts": "2.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "rehype-external-links": "^2.0.1",
     "remark-collapse": "0.1.2",
     "remark-toc": "8.0.1",
     "satori": "0.4.4",
