@@ -114,6 +114,14 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-skin-card-muted;
   }
+
+  /* ===== TailwindCSS Typography ===== */
+  .prose blockquote p:first-of-type::before {
+    content: "";
+  }
+  .prose blockquote p:last-of-type::after {
+    content: "";
+  }
 }
 
 @layer components {
