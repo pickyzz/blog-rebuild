@@ -49,7 +49,7 @@
     "@typescript-eslint/parser": "5.56.0",
     "astro": "2.1.5",
     "astro-eslint-parser": "0.13.1",
-    "astro-robots-txt": "0.4.0",
+    "astro-robots-txt": "0.4.1",
     "commitizen": "4.3.0",
     "cz-conventional-changelog": "3.3.0",
     "daisyui": "2.51.5",
