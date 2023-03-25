@@ -19,7 +19,7 @@ specifiers:
   '@types/react': 18.0.29
   '@typescript-eslint/parser': 5.56.0
   astro: 2.1.7
-  astro-eslint-parser: 0.13.1
+  astro-eslint-parser: 0.13.2
   astro-robots-txt: 0.4.1
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
@@ -62,7 +62,7 @@ devDependencies:
   '@types/react': 18.0.29
   '@typescript-eslint/parser': 5.56.0_eslint@8.36.0
   astro: 2.1.7
-  astro-eslint-parser: 0.13.1
+  astro-eslint-parser: 0.13.2
   astro-robots-txt: 0.4.1
   commitizen: 4.3.0
   cz-conventional-changelog: 3.3.0
@@ -98,10 +98,6 @@ packages:
 
   /@astrojs/compiler/0.31.4:
     resolution: {integrity: sha512-6bBFeDTtPOn4jZaiD3p0f05MEGQL9pw2Zbfj546oFETNmjJFWO3nzHz6/m+P53calknCvyVzZ5YhoBLIvzn5iw==}
-    dev: true
-
-  /@astrojs/compiler/1.2.0:
-    resolution: {integrity: sha512-O8yPCyuq+PU9Fjht2tIW6WzSWiq8qDF1e8uAX2x+SOGFzKqOznp52UlDG2mSf+ekf0Z3R34sb64O7SgX+asTxg==}
     dev: true
 
   /@astrojs/compiler/1.3.0:
@@ -1878,14 +1874,14 @@ packages:
     hasBin: true
     dev: true
 
-  /astro-eslint-parser/0.13.1:
-    resolution: {integrity: sha512-BZAV77XFIDGWm+DuxZBT2OJo+4W98f+LylF64xQ0pWYfIRJA5zVK3L/RM3Gr+4obBg91RnSibN3Ofc3nIwHYiw==}
+  /astro-eslint-parser/0.13.2:
+    resolution: {integrity: sha512-hLCfc4IfeR550tCxEQDOnoDbf+B7CtU3he0foNQ+XxfYyx+8qKwcEIvigrU1PzfwAfAvT83RFA1Q6TWHDj82GA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
-      '@astrojs/compiler': 1.2.0
+      '@astrojs/compiler': 1.3.0
       '@typescript-eslint/scope-manager': 5.56.0
       '@typescript-eslint/types': 5.56.0
-      astrojs-compiler-sync: 0.3.1_@astrojs+compiler@1.2.0
+      astrojs-compiler-sync: 0.3.1_@astrojs+compiler@1.3.0
       debug: 4.3.4
       eslint-visitor-keys: 3.3.0
       espree: 9.5.0
@@ -1977,13 +1973,13 @@ packages:
       - terser
     dev: true
 
-  /astrojs-compiler-sync/0.3.1_@astrojs+compiler@1.2.0:
+  /astrojs-compiler-sync/0.3.1_@astrojs+compiler@1.3.0:
     resolution: {integrity: sha512-IzPuzkwdiRIZoBhCTuFhuBMWVESXgthTdwQ24QS8LvLargcWAA4E21KmZo4wimsmOG5vj4KKs9QFpy9zhXuo9Q==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       '@astrojs/compiler': '>=0.27.0'
     dependencies:
-      '@astrojs/compiler': 1.2.0
+      '@astrojs/compiler': 1.3.0
       synckit: 0.8.5
     dev: true
 
@@ -3184,7 +3180,7 @@ packages:
       '@eslint-community/eslint-utils': 4.2.0_eslint@8.36.0
       '@jridgewell/sourcemap-codec': 1.4.14
       '@typescript-eslint/types': 5.56.0
-      astro-eslint-parser: 0.13.1
+      astro-eslint-parser: 0.13.2
       eslint: 8.36.0
       postcss: 8.4.21
       postcss-selector-parser: 6.0.11
