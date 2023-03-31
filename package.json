@@ -47,7 +47,7 @@
     "@types/prompts": "2.4.4",
     "@types/react": "18.0.31",
     "@typescript-eslint/parser": "5.57.0",
-    "astro": "2.1.8",
+    "astro": "2.1.9",
     "astro-eslint-parser": "0.13.2",
     "astro-robots-txt": "0.4.1",
     "commitizen": "4.3.0",
