@@ -48,7 +48,7 @@
     "@types/react": "18.0.33",
     "@typescript-eslint/parser": "5.57.1",
     "astro": "2.2.1",
-    "astro-eslint-parser": "0.13.2",
+    "astro-eslint-parser": "0.13.3",
     "astro-robots-txt": "0.4.1",
     "commitizen": "4.3.0",
     "cz-conventional-changelog": "3.3.0",
