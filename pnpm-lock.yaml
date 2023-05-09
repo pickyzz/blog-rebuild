@@ -56,8 +56,8 @@ devDependencies:
     specifier: 2.4.3
     version: 2.4.3(@types/node@18.13.0)
   astro-eslint-parser:
-    specifier: 0.13.3
-    version: 0.13.3
+    specifier: 0.14.0
+    version: 0.14.0
   astro-robots-txt:
     specifier: 0.5.0
     version: 0.5.0
@@ -1715,7 +1715,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       '@typescript-eslint/types': 5.57.1
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /@typescript-eslint/visitor-keys@5.59.5:
@@ -1913,6 +1913,22 @@ packages:
       - supports-color
     dev: true
 
+  /astro-eslint-parser@0.14.0:
+    resolution: {integrity: sha512-3F8l1h7+5MNxzDg1cSQxEloalG7fj64K6vOERChUVG7RLnAzSoafADnPQlU8DpMM3WRNfRHSC4NwUCORk/aPrA==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    dependencies:
+      '@astrojs/compiler': 1.4.0
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/types': 5.59.5
+      astrojs-compiler-sync: 0.3.1(@astrojs/compiler@1.4.0)
+      debug: 4.3.4
+      eslint-visitor-keys: 3.4.1
+      espree: 9.5.2
+      semver: 7.5.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /astro-robots-txt@0.5.0:
     resolution: {integrity: sha512-MJDcxBDjEKSp7Uvw32cnmkPHlmjQ/pW5JwzMhKEegFRoGaiSh2i1kkh1QEhk1UpGnAsSondWCoIt2xpG8qjSgA==}
     dependencies:
@@ -2000,6 +2016,16 @@ packages:
       '@astrojs/compiler': '>=0.27.0'
     dependencies:
       '@astrojs/compiler': 1.3.1
+      synckit: 0.8.5
+    dev: true
+
+  /astrojs-compiler-sync@0.3.1(@astrojs/compiler@1.4.0):
+    resolution: {integrity: sha512-IzPuzkwdiRIZoBhCTuFhuBMWVESXgthTdwQ24QS8LvLargcWAA4E21KmZo4wimsmOG5vj4KKs9QFpy9zhXuo9Q==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      '@astrojs/compiler': '>=0.27.0'
+    dependencies:
+      '@astrojs/compiler': 1.4.0
       synckit: 0.8.5
     dev: true
 
@@ -3064,7 +3090,7 @@ packages:
     dependencies:
       acorn: 8.8.2
       acorn-jsx: 5.3.2(acorn@8.8.2)
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /espree@9.5.2:
