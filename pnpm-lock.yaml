@@ -116,8 +116,8 @@ devDependencies:
     specifier: 8.0.1
     version: 8.0.1
   satori:
-    specifier: 0.8.0
-    version: 0.8.0
+    specifier: 0.8.1
+    version: 0.8.1
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2(ts-node@10.9.1)
@@ -6131,8 +6131,8 @@ packages:
       suf-log: 2.5.3
     dev: true
 
-  /satori@0.8.0:
-    resolution: {integrity: sha512-hasNIhGgJCqt5Yvy3H0wu8g9vvW5AAOWdt6/R5b+jhukqUTK97CdO3+fUTmuglExtesZRUOybM5yTKVHV2WuSQ==}
+  /satori@0.8.1:
+    resolution: {integrity: sha512-XboyousIz6IThWkKtPu3EyPAYV9ALH2pyC6bXeWKqYt7zAy11Qv40nro9Oozn+DSdaloSzGxnqy3Z7iFOHrX2Q==}
     engines: {node: '>=16'}
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
