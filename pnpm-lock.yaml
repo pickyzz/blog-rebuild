@@ -26,8 +26,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.0
-    version: 0.11.0
+    specifier: 0.11.1
+    version: 0.11.1
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -721,8 +721,8 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.0:
-    resolution: {integrity: sha512-fKH6zFbyDcw1JlHkhLTWJXU8ndlxwZyvsIDBvyX8xvDGY0TD4n2ZX9bHyTOMB9//ObVoyGplH0R6e+vhP9kmqg==}
+  /@divriots/jampack@0.11.1:
+    resolution: {integrity: sha512-juURGRvigXdUhfLsApN04t//yRo7r71zoRXfp93CzHW87XgJ3KWkbL20Ul3LvU3EO/vgLIbSynPsgzGH+Qxabg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -2755,7 +2755,7 @@ packages:
     dependencies:
       domelementtype: 2.3.0
       domhandler: 5.0.3
-      entities: 4.4.0
+      entities: 4.5.0
     dev: true
 
   /domelementtype@2.3.0:
@@ -2834,11 +2834,6 @@ packages:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
       once: 1.4.0
-    dev: true
-
-  /entities@4.4.0:
-    resolution: {integrity: sha512-oYp7156SP8LkeGD0GF85ad1X9Ai79WtRsZ2gxJqtBuzH+98YUV6jkHEKlZkMbcrjJjIVJNIDP/3WL9wQkoPbWA==}
-    engines: {node: '>=0.12'}
     dev: true
 
   /entities@4.5.0:
@@ -3685,7 +3680,7 @@ packages:
       camel-case: 4.1.2
       clean-css: 5.3.2
       commander: 10.0.1
-      entities: 4.4.0
+      entities: 4.5.0
       param-case: 3.0.4
       relateurl: 0.2.7
       terser: 5.16.5
@@ -5398,7 +5393,7 @@ packages:
   /parse5@7.1.2:
     resolution: {integrity: sha512-Czj1WaSVpaoj0wbhMzLmWD69anp2WH7FXMB9n1Sy8/ZFF9jolSQVMu1Ij5WIyGmcBmhk7EOndpO4mIpihVqAXw==}
     dependencies:
-      entities: 4.4.0
+      entities: 4.5.0
     dev: true
 
   /pascal-case@3.1.2:
