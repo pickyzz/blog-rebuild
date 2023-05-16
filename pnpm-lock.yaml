@@ -26,8 +26,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.3
-    version: 0.11.3
+    specifier: 0.11.4
+    version: 0.11.4
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -721,20 +721,18 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.3:
-    resolution: {integrity: sha512-KPb4cnnZpasF1Ui68MckzUMET4dlcylLBef91iFljkoxr8I7g8LIZljKCB7zvjXpbWM7mUrTlIA3MVO7S7HqzA==}
+  /@divriots/jampack@0.11.4:
+    resolution: {integrity: sha512-goZ7HaWuDhGECbpECuiHDGwg2mrWUY72qhlzyQAHw+4qezYkV5JPFF8sjQ22ThM9xM3q7uDnvhA++EfOgUx4mA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
       '@divriots/cheerio': 1.0.0-rc.12
       '@proload/core': 0.3.3
       '@swc/core': 1.3.57
-      '@types/csso': 5.0.0
       '@types/html-minifier-terser': 7.0.0
       '@types/sharp': 0.32.0
       '@types/svgo': 3.0.0
       commander: 10.0.1
-      csso: 5.0.5
       deepmerge: 4.3.1
       file-type: 18.4.0
       globby: 13.1.4
@@ -1504,16 +1502,6 @@ packages:
     resolution: {integrity: sha512-1kbcJ40lLB7MHsj39U4Sh1uTd2E7rLEa79kmDpI6cy+XiXsteB3POdQomoq4FxszMrO3ZYchkhYJw7A2862b3w==}
     dependencies:
       '@babel/types': 7.20.7
-    dev: true
-
-  /@types/css-tree@2.3.0:
-    resolution: {integrity: sha512-waFpSayOepEo9vI68r5K/hAgxloFDkUTqXvYduSnwzS5n+tdmvouIWBJy+kOq5xwh0paoJw7NnNXiM8O/O9jRg==}
-    dev: true
-
-  /@types/csso@5.0.0:
-    resolution: {integrity: sha512-EMrCTGpXRUsbFfZBzn2jcW6Sqg8kxWXkJcpvAGYSEzFqAJ2THDJSwiMeS2fPUw+0p6RQNT/n8F/skEc9hUBc0g==}
-    dependencies:
-      '@types/css-tree': 2.3.0
     dev: true
 
   /@types/debug@4.1.7:
