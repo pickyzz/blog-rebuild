@@ -2,7 +2,7 @@ import { defineConfig } from "astro/config";
 import { SITE } from "./src/config";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import rehypeExternalLinks from 'rehype-external-links'
+import rehypeExternalLinks from "rehype-external-links";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import robotsTxt from "astro-robots-txt";
