@@ -5,8 +5,8 @@ devDependencies:
     specifier: 0.19.2
     version: 0.19.2(astro@2.5.0)(rollup@3.21.0)
   '@astrojs/prefetch':
-    specifier: 0.2.2
-    version: 0.2.2
+    specifier: 0.2.3
+    version: 0.2.3
   '@astrojs/react':
     specifier: 2.2.0
     version: 2.2.0(@types/react-dom@18.0.11)(@types/react@18.2.6)(react-dom@18.2.0)(react@18.2.0)
@@ -215,8 +215,8 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/prefetch@0.2.2:
-    resolution: {integrity: sha512-KGXHFYkSAzMPpMZA/r7dNEjPmV5HXlZpa8LkRWf4O/aXmgu8X/Y/D8QXY7lInkk/CnRg4fz1WdoCPtSVUGzkwQ==}
+  /@astrojs/prefetch@0.2.3:
+    resolution: {integrity: sha512-r51t4fkGcePA6FHFVDD5vC/whhoKWFSaKNug/4Z2FSKZZga9yjb2qDcrul7u32nVDN+30ywZ/RQAmBMrHOmLiw==}
     dependencies:
       throttles: 1.0.1
     dev: true
