@@ -26,8 +26,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.4
-    version: 0.11.4
+    specifier: 0.11.5
+    version: 0.11.5
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -721,17 +721,14 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.4:
-    resolution: {integrity: sha512-goZ7HaWuDhGECbpECuiHDGwg2mrWUY72qhlzyQAHw+4qezYkV5JPFF8sjQ22ThM9xM3q7uDnvhA++EfOgUx4mA==}
+  /@divriots/jampack@0.11.5:
+    resolution: {integrity: sha512-M7JXLhztZq+p9cXHnL/ez3Y2Hsy9/Qdv+8cQsucZu2/fOBawt6nR5vvx8sChe4/vdv61O7KGOd2nZJF88I8tcg==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
       '@divriots/cheerio': 1.0.0-rc.12
       '@proload/core': 0.3.3
       '@swc/core': 1.3.57
-      '@types/html-minifier-terser': 7.0.0
-      '@types/sharp': 0.32.0
-      '@types/svgo': 3.0.0
       commander: 10.0.1
       deepmerge: 4.3.1
       file-type: 18.4.0
@@ -1534,10 +1531,6 @@ packages:
       '@types/unist': 2.0.6
     dev: true
 
-  /@types/html-minifier-terser@7.0.0:
-    resolution: {integrity: sha512-hw3bhStrg5e3FQT8qZKCJTrzt/UbEaunU1xRWJ+aNOTmeBMvE3S4Ml2HiiNnZgL8izu0LFVkHUoPFXL1s5QNpQ==}
-    dev: true
-
   /@types/json5@0.0.30:
     resolution: {integrity: sha512-sqm9g7mHlPY/43fcSNrCYfOeX9zkTTK+euO5E6+CVijSMm5tTjkVdwdqRkY3ljjIAf8679vps5jKUoJBCLsMDA==}
     dev: true
@@ -1619,20 +1612,6 @@ packages:
 
   /@types/scheduler@0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: true
-
-  /@types/sharp@0.32.0:
-    resolution: {integrity: sha512-OOi3kL+FZDnPhVzsfD37J88FNeZh6gQsGcLc95NbeURRGvmSjeXiDcyWzF2o3yh/gQAUn2uhh/e+CPCa5nwAxw==}
-    deprecated: This is a stub types definition. sharp provides its own type definitions, so you do not need this installed.
-    dependencies:
-      sharp: 0.32.1
-    dev: true
-
-  /@types/svgo@3.0.0:
-    resolution: {integrity: sha512-G5qLWNq/rMvSM1EyY4E2iEd+s9km/PxLkzPkA2lghrgWJ2jrVMuB1ZsGOzL4YAWCy5sAoUw7SEQseHE2qypF2w==}
-    deprecated: This is a stub types definition. svgo provides its own type definitions, so you do not need this installed.
-    dependencies:
-      svgo: 3.0.2
     dev: true
 
   /@types/unist@2.0.6:
