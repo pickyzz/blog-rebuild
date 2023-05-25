@@ -26,8 +26,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.5
-    version: 0.11.5
+    specifier: 0.11.7
+    version: 0.11.7
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -721,8 +721,8 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.5:
-    resolution: {integrity: sha512-M7JXLhztZq+p9cXHnL/ez3Y2Hsy9/Qdv+8cQsucZu2/fOBawt6nR5vvx8sChe4/vdv61O7KGOd2nZJF88I8tcg==}
+  /@divriots/jampack@0.11.7:
+    resolution: {integrity: sha512-vl3flmy0LIiEh0ogBak5/zypXbZPz9LQ2ZEYCu9TIpLRut3Oghf3d56I7Ij9fFxPL0qS7minGtxTqtSkkCwkQw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
