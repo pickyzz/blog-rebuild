@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 devDependencies:
   '@astrojs/mdx':
@@ -26,8 +30,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.7
-    version: 0.11.7
+    specifier: 0.12.2
+    version: 0.12.2
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -721,8 +725,8 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.7:
-    resolution: {integrity: sha512-vl3flmy0LIiEh0ogBak5/zypXbZPz9LQ2ZEYCu9TIpLRut3Oghf3d56I7Ij9fFxPL0qS7minGtxTqtSkkCwkQw==}
+  /@divriots/jampack@0.12.2:
+    resolution: {integrity: sha512-eKOVEixxgs18YVEkm1T0sBcjUkJhMdxjX5HLkfRdeLksKXJ+uSVWOdKJlECX4TJXEAl78Jf+SPvIuVaLe02Irw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -742,6 +746,7 @@ packages:
       sharp: 0.32.1
       svgo: 3.0.2
       table: 6.8.1
+      undici: 5.22.1
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
