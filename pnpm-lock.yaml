@@ -26,8 +26,8 @@ devDependencies:
     specifier: 17.6.3
     version: 17.6.3
   '@divriots/jampack':
-    specifier: 0.11.7
-    version: 0.11.7
+    specifier: 0.12.2
+    version: 0.12.2
   '@resvg/resvg-js':
     specifier: 2.4.1
     version: 2.4.1
@@ -68,8 +68,8 @@ devDependencies:
     specifier: 3.3.0
     version: 3.3.0
   daisyui:
-    specifier: 2.51.6
-    version: 2.51.6(autoprefixer@10.4.14)(postcss@8.4.23)(ts-node@10.9.1)
+    specifier: 2.52.0
+    version: 2.52.0(autoprefixer@10.4.14)(postcss@8.4.23)(ts-node@10.9.1)
   eslint:
     specifier: 8.41.0
     version: 8.41.0
@@ -721,8 +721,8 @@ packages:
       whatwg-mimetype: 3.0.0
     dev: true
 
-  /@divriots/jampack@0.11.7:
-    resolution: {integrity: sha512-vl3flmy0LIiEh0ogBak5/zypXbZPz9LQ2ZEYCu9TIpLRut3Oghf3d56I7Ij9fFxPL0qS7minGtxTqtSkkCwkQw==}
+  /@divriots/jampack@0.12.2:
+    resolution: {integrity: sha512-eKOVEixxgs18YVEkm1T0sBcjUkJhMdxjX5HLkfRdeLksKXJ+uSVWOdKJlECX4TJXEAl78Jf+SPvIuVaLe02Irw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -742,6 +742,7 @@ packages:
       sharp: 0.32.1
       svgo: 3.0.2
       table: 6.8.1
+      undici: 5.22.1
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -2586,8 +2587,8 @@ packages:
       - '@swc/wasm'
     dev: true
 
-  /daisyui@2.51.6(autoprefixer@10.4.14)(postcss@8.4.23)(ts-node@10.9.1):
-    resolution: {integrity: sha512-JRqOKayuFCmWe4X4k6Qvx1y7V/VNao8U5eTSOhusOKIzCsYqf56+TCSe4d7zmqGE0V6JiLDYAT8JeoWUeRKFCw==}
+  /daisyui@2.52.0(autoprefixer@10.4.14)(postcss@8.4.23)(ts-node@10.9.1):
+    resolution: {integrity: sha512-LQTA5/IVXAJHBMFoeaEMfd7/akAFPPcdQPR3O9fzzcFiczneJFM73CFPnScmW2sOgn/D83cvkP854ep2T9OfTg==}
     peerDependencies:
       autoprefixer: ^10.0.2
       postcss: ^8.1.6
