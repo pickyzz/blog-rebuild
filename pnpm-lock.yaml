@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@astrojs/mdx':
-    specifier: 0.19.6
-    version: 0.19.6(astro@2.5.7)
+    specifier: 0.19.7
+    version: 0.19.7(astro@2.5.7)
   '@astrojs/prefetch':
     specifier: 0.2.3
     version: 0.2.3
@@ -191,8 +191,8 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/mdx@0.19.6(astro@2.5.7):
-    resolution: {integrity: sha512-P9CU+l/GveJPG3OOOdlZtIK5NWcJuEnXPtxwfjJUaoIPHDByp6okT/yN/WwLAA4TfnluFnULNG4bDsEnwcpYvw==}
+  /@astrojs/mdx@0.19.7(astro@2.5.7):
+    resolution: {integrity: sha512-mfEbBD7oi8yBHhcJucEjnrquREkJ3os+jioURP8BR2B8tOV2rV2j8trvmLUgfS+P/+HevGObxCTjcRYxn6T7eg==}
     engines: {node: '>=16.12.0'}
     dependencies:
       '@astrojs/markdown-remark': 2.2.1(astro@2.5.7)
