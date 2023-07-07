@@ -72,8 +72,8 @@ devDependencies:
     specifier: 3.3.0
     version: 3.3.0
   daisyui:
-    specifier: 3.1.11
-    version: 3.1.11(postcss@8.4.23)(ts-node@10.9.1)
+    specifier: 3.2.1
+    version: 3.2.1(ts-node@10.9.1)
   eslint:
     specifier: 8.44.0
     version: 8.44.0
@@ -2748,11 +2748,9 @@ packages:
       - '@swc/wasm'
     dev: true
 
-  /daisyui@3.1.11(postcss@8.4.23)(ts-node@10.9.1):
-    resolution: {integrity: sha512-TAtdjV3VgqVUf7PSRdwU0cBPgvtlPvQJgXQAHw+E+2+3IbZFLRuOgFCMdBk9B5MGqaJMTkT7AXMkGPIDSCfX1A==}
+  /daisyui@3.2.1(ts-node@10.9.1):
+    resolution: {integrity: sha512-gIqE6wiqoJt9G8+n3R/SwLeUnpNCE2eDhT73rP0yZYVaM7o6zVcakBH3aEW5RGpx3UkonPiLuvcgxRcb2lE8TA==}
     engines: {node: '>=16.9.0'}
-    peerDependencies:
-      postcss: ^8
     dependencies:
       colord: 2.9.3
       css-selector-tokenizer: 0.8.0
