@@ -100,9 +100,9 @@ function getContent(
 ) {
   return `---
 author: ${SITE.author}
-datetime: ${datetime}
+pubDatetime: ${datetime}
 title: ${title ? title : "# Your_Post_Title"}
-slug: ${slug ? slug : "# Your_Post_Slug"}
+postSlug: ${slug ? slug : "# Your_Post_Slug"}
 featured: ${featured}
 draft: ${draft}
 tags:
@@ -110,9 +110,10 @@ tags:
 ogImage: ""
 description: ${desc ? desc : "# A_brief_description_about_your_new_article"}
 ---
-<!-- Write your brief intro here -->
+
+{/* Write your brief intro here */}
 ## Table of contents
-<!-- Write your post content here -->
+{/* Write your post content here */}
 `;
 }
 
