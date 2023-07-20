@@ -34,7 +34,7 @@
     "@astrojs/prefetch": "0.3.0",
     "@astrojs/react": "2.2.1",
     "@astrojs/rss": "2.4.3",
-    "@astrojs/sitemap": "1.4.0",
+    "@astrojs/sitemap": "2.0.1",
     "@astrojs/tailwind": "4.0.0",
     "@commitlint/cli": "17.6.7",
     "@commitlint/config-conventional": "17.6.7",
