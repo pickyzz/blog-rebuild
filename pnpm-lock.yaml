@@ -13,7 +13,7 @@ devDependencies:
     version: 0.3.0
   '@astrojs/react':
     specifier: 2.2.1
-    version: 2.2.1(@types/react-dom@18.0.11)(@types/react@18.2.16)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.2.1(@types/react-dom@18.0.11)(@types/react@18.2.17)(react-dom@18.2.0)(react@18.2.0)
   '@astrojs/rss':
     specifier: 2.4.3
     version: 2.4.3
@@ -51,8 +51,8 @@ devDependencies:
     specifier: 2.4.4
     version: 2.4.4
   '@types/react':
-    specifier: 18.2.16
-    version: 18.2.16
+    specifier: 18.2.17
+    version: 18.2.17
   '@typescript-eslint/parser':
     specifier: 6.2.0
     version: 6.2.0(eslint@8.45.0)(typescript@4.9.5)
@@ -244,7 +244,7 @@ packages:
       prismjs: 1.29.0
     dev: true
 
-  /@astrojs/react@2.2.1(@types/react-dom@18.0.11)(@types/react@18.2.16)(react-dom@18.2.0)(react@18.2.0):
+  /@astrojs/react@2.2.1(@types/react-dom@18.0.11)(@types/react@18.2.17)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-nq5Zr8iWdwjSp5fh1NReaCplwsnL4w5PXAY5XWu1jE/frxEfF/ycGHrrhwWW0uJHX9G+kUtmQLR0GBhlR4FmAw==}
     engines: {node: '>=16.12.0'}
     peerDependencies:
@@ -255,7 +255,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@babel/plugin-transform-react-jsx': 7.20.13(@babel/core@7.20.12)
-      '@types/react': 18.2.16
+      '@types/react': 18.2.17
       '@types/react-dom': 18.0.11
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -1945,11 +1945,11 @@ packages:
   /@types/react-dom@18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.2.16
+      '@types/react': 18.2.17
     dev: true
 
-  /@types/react@18.2.16:
-    resolution: {integrity: sha512-LLFWr12ZhBJ4YVw7neWLe6Pk7Ey5R9OCydfuMsz1L8bZxzaawJj2p06Q8/EFEHDeTBQNFLF62X+CG7B2zIyu0Q==}
+  /@types/react@18.2.17:
+    resolution: {integrity: sha512-u+e7OlgPPh+aryjOm5UJMX32OvB2E3QASOAqVMY6Ahs90djagxwv2ya0IctglNbNTexC12qCSMZG47KPfy1hAA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
