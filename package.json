@@ -54,7 +54,7 @@
     "cz-conventional-changelog": "3.3.0",
     "daisyui": "3.5.0",
     "eslint": "8.46.0",
-    "eslint-plugin-astro": "0.27.2",
+    "eslint-plugin-astro": "0.28.0",
     "fuse.js": "6.6.2",
     "github-slugger": "2.0.0",
     "husky": "8.0.3",
