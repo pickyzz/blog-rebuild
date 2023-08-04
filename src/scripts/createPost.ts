@@ -112,7 +112,10 @@ description: ${desc ? desc : "# A_brief_description_about_your_new_article"}
 ---
 
 {/* Write your brief intro here */}
+
 ## Table of contents
+##
+
 {/* Write your post content here */}
 `;
 }
