@@ -42,11 +42,11 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       featuredPosts.length > 0 && (
         <>
           <section id="featured">
-            <h2>Featured</h2>
+            <h2 class="mb-4">Featured</h2>
             <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
               {featuredPosts.map(
                 ({ data }, index) =>
-                  index < 4 && (
+                  index < 2 && (
                     <Card
                       href={`/blog/${slugify(data)}`}
                       frontmatter={data}
@@ -62,12 +62,12 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     }
 
     <section id="recent-posts">
-      <h2>Recent Posts</h2>
+      <h2 class="mb-4">Recent Posts</h2>
       <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {
           sortedPosts.map(
             ({ data }, index) =>
-              index < 4 && (
+              index < 6 && (
                 <Card
                   href={`/blog/${slugify(data)}`}
                   frontmatter={data}
