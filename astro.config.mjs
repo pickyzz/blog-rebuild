@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import { SITE } from "./src/config";
+import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import rehypeExternalLinks from "rehype-external-links";
@@ -39,6 +40,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [
       remarkToc,
+      remarkReadingTime,
       [
         remarkCollapse,
         {

@@ -32,7 +32,7 @@ const FormattedDatetime = ({ datetime }: { datetime: string | Date }) => {
     year: "numeric",
     month: "long",
     day: "numeric",
-    timeZone: "Asia/Bangkok"
+    timeZone: "Asia/Bangkok",
   });
 
   const time = myDatetime.toLocaleTimeString([], {
