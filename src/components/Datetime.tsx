@@ -32,11 +32,13 @@ const FormattedDatetime = ({ datetime }: { datetime: string | Date }) => {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "Asia/Bangkok"
   });
 
   const time = myDatetime.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Asia/Bangkok",
   });
 
   return (
