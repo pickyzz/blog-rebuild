@@ -21,9 +21,15 @@ import { SITE } from "@config";
           loading="lazy"
         />
         <div class="">
-          <p class="mb-4 text-3xl font-bold">Parinya T.</p>
-          <p class="my-1">
+          <p class="mb-4 text-3xl font-bold mt-2">Parinya T.</p>
+          <p class="my-2">
             Bachelor’s of Science degree (B. Sc.) KMUTNB, Thailand
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Location</span> : Thailand
+          </p>
+          <p class="my-1">
+            <span class="font-bold">Timezone</span> : Asia/Bangkok (GMT+7)
           </p>
           <p class="my-1">
             <span class="font-bold">Language</span> : TH, EN
@@ -72,30 +78,33 @@ import { SITE } from "@config";
             </a>
           </p>
           <div class="my-4">
-            <p class="text-2xl">Dev Stacks</p>
-            <p class="my-1">
+            <p class="text-2xl font-bold">Dev Stacks</p>
+            <p class="-mt-4">
               Lua, HTML, CSS, JavaScript, TypeScript, React, NextJs, Tailwind, Astro, Svelte
             </p>
           </div>
         </div>
       </div>
 
-      <div class="mt-12 flex justify-center">
-        <img
-          class="h-auto w-[75%] text-center"
-          src="/assets/images/fcc-cert-1.png"
-          alt="Avatar image"
-          loading="lazy"
-        />
+      <div class="-my-4 flex justify-center">
+        <div class="carousel w-[90%]">
+          <div id="slide1" class="carousel-item relative w-full">
+            <img src="/assets/images/fcc-cert-1.png" class="w-full" />
+            <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide2" class="btn btn-circle">❮</a> 
+              <a href="#slide2" class="btn btn-circle">❯</a>
+            </div>
+          </div> 
+          <div id="slide2" class="carousel-item relative w-full">
+            <img src="/assets/images/fcc-cert-2.png" class="w-full" />
+            <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
+              <a href="#slide1" class="btn btn-circle">❮</a> 
+              <a href="#slide1" class="btn btn-circle">❯</a>
+            </div>
+          </div> 
+        </div>
       </div>
-      <div class="mt-12 flex justify-center">
-        <img
-          class="h-auto w-[75%] text-center"
-          src="/assets/images/fcc-cert-2.png"
-          alt="Avatar image"
-          loading="lazy"
-        />
-      </div>
+
     </section>
   </main>
   <Footer />
