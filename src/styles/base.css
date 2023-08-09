@@ -118,6 +118,11 @@
   .prose blockquote p:last-of-type::after {
     content: "";
   }
+
+  code {
+    white-space: pre;
+    overflow: scroll;
+  }
 }
 
 @layer components {
