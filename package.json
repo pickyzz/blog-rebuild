@@ -36,7 +36,7 @@
     "@astrojs/rss": "2.4.4",
     "@astrojs/sitemap": "2.0.1",
     "@astrojs/tailwind": "4.0.0",
-    "@commitlint/cli": "17.7.0",
+    "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@divriots/jampack": "0.13.0",
     "@resvg/resvg-js": "2.4.1",
