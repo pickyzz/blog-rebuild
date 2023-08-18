@@ -31,6 +31,11 @@ jobs:
         with:
           version: latest
           run_install: false
+      
+      - name: "Install bun for building"
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: "Get pnpm store directory"
         id: pnpm-cache
@@ -59,7 +64,7 @@ jobs:
           CI: true
 
       - name: "Build Development"
-        run: pnpm build
+        run: bun run build
 
       - name: "Deploy to Netlify"
         uses: nwtgck/actions-netlify@v2.0
