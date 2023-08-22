@@ -60,8 +60,8 @@ devDependencies:
     specifier: 2.10.12
     version: 2.10.12(@types/node@20.4.7)
   astro-eslint-parser:
-    specifier: 0.14.0
-    version: 0.14.0
+    specifier: 0.15.0
+    version: 0.15.0
   astro-robots-txt:
     specifier: 0.5.0
     version: 0.5.0
@@ -161,6 +161,10 @@ packages:
 
   /@astrojs/compiler@1.8.0:
     resolution: {integrity: sha512-E0TI/uyO8n+IPSZ4Fvl9Lne8JKEasR6ZMGvE2G096oTWOXSsPAhRs2LomV3z+/VRepo2h+t/SdVo54wox4eJwA==}
+    dev: true
+
+  /@astrojs/compiler@2.0.0:
+    resolution: {integrity: sha512-SKVWorXpOHff+OuZCd5kdTc5HxVX7bVXVXYP0jANT4crz7y2PdthUxMnE21iuYt4+Bq3aV5MId4OdgwlJ2/d/Q==}
     dev: true
 
   /@astrojs/internal-helpers@0.1.2:
@@ -2113,6 +2117,22 @@ packages:
       - supports-color
     dev: true
 
+  /astro-eslint-parser@0.15.0:
+    resolution: {integrity: sha512-iC3VvAS/o6TX92Frwp5Yht/AO3a2tQhCnOe9CdbiICwy+ZYTH/ZOiBxeXI2I5qE1YlbtP2wvBLr+SCgwOAEZvg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    dependencies:
+      '@astrojs/compiler': 2.0.0
+      '@typescript-eslint/scope-manager': 5.59.5
+      '@typescript-eslint/types': 5.60.0
+      astrojs-compiler-sync: 0.3.1(@astrojs/compiler@2.0.0)
+      debug: 4.3.4
+      eslint-visitor-keys: 3.4.3
+      espree: 9.6.1
+      semver: 7.5.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /astro-robots-txt@0.5.0:
     resolution: {integrity: sha512-MJDcxBDjEKSp7Uvw32cnmkPHlmjQ/pW5JwzMhKEegFRoGaiSh2i1kkh1QEhk1UpGnAsSondWCoIt2xpG8qjSgA==}
     dependencies:
@@ -2206,6 +2226,16 @@ packages:
       '@astrojs/compiler': '>=0.27.0'
     dependencies:
       '@astrojs/compiler': 1.4.0
+      synckit: 0.8.5
+    dev: true
+
+  /astrojs-compiler-sync@0.3.1(@astrojs/compiler@2.0.0):
+    resolution: {integrity: sha512-IzPuzkwdiRIZoBhCTuFhuBMWVESXgthTdwQ24QS8LvLargcWAA4E21KmZo4wimsmOG5vj4KKs9QFpy9zhXuo9Q==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      '@astrojs/compiler': '>=0.27.0'
+    dependencies:
+      '@astrojs/compiler': 2.0.0
       synckit: 0.8.5
     dev: true
 
