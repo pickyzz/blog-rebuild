@@ -38,7 +38,7 @@
     "@astrojs/tailwind": "4.0.0",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
-    "@divriots/jampack": "0.13.0",
+    "@divriots/jampack": "0.15.0",
     "@resvg/resvg-js": "2.4.1",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
