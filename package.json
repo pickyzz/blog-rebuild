@@ -35,7 +35,7 @@
     "@astrojs/react": "3.0.0",
     "@astrojs/rss": "2.4.4",
     "@astrojs/sitemap": "2.0.2",
-    "@astrojs/tailwind": "4.0.0",
+    "@astrojs/tailwind": "5.0.0",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
     "@divriots/jampack": "0.15.0",
