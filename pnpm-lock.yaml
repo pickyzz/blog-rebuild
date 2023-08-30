@@ -7,13 +7,13 @@ settings:
 devDependencies:
   '@astrojs/mdx':
     specifier: 1.0.0
-    version: 1.0.0(astro@3.0.2)
+    version: 1.0.0(astro@3.0.3)
   '@astrojs/prefetch':
     specifier: 0.4.0
     version: 0.4.0
   '@astrojs/react':
     specifier: 3.0.0
-    version: 3.0.0(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.6)
+    version: 3.0.0(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9)
   '@astrojs/rss':
     specifier: 3.0.0
     version: 3.0.0
@@ -22,7 +22,7 @@ devDependencies:
     version: 3.0.0
   '@astrojs/tailwind':
     specifier: 5.0.0
-    version: 5.0.0(astro@3.0.2)(tailwindcss@3.3.3)(ts-node@10.9.1)
+    version: 5.0.0(astro@3.0.3)(tailwindcss@3.3.3)(ts-node@10.9.1)
   '@divriots/jampack':
     specifier: 0.15.0
     version: 0.15.0
@@ -51,8 +51,8 @@ devDependencies:
     specifier: 6.5.0
     version: 6.5.0(eslint@8.48.0)(typescript@4.9.5)
   astro:
-    specifier: 3.0.2
-    version: 3.0.2(@types/node@20.4.7)
+    specifier: 3.0.3
+    version: 3.0.3(@types/node@20.4.7)
   astro-eslint-parser:
     specifier: 0.15.0
     version: 0.15.0
@@ -161,13 +161,13 @@ packages:
     resolution: {integrity: sha512-NQ4ppp1CM0HNkKbJNM4saVSfmUYzGlRalF6wx7F6T/MYHYSWGuojY89/oFTy4t8VlOGUCUijlsVNNeziWaUo5g==}
     dev: true
 
-  /@astrojs/markdown-remark@3.0.0(astro@3.0.2):
+  /@astrojs/markdown-remark@3.0.0(astro@3.0.3):
     resolution: {integrity: sha512-s8I49Je4++ImgYAgwL32HgN8m6we2qz3RtBpN4AjObMODPwDylmzUHZksD8Toy31q/P59ED3MuwphqOGm9l03w==}
     peerDependencies:
       astro: ^3.0.0
     dependencies:
       '@astrojs/prism': 3.0.0
-      astro: 3.0.2(@types/node@20.4.7)
+      astro: 3.0.3(@types/node@20.4.7)
       github-slugger: 2.0.0
       import-meta-resolve: 3.0.0
       rehype-raw: 6.1.1
@@ -184,17 +184,17 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/mdx@1.0.0(astro@3.0.2):
+  /@astrojs/mdx@1.0.0(astro@3.0.3):
     resolution: {integrity: sha512-Gmeleci8o4X7dST9E85c1+k273zcKW8cSFgZLTwU5K4dC0qHfY/EaDKHWrtzOB2wjZlT1JDRzTJ68LJYGrF2OA==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       astro: ^3.0.0
     dependencies:
-      '@astrojs/markdown-remark': 3.0.0(astro@3.0.2)
+      '@astrojs/markdown-remark': 3.0.0(astro@3.0.3)
       '@astrojs/prism': 3.0.0
       '@mdx-js/mdx': 2.3.0
       acorn: 8.10.0
-      astro: 3.0.2(@types/node@20.4.7)
+      astro: 3.0.3(@types/node@20.4.7)
       es-module-lexer: 1.3.0
       estree-util-visit: 1.2.1
       github-slugger: 2.0.0
@@ -226,7 +226,7 @@ packages:
       prismjs: 1.29.0
     dev: true
 
-  /@astrojs/react@3.0.0(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.6):
+  /@astrojs/react@3.0.0(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9):
     resolution: {integrity: sha512-JOj0DF7gCmyrM2fem8LLXOh2sF9lX0zSkm6B0GpLeJ4u2lH5B8w9znBZuLy4AZZVktNqiLfexwlhWE99VC9ZpQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -238,7 +238,7 @@ packages:
       '@astrojs/internal-helpers': 0.2.0
       '@types/react': 18.2.21
       '@types/react-dom': 18.0.11
-      '@vitejs/plugin-react': 4.0.4(vite@4.4.6)
+      '@vitejs/plugin-react': 4.0.4(vite@4.4.9)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       ultrahtml: 1.3.0
@@ -261,13 +261,13 @@ packages:
       zod: 3.21.1
     dev: true
 
-  /@astrojs/tailwind@5.0.0(astro@3.0.2)(tailwindcss@3.3.3)(ts-node@10.9.1):
+  /@astrojs/tailwind@5.0.0(astro@3.0.3)(tailwindcss@3.3.3)(ts-node@10.9.1):
     resolution: {integrity: sha512-bMZZNNm/SW+ijUKMQDhdiuNWDdR3CubEKUHb2Ran4Arx1ikWn/kKIkFDXUV+MUnsLa7s19x9VMRlARRyKbqMkQ==}
     peerDependencies:
       astro: ^3.0.0
       tailwindcss: ^3.0.24
     dependencies:
-      astro: 3.0.2(@types/node@20.4.7)
+      astro: 3.0.3(@types/node@20.4.7)
       autoprefixer: 10.4.15(postcss@8.4.29)
       postcss: 8.4.29
       postcss-load-config: 4.0.1(postcss@8.4.29)(ts-node@10.9.1)
@@ -299,15 +299,6 @@ packages:
       '@babel/highlight': 7.22.13
       chalk: 2.4.2
     dev: true
-
-  /@babel/code-frame@7.22.5:
-    resolution: {integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ==}
-    engines: {node: '>=6.9.0'}
-    requiresBuild: true
-    dependencies:
-      '@babel/highlight': 7.22.5
-    dev: true
-    optional: true
 
   /@babel/compat-data@7.22.9:
     resolution: {integrity: sha512-5UamI7xkUcJ3i9qVDS+KFDEK8/7oJ55/sJMB1Ge7IEapr7KfdfV/HErR+koZwOfd+SgtFKOKRhRakdg++DcJpQ==}
@@ -459,17 +450,6 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
     dev: true
-
-  /@babel/highlight@7.22.5:
-    resolution: {integrity: sha512-BSKlD1hgnedS5XRnGOljZawtag7H1yPfQp0tdNJCHoH6AZ+Pcm9VvkrK59/Yy593Ypg0zMxH2BxD1VPYUQ7UIw==}
-    engines: {node: '>=6.9.0'}
-    requiresBuild: true
-    dependencies:
-      '@babel/helper-validator-identifier': 7.22.5
-      chalk: 2.4.2
-      js-tokens: 4.0.0
-    dev: true
-    optional: true
 
   /@babel/parser@7.22.14:
     resolution: {integrity: sha512-1KucTHgOvaw/LzCVrEOAyXkr9rQlp0A1HiHRYnSUE9dmb8PvPW7o5sscg+5169r54n3vGlbx6GevTE/Iw/P3AQ==}
@@ -1796,7 +1776,7 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
-  /@vitejs/plugin-react@4.0.4(vite@4.4.6):
+  /@vitejs/plugin-react@4.0.4(vite@4.4.9):
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -1806,7 +1786,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.11)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.11)
       react-refresh: 0.14.0
-      vite: 4.4.6(@types/node@20.4.7)
+      vite: 4.4.9(@types/node@20.4.7)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1993,14 +1973,14 @@ packages:
       zod: 3.21.4
     dev: true
 
-  /astro@3.0.2(@types/node@20.4.7):
-    resolution: {integrity: sha512-7ytwERK1CN7LBA/BgUrA9/ktbn0WDRwvkpxZZkIPlbjp3Ojlp6e12L2ZkNIYyIsGzFqXAZZz58pFwy7KG2Qz5g==}
+  /astro@3.0.3(@types/node@20.4.7):
+    resolution: {integrity: sha512-bugdGn9wIniVFbfyAHYtF9bc9pZpPaEs3gJAnK/XWROxCBAI2UQjR6lQuWM20iCc3snqu7GDgoW2MdzO7WFZZw==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
       '@astrojs/compiler': 2.0.1
       '@astrojs/internal-helpers': 0.2.0
-      '@astrojs/markdown-remark': 3.0.0(astro@3.0.2)
+      '@astrojs/markdown-remark': 3.0.0(astro@3.0.3)
       '@astrojs/telemetry': 3.0.0
       '@babel/core': 7.22.11
       '@babel/generator': 7.22.10
@@ -3802,12 +3782,6 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /is-core-module@2.11.0:
-    resolution: {integrity: sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==}
-    dependencies:
-      has: 1.0.3
-    dev: true
-
   /is-core-module@2.13.0:
     resolution: {integrity: sha512-Z7dk6Qo8pOCp3l4tsX2C5ZVas4V+UxwQodwZhLopL91TX8UyyHEXafPcyoeeWuLrwzHcr3igO78wNLwHJHsMCQ==}
     dependencies:
@@ -5209,7 +5183,7 @@ packages:
     engines: {node: '>=8'}
     requiresBuild: true
     dependencies:
-      '@babel/code-frame': 7.22.5
+      '@babel/code-frame': 7.22.13
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
@@ -5351,7 +5325,7 @@ packages:
       postcss: 8.4.23
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
-      resolve: 1.22.2
+      resolve: 1.22.4
     dev: true
 
   /postcss-js@4.0.1(postcss@8.4.23):
@@ -5694,14 +5668,6 @@ packages:
       unified: 10.1.2
     dev: true
 
-  /rehype-stringify@9.0.3:
-    resolution: {integrity: sha512-kWiZ1bgyWlgOxpqD5HnxShKAdXtb2IUljn3hQAhySeak6IOQPPt6DeGnsIh4ixm7yKJWzm8TXFuC/lPfcWHJqw==}
-    dependencies:
-      '@types/hast': 2.3.4
-      hast-util-to-html: 8.0.4
-      unified: 10.1.2
-    dev: true
-
   /rehype-stringify@9.0.4:
     resolution: {integrity: sha512-Uk5xu1YKdqobe5XpSskwPvo1XeHUUucWEQSl8hTrXt5selvca1e8K1EZ37E6YoZ4BT8BCqCdVfQW7OfHfthtVQ==}
     dependencies:
@@ -5715,7 +5681,7 @@ packages:
     dependencies:
       '@types/hast': 2.3.4
       rehype-parse: 8.0.4
-      rehype-stringify: 9.0.3
+      rehype-stringify: 9.0.4
       unified: 10.1.2
     dev: true
 
@@ -5846,7 +5812,7 @@ packages:
     resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
     hasBin: true
     dependencies:
-      is-core-module: 2.11.0
+      is-core-module: 2.13.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
@@ -5925,14 +5891,6 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
-    dev: true
-
-  /rollup@3.26.3:
-    resolution: {integrity: sha512-7Tin0C8l86TkpcMtXvQu6saWH93nhG3dGQ1/+l5V2TDMceTxO7kDiK6GzbfLWNNxqJXm591PcEZUozZm51ogwQ==}
-    engines: {node: '>=14.18.0', npm: '>=8.0.0'}
-    hasBin: true
-    optionalDependencies:
-      fsevents: 2.3.2
     dev: true
 
   /rollup@3.28.1:
@@ -6429,7 +6387,7 @@ packages:
     hasBin: true
     dependencies:
       '@jridgewell/source-map': 0.3.2
-      acorn: 8.9.0
+      acorn: 8.10.0
       commander: 2.20.3
       source-map-support: 0.5.21
     dev: true
@@ -6778,42 +6736,6 @@ packages:
       is-buffer: 2.0.5
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
-    dev: true
-
-  /vite@4.4.6(@types/node@20.4.7):
-    resolution: {integrity: sha512-EY6Mm8vJ++S3D4tNAckaZfw3JwG3wa794Vt70M6cNJ6NxT87yhq7EC8Rcap3ahyHdo8AhCmV9PTk+vG1HiYn1A==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 20.4.7
-      esbuild: 0.18.16
-      postcss: 8.4.29
-      rollup: 3.26.3
-    optionalDependencies:
-      fsevents: 2.3.2
     dev: true
 
   /vite@4.4.9(@types/node@20.4.7):
