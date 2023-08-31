@@ -16,7 +16,7 @@ breadcrumbList[0] === "blog" &&
   <ul>
     <li>
       <a href="/">Home</a>
-      <span aria-hidden="true">&#62;</span>
+      <span class={`mx-2`} aria-hidden="true">&#62;</span>
     </li>
     {
       breadcrumbList.map((breadcrumb, index) =>
@@ -27,12 +27,12 @@ breadcrumbList[0] === "blog" &&
               aria-current="page"
             >
               {/* make the last part lowercase in Home > Tags > some-tag */}
-              &nbsp;{breadcrumb}
+              {breadcrumb}
             </span>
           </li>
         ) : (
           <li>
-            <a href={`/${breadcrumb}`}>&nbsp;{breadcrumb}</a>
+            <a href={`/${breadcrumb}`}>{breadcrumb}</a>
             <span aria-hidden="true">&#62;</span>
           </li>
         )

@@ -10,17 +10,25 @@ export interface Props {
 const { href, className, ariaLabel, title, disabled = false } = Astro.props;
 ---
 
-<a
-  type="button"
-  href={disabled ? "#" : href}
-  tabindex={disabled ? "-1" : "0"}
-  class={`group ${className}`}
-  aria-label={ariaLabel}
-  title={title}
-  aria-disabled={disabled}
->
-  <slot />
-</a>
+{disabled ? (
+    <div
+      class = "pointer-events-none select-none opacity-[45%]"
+    >
+      <slot />
+    </div>
+  ) : (
+    <a
+      type="button"
+      href={disabled ? "#" : href}
+      tabindex={disabled ? "-1" : "0"}
+      class={`group ${className}`}
+      aria-label={ariaLabel}
+      title={title}
+      aria-disabled={disabled}
+    >
+      <slot />
+    </a>
+)}
 
 <style>
   a {

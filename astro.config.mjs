@@ -21,7 +21,7 @@ export default defineConfig({
       },
     }),
     react({
-      include: ['**/react/*']
+      include: ["**/react/*"],
     }),
     sitemap(),
     mdx({
