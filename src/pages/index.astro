@@ -42,7 +42,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       featuredPosts.length > 0 && (
         <>
           <section id="featured">
-            <h2 class="mb-4">Featured</h2>
+            <h2>Featured</h2>
             <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
               {featuredPosts.map(
                 ({ data }, index) =>
@@ -62,7 +62,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     }
 
     <section id="recent-posts">
-      <h2 class="mb-4">Recent Posts</h2>
+      <h2>Recent Posts</h2>
       <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {
           sortedPosts.map(
@@ -96,7 +96,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-6 pt-8;
+    @apply pb-[5rem] pt-8;
   }
   #hero h1 {
     @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
@@ -108,7 +108,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     @apply mb-2 h-6 w-6 scale-110 fill-skin-accent sm:mb-3 sm:scale-125;
   }
   #hero p {
-    @apply my-2;
+    @apply my-[1rem];
   }
   .social-wrapper {
     @apply mt-4 flex flex-col sm:flex-row sm:items-center;
@@ -117,13 +117,13 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   /* ===== Featured & Recent Posts Sections ===== */
   #featured,
   #recent-posts {
-    @apply pb-6 pt-12;
+    @apply py-1;
   }
   #featured h2,
   #recent-posts h2 {
-    @apply text-2xl font-semibold tracking-wide;
+    @apply my-[1.3rem] text-2xl font-semibold tracking-wide text-center;
   }
   .all-posts-btn-wrapper {
-    @apply my-8 text-center;
+    @apply my-[2rem] text-center;
   }
 </style>
