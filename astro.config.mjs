@@ -20,7 +20,9 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
-    react(),
+    react({
+      include: ['**/react/*']
+    }),
     sitemap(),
     mdx({
       extendMarkdownConfig: true,
