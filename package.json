@@ -29,7 +29,7 @@
     "fastpost": "npx ts-node-esm src/scripts/createPost.ts -y"
   },
   "devDependencies": {
-    "@astrojs/mdx": "1.0.0",
+    "@astrojs/mdx": "1.0.1",
     "@astrojs/prefetch": "0.4.0",
     "@astrojs/react": "3.0.0",
     "@astrojs/rss": "3.0.0",

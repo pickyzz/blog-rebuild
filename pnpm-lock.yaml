@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@astrojs/mdx':
-    specifier: 1.0.0
-    version: 1.0.0(astro@3.0.8)
+    specifier: 1.0.1
+    version: 1.0.1(astro@3.0.8)
   '@astrojs/prefetch':
     specifier: 0.4.0
     version: 0.4.0
@@ -184,11 +184,11 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/mdx@1.0.0(astro@3.0.8):
-    resolution: {integrity: sha512-Gmeleci8o4X7dST9E85c1+k273zcKW8cSFgZLTwU5K4dC0qHfY/EaDKHWrtzOB2wjZlT1JDRzTJ68LJYGrF2OA==}
+  /@astrojs/mdx@1.0.1(astro@3.0.8):
+    resolution: {integrity: sha512-LV8ueIJ5tRTchh85oQRUySBP5yfBOMyhek+9qfGzjKnBIXeX3uBRx5xn4bY/4KjBdce0ETHuBuaeXrM/TBJKKQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
-      astro: ^3.0.0
+      astro: ^3.0.9
     dependencies:
       '@astrojs/markdown-remark': 3.0.0(astro@3.0.8)
       '@astrojs/prism': 3.0.0
@@ -1176,7 +1176,7 @@ packages:
       markdown-extensions: 1.1.1
       periscopic: 3.1.0
       remark-mdx: 2.3.0
-      remark-parse: 10.0.1
+      remark-parse: 10.0.2
       remark-rehype: 10.1.0
       unified: 10.1.2
       unist-util-position-from-estree: 1.1.2
@@ -5722,16 +5722,6 @@ packages:
     dependencies:
       mdast-util-mdx: 2.0.1
       micromark-extension-mdxjs: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /remark-parse@10.0.1:
-    resolution: {integrity: sha512-1fUyHr2jLsVOkhbvPRBJ5zTKZZyD6yZzYaWCS6BPBdQ8vEMBCH+9zNCDA6tET/zHCi/jLqjCWtlJZUPk+DbnFw==}
-    dependencies:
-      '@types/mdast': 3.0.10
-      mdast-util-from-markdown: 1.3.0
-      unified: 10.1.2
     transitivePeerDependencies:
       - supports-color
     dev: true
