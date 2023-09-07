@@ -6,8 +6,8 @@ settings:
 
 devDependencies:
   '@astrojs/mdx':
-    specifier: 1.0.1
-    version: 1.0.1(astro@3.0.8)
+    specifier: 1.0.2
+    version: 1.0.2(astro@3.0.8)
   '@astrojs/prefetch':
     specifier: 0.4.0
     version: 0.4.0
@@ -184,11 +184,11 @@ packages:
       - supports-color
     dev: true
 
-  /@astrojs/mdx@1.0.1(astro@3.0.8):
-    resolution: {integrity: sha512-LV8ueIJ5tRTchh85oQRUySBP5yfBOMyhek+9qfGzjKnBIXeX3uBRx5xn4bY/4KjBdce0ETHuBuaeXrM/TBJKKQ==}
+  /@astrojs/mdx@1.0.2(astro@3.0.8):
+    resolution: {integrity: sha512-dcGw+Idi/xM3GF1E9b/RyRw4ot5kzVCUNZkkhSELZxiFLPa94xlAz3BcplXlUiKs7NTIOp3ehLqCmbneiC78sA==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
-      astro: ^3.0.9
+      astro: ^3.0.10
     dependencies:
       '@astrojs/markdown-remark': 3.0.0(astro@3.0.8)
       '@astrojs/prism': 3.0.0
