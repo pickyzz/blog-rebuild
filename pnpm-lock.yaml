@@ -13,7 +13,7 @@ devDependencies:
     version: 0.4.0
   '@astrojs/react':
     specifier: 3.0.2
-    version: 3.0.2(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9)
+    version: 3.0.2(@types/react-dom@18.0.11)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9)
   '@astrojs/rss':
     specifier: 3.0.0
     version: 3.0.0
@@ -45,8 +45,8 @@ devDependencies:
     specifier: 2.4.4
     version: 2.4.4
   '@types/react':
-    specifier: 18.2.21
-    version: 18.2.21
+    specifier: 18.2.22
+    version: 18.2.22
   '@typescript-eslint/parser':
     specifier: 6.7.0
     version: 6.7.0(eslint@8.49.0)(typescript@4.9.5)
@@ -224,7 +224,7 @@ packages:
       prismjs: 1.29.0
     dev: true
 
-  /@astrojs/react@3.0.2(@types/react-dom@18.0.11)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9):
+  /@astrojs/react@3.0.2(@types/react-dom@18.0.11)(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9):
     resolution: {integrity: sha512-aooNIuQxTg+IWGMZPuIEwBeBi4/TCPCMsr3714zuLjAjukVd5ZrX/bCNxJqDWU4HNwUm4XFU1OhcEvYOHa5uMQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -233,7 +233,7 @@ packages:
       react: ^17.0.2 || ^18.0.0
       react-dom: ^17.0.2 || ^18.0.0
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.22
       '@types/react-dom': 18.0.11
       '@vitejs/plugin-react': 4.0.4(vite@4.4.9)
       react: 18.2.0
@@ -1667,11 +1667,11 @@ packages:
   /@types/react-dom@18.0.11:
     resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
     dependencies:
-      '@types/react': 18.2.21
+      '@types/react': 18.2.22
     dev: true
 
-  /@types/react@18.2.21:
-    resolution: {integrity: sha512-neFKG/sBAwGxHgXiIxnbm3/AAVQ/cMRS93hvBpg8xYRbeQSPVABp9U2bRnPf0iI4+Ucdv3plSxKK+3CW2ENJxA==}
+  /@types/react@18.2.22:
+    resolution: {integrity: sha512-60fLTOLqzarLED2O3UQImc/lsNRgG0jE/a1mPW9KjMemY0LMITWEsbS4VvZ4p6rorEHd5YKxxmMKSDK505GHpA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
