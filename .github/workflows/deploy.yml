@@ -32,9 +32,8 @@ jobs:
 
       - name: "Get Bun store directory"
         id: bun-cache
-        shell: bash
         run: |
-          echo "STORE_PATH=$(bun store path)" >> $GITHUB_OUTPUT
+          echo "::set-output name=dir::$(bun cache dir)"
 
       - name: "Setup jampack caches"
         uses: actions/cache@v3
@@ -42,7 +41,7 @@ jobs:
         with:
           path: |
             node_modules
-            ${{ steps.bun-cache.outputs.STORE_PATH }}
+            ${{ steps.bun-cache.outputs.dir }}
             .jampack
           key: |
             ${{ runner.os }}-node_modules-${{ hashFiles('**/bun.lockb') }}
