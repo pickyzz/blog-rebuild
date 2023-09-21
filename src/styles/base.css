@@ -119,9 +119,13 @@
     content: "";
   }
 
-  code {
+  code,
+  blockquote {
+    word-wrap: break-word;
+  }
+
+  pre > code {
     white-space: pre;
-    overflow: scroll;
   }
 }
 

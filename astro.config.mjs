@@ -16,9 +16,7 @@ export default defineConfig({
   trailingSlash: "never",
   integrations: [
     tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
+      applyBaseStyles: false,
     }),
     react({
       include: ["**/react/*"],
@@ -64,4 +62,5 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js"],
     },
   },
+  scopedStyleStrategy: "where",
 });

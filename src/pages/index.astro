@@ -23,7 +23,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1>SAWASDEE 🙏🏻</h1>
+      <h1 class="mr-2">SAWASDEE 🙏🏻</h1>
       <p>I&rsquo;m Pickyzz 🐣</p>
       <p>Self-taught front-end developer. Never stop learning to code.</p>
       {
@@ -65,16 +65,18 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       <h2>Recent Posts</h2>
       <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
         {
-          sortedPosts.map(
-            ({ data }, index) =>
-              index < 6 && (
-                <Card
-                  href={`/blog/${slugify(data)}`}
-                  frontmatter={data}
-                  secHeading={false}
-                />
-              )
-          )
+          sortedPosts
+            .filter(({ data }) => !data.featured)
+            .map(
+              ({ data }, index) =>
+                index < 6 && (
+                  <Card
+                    href={`/blog/${slugify(data)}`}
+                    frontmatter={data}
+                    secHeading={false}
+                  />
+                )
+            )
         }
       </ul>
       <div class="all-posts-btn-wrapper">

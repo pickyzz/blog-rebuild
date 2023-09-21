@@ -1,3 +1,4 @@
+import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
 import type { BlogFrontmatter } from "@content/_schemas";
 
@@ -9,6 +10,13 @@ export interface Props {
 
 export default function Card({ href, frontmatter, secHeading = true }: Props) {
   const { title, pubDatetime, description, ogImage } = frontmatter;
+
+  const headerProps = {
+    style: { viewTransitionName: slugifyStr(title) },
+    className:
+      "my-4 h-14 text-center text-lg font-medium decoration-dashed line-clamp-2 hover:underline",
+  };
+
   return (
     <li className="my-6">
       <a
@@ -23,16 +31,12 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
           alt=""
         />
         {secHeading ? (
-          <h2 className="my-4 h-14 text-center text-lg font-medium decoration-dashed line-clamp-2 hover:underline">
-            {title}
-          </h2>
+          <h2 {...headerProps}>{title}</h2>
         ) : (
-          <h3 className="my-4 h-14 text-center text-lg font-medium decoration-dashed line-clamp-2 hover:underline">
-            {title}
-          </h3>
+          <h3 {...headerProps}>{title}</h3>
         )}
       </a>
-      <p className="mb-4 text-center line-clamp-2">{description}</p>
+      <p className="mb-4 line-clamp-2 text-center">{description}</p>
       <Datetime datetime={pubDatetime} />
     </li>
   );

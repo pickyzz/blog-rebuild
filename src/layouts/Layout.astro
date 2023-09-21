@@ -1,6 +1,7 @@
 ---
 import { SITE } from "@config";
 import "@styles/base.css";
+import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title?: string;
@@ -24,7 +25,7 @@ const socialImageURL = new URL(
 ).href;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -76,6 +77,8 @@ const socialImageURL = new URL(
       rel="stylesheet"
     />
 
+    <meta name="theme-color" content="" />
+
     <!-- Cookie -->
     <link
       rel="stylesheet"
@@ -93,6 +96,8 @@ const socialImageURL = new URL(
       href="https://unpkg.com/@waline/client@v2/dist/waline.css"
     />
     <!-- Waline comment end -->
+
+    <ViewTransitions />
 
     <script is:inline src="/toggle-theme.js"></script>
   </head>
