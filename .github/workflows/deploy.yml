@@ -35,13 +35,16 @@ jobs:
         id: cache
         with:
           path: |
+            node_modules
             .jampack
           key: |
             jampack-${{ github.run_id }}
           restore-keys: |
+            ${{ runner.os }}-nodeModules-
             jampack
 
       - name: "Install dependencies"
+        if: steps.cache.outputs.cache-hit != 'true'
         run: bun install
         env:
           CI: true
