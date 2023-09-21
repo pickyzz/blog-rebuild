@@ -33,7 +33,7 @@ jobs:
       - name: "Get Bun store directory"
         id: bun-cache
         run: |
-          echo "::set-output name=dir::$(bun cache dir)"
+          echo "set-output name=dir" >> $GITHUB_OUTPUT
 
       - name: "Setup jampack caches"
         uses: actions/cache@v3
