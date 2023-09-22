@@ -8,9 +8,6 @@
       "rangeStrategy": "pin"
     }
   ],
-  "lockFileMaintenance": {
-    "automerge": true
-  },
   "minor": {
     "automerge": true
   },
