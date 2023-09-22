@@ -44,7 +44,7 @@ jobs:
             ${{ steps.bun-cache.outputs.dir }}
             .jampack
           key: |
-            ${{ runner.os }}-node_modules-${{ hashFiles('**/bun.lockb') }}
+            ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
             jampack-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-node_modules-
@@ -52,7 +52,7 @@ jobs:
 
       - name: "Install dependencies"
         if: steps.cache.outputs.cache-hit != 'true'
-        run: bun install
+        run: bun install --frozenLockfile
         env:
           CI: true
 
