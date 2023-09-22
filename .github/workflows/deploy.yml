@@ -35,7 +35,7 @@ jobs:
         id: jampack
         with:
           path: .jampack
-          key: jampack-${{ runner.os }}
+          key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
     
