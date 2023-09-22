@@ -30,34 +30,17 @@ jobs:
         with:
           cache: true
 
-      - name: "Get Bun store directory"
-        id: bun-cache
-        run: |
-          echo "set-output name=dir" >> $GITHUB_OUTPUT
-
-      - name: "Setup jampack caches"
+      - name: "Setup jampack cache"
         uses: actions/cache@v3
-        id: cache
+        id: jampack
         with:
-          path: |
-            node_modules
-            ${{ steps.bun-cache.outputs.dir }}
-            .jampack
-          key: |
-            ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-            jampack-${{ github.run_id }}
+          path: .jampack
+          key: jampack-${{ runner.os }}
           restore-keys: |
-            ${{ runner.os }}-node_modules-
             jampack
-
-      - name: "Install dependencies"
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: bun install --frozenLockfile
-        env:
-          CI: true
-
-      - name: "Build Development"
-        run: bun run build
+    
+      - name: "Install dependencies and build"
+        run: bun install --frozenLockfile && bun run build
 
       - name: "Deploy to Netlify"
         uses: nwtgck/actions-netlify@v2.1
