@@ -47,7 +47,7 @@ jobs:
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 50a23a37734cef5546007865e347ab76
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: pickyzz-blog
           directory: dist
           # Optional: Enable this if you want to have GitHub Deployments triggered
