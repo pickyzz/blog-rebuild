@@ -2,5 +2,5 @@
 auto = "fallback"
 
 [install.lockfile]
-save = false
+save = true
 print = "yarn"
