@@ -40,8 +40,16 @@ jobs:
           restore-keys: |
             jampack
 
-      - name: "Install dependencies and build"
-        run: bun install --frozenLockfile && bun run build
+      - name: "Install dependencies"
+        run: bun install --frozenLockfile
+
+      - name: "Run check"
+        run: |
+          bun run lint
+          bun run format:check
+
+      - name: "Build output"
+        run: bun run build
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
