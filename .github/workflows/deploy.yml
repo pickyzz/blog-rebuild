@@ -42,17 +42,19 @@ jobs:
       - name: "Install dependencies and build"
         run: bun install --frozenLockfile && bun run build
 
-      - name: "Deploy to Netlify"
-        uses: nwtgck/actions-netlify@v2.1
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
         with:
-          publish-dir: "./dist"
-          production-branch: main
-          github-token: ${{ secrets.GH_TOKEN }}
-          deploy-message: "${{ github.event.head_commit.message }}"
-          enable-pull-request-comment: true
-          overwrites-pull-request-comment: true
-          enable-commit-comment: true
-          enable-commit-status: true
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 50a23a37734cef5546007865e347ab76
+          projectName: pickyzz-blog
+          directory: "./dist"
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          # branch: main
+          # Optional: Change the working directory
+          # workingDirectory: my-site
+          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+          # wranglerVersion: '3'
