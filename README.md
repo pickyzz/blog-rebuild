@@ -2,8 +2,6 @@
 
 V. 2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme. customized by Pickyzz
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/07d974e0-37d5-42e4-a2a8-1bb54e449d09/deploy-status)](https://app.netlify.com/sites/startling-meringue-e86223/deploys)
-
 ### Requirements
 
 - Node.js and npm (or yarn, pnpm)
