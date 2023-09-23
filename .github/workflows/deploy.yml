@@ -39,7 +39,7 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
-    
+
       - name: "Install dependencies and build"
         run: bun install --frozenLockfile && bun run build
 
@@ -52,4 +52,4 @@ jobs:
           directory: dist
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          wranglerVersion: '3'
+          wranglerVersion: "3"
