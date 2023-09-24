@@ -41,9 +41,9 @@ jobs:
             jampack
 
       - name: "Install dependencies"
-        run: bun install && bun run sharpfix
+        run: bun run gha
 
-      - name: "Run check"
+      - name: "Run linter"
         run: |
           bun run lint
           bun run format:check
