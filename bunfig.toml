@@ -3,4 +3,3 @@ auto = "fallback"
 
 [install.lockfile]
 save = true
-print = "yarn"
