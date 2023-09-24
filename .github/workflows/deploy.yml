@@ -41,7 +41,7 @@ jobs:
             jampack
 
       - name: "Install dependencies"
-        run: bun install
+        run: bun install && bun run sharpfix
 
       - name: "Run check"
         run: |

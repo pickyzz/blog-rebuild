@@ -27,7 +27,7 @@
     "lint": "eslint .",
     "newpost": "npx ts-node-esm src/scripts/createPost.ts",
     "fastpost": "npx ts-node-esm src/scripts/createPost.ts -y",
-    "postinstall": "cd ./node_modules/sharp && bun install"
+    "sharpfix": "cd ./node_modules/sharp && bun install"
   },
   "devDependencies": {
     "@astrojs/mdx": "1.1.0",
