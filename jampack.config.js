@@ -1,8 +1,8 @@
 export default {
   image: {
-    max_width: 1300,
+    max_width: 1200,
     external: {
-      process: 'download',
+      process: 'off',
     },
   },
 };
