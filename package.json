@@ -24,8 +24,6 @@
     "cz": "cz",
     "prepare": "husky install",
     "lint": "eslint .",
-    "newpost": "npx ts-node-esm src/scripts/createPost.ts",
-    "fastpost": "npx ts-node-esm src/scripts/createPost.ts -y",
     "gha": "bun install && cd ./node_modules/sharp && bun install"
   },
   "devDependencies": {
@@ -55,13 +53,11 @@
     "fuse.js": "6.6.2",
     "github-slugger": "2.0.0",
     "husky": "8.0.3",
-    "kleur": "4.1.5",
     "lint-staged": "14.0.1",
     "mdast-util-to-string": "4.0.0",
     "prettier": "3.0.3",
     "prettier-plugin-astro": "0.12.0",
     "prettier-plugin-tailwindcss": "0.5.4",
-    "prompts": "2.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "reading-time": "1.5.0",
