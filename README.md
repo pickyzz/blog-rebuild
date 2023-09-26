@@ -43,8 +43,6 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`  | Preview your build locally, before deploying |
 | `npm run clean`    | Remove `./dist` folder                       |
 | `npm run format`   | Run ESLint and report styling error          |
-| `npm run newpost`  | create new blog post                         |
-| `npm run fastpost` | create new blog post but faster              |
 
 ### Additional Checks
 
