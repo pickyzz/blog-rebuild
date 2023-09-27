@@ -1,6 +1,8 @@
 #### Powered by Astro
 
-V. 2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme. customized by Pickyzz
+V. 2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme.
+
+customized by Pickyzz
 
 ### Requirements
 
@@ -43,6 +45,7 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview` | Preview your build locally, before deploying |
 | `npm run clean`   | Remove `./dist` folder                       |
 | `npm run format`  | Run ESLint and report styling error          |
+| `npm run newpost` | Create new post                              |
 
 ### Additional Checks
 
