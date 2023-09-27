@@ -6,7 +6,6 @@ import react from "@astrojs/react";
 import rehypeExternalLinks from "rehype-external-links";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
-import robotsTxt from "astro-robots-txt";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 
@@ -26,15 +25,6 @@ export default defineConfig({
       extendMarkdownConfig: true,
       smartypants: true,
       gfm: true,
-    }),
-    robotsTxt({
-      policy: [
-        {
-          userAgent: "*",
-          disallow: ["/search"],
-          crawlDelay: 10,
-        },
-      ],
     }),
   ],
   markdown: {
