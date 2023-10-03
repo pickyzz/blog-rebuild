@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
   const postsWithRT = await getPostsWithRT(posts); // replace reading time logic with this func
 
-  const postResult = postsWithRT.map((post: { data: { pubDatetime: Date; title: string; tags: string[]; description: string; author?: string | undefined; postSlug?: string | undefined; featured?: boolean | undefined; draft?: boolean | undefined; ogImage?: string | undefined; readingTime?: string | undefined; }; }) => ({
+  const postResult = postsWithRT.map((post) => ({
     params: { slug: slugify(post.data) },
     props: { post },
   }));
