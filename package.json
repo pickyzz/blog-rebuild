@@ -28,7 +28,7 @@
     "gha": "bun install && cd ./node_modules/sharp && bun install"
   },
   "devDependencies": {
-    "@astrojs/mdx": "1.1.0",
+    "@astrojs/mdx": "1.1.1",
     "@astrojs/prefetch": "0.4.0",
     "@astrojs/react": "3.0.2",
     "@astrojs/rss": "3.0.0",
