@@ -64,7 +64,7 @@
     "rehype-external-links": "3.0.0",
     "remark-collapse": "0.1.2",
     "remark-toc": "9.0.0",
-    "satori": "0.10.8",
+    "satori": "0.10.9",
     "tailwindcss": "3.3.3",
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
