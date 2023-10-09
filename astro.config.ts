@@ -45,7 +45,6 @@ export default defineConfig({
       theme: "nord",
       wrap: true,
     },
-    extendDefaultPlugins: true,
   },
   vite: {
     optimizeDeps: {

@@ -41,7 +41,7 @@ jobs:
             jampack
 
       - name: "Install dependencies"
-        run: bun i --frozenLockfile && cd ./node_modules/sharp && bun i --frozenLockfile
+        run: bun i --no-save && cd ./node_modules/sharp && bun i --no-save
 
       - name: "Run linter"
         run: |
