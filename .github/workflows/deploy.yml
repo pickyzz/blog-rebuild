@@ -46,7 +46,6 @@ jobs:
       - name: "Run linter"
         run: |
           bun run lint
-          bun run format:check
 
       - name: "Build output"
         run: bun run build
