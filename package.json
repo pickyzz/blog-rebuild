@@ -24,8 +24,7 @@
     "cz": "cz",
     "prepare": "husky install",
     "lint": "eslint .",
-    "newpost": "./src/scripts/newpost.js",
-    "gha": "bun install && cd ./node_modules/sharp && bun install"
+    "newpost": "./src/scripts/newpost.js"
   },
   "devDependencies": {
     "@astrojs/mdx": "1.1.2",
