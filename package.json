@@ -68,6 +68,9 @@
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
   },
+  "trustedDependencies": [
+    "sharp"
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
