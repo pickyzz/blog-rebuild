@@ -4,7 +4,7 @@
       // eslint-disable-next-line no-undef
       Waline.init({
         el: "#waline",
-        serverURL: "https://comment.pickyzz.dev",
+        serverURL: import.meta.env.WALINE_SERVER,
         path: [window.location.pathname.replace(/\/$/, "")],
         lang: "en-us",
         meta: ["nick", "mail"],
