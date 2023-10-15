@@ -13,12 +13,12 @@
     --color-border: 236, 233, 233;
   }
   html[data-theme="dark"] {
-    --color-fill: 33, 39, 55;
-    --color-text-base: 234, 237, 243;
-    --color-accent: 255, 107, 1;
-    --color-card: 52, 63, 96;
-    --color-card-muted: 138, 51, 2;
-    --color-border: 171, 75, 8;
+    --color-fill: 53, 54, 64;
+    --color-text-base: 233, 237, 241;
+    --color-accent: 255, 120, 200;
+    --color-card: 75, 76, 89;
+    --color-card-muted: 113, 85, 102;
+    --color-border: 134, 67, 107;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
