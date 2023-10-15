@@ -15,15 +15,6 @@ jobs:
       deployments: write
 
     steps:
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v2.0.2
-        with:
-          envkey_DEBUG: false
-          envkey_WALINE_SERVER: ${{ secrets.WALINE_SERVER }}
-          file_name: .env.production
-          fail_on_empty: false
-          sort_keys: false
-
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
         name: "Checkout Source Code"
         with:
@@ -48,6 +39,10 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
+
+      - name: Create .env file
+        run: |
+          echo "GITHUB_TOKEN=${{ secrets.WALINE_SERVER }}" > .env.production
 
       - name: "Install dependencies"
         run: bun install --frozen-lockfile
