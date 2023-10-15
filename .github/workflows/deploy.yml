@@ -21,11 +21,6 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: "Setup Node.js environment"
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-
       - name: Setup Bun Runtime
         uses: antongolub/action-setup-bun@v1 # or @v1.x.x
         with:
@@ -40,16 +35,17 @@ jobs:
           restore-keys: |
             jampack
 
-      - name: Create .env file
-        run: |
-          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
-
       - name: "Install dependencies"
         run: bun install --frozen-lockfile
 
       - name: "Run linter"
         run: |
           bun run lint
+
+      - name: "Create .env file"
+        id: env
+        run: |
+          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
 
       - name: "Build output"
         run: bun run build
