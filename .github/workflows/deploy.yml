@@ -42,7 +42,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "GITHUB_TOKEN=${{ secrets.WALINE_SERVER }}" > .env.production
+          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
 
       - name: "Install dependencies"
         run: bun install --frozen-lockfile
