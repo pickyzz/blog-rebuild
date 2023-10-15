@@ -42,7 +42,7 @@ export default defineConfig({
       [rehypeExternalLinks, { target: "_blank", rel: ["nofollow"] }],
     ],
     shikiConfig: {
-      theme: "nord",
+      theme: "one-dark-pro",
       wrap: true,
     },
   },

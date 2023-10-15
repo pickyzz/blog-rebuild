@@ -14,9 +14,10 @@ module.exports = {
   theme: {
     // Remove the following screen breakpoint or add other breakpoints
     // if one breakpoint is not enough for you
-    // screens: {
-    //   sm: "640px",
-    // },
+    screens: {
+      sm: "640px",
+      md: "640px",
+    },
 
     // Uncomment the following extend
     // if existing Tailwind color palette will be used
