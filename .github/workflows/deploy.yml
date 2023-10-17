@@ -22,10 +22,9 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - name: "Setup Bun Runtime"
-        uses: antongolub/action-setup-bun@v1 # or @v1.x.x
+        uses: oven-sh/setup-bun@v1
         with:
-          bun-repo: 'oven-sh/bun'
-          cache: true
+          bun-version: canary
 
       - name: "Setup jampack cache"
         uses: actions/cache@v3
