@@ -24,8 +24,8 @@ jobs:
       - name: "Setup Bun Runtime"
         uses: antongolub/action-setup-bun@v1 # or @v1.x.x
         with:
-          cache: true
           bun-repo: 'oven-sh/bun'
+          cache: true
 
       - name: "Setup jampack cache"
         uses: actions/cache@v3
