@@ -9,7 +9,7 @@
     }
   ],
   "lockFileMaintenance": {
-    "automerge": true
+    "enabled": false
   },
   "minor": {
     "automerge": true
