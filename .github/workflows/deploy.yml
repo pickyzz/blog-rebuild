@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-latest
     permissions:
       contents: read
       deployments: write
@@ -21,10 +21,11 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: Setup Bun Runtime
+      - name: "Setup Bun Runtime"
         uses: antongolub/action-setup-bun@v1 # or @v1.x.x
         with:
           cache: true
+          bun-repo: 'oven-sh/bun'
 
       - name: "Setup jampack cache"
         uses: actions/cache@v3
@@ -42,7 +43,7 @@ jobs:
         run: |
           bun run lint
 
-      - name: "Create .env file"
+      - name: "Create production env"
         id: env
         run: |
           echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
@@ -50,7 +51,7 @@ jobs:
       - name: "Build output"
         run: bun run build
 
-      - name: Publish to Cloudflare Pages
+      - name: "Publish to Cloudflare Pages"
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
