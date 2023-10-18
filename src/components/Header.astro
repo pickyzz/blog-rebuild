@@ -14,7 +14,7 @@ const { activeNav } = Astro.props;
   <a id="skip-to-content" href="#main-content">Skip to content</a>
   <div class="nav-container">
     <div class="top-nav-wrap">
-      <a href="/" class="logo whitespace-nowrap">
+      <a href="/" class="logo whitespace-nowrap" rel="prefetch">
         {
           LOGO_IMAGE.enable ? (
             <img
@@ -56,22 +56,22 @@ const { activeNav } = Astro.props;
         </button>
         <ul id="menu-items" class="display-none sm:flex">
           <li>
-            <a href="/blog" class={activeNav === "posts" ? "active" : ""}>
+            <a href="/blog" class={activeNav === "posts" ? "active" : ""} rel="prefetch">
               Blog
             </a>
           </li>
           <li>
-            <a href="/tags" class={activeNav === "tags" ? "active" : ""}>
+            <a href="/tags" class={activeNav === "tags" ? "active" : ""} rel="prefetch">
               Tags
             </a>
           </li>
           <li>
-            <a href="/guestbook" class={activeNav === "guestbook" ? "active" : ""}>
+            <a href="/guestbook" class={activeNav === "guestbook" ? "active" : ""} rel="prefetch">
               Guestbook
             </a>
           </li>
           <li>
-            <a href="/about" class={activeNav === "about" ? "active" : ""}>
+            <a href="/about" class={activeNav === "about" ? "active" : ""} rel="prefetch">
               About
             </a>
           </li>

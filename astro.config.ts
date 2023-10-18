@@ -2,6 +2,7 @@ import { defineConfig } from "astro/config";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
+import prefetch from "@astrojs/prefetch";
 import react from "@astrojs/react";
 import rehypeExternalLinks from "rehype-external-links";
 import remarkToc from "remark-toc";
@@ -26,6 +27,7 @@ export default defineConfig({
       smartypants: true,
       gfm: true,
     }),
+    prefetch(),
   ],
   markdown: {
     remarkPlugins: [
