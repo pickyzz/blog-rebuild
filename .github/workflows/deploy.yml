@@ -43,6 +43,7 @@ jobs:
           start: bun run start
 
       - name: "upload artifacts"
+        if: github.ref_name == 'main'
         uses: actions/upload-artifact@v3
         with:
           path: |
