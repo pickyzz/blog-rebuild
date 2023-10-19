@@ -8,6 +8,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cypress-run:
+    runs-on: macos-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GH_TOKEN }}
+      
+      - name: "Setup Bun Runtime"
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+
+      - name: "Create production env"
+        id: env
+        run: |
+          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          install-command: bun install
+          start: bun run start
+
   build:
     runs-on: macos-latest
     permissions:
