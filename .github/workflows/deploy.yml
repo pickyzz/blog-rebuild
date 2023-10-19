@@ -30,12 +30,10 @@ jobs:
         run: |
           echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
 
-      - name: "Install dependencies"
-        run: bun install
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          install-command: bun install -y
           start: bun run start
 
   build:
