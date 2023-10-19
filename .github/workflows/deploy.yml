@@ -20,23 +20,22 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
       
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: "Setup Bun Runtime"
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 8
+          bun-version: canary
 
       - name: "Install dependencies"
-        run: pnpm install
+        run: bun install --yarn
 
       - name: "Create production env"
         id: env
         run: |
           echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm run start
+          start: bun run start
 
   build:
     needs: cypress-run
@@ -65,19 +64,16 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
-
       - name: "Install dependencies"
         run: bun install
 
       - name: "Run linter"
         run: |
           bun run lint
-
       - name: "Create production env"
         id: env
         run: |
           echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
-
       - name: "Build output"
         run: bun run build
 
