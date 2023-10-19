@@ -51,6 +51,7 @@ jobs:
 
   build:
     needs: cypress-run
+    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
