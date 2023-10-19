@@ -32,6 +32,7 @@ jobs:
         id: env
         run: |
           echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
+          
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
