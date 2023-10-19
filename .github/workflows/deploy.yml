@@ -8,8 +8,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GH_TOKEN }}
+      
+      - name: "Setup Bun Runtime"
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+
+      - name: "Install dependencies"
+        run: bun install --yarn
+
+      - name: "Create production env"
+        id: env
+        run: |
+          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
+
+      - name: "Run linter"
+        run: |
+          bun run lint
+          
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: bun run start
+
+      - name: "upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          path: |
+            bun.lockb
+            yarn.lock
+
   build:
-    runs-on: macos-latest
+    needs: cypress-run
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
@@ -20,6 +62,12 @@ jobs:
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
+
+      - uses: actions/download-artifact@v3
+        with:
+          path: |
+            bun.lockb
+            yarn.lock
 
       - name: "Setup Bun Runtime"
         uses: oven-sh/setup-bun@v1
@@ -34,13 +82,8 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
-
       - name: "Install dependencies"
         run: bun install
-
-      - name: "Run linter"
-        run: |
-          bun run lint
 
       - name: "Create production env"
         id: env
