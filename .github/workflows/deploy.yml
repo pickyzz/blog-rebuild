@@ -37,6 +37,7 @@ jobs:
           start: bun run start
 
   build:
+    needs: cypress-run
     runs-on: macos-latest
     permissions:
       contents: read
