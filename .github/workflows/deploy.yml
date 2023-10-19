@@ -25,6 +25,9 @@ jobs:
         with:
           version: 8
 
+      - name: "Install dependencies"
+        run: pnpm install
+
       - name: "Create production env"
         id: env
         run: |
@@ -33,7 +36,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          install-command: pnpm isntall
           start: pnpm run start
 
   build:
