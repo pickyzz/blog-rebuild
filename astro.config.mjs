@@ -1,4 +1,3 @@
-import { astroImageTools } from "astro-imagetools";
 import { defineConfig } from "astro/config";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
@@ -16,7 +15,6 @@ export default defineConfig({
   site: SITE.website,
   trailingSlash: "never",
   integrations: [
-    astroImageTools,
     tailwind({
       applyBaseStyles: false,
     }),
