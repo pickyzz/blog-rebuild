@@ -1,3 +1,4 @@
+import "animate.css";
 import { slugifyStr } from "@utils/slugify";
 import Datetime from "./Datetime";
 import type { CollectionEntry } from "astro:content";
@@ -25,7 +26,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
         <img
-          className="h-[10rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
+          className="animate__animated animate__fadeIn animate__slow h-[10rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
           src={ogImage}
           loading="lazy"
           alt=""
