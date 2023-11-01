@@ -31,7 +31,7 @@
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.0.4",
     "@astrojs/rss": "3.0.0",
-    "@astrojs/sitemap": "3.0.2",
+    "@astrojs/sitemap": "3.0.3",
     "@astrojs/tailwind": "5.0.2",
     "@divriots/jampack": "0.21.1",
     "@resvg/resvg-js": "2.6.0",
