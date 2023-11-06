@@ -33,7 +33,7 @@
     "@astrojs/rss": "3.0.0",
     "@astrojs/sitemap": "3.0.3",
     "@astrojs/tailwind": "5.0.2",
-    "@divriots/jampack": "0.21.1",
+    "@divriots/jampack": "0.22.0",
     "@resvg/resvg-js": "2.6.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
