@@ -48,7 +48,7 @@
     "cypress": "13.5.1",
     "cz-conventional-changelog": "3.3.0",
     "daisyui": "3.9.4",
-    "eslint": "8.53.0",
+    "eslint": "8.54.0",
     "eslint-plugin-astro": "0.29.1",
     "fuse.js": "7.0.0",
     "github-slugger": "2.0.0",
