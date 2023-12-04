@@ -65,7 +65,7 @@
     "remark-collapse": "0.1.2",
     "remark-toc": "9.0.0",
     "satori": "0.10.11",
-    "tailwindcss": "3.3.5",
+    "tailwindcss": "3.3.6",
     "ts-node": "10.9.1",
     "typescript": "5.2.2"
   },
