@@ -1,0 +1,85 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "fileType": "mdx",
+      "filePrefix": null,
+      "fields": [
+        {
+          "title": "Author",
+          "name": "author",
+          "type": "string",
+          "default": "Parinya T.",
+          "single": true
+        },
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "slug",
+          "name": "postSlug",
+          "type": "string",
+          "single": true,
+          "default": "{{slug}}"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "draft"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags",
+          "multiple": true,
+          "default": [
+            "other"
+          ]
+        },
+        {
+          "title": "Preview Image",
+          "name": "ogImage",
+          "type": "image",
+          "isPreviewImage": true
+        },
+        {
+          "title": "Publishing date",
+          "name": "pubDatetime",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Featured",
+          "name": "featured",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "frontMatter.dashboard.content.card.fields.title": "title",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.site.baseURL": "https://pickyzz.dev",
+  "frontMatter.website.host": "https://pickyzz.dev",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "blog",
+      "path": "[[workspace]]/src/content/blog",
+      "previewPath": "blog"
+    }
+  ],
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.panel.actions.disabled": ["optimizeSlug"]
+}
