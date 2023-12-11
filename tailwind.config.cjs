@@ -79,4 +79,18 @@ module.exports = {
     logs: false,
     rtl: false,
   },
+  extend: {
+    typography: {
+      DEFAULT: {
+        css: {
+          pre: {
+            color: false,
+          },
+          code: {
+            color: false,
+          },
+        },
+      },
+    },
+  },
 };
