@@ -27,7 +27,7 @@
     "newpost": "./src/scripts/newpost.js"
   },
   "devDependencies": {
-    "@astrojs/mdx": "2.0.0",
+    "@astrojs/mdx": "2.0.1",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.0.7",
     "@astrojs/rss": "4.0.1",
