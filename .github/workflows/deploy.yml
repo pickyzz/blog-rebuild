@@ -44,7 +44,7 @@ jobs:
 
       - name: "upload artifacts"
         if: github.ref_name == 'main'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: |
             bun.lockb
