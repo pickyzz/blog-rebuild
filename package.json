@@ -32,7 +32,7 @@
     "@astrojs/react": "3.0.8",
     "@astrojs/rss": "4.0.1",
     "@astrojs/sitemap": "3.0.3",
-    "@astrojs/tailwind": "5.0.3",
+    "@astrojs/tailwind": "5.0.4",
     "@divriots/jampack": "0.23.1",
     "@resvg/resvg-js": "2.6.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
