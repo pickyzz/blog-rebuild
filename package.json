@@ -47,7 +47,7 @@
     "commitizen": "4.3.0",
     "cypress": "13.6.1",
     "cz-conventional-changelog": "3.3.0",
-    "daisyui": "4.4.22",
+    "daisyui": "4.4.23",
     "eslint": "8.56.0",
     "eslint-plugin-astro": "0.31.0",
     "fuse.js": "7.0.0",
