@@ -42,7 +42,7 @@
     "@types/react": "18.2.46",
     "@typescript-eslint/parser": "6.17.0",
     "animate.css": "4.1.1",
-    "astro": "4.1.0",
+    "astro": "4.1.1",
     "astro-eslint-parser": "0.16.0",
     "commitizen": "4.3.0",
     "cypress": "13.6.2",
