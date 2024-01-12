@@ -16,7 +16,7 @@ breadcrumbList[0] === "blog" &&
   <ul>
     <li>
       <a href="/" rel="prefetch">Home</a>
-      <span class={`mx-2`} aria-hidden="true">&#62;</span>
+      <span aria-hidden="true">&gt;</span>
     </li>
     {
       breadcrumbList.map((breadcrumb, index) =>
@@ -33,7 +33,7 @@ breadcrumbList[0] === "blog" &&
         ) : (
           <li>
             <a href={`/${breadcrumb}`} rel="prefetch">{breadcrumb}</a>
-            <span class={"mx-2"} aria-hidden="true">&#62;</span>
+            <span aria-hidden="true">&gt;</span>
           </li>
         )
       )

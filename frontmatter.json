@@ -60,6 +60,12 @@
           "isPublishDate": true
         },
         {
+          "title": "Modified date",
+          "name": "modDatetime",
+          "type": "datetime",
+          "isPublishDate": true
+        },
+        {
           "title": "Featured",
           "name": "featured",
           "type": "boolean",
