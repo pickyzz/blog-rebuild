@@ -22,7 +22,7 @@
         },
         {
           "title": "slug",
-          "name": "postSlug",
+          "name": "slug",
           "type": "string",
           "single": true,
           "default": "{{slug}}"

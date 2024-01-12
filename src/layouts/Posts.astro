@@ -6,7 +6,6 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import LinkButton from "@components/LinkButton.astro";
-import slugify from "@utils/slugify";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -26,8 +25,8 @@ const next = pageNum < totalPages ? "" : "disabled";
   <Main pageTitle="Blog" pageDesc="All the articles I've posted.">
     <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
-        posts.map(({ data }) => (
-          <Card href={`/blog/${slugify(data)}`} frontmatter={data} />
+        posts.map(({ data, slug }) => (
+          <Card href={`/blog/${slug}`} frontmatter={data} />
         ))
       }
     </ul>
