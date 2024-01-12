@@ -28,11 +28,6 @@ jobs:
       - name: "Install dependencies"
         run: bun install --yarn
 
-      - name: "Create production env"
-        id: env
-        run: |
-          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.development
-
       - name: "Run linter"
         run: |
           bun run lint
@@ -44,7 +39,7 @@ jobs:
 
       - name: "upload artifacts"
         if: github.ref_name == 'main'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: |
             bun.lockb
@@ -65,7 +60,7 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           path: |
             bun.lockb
@@ -86,11 +81,6 @@ jobs:
             jampack
       - name: "Install dependencies"
         run: bun install
-
-      - name: "Create production env"
-        id: env
-        run: |
-          echo "WALINE_SERVER=${{ secrets.WALINE_SERVER }}" > .env.production
 
       - name: "Build output"
         run: bun run build
