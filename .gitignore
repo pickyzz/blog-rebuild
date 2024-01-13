@@ -7,6 +7,9 @@ dist/
 # dependencies
 node_modules/
 
+#frontMatter
+.frontmatter/
+
 # logs
 npm-debug.log*
 yarn-debug.log*
