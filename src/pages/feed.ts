@@ -14,7 +14,7 @@ export async function GET() {
       link: `blog/${slug}`,
       title: data.title,
       description: data.description,
-      pubDate: new Date(data.pubDatetime),
+      pubDate: new Date(data.modDatetime ?? data.pubDatetime),
     })),
     trailingSlash: false,
   });
