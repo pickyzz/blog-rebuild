@@ -20,9 +20,6 @@
     --color-card-muted: 113, 85, 102;
     --color-border: 134, 67, 107;
   }
-  html {
-    scroll-behavior: smooth;
-  }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
     display: none;

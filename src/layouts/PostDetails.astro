@@ -21,7 +21,7 @@ const { Content } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
-  ogImageUrl ?? `/posts/${slugifyStr(title)}.png`,
+  ogImageUrl ?? `/blog/${slugifyStr(title)}.png`,
   Astro.url.origin
 ).href;
 
@@ -32,6 +32,7 @@ const layoutProps = {
   pubDatetime,
   modDatetime,
   ogImage: ogUrl,
+  scrollSmooth: true,
 };
 ---
 
