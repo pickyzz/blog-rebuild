@@ -1,11 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "ts-node": {
-    "compilerOptions": {
-      "module": "es2015",
-      "moduleResolution": "node"
-    }
-  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "baseUrl": "src",
