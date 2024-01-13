@@ -7,6 +7,7 @@ import Footer from "@components/Footer.astro";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination.astro";
 import { SITE } from "@config";
+
 export interface Props {
   currentPage: number;
   totalPages: number;
@@ -14,6 +15,7 @@ export interface Props {
   tag: string;
   tagName: string;
 }
+
 const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
 ---
 
