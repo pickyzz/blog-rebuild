@@ -8,6 +8,7 @@ export const SITE = {
   ogImage: "pickyzz-og.png",
   lightAndDarkMode: true,
   postPerPage: 8,
+  scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };
 
 export const LOGO_IMAGE = {
