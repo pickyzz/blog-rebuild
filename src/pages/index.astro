@@ -14,6 +14,7 @@ const posts = await getCollection("blog");
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const socialCount = SOCIALS.filter(social => social.active).length;
 ---
@@ -55,40 +56,44 @@ const socialCount = SOCIALS.filter(social => social.active).length;
               )}
             </ul>
           </section>
-          <Hr />
+          {recentPosts.length > 0 && <Hr />}
         </>
       )
     }
 
-    <section id="recent-posts">
-      <h2>Recent Posts</h2>
-      <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {
-          sortedPosts
-            .filter(({ data }) => !data.featured)
-            .map(
-              ({ data, slug }, index) =>
-                index < 6 && (
-                  <Card
-                    href={`/blog/${slug}`}
-                    frontmatter={data}
-                    secHeading={false}
-                  />
-                )
-            )
-        }
-      </ul>
-      <div class="all-posts-btn-wrapper">
-        <LinkButton href="/blog">
-          All Posts
-          <svg xmlns="http://www.w3.org/2000/svg"
-            ><path
-              d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
-            ></path>
-          </svg>
-        </LinkButton>
-      </div>
-    </section>
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts">
+        <h2>Recent Posts</h2>
+        <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {
+            sortedPosts
+              .filter(({ data }) => !data.featured)
+              .map(
+                ({ data, slug }, index) =>
+                  index < 6 && (
+                    <Card
+                      href={`/blog/${slug}`}
+                      frontmatter={data}
+                      secHeading={false}
+                    />
+                  )
+                )}
+        </ul>
+        </section>
+      )
+    }
+
+    <div class="all-posts-btn-wrapper">
+      <LinkButton href="/blog">
+        All Posts
+        <svg xmlns="http://www.w3.org/2000/svg"
+          ><path
+            d="m11.293 17.293 1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z"
+          ></path>
+        </svg>
+      </LinkButton>
+    </div>
   </main>
 
   <Footer />
