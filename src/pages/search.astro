@@ -7,7 +7,6 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 import getSortedPosts from "@utils/getSortedPosts";
-import { Fragment } from "astro/dist/runtime/server";
 
 // Retrieve all published articles
 const posts = await getCollection("blog", ({ data }) => !data.draft);

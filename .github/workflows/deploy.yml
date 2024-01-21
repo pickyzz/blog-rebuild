@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
-      
+
       - name: "Setup Bun Runtime"
         uses: oven-sh/setup-bun@v1
         with:
@@ -31,7 +31,7 @@ jobs:
       - name: "Run linter"
         run: |
           bun run lint
-          
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:

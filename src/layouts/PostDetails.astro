@@ -1,5 +1,5 @@
 ---
-import 'animate.css';
+import "animate.css";
 import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
@@ -16,7 +16,16 @@ export interface Props {
 
 const { post } = Astro.props;
 
-const { title, author, description, ogImage, pubDatetime, modDatetime, tags, readingTime } = post.data;
+const {
+  title,
+  author,
+  description,
+  ogImage,
+  pubDatetime,
+  modDatetime,
+  tags,
+  readingTime,
+} = post.data;
 
 const { Content } = await post.render();
 
@@ -59,7 +68,7 @@ const layoutProps = {
       size="lg"
       className="my-2"
     />
-    <p class="text-xs font-light">By : {author} | {readingTime} </p>
+    <p class="text-xs font-light">By : {author} | {readingTime}</p>
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <img
         class="animate__animated animate__fadeIn animate__slow h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
@@ -106,10 +115,10 @@ const layoutProps = {
 <script is:inline>
   /** Attaches links to headings in the document,
    *  allowing sharing of sections easily */
-   function addHeadingLinks() {
+  function addHeadingLinks() {
     let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
     for (let heading of headings) {
-      heading.classList.add("group")
+      heading.classList.add("group");
       let link = document.createElement("a");
       link.innerText = "#";
       link.className = "heading-link hidden group-hover:inline-block ml-2";
@@ -122,7 +131,7 @@ const layoutProps = {
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
-   function attachCopyButtons() {
+  function attachCopyButtons() {
     let copyButtonLabel = "Copy";
     let codeBlocks = Array.from(document.querySelectorAll("pre"));
 

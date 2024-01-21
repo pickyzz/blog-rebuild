@@ -56,22 +56,38 @@ const { activeNav } = Astro.props;
         </button>
         <ul id="menu-items" class="display-none sm:flex">
           <li>
-            <a href="/blog" class={activeNav === "posts" ? "active" : ""} rel="prefetch">
+            <a
+              href="/blog"
+              class={activeNav === "posts" ? "active" : ""}
+              rel="prefetch"
+            >
               Blog
             </a>
           </li>
           <li>
-            <a href="/tags" class={activeNav === "tags" ? "active" : ""} rel="prefetch">
+            <a
+              href="/tags"
+              class={activeNav === "tags" ? "active" : ""}
+              rel="prefetch"
+            >
               Tags
             </a>
           </li>
           <li>
-            <a href="/guestbook" class={activeNav === "guestbook" ? "active" : ""} rel="prefetch">
+            <a
+              href="/guestbook"
+              class={activeNav === "guestbook" ? "active" : ""}
+              rel="prefetch"
+            >
               Guestbook
             </a>
           </li>
           <li>
-            <a href="/about" class={activeNav === "about" ? "active" : ""} rel="prefetch">
+            <a
+              href="/about"
+              class={activeNav === "about" ? "active" : ""}
+              rel="prefetch"
+            >
               About
             </a>
           </li>
@@ -94,8 +110,8 @@ const { activeNav } = Astro.props;
               <span class="sr-only">Search</span>
             </LinkButton>
           </li>
-            {
-              SITE.lightAndDarkMode && (
+          {
+            SITE.lightAndDarkMode && (
               <li>
                 <button
                   id="theme-btn"
@@ -112,8 +128,8 @@ const { activeNav } = Astro.props;
                   </svg>
                 </button>
               </li>
-              )
-            }
+            )
+          }
         </ul>
       </nav>
     </div>

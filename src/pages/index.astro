@@ -64,10 +64,9 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     {
       recentPosts.length > 0 && (
         <section id="recent-posts">
-        <h2>Recent Posts</h2>
-        <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {
-            sortedPosts
+          <h2>Recent Posts</h2>
+          <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {sortedPosts
               .filter(({ data }) => !data.featured)
               .map(
                 ({ data, slug }, index) =>
@@ -78,8 +77,8 @@ const socialCount = SOCIALS.filter(social => social.active).length;
                       secHeading={false}
                     />
                   )
-                )}
-        </ul>
+              )}
+          </ul>
         </section>
       )
     }
@@ -127,7 +126,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   }
   #featured h2,
   #recent-posts h2 {
-    @apply my-[1.3rem] text-2xl font-semibold tracking-wide text-center;
+    @apply my-[1.3rem] text-center text-2xl font-semibold tracking-wide;
   }
   .all-posts-btn-wrapper {
     @apply my-[2rem] text-center;

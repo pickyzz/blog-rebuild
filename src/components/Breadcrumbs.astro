@@ -44,7 +44,9 @@ breadcrumbList[0] === "tags" &&
           </li>
         ) : (
           <li>
-            <a href={`/${breadcrumb}`} rel="prefetch">{breadcrumb}</a>
+            <a href={`/${breadcrumb}`} rel="prefetch">
+              {breadcrumb}
+            </a>
             <span aria-hidden="true">&raquo;</span>
           </li>
         )
