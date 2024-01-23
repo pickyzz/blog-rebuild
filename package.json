@@ -30,7 +30,7 @@
     "@astrojs/mdx": "2.0.6",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.0.9",
-    "@astrojs/rss": "4.0.2",
+    "@astrojs/rss": "4.0.3",
     "@astrojs/sitemap": "3.0.5",
     "@astrojs/tailwind": "5.1.0",
     "@divriots/jampack": "0.23.2",
