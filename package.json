@@ -45,7 +45,7 @@
     "astro": "4.2.7",
     "astro-eslint-parser": "0.16.2",
     "commitizen": "4.3.0",
-    "cypress": "13.6.3",
+    "cypress": "13.6.4",
     "cz-conventional-changelog": "3.3.0",
     "daisyui": "4.6.1",
     "eslint": "8.56.0",
