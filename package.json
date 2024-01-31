@@ -49,7 +49,7 @@
     "cz-conventional-changelog": "3.3.0",
     "daisyui": "4.6.1",
     "eslint": "8.56.0",
-    "eslint-plugin-astro": "0.31.3",
+    "eslint-plugin-astro": "0.31.4",
     "fuse.js": "7.0.0",
     "github-slugger": "2.0.0",
     "husky": "9.0.7",
