@@ -44,7 +44,11 @@ export default function Datetime({
 }
 
 const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
-  const myDatetime = new Date(modDatetime ? modDatetime : pubDatetime);
+  const myDatetime = new Date(
+    (modDatetime ?? pubDatetime) > pubDatetime
+      ? modDatetime ?? pubDatetime
+      : pubDatetime
+  );
 
   const date = myDatetime.toLocaleDateString([], {
     year: "numeric",
