@@ -1,7 +1,7 @@
 
 {
   "Frontmatter": {
-    "scope": "markdown",
+    "scope": ["markdown","mdx"],
     "prefix": "frontmatter",
     "body": [
       "---",
@@ -19,7 +19,7 @@
     "description": "Adds the frontmatter block for the AstroPaper Blog post"
   },
   "Blog Template": {
-    "scope": "markdown",
+    "scope": ["markdown","mdx"],
     "prefix": "template",
     "body": [
       "${1:frontmatter}",
