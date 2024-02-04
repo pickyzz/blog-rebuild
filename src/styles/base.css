@@ -146,3 +146,11 @@ html[data-theme="dark"] .astro-code span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+
+.prose h2#table-of-contents {
+  visibility: hidden;
+}
+.prose h2#table-of-contents::before {
+  visibility: visible;
+  content: "All topics";
+}
