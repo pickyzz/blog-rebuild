@@ -33,16 +33,16 @@
   }
   section,
   footer {
-    @apply mx-auto max-w-3xl px-4;
+    @apply max-w-3xl px-4 mx-auto;
   }
   a {
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
   svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+    @apply inline-block w-6 h-6 fill-skin-base group-hover:fill-skin-accent;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110;
+    @apply inline-block w-6 h-6 scale-125 stroke-current stroke-2 fill-transparent opacity-90 group-hover:fill-transparent sm:scale-110;
   }
   .prose {
     @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
@@ -169,4 +169,10 @@ html[data-theme="dark"] .astro-code span {
 }
 .duration-200 {
   transition-duration: 0.2s;
+}
+#card-url:hover h3 {
+  @apply underline
+}
+#card-url:hover h2 {
+  @apply underline
 }

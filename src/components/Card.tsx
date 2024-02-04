@@ -14,18 +14,18 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
     className:
-      "my-4 h-14 text-center text-lg font-medium decoration-dashed line-clamp-2 hover:underline",
+      "my-4 h-14 text-skin-accent text-center text-lg font-medium decoration-dashed line-clamp-2",
   };
 
   return (
-    <li className="my-6">
+    <li className="inline-block my-6">
       <a
         id="card-url"
         href={href}
         rel="prefetch"
-        className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+        className="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
-        <div className="rounded-lg object-cover flex-shrink-0 overflow-hidden">
+        <div className="flex-shrink-0 object-cover overflow-hidden rounded-lg">
           <img
             className="card-animate duration-200 h-[10rem] w-[100vw] object-cover object-center"
             src={ogImage}
@@ -38,8 +38,8 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         ) : (
           <h3 {...headerProps}>{title}</h3>
         )}
+        <p className="mb-4 text-center line-clamp-2">{description}</p>
       </a>
-      <p className="mb-4 line-clamp-2 text-center">{description}</p>
       <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
     </li>
   );
