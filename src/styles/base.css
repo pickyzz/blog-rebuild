@@ -147,10 +147,26 @@ html[data-theme="dark"] .astro-code span {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
+/* replace words in ToC */
 .prose h2#table-of-contents {
   visibility: hidden;
 }
 .prose h2#table-of-contents::before {
   visibility: visible;
   content: "All topics";
+}
+
+/* card animate */
+#card-url:hover .card-animate {
+  --tw-scale-x: 1.1;
+  --tw-scale-y: 1.1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.duration-200 {
+  animation-duration: 0.2s;
+}
+.duration-200 {
+  transition-duration: 0.2s;
 }

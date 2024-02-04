@@ -21,16 +21,19 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   return (
     <li className="my-6">
       <a
+        id="card-url"
         href={href}
         rel="prefetch"
         className="inline-block text-lg font-medium text-skin-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
-        <img
-          className="animate__animated animate__fadeIn animate__slow h-[10rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
-          src={ogImage}
-          loading="lazy"
-          alt=""
-        />
+        <div className="rounded-lg object-cover flex-shrink-0 overflow-hidden">
+          <img
+            className="card-animate duration-200 animate__animated animate__fadeIn animate__slow h-[10rem] w-[100vw] object-cover object-center"
+            src={ogImage}
+            loading="eager"
+            alt=""
+          />
+        </div>
         {secHeading ? (
           <h2 {...headerProps}>{title}</h2>
         ) : (
