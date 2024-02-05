@@ -3,8 +3,8 @@
   "ts-node": {
     "compilerOptions": {
       "module": "es2015",
-      "moduleResolution": "node",
-    },
+      "moduleResolution": "node"
+    }
   },
   "compilerOptions": {
     "jsx": "react-jsx",
@@ -17,7 +17,7 @@
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"],
-    },
-  },
+      "@utils/*": ["utils/*"]
+    }
+  }
 }

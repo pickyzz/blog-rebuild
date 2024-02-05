@@ -18,7 +18,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   };
 
   return (
-    <li className="inline-block my-6">
+    <li className="my-6 max-h-[350px]">
       <a
         id="card-url"
         href={href}
@@ -27,7 +27,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
       >
         <div className="flex-shrink-0 object-cover overflow-hidden rounded-lg">
           <img
-            className="card-animate duration-200 h-[10rem] w-[100vw] object-cover object-center"
+            className="card-animate duration-200 h-[12rem] md:h-[10rem] w-[100vw] object-cover object-center"
             src={ogImage}
             loading="eager"
             alt=""
@@ -38,7 +38,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         ) : (
           <h3 {...headerProps}>{title}</h3>
         )}
-        <p className="mb-4 text-center line-clamp-2">{description}</p>
+        <p className="h-[3rem] mb-4 text-center line-clamp-2">{description}</p>
       </a>
       <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
     </li>

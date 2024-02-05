@@ -171,8 +171,8 @@ html[data-theme="dark"] .astro-code span {
   transition-duration: 0.2s;
 }
 #card-url:hover h3 {
-  @apply underline
+  @apply underline;
 }
 #card-url:hover h2 {
-  @apply underline
+  @apply underline;
 }
