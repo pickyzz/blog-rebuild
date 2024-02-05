@@ -3,6 +3,7 @@ import type { SocialObjects } from "./types";
 export const SITE = {
   website: "https://pickyzz.dev/",
   author: "Parinya T.",
+  profile: "https://pickyzz.dev/about/",
   desc: "Just a pieces of code",
   title: "Pickyzz",
   ogImage: "pickyzz-og.png",
