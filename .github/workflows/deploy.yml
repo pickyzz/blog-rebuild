@@ -1,6 +1,9 @@
 name: Build and deploy
 on:
   push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:
@@ -8,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cypress-run:
+  test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,10 +35,18 @@ jobs:
         run: |
           bun run lint
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: bun run test
+
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          start: bun run start
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
       - name: "upload artifacts"
         if: github.ref_name == 'main'
@@ -44,9 +55,10 @@ jobs:
           path: |
             bun.lockb
             yarn.lock
+          retention-days: 30
 
   build:
-    needs: cypress-run
+    needs: test
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:
@@ -79,6 +91,7 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
+            
       - name: "Install dependencies"
         run: bun install
 
