@@ -40,3 +40,11 @@ jobs:
 
       - name: Run Playwright tests
         run: bun run test
+      
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Deploy to cloudflare-pages
+        if: github.ref_name == 'main'
+        uses: pickyzz/blog-rebuild/.github/workflows/deploy.yml@main
