@@ -1,9 +1,11 @@
 name: Build and deploy
 on:
   workflow_run:
-    workflows: [test]
+    workflows: [Test]
     types:
       - completed
+    branches:
+      - main
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:
@@ -12,7 +14,6 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
