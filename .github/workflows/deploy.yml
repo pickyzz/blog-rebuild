@@ -26,12 +26,6 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
-      - uses: actions/download-artifact@v4
-        with:
-          path: |
-            bun.lockb
-            yarn.lock
-
       - name: "Setup Bun Runtime"
         uses: oven-sh/setup-bun@v1
         with:
