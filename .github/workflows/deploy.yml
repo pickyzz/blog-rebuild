@@ -1,6 +1,9 @@
 name: Build and deploy
 on:
   push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 # Automatically cancel in-progress actions on the same branch
 concurrency:
@@ -8,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cypress-run:
+  test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,52 +28,6 @@ jobs:
         with:
           bun-version: canary
 
-      - name: "Install dependencies"
-        run: bun install --yarn
-
-      - name: "Run linter"
-        run: |
-          bun run lint
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: bun run start
-
-      - name: "upload artifacts"
-        if: github.ref_name == 'main'
-        uses: actions/upload-artifact@v4
-        with:
-          path: |
-            bun.lockb
-            yarn.lock
-
-  build:
-    needs: cypress-run
-    if: github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-
-    steps:
-      - uses: actions/checkout@v4
-        name: "Checkout Source Code"
-        with:
-          submodules: true
-          token: ${{ secrets.GH_TOKEN }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: |
-            bun.lockb
-            yarn.lock
-
-      - name: "Setup Bun Runtime"
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: canary
-
       - name: "Setup jampack cache"
         uses: actions/cache@v4
         id: jampack
@@ -79,13 +36,26 @@ jobs:
           key: jampack-${{ runner.os }}-${{ github.run_id }}
           restore-keys: |
             jampack
+
       - name: "Install dependencies"
         run: bun install
 
+      - name: "Run linter"
+        run: |
+          bun run lint
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: bun run test
+
       - name: "Build output"
+        if: github.ref_name == 'main'
         run: bun run build
 
       - name: "Publish to Cloudflare Pages"
+        if: github.ref_name == 'main'
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
