@@ -42,6 +42,7 @@ jobs:
         run: bun run test
       
   build:
+    needs: test
     if: github.ref_name == 'main'
     uses: pickyzz/blog-rebuild/.github/workflows/deploy.yml@main
     secrets: inherit
