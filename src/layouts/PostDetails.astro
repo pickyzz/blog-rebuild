@@ -48,7 +48,7 @@ const layoutProps = {
 
 <Layout {...layoutProps}>
   <Header />
-  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+  <div class="flex w-full justify-start px-2 max-w-[90vw] md:max-w-3xl mx-auto">
     <button
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
@@ -105,7 +105,7 @@ const layoutProps = {
 
 <style>
   main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+    @apply w-full px-4 pb-12 max-w-[90vw] md:max-w-3xl mx-auto;
   }
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;

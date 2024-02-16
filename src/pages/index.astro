@@ -43,7 +43,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
         <>
           <section id="featured">
             <h2>Featured</h2>
-            <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto">
               {featuredPosts.map(
                 ({ data, slug }, index) =>
                   index < 2 && (
@@ -65,7 +65,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       recentPosts.length > 0 && (
         <section id="recent-posts">
           <h2>Recent Posts</h2>
-          <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto">
             {sortedPosts
               .filter(({ data }) => !data.featured)
               .map(
@@ -101,7 +101,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <style>
   /* ===== Hero Section ===== */
   #hero {
-    @apply pb-[5rem] pt-8;
+    @apply pb-[5rem] pt-8 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto;
   }
   #hero h1 {
     @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;

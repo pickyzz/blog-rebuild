@@ -27,7 +27,9 @@ const { currentPage, totalPages, paginatedPosts, tag, tagName } = Astro.props;
     pageDesc={`All the articles with the tag "${tagName}".`}
   >
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
-    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <ul
+      class="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto"
+    >
       {
         paginatedPosts.map(({ data, slug }) => (
           <Card href={`/blog/${slug}`} frontmatter={data} />
