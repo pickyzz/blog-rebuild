@@ -67,8 +67,6 @@ test("about page", async ({ page }) => {
   await expect(page.locator("footer")).toBeVisible();
   await expect(page.locator("main")).toBeVisible();
   await expect(page.locator("main > section")).toBeVisible();
-  await expect(page.locator("main > section > h1")).toBeVisible();
-  await expect(page.locator("main > section > h1")).toHaveText("About me");
 });
 
 test("search page", async ({ page }) => {

@@ -4,5 +4,8 @@ module.exports = {
     external: {
       process: 'off',
     },
+    cdn: {
+      process: 'optimize',
+    },
   },
 };
