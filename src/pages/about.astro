@@ -4,6 +4,11 @@ import Breadcrumbs from "@components/Breadcrumbs.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import { SITE } from "@config";
+
+import { Image } from "astro:assets";
+import profileImage from "@assets/images/profile.jpg";
+import fccImage1 from "@assets/images/fcc-cert-1.png";
+import fccImage2 from "@assets/images/fcc-cert-2.png";
 ---
 
 <Layout title={`About | ${SITE.title}`}>
@@ -17,9 +22,9 @@ import { SITE } from "@config";
       <!-- <h1 class="text-2xl tracking-wider sm:text-3xl">About me</h1> -->
 
       <div class="my-12 grid grid-flow-cols-1 md:grid-cols-2 gap-2">
-        <img
+        <Image
           class="mask mask-squircle h-auto w-[80%] text-center"
-          src="/assets/images/profile.jpg"
+          src={profileImage}
           alt="Avatar image"
           loading="eager"
         />
@@ -93,7 +98,7 @@ import { SITE } from "@config";
       <div class="-my-4 flex justify-center">
         <div class="carousel w-[90%]">
           <div id="slide1" class="carousel-item relative w-full">
-            <img src="/assets/images/fcc-cert-1.png" class="w-full" alt="" />
+            <Image src={fccImage1} class="w-full" alt="" />
             <div
               class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between"
             >
@@ -102,7 +107,7 @@ import { SITE } from "@config";
             </div>
           </div>
           <div id="slide2" class="carousel-item relative w-full">
-            <img src="/assets/images/fcc-cert-2.png" class="w-full" alt="" />
+            <Image src={fccImage2} class="w-full" alt="" />
             <div
               class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between"
             >

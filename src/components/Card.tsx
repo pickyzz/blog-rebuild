@@ -28,7 +28,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         <div className="flex-shrink-0 object-cover overflow-hidden rounded-lg">
           <img
             className="card-animate duration-200 h-[12rem] md:h-[10rem] w-[100vw] object-cover object-center"
-            src={ogImage}
+            src={ogImage?.src}
             loading="eager"
             alt=""
           />
