@@ -30,7 +30,7 @@ export default function Datetime({
       </svg>
       {modDatetime && modDatetime > pubDatetime ? (
         <span
-          className={`italic ${size === "sm" ? "text-sm" : "text-base"} badge badge-primary badge-md badge-outline`}
+          className={`italic ${size === "sm" ? "text-xs" : "textsm"} badge badge-primary ${size === "sm" ? "badge-sm" : "badge-md"} badge-outline`}
         >
           UPDATED
         </span>
