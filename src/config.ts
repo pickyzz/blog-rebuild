@@ -8,6 +8,7 @@ export const SITE = {
   title: "Pickyzz",
   ogImage: "pickyzz-og.png",
   lightAndDarkMode: true,
+  postOnIndex: 4,
   postPerPage: 8,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
 };

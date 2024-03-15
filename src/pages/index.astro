@@ -8,7 +8,7 @@ import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { SOCIALS } from "@config";
+import { SITE, SOCIALS } from "@config";
 
 const posts = await getCollection("blog");
 
@@ -70,7 +70,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
               .filter(({ data }) => !data.featured)
               .map(
                 ({ data, slug }, index) =>
-                  index < 6 && (
+                  index < SITE.postOnIndex && (
                     <Card
                       href={`/blog/${slug}`}
                       frontmatter={data}
