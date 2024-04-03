@@ -5,7 +5,7 @@ import readingTime from "reading-time";
 import { config } from "dotenv";
 import { parseArgs } from "node:util";
 import { sanitizeUrl, sanitizeImageString } from "../helpers/sanitize.mjs";
-import { hashString, downloadImage } from "../helpers/images.mjs";
+import { downloadImage } from "../helpers/images.mjs";
 import { delay } from "../helpers/delay.mjs";
 
 // Input Arguments
@@ -51,7 +51,7 @@ n2m.setCustomTransformer("embed", async block => {
 });
 
 n2m.setCustomTransformer("image", async block => {
-  const { image, id } = block;
+  const { image } = block;
   const imageUrl = image?.file?.url || image?.external?.url;
   const imageFileName = sanitizeImageString(imageUrl.split("/").pop());
   const filePath = await downloadImage(imageUrl, `./images/${imageFileName}`);
@@ -63,8 +63,6 @@ n2m.setCustomTransformer("image", async block => {
 n2m.setCustomTransformer("video", async block => {
   const { video } = block;
   const {
-    caption,
-    type,
     external: { url: videoUrl },
   } = video;
 
@@ -105,8 +103,7 @@ const { results } = databaseResponse;
 
 // Create Pages
 const pages = results.map(page => {
-  const { properties, cover, created_time, last_edited_time, icon, archived } =
-    page;
+  const { properties, cover, created_time, last_edited_time, archived } = page;
   const title = properties.title.title[0].plain_text;
   const slug = properties?.slug?.rich_text[0]?.plain_text || sanitizeUrl(title);
 
