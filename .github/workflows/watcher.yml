@@ -1,6 +1,8 @@
 name: post update check
 
 on:
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
