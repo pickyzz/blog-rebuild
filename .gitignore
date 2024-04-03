@@ -1,10 +1,6 @@
 # build output
 dist/
 
-# synced files
-src/content/blog/*.*
-src/assets/images/blog/*.*
-
 # jampack cache
 .jampack/
 
