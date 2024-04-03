@@ -129,7 +129,7 @@ const pages = results.map(page => {
   };
 });
 
-fs.unlinkSync("./logs.txt");
+fs.unlinkSync("./logs.txt"); // delete old logs file
 
 for (let page of pages) {
   console.info(

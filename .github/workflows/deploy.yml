@@ -30,11 +30,22 @@ jobs:
           restore-keys: |
             jampack
 
+      - name: "create env file"
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          envkey_NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+
       - name: "Install dependencies"
         run: bun install
 
       - name: "Build output"
-        run: bun run build
+        run: | 
+          bun run sync:published
+          bun run generate
 
       - name: "Publish to Cloudflare Pages"
         uses: pickyzz/cf-pages-action@v1
