@@ -31,13 +31,10 @@ jobs:
             jampack
 
       - name: "create env file"
-        uses: SpicyPizza/create-envfile@v2.0
+        uses: ozaytsev86/create-env-file@v1
         with:
-          envkey_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          envkey_NOTION_KEY: ${{ secrets.NOTION_KEY }}
-          file_name: .env
-          fail_on_empty: false
-          sort_keys: false
+          ENV_DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          ENV_NOTION_KEY: ${{ secrets.NOTION_KEY }}
 
       - name: "Install dependencies"
         run: bun install
