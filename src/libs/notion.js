@@ -120,7 +120,7 @@ const pages = results.map(page => {
     tags: properties.tags.multi_select,
     created_time,
     last_edited_time,
-    icon,
+    featured: properties?.featured?.select?.name,
     archived,
     status: properties?.status?.select?.name,
     publish_date: properties?.publish_date?.date?.start,
@@ -128,6 +128,8 @@ const pages = results.map(page => {
     slug,
   };
 });
+
+fs.unlinkSync("./logs.txt");
 
 for (let page of pages) {
   console.info(
@@ -169,6 +171,12 @@ ${mdString}
       pageContents
     );
   else console.log(`No content for page ${page.id}`);
+
+  const timestamp = `${page.title} - ${page.last_edited_time}`;
+  fs.appendFile(`${process.cwd()}/logs.txt`, timestamp + "\n", function (err) {
+    if (err) throw err;
+    console.log("Saved!");
+  }); // write new logs file
 
   console.debug(`Sleeping for ${THROTTLE_DURATION} ms...\n`);
   await delay(THROTTLE_DURATION); // Need to throttle requests to avoid rate limiting
