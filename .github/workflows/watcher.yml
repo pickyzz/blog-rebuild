@@ -30,6 +30,7 @@ jobs:
 
       - name: check for content update
         run: |
+          bun install
           bun run sync:published
           git diff ./logs.txt
 
