@@ -66,7 +66,7 @@ export async function downloadImage(
   imageUrl,
   {
     isCover = false, // Notion Cover image, displays at top of posts
-  },
+  }
 ) {
   const response = await fetch(imageUrl);
   const arrayBuffer = await response.arrayBuffer();
@@ -74,8 +74,9 @@ export async function downloadImage(
   const { ext, mime } = await imageType(buffer);
 
   const fileHash = hashString(imageUrl);
-  const fileName = `${process.cwd()}/${IMAGE_PATH}/${fileHash}${isCover ? "-cover" : ""
-    }.${ext}`;
+  const fileName = `${process.cwd()}/${IMAGE_PATH}/${fileHash}${
+    isCover ? "-cover" : ""
+  }.${ext}`;
   console.log("Hashed Filename:", fileName);
 
   fs.writeFileSync(fileName, buffer);
