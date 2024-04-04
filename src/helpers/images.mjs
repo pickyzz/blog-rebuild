@@ -77,7 +77,7 @@ export async function downloadImage(
   const fileName = `${process.cwd()}/${IMAGE_PATH}/${fileHash}${
     isCover ? "-cover" : ""
   }.${ext}`;
-  console.log("Hashed Filename:", fileName);
+  // console.log("Hashed Filename:", fileName);
 
   fs.writeFileSync(fileName, buffer);
   console.info(`Image downloaded to ${fileName}`, mime);

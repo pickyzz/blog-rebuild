@@ -121,6 +121,7 @@ const pages = results.map(page => {
     archived,
     status: properties?.status?.select?.name,
     publish_date: properties?.publish_date?.date?.start,
+    modified_date: properties?.modified_date?.date?.start,
     description: properties?.description?.rich_text[0]?.plain_text,
     slug,
   };
@@ -146,8 +147,8 @@ for (let page of pages) {
 
   // Generate page contents (frontmatter, MDX imports, + converted Notion markdown)
   const pageContents = `---
-slug: "${page.slug}"
 title: "${page.title}"
+slug: "${page.slug}"
 ogImage: ${coverFileName}
 featured: ${page.featured === "featured" ? true : false}
 tags: ${JSON.stringify(page.tags.map(tag => tag.name))}
@@ -172,7 +173,7 @@ ${mdString}
   const timestamp = `${page.title} - ${page.last_edited_time}`;
   fs.appendFile(`${process.cwd()}/logs.txt`, timestamp + "\n", function (err) {
     if (err) throw err;
-    console.log("Saved!");
+    console.log("Log Saved!");
   }); // write new logs file
 
   console.debug(`Sleeping for ${THROTTLE_DURATION} ms...\n`);
