@@ -43,7 +43,7 @@
     "@types/github-slugger": "2.0.0",
     "@types/react": "18.2.74",
     "@typescript-eslint/parser": "7.5.0",
-    "astro": "4.5.15",
+    "astro": "4.5.16",
     "astro-eslint-parser": "0.16.3",
     "astro-font": "0.0.78",
     "commitizen": "4.3.0",
