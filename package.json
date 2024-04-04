@@ -68,7 +68,7 @@
     "satori": "0.10.13",
     "tailwindcss": "3.4.3",
     "ts-node": "10.9.2",
-    "typescript": "5.4.3"
+    "typescript": "5.4.4"
   },
   "config": {
     "commitizen": {
