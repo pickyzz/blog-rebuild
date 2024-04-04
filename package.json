@@ -31,9 +31,9 @@
     "newpost": "./src/scripts/newpost.js"
   },
   "devDependencies": {
-    "@astrojs/mdx": "2.2.2",
+    "@astrojs/mdx": "2.2.3",
     "@astrojs/prefetch": "0.4.1",
-    "@astrojs/react": "3.1.0",
+    "@astrojs/react": "3.1.1",
     "@astrojs/rss": "4.0.5",
     "@astrojs/sitemap": "3.1.2",
     "@astrojs/tailwind": "5.1.0",
@@ -45,9 +45,9 @@
     "@tailwindcss/line-clamp": "0.4.4",
     "@tailwindcss/typography": "0.5.12",
     "@types/github-slugger": "2.0.0",
-    "@types/react": "18.2.73",
+    "@types/react": "18.2.74",
     "@typescript-eslint/parser": "7.5.0",
-    "astro": "4.5.12",
+    "astro": "4.5.15",
     "astro-eslint-parser": "0.16.3",
     "astro-font": "0.0.78",
     "commitizen": "4.3.0",
