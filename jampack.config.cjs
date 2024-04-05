@@ -1,6 +1,6 @@
 module.exports = {
   image: {
-    max_width: 1200,
+    max_width: 1400,
     external: {
       process: 'off',
     },
