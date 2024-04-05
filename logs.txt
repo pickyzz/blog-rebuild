@@ -1,2 +1,6 @@
+โดน Vercel Limit Deploy ครั้งแรก - 2024-04-05T09:42:00.000Z
+เพิ่มฟ้อนต์ไทยให้ og-image ของ vercel - 2024-04-05T09:40:00.000Z
+ปิด Game Bar ใน Windows11 - 2024-04-05T09:38:00.000Z
 (Review) Leopold FC750R Prebuilt งานดี - 2024-04-05T09:33:00.000Z
+(Review) Loga Asura Pro Optical Keyboard - 2024-04-05T09:36:00.000Z
 ทำ auto deploy Hugo บน Github page - 2024-04-05T09:35:00.000Z
