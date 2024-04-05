@@ -1,0 +1,42 @@
+name: post update check
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: "Setup Bun Runtime"
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+
+      - name: "create env file"
+        uses: ozaytsev86/create-env-file@v1
+        with:
+          ENV_DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          ENV_NOTION_KEY: ${{ secrets.NOTION_KEY }}
+
+      - name: check for content update
+        run: |
+          bun install
+          bun run sync:published
+          git diff ./logs.txt
+
+      - name: create commit
+        run: |
+          git config --global user.name 'potbick'
+          git config --global user.email 'potbick@users.noreply.github.com'
+          git add --all
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "Auto updated with new content" && git push -u origin ${{ github.ref_name }} || echo "No changes to commit"

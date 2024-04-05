@@ -13,7 +13,6 @@ jobs:
       - uses: actions/checkout@v4
         name: "Checkout Source Code"
         with:
-          submodules: true
           token: ${{ secrets.GH_TOKEN }}
 
       - name: "Setup Bun Runtime"
@@ -30,11 +29,18 @@ jobs:
           restore-keys: |
             jampack
 
+      - name: "create env file"
+        uses: ozaytsev86/create-env-file@v1
+        with:
+          ENV_DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          ENV_NOTION_KEY: ${{ secrets.NOTION_KEY }}
+
       - name: "Install dependencies"
         run: bun install
 
       - name: "Build output"
-        run: bun run build
+        run: |
+          bun run generate
 
       - name: "Publish to Cloudflare Pages"
         uses: pickyzz/cf-pages-action@v1
