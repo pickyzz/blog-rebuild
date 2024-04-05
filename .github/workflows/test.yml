@@ -29,10 +29,14 @@ jobs:
           bun-version: canary
 
       - name: "create env file"
-        uses: ozaytsev86/create-env-file@v1
-        with:
-          ENV_DATABASE_ID: ${{ secrets.DATABASE_ID }}
-          ENV_NOTION_KEY: ${{ secrets.NOTION_KEY }}
+        env:
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+        shell: bash
+        run: |
+          touch .env
+          echo "DATABASE_ID=$DATABASE_ID" >> .env
+          echo "NOTION_KEY=$NOTION_KEY" >> .env
 
       - name: "Install dependencies"
         run: bun install
