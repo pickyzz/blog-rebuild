@@ -37,9 +37,9 @@ prefer.
 
 Rename .env.example to .env and add your Notion API key and database ID
 
-to sync post use ```npm run sync``` or ```npm run sync:published```
+to sync post use `npm run sync` or `npm run sync:published`
 
-use ```npm run generate``` instead ```npm run build```
+use `npm run generate` instead `npm run build`
 
 ### TODO
 
@@ -49,17 +49,17 @@ use ```npm run generate``` instead ```npm run build```
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                  | Action                                                           |
-| :----------------        | :-------------------------------------------                     |
-| `npm install`            | Installs dependencies                                            |
-| `npm run dev`            | Starts local dev server at `localhost:3000`                      |
-| `npm run build`          | Build your production site to `./dist/`                          |
-| `npm run preview`        | Preview your build locally, before deploying                     |
-| `npm run clean`          | Remove `./dist` folder                                           |
-| `npm run format`         | Run ESLint and report styling error                              |
-| `npm run sync`           | Sync all posts from notion database                              |
-| `npm run sync:publised`  | Sync only published post from notion database                    |
-| `npm run generate`       | Sync published post and build static site for deploying          |
+| Command                 | Action                                                  |
+| :---------------------- | :------------------------------------------------------ |
+| `npm install`           | Installs dependencies                                   |
+| `npm run dev`           | Starts local dev server at `localhost:3000`             |
+| `npm run build`         | Build your production site to `./dist/`                 |
+| `npm run preview`       | Preview your build locally, before deploying            |
+| `npm run clean`         | Remove `./dist` folder                                  |
+| `npm run format`        | Run ESLint and report styling error                     |
+| `npm run sync`          | Sync all posts from notion database                     |
+| `npm run sync:publised` | Sync only published post from notion database           |
+| `npm run generate`      | Sync published post and build static site for deploying |
 
 ### Additional Checks
 

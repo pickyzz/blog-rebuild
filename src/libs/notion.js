@@ -127,8 +127,6 @@ const pages = results.map(page => {
   };
 });
 
-fs.unlinkSync("./logs.txt"); // delete old logs file
-
 for (let page of pages) {
   console.info(
     "Fetching from Notion & Converting to Markdown: ",
@@ -169,12 +167,6 @@ ${mdString}
       pageContents
     );
   else console.log(`No content for page ${page.id}`);
-
-  const timestamp = `${page.title} - ${page.last_edited_time}`;
-  fs.appendFile(`${process.cwd()}/logs.txt`, timestamp + "\n", function (err) {
-    if (err) throw err;
-    console.log("Log Saved!");
-  }); // write new logs file
 
   console.debug(`Sleeping for ${THROTTLE_DURATION} ms...\n`);
   await delay(THROTTLE_DURATION); // Need to throttle requests to avoid rate limiting

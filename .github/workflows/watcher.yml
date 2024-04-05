@@ -27,13 +27,12 @@ jobs:
           ENV_DATABASE_ID: ${{ secrets.DATABASE_ID }}
           ENV_NOTION_KEY: ${{ secrets.NOTION_KEY }}
 
-      - name: check for content update
+      - name: check for post update
         run: |
           bun install
-          bun run sync:published
-          git diff ./logs.txt
+          bun run sync:logs
 
-      - name: create commit
+      - name: commit
         run: |
           git config --global user.name 'potbick'
           git config --global user.email 'potbick@users.noreply.github.com'
