@@ -27,8 +27,7 @@
     "test": "playwright test",
     "cz": "cz",
     "prepare": "husky install",
-    "lint": "eslint .",
-    "newpost": "./src/scripts/newpost.js"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@astrojs/mdx": "2.2.4",

@@ -51,6 +51,6 @@ jobs:
 
   build:
     needs: test
-    # if: github.ref_name == 'main'
+    if: github.ref_name == 'main'
     uses: pickyzz/blog-rebuild/.github/workflows/deploy.yml@notion-cms
     secrets: inherit
