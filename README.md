@@ -1,14 +1,26 @@
-#### Powered by Astro
+## Powered by Astro & Notion
 
-V. 2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme.
+- V.2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme.
 
-customized by Pickyzz
+- Notion API as Content Management System base on [AstroNot](https://github.com/jsonMartin/AstroNot)
 
-### Requirements
+customized by [Pickyzz](https://github.com/pickyzz)
 
-- Node.js and npm (or yarn, pnpm)
+## Requirements
 
-### Getting started
+- Node.js and npm (or yarn, pnpm, bun)
+
+## Work with notion as CMS
+
+- Duplicate [[This]](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4) Notion template and do not edit the table's name
+
+- Rename .env.example to .env and add your `NOTION_KEY` key and `DATABASE_ID`
+
+- To sync posts for developing use `npm run sync` or `npm run sync:published`
+
+- use `npm run generate` get all published posts and build for production
+
+### Developing
 
 Run the following command on your local environment:
 
@@ -29,25 +41,19 @@ You can create an optimized production build with:
 npm run build
 ```
 
+or
+
+```shell
+npm run generate
+```
+
 Now, your blog is ready to be deployed. All generated files are located at
 `dist` folder, which you can deploy the folder to any hosting service you
 prefer.
 
-## Work with notion as CMS
+## 🧞 All Commands
 
-Rename .env.example to .env and add your Notion API key and database ID
-
-to sync post use `npm run sync` or `npm run sync:published`
-
-use `npm run generate` instead `npm run build`
-
-### TODO
-
-- Create notion database template
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
+Note: run from the root of the project, from a terminal:
 
 | Command                 | Action                                                  |
 | :---------------------- | :------------------------------------------------------ |
@@ -60,8 +66,3 @@ All commands are run from the root of the project, from a terminal:
 | `npm run sync`          | Sync all posts from notion database                     |
 | `npm run sync:publised` | Sync only published post from notion database           |
 | `npm run generate`      | Sync published post and build static site for deploying |
-
-### Additional Checks
-
-This README.md was linted with
-[markdownlint](https://github.com/igorshubovych/markdownlint-cli)
