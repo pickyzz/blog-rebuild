@@ -30,7 +30,7 @@ jobs:
 
       - name: "create env file"
         env:
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID_TEST }}
           NOTION_KEY: ${{ secrets.NOTION_KEY }}
         shell: bash
         run: |
