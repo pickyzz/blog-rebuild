@@ -45,7 +45,7 @@
     "@tailwindcss/line-clamp": "0.4.4",
     "@tailwindcss/typography": "0.5.12",
     "@types/github-slugger": "2.0.0",
-    "@types/react": "18.2.76",
+    "@types/react": "18.2.77",
     "@typescript-eslint/parser": "7.6.0",
     "astro": "4.6.0",
     "astro-eslint-parser": "0.17.0",
