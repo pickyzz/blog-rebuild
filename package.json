@@ -35,7 +35,7 @@
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.3.0",
     "@astrojs/rss": "4.0.5",
-    "@astrojs/sitemap": "3.1.2",
+    "@astrojs/sitemap": "3.1.3",
     "@astrojs/tailwind": "5.1.0",
     "@divriots/jampack": "0.23.4",
     "@notionhq/client": "2.2.15",
