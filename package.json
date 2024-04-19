@@ -37,7 +37,7 @@
     "@astrojs/rss": "4.0.5",
     "@astrojs/sitemap": "3.1.4",
     "@astrojs/tailwind": "5.1.0",
-    "@divriots/jampack": "0.23.4",
+    "@divriots/jampack": "0.24.0",
     "@notionhq/client": "2.2.15",
     "@playwright/test": "1.43.1",
     "@resvg/resvg-js": "2.6.2",
