@@ -46,7 +46,7 @@
     "@tailwindcss/typography": "0.5.13",
     "@types/github-slugger": "2.0.0",
     "@types/react": "18.3.1",
-    "@typescript-eslint/parser": "7.7.1",
+    "@typescript-eslint/parser": "7.8.0",
     "astro": "4.7.0",
     "astro-eslint-parser": "1.0.1",
     "astro-font": "0.0.80",
