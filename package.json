@@ -60,7 +60,7 @@
     "github-slugger": "2.0.0",
     "husky": "9.0.11",
     "image-type": "5.2.0",
-    "lint-staged": "15.2.5",
+    "lint-staged": "15.2.6",
     "mdast-util-to-string": "4.0.0",
     "notion-to-md": "3.1.1",
     "prettier": "3.3.2",
