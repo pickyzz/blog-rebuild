@@ -39,7 +39,7 @@
     "@astrojs/tailwind": "5.1.0",
     "@divriots/jampack": "0.24.4",
     "@notionhq/client": "2.2.15",
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.45.3",
     "@resvg/resvg-js": "2.6.2",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
