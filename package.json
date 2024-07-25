@@ -58,7 +58,7 @@
     "eslint-plugin-astro": "1.2.3",
     "fuse.js": "7.0.0",
     "github-slugger": "2.0.0",
-    "husky": "9.1.1",
+    "husky": "9.1.2",
     "image-type": "5.2.0",
     "lint-staged": "15.2.7",
     "mdast-util-to-string": "4.0.0",
