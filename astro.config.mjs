@@ -45,7 +45,8 @@ export default defineConfig({
       [rehypeExternalLinks, { target: "_blank", rel: ["nofollow"] }],
     ],
     shikiConfig: {
-      theme: "catppuccin-macchiato",
+      // theme: "catppuccin-macchiato",
+      themes: { light: "min-light", dark: "night-owl" },
       wrap: true,
     },
     extendDefaultPlugins: true,

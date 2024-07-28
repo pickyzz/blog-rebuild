@@ -1,9 +1,6 @@
 # build output
 dist/
 
-# jampack cache
-.jampack/
-
 # dependencies
 node_modules/
 

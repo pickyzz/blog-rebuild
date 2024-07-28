@@ -20,15 +20,6 @@ jobs:
         with:
           bun-version: canary
 
-      - name: "Setup jampack cache"
-        uses: actions/cache@v4
-        id: jampack
-        with:
-          path: .jampack
-          key: jampack-${{ runner.os }}-${{ github.run_id }}
-          restore-keys: |
-            jampack
-
       - name: "create env file"
         env:
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
