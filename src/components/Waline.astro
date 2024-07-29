@@ -1,8 +1,8 @@
 <section>
   <div id="waline" class="mx-auto mt-14 max-w-screen-sm">
-    <script is:inline>
-      const Waline = window.Waline;
-      Waline.init({
+    <script is:inline type="module">
+      import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+      init({
         el: "#waline",
         serverURL: "https://comment.pickyzz.dev",
         path: [window.location.pathname.replace(/\/$/, "")],
