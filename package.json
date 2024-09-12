@@ -45,7 +45,7 @@
     "@types/react": "18.3.5",
     "@typescript-eslint/parser": "8.5.0",
     "astro": "4.15.4",
-    "astro-eslint-parser": "1.0.2",
+    "astro-eslint-parser": "1.0.3",
     "astro-font": "0.1.81",
     "daisyui": "4.12.10",
     "dotenv": "16.4.5",
