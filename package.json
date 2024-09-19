@@ -29,7 +29,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@astrojs/mdx": "3.1.6",
+    "@astrojs/mdx": "3.1.7",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.6.2",
     "@astrojs/rss": "4.0.7",
@@ -44,7 +44,7 @@
     "@types/github-slugger": "2.0.0",
     "@types/react": "18.3.7",
     "@typescript-eslint/parser": "8.6.0",
-    "astro": "4.15.7",
+    "astro": "4.15.8",
     "astro-eslint-parser": "1.0.3",
     "astro-font": "0.1.81",
     "daisyui": "4.12.10",
