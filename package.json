@@ -1,32 +1,14 @@
 {
   "name": "pickyzz-blog-rebuild",
   "version": "2.1.0",
-  "private": true,
-  "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pickyzz/pickyzz.dev.git"
-  },
   "author": {
     "name": "pickyzz",
     "email": "contact@pickyzz.dev",
     "url": "http://pickyzz.dev"
   },
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "sync": "rimraf src/content/blog/_ && node src/libs/notion.js",
-    "sync:logs": "node src/libs/getLogs.js --published",
-    "sync:published": "rimraf src/content/blog/_ && node src//libs/notion.js --published",
-    "generate": "rimraf dist/*_ && ([ -d 'dist' ] || mkdir dist) && ([ -d 'dist/images' ] || mkdir dist/images) && ([ -d 'src/content/blog' ] || mkdir src/content/blog) && ([ -d 'src/assets/images' ] || mkdir src/assets/images) && ([ -d 'src/assets/images/blog' ] || mkdir src/assets/images/blog) && rimraf src/content/blog/_ && node src/libs/notion.js --published && astro build",
-    "astro": "astro",
-    "clean": "rimraf dist",
-    "format:check": "prettier --check . --plugin=prettier-plugin-astro",
-    "format": "prettier --write . --plugin=prettier-plugin-astro",
-    "test": "playwright test",
-    "lint": "eslint ."
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "devDependencies": {
     "@astrojs/mdx": "3.1.7",
@@ -42,6 +24,7 @@
     "@tailwindcss/line-clamp": "0.4.4",
     "@tailwindcss/typography": "0.5.15",
     "@types/github-slugger": "2.0.0",
+    "@types/lodash.kebabcase": "^4.1.9",
     "@types/react": "18.3.10",
     "@typescript-eslint/parser": "8.7.0",
     "astro": "4.15.9",
@@ -52,8 +35,8 @@
     "eslint": "9.11.1",
     "eslint-plugin-astro": "1.2.4",
     "fuse.js": "7.0.0",
-    "github-slugger": "2.0.0",
     "image-type": "5.2.0",
+    "lodash.kebabcase": "^4.1.1",
     "mdast-util-to-string": "4.0.0",
     "notion-to-md": "3.1.1",
     "prettier": "3.3.3",
@@ -73,5 +56,23 @@
     "tinycolor2": "1.6.0",
     "ts-node": "10.9.2",
     "typescript": "5.6.2"
-  }
+  },
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "sync": "rimraf src/content/blog/_ && node src/libs/notion.js",
+    "sync:logs": "node src/libs/getLogs.js --published",
+    "sync:published": "rimraf src/content/blog/_ && node src//libs/notion.js --published",
+    "generate": "rimraf dist/*_ && ([ -d 'dist' ] || mkdir dist) && ([ -d 'dist/images' ] || mkdir dist/images) && ([ -d 'src/content/blog' ] || mkdir src/content/blog) && ([ -d 'src/assets/images' ] || mkdir src/assets/images) && ([ -d 'src/assets/images/blog' ] || mkdir src/assets/images/blog) && rimraf src/content/blog/_ && node src/libs/notion.js --published && astro build",
+    "astro": "astro",
+    "clean": "rimraf dist",
+    "format:check": "prettier --check . --plugin=prettier-plugin-astro",
+    "format": "prettier --write . --plugin=prettier-plugin-astro",
+    "test": "playwright test",
+    "lint": "eslint ."
+  },
+  "type": "module"
 }
