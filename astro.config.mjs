@@ -37,7 +37,7 @@ export default defineConfig({
         remarkCollapse,
         {
           test: "Table of contents",
-          summary: "Show all topics",
+          summary: "Click to show/hide",
         },
       ],
     ],

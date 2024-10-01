@@ -134,22 +134,13 @@
   }
 }
 
-/* html[data-theme="dark"] .astro-code,
-html[data-theme="dark"] .astro-code span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
-} */
-
 /* replace words in ToC */
 .prose h2#table-of-contents {
   visibility: hidden;
 }
 .prose h2#table-of-contents::before {
   visibility: visible;
-  content: "All topics";
+  content: "Contents Table";
 }
 
 /* card animate */

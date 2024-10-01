@@ -90,7 +90,7 @@ const prevPost =
       <Content />
     </article>
 
-    <ul class="my-8">
+    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
     </ul>
     <div
@@ -98,7 +98,7 @@ const prevPost =
     >
       <button
         id="back-to-top"
-        class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+        class="focus-outline whitespace-nowrap py-1 hover:opacity-75 hidden md:block"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
           <path
@@ -109,7 +109,6 @@ const prevPost =
       </button>
       <ShareLinks />
     </div>
-    <Waline />
 
     <hr class="my-6 border-dashed border-skin-line" />
 
@@ -139,7 +138,7 @@ const prevPost =
               </>
             </svg>
             <div>
-              <span>Previous Post</span>
+              <span>Older Post</span>
               <div class="pt-2 text-sm text-skin-accent/85">
                 {prevPost.title}
               </div>
@@ -154,7 +153,7 @@ const prevPost =
             class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
-              <span>Next Post</span>
+              <span>Later Post</span>
               <div class="pt-2 text-sm text-skin-accent/85">
                 {nextPost.title}
               </div>
@@ -180,6 +179,8 @@ const prevPost =
         )
       }
     </div>
+
+    <Waline />
   </main>
   <Footer />
 </Layout>
