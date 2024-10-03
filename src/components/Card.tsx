@@ -14,7 +14,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
     className:
-      "my-4 h-14 text-skin-accent text-center text-lg font-medium decoration-dashed line-clamp-2",
+      "text-white/85 text-[1.1rem] text-center text-lg font-light decoration-dashed",
   };
 
   return (
@@ -25,19 +25,21 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         rel="prefetch"
         className="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
       >
-        <div className="flex-shrink-0 object-cover overflow-hidden rounded-lg">
+        <div className="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
           <img
-            className="card-animate duration-200 h-[12rem] md:h-[10rem] w-[100vw] object-cover object-center"
+            className="card-animate duration-500 h-[13rem] w-[100vw] object-cover object-center"
             src={ogImage?.src}
             loading="eager"
             alt=""
           />
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center px-10 py-2 bg-black/75 min-h-[4rem]">
+            {secHeading ? (
+              <h2 {...headerProps}>{title}</h2>
+            ) : (
+              <h3 {...headerProps}>{title}</h3>
+            )}
+          </div>
         </div>
-        {secHeading ? (
-          <h2 {...headerProps}>{title}</h2>
-        ) : (
-          <h3 {...headerProps}>{title}</h3>
-        )}
         <p className="h-[3rem] mb-4 text-center line-clamp-2">{description}</p>
       </a>
       <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
