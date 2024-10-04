@@ -32,7 +32,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
             loading="eager"
             alt=""
           />
-          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center px-10 py-2 bg-black/75 min-h-[4rem]">
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center px-10 py-2 bg-black/75 h-[35%]">
             {secHeading ? (
               <h2 {...headerProps}>{title}</h2>
             ) : (
