@@ -27,7 +27,7 @@ const { page, tag, tagName } = Astro.props;
   >
     <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul
-      class="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto"
+      class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto"
     >
       {
         page.data.map(({ data, slug }) => (

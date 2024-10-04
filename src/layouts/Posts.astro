@@ -20,7 +20,7 @@ const { page } = Astro.props;
   <Header activeNav="posts" />
   <Main pageTitle="Blog" pageDesc="All the articles I've posted.">
     <ul
-      class="grid grid-cols-1 gap-6 md:grid-cols-2 max-w-[80vw] md:max-w-3xl mx-auto"
+      class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto"
     >
       {
         page.data.map(({ data, slug }) => (

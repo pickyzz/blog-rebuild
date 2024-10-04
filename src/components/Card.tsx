@@ -42,7 +42,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
         </div>
         <p className="h-[3rem] mb-4 text-center line-clamp-2">{description}</p>
       </a>
-      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} />
+      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} className="justify-center" />
     </li>
   );
 }
