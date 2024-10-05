@@ -190,7 +190,7 @@ const prevPost =
     @apply w-full px-4 pb-12 max-w-[90vw] md:max-w-4xl mx-auto;
   }
   .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
+    @apply text-[1.8rem] font-semibold text-skin-accent;
   }
 </style>
 
@@ -205,7 +205,7 @@ const prevPost =
 
     // Create the progress bar div
     const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.className = "progress-bar h-[4px] w-0 bg-skin-accent rounded-lg";
     progressBar.id = "myBar";
 
     // Append the progress bar to the progress container
@@ -266,7 +266,7 @@ const prevPost =
 
       const copyButton = document.createElement("button");
       copyButton.className =
-        "copy-code absolute right-3 top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+        "copy-code absolute right-3 top-3 rounded bg-skin-accent/80 hover:bg-skin-accent px-2 py-1 text-xs leading-4 text-white font-semibold";
       copyButton.innerHTML = copyButtonLabel;
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
