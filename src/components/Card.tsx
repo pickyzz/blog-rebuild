@@ -14,7 +14,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
     className:
-      "text-white/85 text-[1.1rem] text-center text-lg font-light decoration-dashed",
+      "text-white text-[1.1rem] text-center text-lg font-light decoration-dashed",
   };
 
   return (
@@ -40,7 +40,7 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
             )}
           </div>
         </div>
-        <p className="h-[3rem] mb-4 text-center line-clamp-2">{description}</p>
+        <p className="h-[3rem] mb-4 text-center line-clamp-2 text-skin-base/85">{description}</p>
       </a>
       <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} className="justify-center" />
     </li>
