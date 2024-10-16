@@ -18,7 +18,7 @@
     "@astrojs/sitemap": "3.2.1",
     "@astrojs/tailwind": "5.1.2",
     "@notionhq/client": "2.2.15",
-    "@playwright/test": "1.48.0",
+    "@playwright/test": "1.48.1",
     "@resvg/resvg-js": "2.6.2",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
