@@ -4,7 +4,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "guestbook";
+  activeNav?: "posts" | "tags" | "about" | "search";
 }
 
 const { activeNav } = Astro.props;
@@ -71,15 +71,6 @@ const { activeNav } = Astro.props;
               rel="prefetch"
             >
               Tags
-            </a>
-          </li>
-          <li>
-            <a
-              href="/guestbook"
-              class={activeNav === "guestbook" ? "active" : ""}
-              rel="prefetch"
-            >
-              Guestbook
             </a>
           </li>
           <li>

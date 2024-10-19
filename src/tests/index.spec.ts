@@ -42,20 +42,6 @@ test("tags page", async ({ page }) => {
   await expect(page.locator("main > ul")).toBeVisible();
 });
 
-test("guestbook page", async ({ page }) => {
-  await page.goto("/guestbook");
-  await expect(page).toHaveTitle(/Guestbook/);
-  await expect(page).toHaveURL("/guestbook");
-  await expect(page.locator("body")).toBeVisible();
-  await expect(page.locator("#nav-menu")).toBeVisible();
-  await expect(page.locator("#main-content")).toBeVisible();
-  await expect(page.locator("#guestbook")).toBeVisible();
-  await expect(page.locator("#waline")).toBeVisible();
-  await expect(page.getByLabel("breadcrumb")).toBeVisible();
-  await expect(page.locator("footer")).toBeVisible();
-  await expect(page.locator("main")).toBeVisible();
-});
-
 test("about page", async ({ page }) => {
   await page.goto("/about");
   await expect(page).toHaveTitle(/About/);
