@@ -40,9 +40,15 @@ export default function Card({ href, frontmatter, secHeading = true }: Props) {
             )}
           </div>
         </div>
-        <p className="h-[3rem] mb-4 text-center line-clamp-2 text-skin-base/85">{description}</p>
+        <p className="h-[3rem] mb-4 text-center line-clamp-2 text-skin-base/85">
+          {description}
+        </p>
       </a>
-      <Datetime pubDatetime={pubDatetime} modDatetime={modDatetime} className="justify-center" />
+      <Datetime
+        pubDatetime={pubDatetime}
+        modDatetime={modDatetime}
+        className="justify-center"
+      />
     </li>
   );
 }

@@ -8,8 +8,12 @@ export interface Props {
   secHeading?: boolean;
 }
 
-export default function CardArchives({ href, frontmatter, secHeading = true }: Props) {
-  const { title, pubDatetime, modDatetime, } = frontmatter;
+export default function CardArchives({
+  href,
+  frontmatter,
+  secHeading = true,
+}: Props) {
+  const { title, pubDatetime } = frontmatter;
 
   const headerProps = {
     style: { viewTransitionName: slugifyStr(title) },
@@ -28,7 +32,12 @@ export default function CardArchives({ href, frontmatter, secHeading = true }: P
           <h3 {...headerProps}>{title}</h3>
         )}
       </a>
-      <Datetime pubDatetime={pubDatetime} modDatetime={pubDatetime} size="sm" className="mt-2 text-skin-base/60" />
+      <Datetime
+        pubDatetime={pubDatetime}
+        modDatetime={pubDatetime}
+        size="sm"
+        className="mt-2 text-skin-base/60"
+      />
     </li>
   );
 }
