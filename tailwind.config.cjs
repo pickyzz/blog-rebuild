@@ -59,6 +59,11 @@ module.exports = {
         },
         transparent: "transparent",
       },
+      stroke: {
+        skin: {
+          accent: withOpacity("--color-accent")
+        }
+      },
       fontFamily: {
         mono: ["var(--font-ibm)", "monospace"],
       },

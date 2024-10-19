@@ -18,4 +18,5 @@ export type SocialObjects = {
   active: boolean;
   linkTitle: string;
   scheduledPostMargin: number;
+  showArchives?: boolean;
 }[];

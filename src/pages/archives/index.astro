@@ -1,0 +1,76 @@
+---
+import { getCollection } from "astro:content";
+import CardArchives from "@components/CardArchives";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import { SITE } from "@config";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import getPostsByGroupCondition from "@utils/getPostsByGroupCondition";
+
+// Redirect to 404 page if `showArchives` config is false
+if (!SITE.showArchives) {
+  return Astro.redirect("/404");
+}
+
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+const MonthMap: Record<string, string> = {
+  "1": "January",
+  "2": "February",
+  "3": "March",
+  "4": "April",
+  "5": "May",
+  "6": "June",
+  "7": "July",
+  "8": "August",
+  "9": "September",
+  "10": "October",
+  "11": "November",
+  "12": "December",
+};
+---
+
+<Layout title={`Archives | ${SITE.title}`}>
+  <Header activeNav="archives" />
+  <Main pageTitle="Archives" pageDesc="All the articles I've archived.">
+    {
+      Object.entries(
+        getPostsByGroupCondition(posts, post =>
+          post.data.pubDatetime.getFullYear()
+        )
+      )
+        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+        .map(([year, yearGroup]) => (
+          <div>
+            <div class="my-4">
+              <span class="text-3xl font-bold">{year}</span>
+              <sup class="text-[19px]">{yearGroup.length}</sup>
+            </div>
+            {Object.entries(
+              getPostsByGroupCondition(
+                yearGroup,
+                post => post.data.pubDatetime.getMonth() + 1
+              )
+            )
+              .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
+              .map(([month, monthGroup]) => (
+                <div class="flex flex-col sm:flex-row ml-4 text-skin-base/80">
+                  <div class="mt-6 min-w-36 text-lg sm:my-6 mr-10">
+                    <span class="font-semibold">{MonthMap[month]}</span>
+                    <sup class="text-xs">{monthGroup.length}</sup>
+                  </div>
+                  <ul>
+                    {monthGroup.map(({ data, slug }) => (
+                      <CardArchives href={`/blog/${slug}`} frontmatter={data} />
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </div>
+        ))
+    }
+  </Main>
+
+  <Footer />
+</Layout>

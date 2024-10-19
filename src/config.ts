@@ -11,6 +11,7 @@ export const SITE = {
   postOnIndex: 4,
   postPerPage: 8,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
+  showArchives: true,
 };
 
 export const LOGO_IMAGE = {
@@ -55,7 +56,7 @@ export const SOCIALS: SocialObjects = [
     name: "Twitter",
     href: "https://twitter.com/P1ckyzz",
     linkTitle: `${SITE.title} on Twitter`,
-    active: true,
+    active: false,
   },
   {
     name: "Twitch",
