@@ -11,7 +11,7 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "devDependencies": {
-    "@astrojs/mdx": "3.1.8",
+    "@astrojs/mdx": "3.1.9",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "3.6.2",
     "@astrojs/rss": "4.0.9",
@@ -27,7 +27,7 @@
     "@types/lodash.kebabcase": "4.1.9",
     "@types/react": "18.3.12",
     "@typescript-eslint/parser": "8.12.2",
-    "astro": "4.16.7",
+    "astro": "4.16.8",
     "astro-eslint-parser": "1.0.3",
     "astro-font": "0.1.81",
     "daisyui": "4.12.14",
