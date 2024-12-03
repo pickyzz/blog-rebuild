@@ -16,7 +16,7 @@
     "@astrojs/react": "3.6.3",
     "@astrojs/rss": "4.0.9",
     "@astrojs/sitemap": "3.2.1",
-    "@astrojs/tailwind": "5.1.2",
+    "@astrojs/tailwind": "5.1.3",
     "@notionhq/client": "2.2.15",
     "@playwright/test": "1.49.0",
     "@resvg/resvg-js": "2.6.2",
