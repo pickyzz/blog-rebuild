@@ -1,7 +1,7 @@
 ---
 import { SITE } from "@config";
 import "@styles/base.css";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import { AstroFont } from "astro-font";
 
 export interface Props {
@@ -149,7 +149,7 @@ const structuredData = {
     />
     <!-- Waline comment end -->
 
-    <ViewTransitions />
+    <ClientRouter />
 
     <script is:inline src="/toggle-theme.js" async></script>
   </head>

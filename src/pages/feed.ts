@@ -10,8 +10,8 @@ export async function GET() {
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
-    items: sortedPosts.map(({ data, slug }) => ({
-      link: `blog/${slug}`,
+    items: sortedPosts.map(({ data }) => ({
+      link: `blog/${data.slug}`,
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),

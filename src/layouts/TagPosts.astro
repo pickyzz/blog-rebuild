@@ -30,8 +30,8 @@ const { page, tag, tagName } = Astro.props;
       class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto"
     >
       {
-        page.data.map(({ data, slug }) => (
-          <Card href={`/blog/${slug}`} frontmatter={data} />
+        page.data.map(({ data }) => (
+          <Card href={`/blog/${data.slug}`} frontmatter={data} />
         ))
       }
     </ul>

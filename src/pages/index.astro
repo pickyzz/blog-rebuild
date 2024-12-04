@@ -45,10 +45,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             <h2>Featured</h2>
             <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto">
               {featuredPosts.map(
-                ({ data, slug }, index) =>
+                ({ data }, index) =>
                   index < 2 && (
                     <Card
-                      href={`/blog/${slug}`}
+                      href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
                     />
@@ -69,10 +69,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
             {sortedPosts
               .filter(({ data }) => !data.featured)
               .map(
-                ({ data, slug }, index) =>
+                ({ data }, index) =>
                   index < SITE.postOnIndex && (
                     <Card
-                      href={`/blog/${slug}`}
+                      href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
                     />
