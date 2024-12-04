@@ -12,6 +12,9 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
+  legacy: {
+    collections: true
+  },
   site: SITE.website,
   trailingSlash: "never",
   integrations: [
@@ -57,7 +60,4 @@ export default defineConfig({
     },
   },
   scopedStyleStrategy: "where",
-  experimental: {
-    contentLayer: true,
-  },
 });
