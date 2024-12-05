@@ -72,7 +72,10 @@ const MonthMap: Record<string, string> = {
                           )
                       )
                       .map(({ data }) => (
-                        <CardArchives href={`/blog/${data.slug}`} frontmatter={data} />
+                        <CardArchives
+                          href={`/blog/${data.slug}`}
+                          frontmatter={data}
+                        />
                       ))}
                   </ul>
                 </div>

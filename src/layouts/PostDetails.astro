@@ -6,7 +6,7 @@ import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
 import Waline from "@components/Waline.astro";
 import type { CollectionEntry } from "astro:content";
-import { render } from 'astro:content';
+import { render } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
@@ -73,7 +73,9 @@ const prevPost =
     </button>
   </div>
   <main id="main-content">
-    <h1 transition:name={slugifyStr(title)} class="post-title inline-block">{title}</h1>
+    <h1 transition:name={slugifyStr(title)} class="post-title inline-block">
+      {title}
+    </h1>
     <Datetime
       pubDatetime={pubDatetime}
       modDatetime={modDatetime}
@@ -133,8 +135,8 @@ const prevPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M15 6l-6 6l6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M15 6l-6 6l6 6" />
             </svg>
             <div>
               <span>Older Post</span>
@@ -169,8 +171,8 @@ const prevPost =
               stroke-linejoin="round"
               class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
             >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M9 6l6 6l-6 6" />
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 6l6 6l-6 6" />
             </svg>
           </a>
         )

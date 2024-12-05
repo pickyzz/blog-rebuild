@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 export const getReadingTime = async () => {
   const globPosts = import.meta.glob<CollectionEntry<"blog">>(
     "../content/blog/*{.mdx,.md}",
-    { eager: false } 
+    { eager: false }
   );
 
   const mapFrontmatter = new Map<string, number>();
@@ -23,10 +23,9 @@ export const getReadingTime = async () => {
 };
 
 const getPostsWithRT = async (posts: CollectionEntry<"blog">[]) => {
-
   const mapFrontmatter = await getReadingTime();
 
-  return posts.map((post) => {
+  return posts.map(post => {
     post.data.readingTime = mapFrontmatter.get(slugifyStr(post.data.title));
     return post;
   });
