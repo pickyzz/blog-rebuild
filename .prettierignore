@@ -1,5 +1,7 @@
 # Ignore everything
 /*
+/src/content
+/src/assets
 
 # Except these files & folders
 !/src
