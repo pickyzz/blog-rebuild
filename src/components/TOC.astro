@@ -14,8 +14,10 @@ const toc = generateToc(headings);
 {
   toc.length > 0 && (
     <div class="fixed hidden lg:flex top-1/2 right-3 mt-0 max-h-screen w-[15%] p-4 shadow-lg rounded-xl bg-skin-card/20 overflow-auto flex-col justify-center items-center transform -translate-y-1/2">
-      <h2 class="title text-lg">Contents Table</h2>
-      <ul class="mt-4 text-sm">
+      <h2 class="title text-xl underline decoration-dashed underline-offset-4">
+        Contents Table
+      </h2>
+      <ul class="mt-2">
         {toc.map(heading => (
           <TOCHeading heading={heading} />
         ))}
