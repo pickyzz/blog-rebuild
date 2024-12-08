@@ -11,17 +11,15 @@ const { headings } = Astro.props;
 const toc = generateToc(headings);
 ---
 
-<div
-  class="fixed hidden lg:flex top-[15%] right-5 mt-0 w-[15%] p-4 shadow-lg rounded-lg bg-skin-card/20 max-h-screen overflow-auto flex-col justify-center items-center"
->
-  <h2 class="title text-lg">Table of Contents</h2>
-  <ul class="mt-4 text-sm">
-    {
-      toc.length > 0 ? (
-        toc.map(heading => <TOCHeading heading={heading} />)
-      ) : (
-        <li>No headings available</li>
-      )
-    }
-  </ul>
-</div>
+{
+  toc.length > 0 && (
+    <div class="fixed hidden lg:flex top-1/2 right-3 mt-0 max-h-screen w-[15%] p-4 shadow-lg rounded-xl bg-skin-card/20 overflow-auto flex-col justify-center items-center transform -translate-y-1/2">
+      <h2 class="title text-lg">Contents Table</h2>
+      <ul class="mt-4 text-sm">
+        {toc.map(heading => (
+          <TOCHeading heading={heading} />
+        ))}
+      </ul>
+    </div>
+  )
+}
