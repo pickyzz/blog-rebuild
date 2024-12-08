@@ -5,11 +5,12 @@ import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
 import Waline from "@components/Waline.astro";
-import type { CollectionEntry } from "astro:content";
-import { render } from "astro:content";
+import { type CollectionEntry, render } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import { generateToc } from "@utils/generateToc";
+import TOC from "@components/TOC.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -29,7 +30,8 @@ const {
   readingTime,
 } = post.data;
 
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const toc = generateToc(headings);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -90,6 +92,7 @@ const prevPost =
         alt=""
         loading="eager"
       />
+      <TOC headings={toc} />
       <Content />
     </article>
 
@@ -238,21 +241,21 @@ const prevPost =
 
   /** Attaches links to headings in the document,
    *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
-    );
-    for (const heading of headings) {
-      heading.classList.add("group");
-      const link = document.createElement("a");
-      link.innerText = "#";
-      link.className = "heading-link hidden group-hover:inline-block ml-2";
-      link.href = "#" + heading.id;
-      link.ariaHidden = "true";
-      heading.appendChild(link);
-    }
-  }
-  addHeadingLinks();
+  // function addHeadingLinks() {
+  //   const headings = Array.from(
+  //     document.querySelectorAll("h2, h3, h4, h5, h6")
+  //   );
+  //   for (const heading of headings) {
+  //     heading.classList.add("group");
+  //     const link = document.createElement("a");
+  //     link.innerText = "#";
+  //     link.className = "heading-link hidden group-hover:inline-block ml-2";
+  //     link.href = "#" + heading.id;
+  //     link.ariaHidden = "true";
+  //     heading.appendChild(link);
+  //   }
+  // }
+  // addHeadingLinks();
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */

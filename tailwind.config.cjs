@@ -18,6 +18,7 @@ module.exports = {
     screens: {
       sm: "779px",
       md: "780px",
+      lg: "1440px",
     },
 
     // Uncomment the following extend
