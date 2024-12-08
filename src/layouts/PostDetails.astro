@@ -62,6 +62,7 @@ const prevPost =
 
 <Layout {...layoutProps}>
   <Header />
+  <TOC headings={toc} />
   <div class="flex w-full justify-start px-2 max-w-[90vw] md:max-w-4xl mx-auto">
     <button
       class="focus-outline mb-2 mt-8 flex hover:opacity-75"
@@ -92,7 +93,6 @@ const prevPost =
         alt=""
         loading="eager"
       />
-      <TOC headings={toc} />
       <Content />
     </article>
 
@@ -238,24 +238,6 @@ const prevPost =
     });
   }
   updateScrollProgress();
-
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  // function addHeadingLinks() {
-  //   const headings = Array.from(
-  //     document.querySelectorAll("h2, h3, h4, h5, h6")
-  //   );
-  //   for (const heading of headings) {
-  //     heading.classList.add("group");
-  //     const link = document.createElement("a");
-  //     link.innerText = "#";
-  //     link.className = "heading-link hidden group-hover:inline-block ml-2";
-  //     link.href = "#" + heading.id;
-  //     link.ariaHidden = "true";
-  //     heading.appendChild(link);
-  //   }
-  // }
-  // addHeadingLinks();
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
