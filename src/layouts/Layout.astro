@@ -175,5 +175,30 @@ const structuredData = {
       is:inline
       src="https://cdn.jsdelivr.net/gh/pickyzz/blog-rebuild@main/public/cookies.js"
     ></script>
+
+    <!-- TOC Script -->
+    <script is:inline>
+      document.addEventListener("astro:page-load", function () {
+        // Find all the links inside the TOC
+        const tocLinks = document.querySelectorAll('a[href^="#"]');
+
+        // Add click event listener to each TOC link
+        tocLinks.forEach(link => {
+          link.addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent default anchor behavior
+
+            // Get the target element by the href attribute
+            const targetId = this.getAttribute("href").substring(1);
+            const targetElement = document.getElementById(targetId);
+
+            // Scroll the target element into view, with the target in the center
+            targetElement.scrollIntoView({
+              behavior: "smooth",
+              block: "center", // This ensures the target is in the center of the screen
+            });
+          });
+        });
+      });
+    </script>
   </body>
 </html>

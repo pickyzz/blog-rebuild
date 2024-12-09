@@ -25,7 +25,7 @@ export const generateToc = (
   headings: ReadonlyArray<MarkdownHeading>,
   { maxHeadingLevel = 4, minHeadingLevel = 2 }: TocOpts = {}
 ) => {
-  // กรองเฉพาะ headings ที่มี depth 2 (H2) และ 3 (H3)
+  // Filter out headings that are not in the body
   const bodyHeadings = headings.filter(heading => {
     return heading.depth >= minHeadingLevel && heading.depth <= maxHeadingLevel;
   });
