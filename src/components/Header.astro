@@ -1,6 +1,5 @@
 ---
 import { LOGO_IMAGE, SITE } from "@config";
-import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
@@ -12,7 +11,9 @@ const { activeNav } = Astro.props;
 
 <header>
   <a id="skip-to-content" href="#main-content">Skip to content</a>
-  <div class="nav-container">
+  <div
+    class="nav-container fixed top-0 left-1/2 transform -translate-x-1/2 w-full z-10 border-b-[2px] border-skin-line bg-skin-fill/80 backdrop-blur"
+  >
     <div class="top-nav-wrap">
       <a href="/" class="logo whitespace-nowrap" rel="prefetch">
         {
@@ -158,7 +159,6 @@ const { activeNav } = Astro.props;
       </nav>
     </div>
   </div>
-  <Hr />
 </header>
 
 <style>

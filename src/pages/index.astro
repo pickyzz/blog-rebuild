@@ -41,7 +41,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     {
       featuredPosts.length > 0 && (
         <>
-          <section id="featured">
+          <section id="featured" class="px-4">
             <h2>Featured</h2>
             <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto">
               {featuredPosts.map(
@@ -63,7 +63,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 
     {
       recentPosts.length > 0 && (
-        <section id="recent-posts">
+        <section id="recent-posts" class="px-4">
           <h2>Recent Posts</h2>
           <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 max-w-[80vw] md:max-w-4xl mx-auto">
             {sortedPosts
