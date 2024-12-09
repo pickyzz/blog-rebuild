@@ -43,6 +43,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           packageManager: bun
-          command: pages deploy dist --project-name=pickyzz-blog
+          command: pages deploy dist --project-name=pickyzz-blog --commit-dirty=true
           # Optional: Enable this if you want to have GitHub Deployments triggered
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
