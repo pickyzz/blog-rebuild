@@ -7,6 +7,7 @@ const {
   MAX_WIDTH = 1400, // 2x max width of blog section width (2x for retina devices). Max width on Medium is 680px, so target that as max width for articles.
   imageClass = "w-fit h-auto bg-gray-100 rounded-xl",
   alt = "Blog Image",
+  loading="eager"
 } = Astro.props;
 
 const relativeSrc = `../${src}`;
@@ -22,6 +23,7 @@ const { width, height } = imgData;
     <AstroImage
       src={imgData}
       {alt}
+      loading={loading}
       class={imageClass}
       width={width < MAX_WIDTH ? width : MAX_WIDTH}
       height={height}
