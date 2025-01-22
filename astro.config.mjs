@@ -19,7 +19,9 @@ export default defineConfig({
     react({
       include: ["**/react/*"],
     }),
-    sitemap(),
+    sitemap({
+      filter: page => SITE.showArchives || !page.endsWith("/archives"),
+    }),
     mdx({
       extendMarkdownConfig: true,
       smartypants: true,
