@@ -29,7 +29,7 @@
     "@typescript-eslint/parser": "8.22.0",
     "astro": "5.2.3",
     "astro-eslint-parser": "1.2.1",
-    "astro-font": "0.1.81",
+    "astro-font": "1.0.0",
     "daisyui": "4.12.23",
     "dotenv": "16.4.7",
     "eslint": "9.19.0",
