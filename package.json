@@ -38,7 +38,7 @@
     "lodash.kebabcase": "4.1.1",
     "mdast-util-to-string": "4.0.0",
     "notion-to-md": "3.1.4",
-    "prettier": "3.4.2",
+    "prettier": "3.5.0",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.6.11",
     "react": "19.0.0",
