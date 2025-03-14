@@ -17,7 +17,7 @@
     "@astrojs/rss": "4.0.11",
     "@astrojs/sitemap": "3.2.1",
     "@astrojs/tailwind": "6.0.0",
-    "@notionhq/client": "2.2.17",
+    "@notionhq/client": "2.3.0",
     "@playwright/test": "1.51.0",
     "@resvg/resvg-js": "2.6.2",
     "@tailwindcss/aspect-ratio": "0.4.2",
