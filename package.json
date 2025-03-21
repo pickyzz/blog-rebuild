@@ -28,7 +28,7 @@
     "@types/react": "19.0.12",
     "@typescript-eslint/parser": "8.27.0",
     "astro": "5.5.4",
-    "astro-eslint-parser": "1.2.1",
+    "astro-eslint-parser": "1.2.2",
     "astro-font": "1.0.0",
     "dotenv": "16.4.7",
     "eslint": "9.22.0",
