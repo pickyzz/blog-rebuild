@@ -27,7 +27,7 @@
     "@types/lodash.kebabcase": "4.1.9",
     "@types/react": "19.1.0",
     "@typescript-eslint/parser": "8.29.0",
-    "astro": "5.6.0",
+    "astro": "5.6.1",
     "astro-eslint-parser": "1.2.2",
     "astro-font": "1.0.0",
     "dotenv": "16.4.7",
