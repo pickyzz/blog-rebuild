@@ -1,15 +1,15 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Breadcrumbs from "@components/Breadcrumbs.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import { SITE } from "@config";
+import Layout from "@/layouts/Layout.astro";
+import Breadcrumbs from "@/components/Breadcrumbs.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
 
 import { Image } from "astro:assets";
-import profileImage from "@assets/images/profile.jpg";
-import fccImage1 from "@assets/images/fcc-cert-1.png";
-import fccImage2 from "@assets/images/fcc-cert-2.png";
-import fccImage3 from "@assets/images/fcc-cert-3.png";
+import profileImage from "@/assets/images/profile.jpg";
+import fccImage1 from "@/assets/images/fcc-cert-1.png";
+import fccImage2 from "@/assets/images/fcc-cert-2.png";
+import fccImage3 from "@/assets/images/fcc-cert-3.png";
 ---
 
 <Layout title={`About | ${SITE.title}`}>
@@ -26,36 +26,93 @@ import fccImage3 from "@assets/images/fcc-cert-3.png";
         />
         <div>
           <p class="mt-2 mb-4 text-3xl font-bold">Parinya T.</p>
-          <p class="my-2">Bachelor’s of Science degree (B. Sc.) KMUTNB, Thailand</p>
-          <p class="my-1 font-semibold">Location: <span class="font-normal">Thailand</span></p>
-          <p class="my-1 font-semibold">Timezone: <span class="font-normal">Asia/Bangkok (GMT+7)</span></p>
-          <p class="my-1 font-semibold">Language: <span class="font-normal">TH, EN</span></p>
-          <p class="my-1 font-semibold">Date of birth: <span class="font-normal">30 - 09 - 1993</span></p>
-          <p class="my-1 font-semibold">E-mail: <a href="mailto:contact@pickyzz.dev" class="text-blue-500 hover:underline">contact@pickyzz.dev</a></p>
-          <p class="my-1 font-semibold">Twitter: <a href="https://twitter.com/p1ckyzz" class="text-blue-500 hover:underline">@p1ckyzz</a></p>
-          <p class="my-1 font-semibold">Github: <a href="https://github.com/pickyzz" class="text-blue-500 hover:underline">github.com/pickyzz</a></p>
-          <p class="my-1 font-semibold">FCC: <a href="https://freecodecamp.org/pickyzz" class="text-blue-500 hover:underline">freecodecamp.org/pickyzz</a></p>
+          <p class="my-2">
+            Bachelor’s of Science degree (B. Sc.) KMUTNB, Thailand
+          </p>
+          <p class="my-1 font-semibold">
+            Location: <span class="font-normal">Thailand</span>
+          </p>
+          <p class="my-1 font-semibold">
+            Timezone: <span class="font-normal">Asia/Bangkok (GMT+7)</span>
+          </p>
+          <p class="my-1 font-semibold">
+            Language: <span class="font-normal">TH, EN</span>
+          </p>
+          <p class="my-1 font-semibold">
+            Date of birth: <span class="font-normal">30 - 09 - 1993</span>
+          </p>
+          <p class="my-1 font-semibold">
+            E-mail: <a
+              href="mailto:contact@pickyzz.dev"
+              class="text-blue-500 hover:underline">contact@pickyzz.dev</a
+            >
+          </p>
+          <p class="my-1 font-semibold">
+            Twitter: <a
+              href="https://twitter.com/p1ckyzz"
+              class="text-blue-500 hover:underline">@p1ckyzz</a
+            >
+          </p>
+          <p class="my-1 font-semibold">
+            Github: <a
+              href="https://github.com/pickyzz"
+              class="text-blue-500 hover:underline">github.com/pickyzz</a
+            >
+          </p>
+          <p class="my-1 font-semibold">
+            FCC: <a
+              href="https://freecodecamp.org/pickyzz"
+              class="text-blue-500 hover:underline">freecodecamp.org/pickyzz</a
+            >
+          </p>
           <div class="my-4">
             <p class="text-2xl font-bold">Dev Stacks</p>
-            <p class="text-lg">Lua, HTML, CSS, JavaScript, TypeScript, React, NextJs, Tailwind, Astro, Svelte</p>
+            <p class="text-lg">
+              Lua, HTML, CSS, JavaScript, TypeScript, React, NextJs, Tailwind,
+              Astro, Svelte
+            </p>
           </div>
         </div>
       </div>
       <div class="flex flex-col items-center py-10 -mt-6">
         <div class="flex mb-4 space-x-2">
-          <a href="#cert1" class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300">1</a>
-          <a href="#cert2" class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300">2</a>
-          <a href="#cert3" class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300">3</a>
+          <a
+            href="#cert1"
+            class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300"
+            >1</a
+          >
+          <a
+            href="#cert2"
+            class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300"
+            >2</a
+          >
+          <a
+            href="#cert3"
+            class="px-3 py-1 no-underline rounded-full bg-gray-200/50 hover:bg-gray-300"
+            >3</a
+          >
         </div>
         <div class="relative w-[90%] md:w-[60%] max-h-[450px] overflow-hidden">
           <div id="cert1" class="w-full">
-            <Image src={fccImage1} class="object-contain w-full h-[440px] border-none" alt="" />
+            <Image
+              src={fccImage1}
+              class="object-contain w-full h-[440px] border-none"
+              alt=""
+            />
           </div>
           <div id="cert2" class="w-full">
-            <Image src={fccImage2} class="object-contain w-full h-[440px] border-none" alt="" />
+            <Image
+              src={fccImage2}
+              class="object-contain w-full h-[440px] border-none"
+              alt=""
+            />
           </div>
           <div id="cert3" class="w-full">
-            <Image src={fccImage3} class="object-contain w-full h-[440px] border-none" alt="" />
+            <Image
+              src={fccImage3}
+              class="object-contain w-full h-[440px] border-none"
+              alt=""
+            />
           </div>
         </div>
       </div>

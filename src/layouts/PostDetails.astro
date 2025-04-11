@@ -1,16 +1,16 @@
 ---
-import Layout from "@layouts/Layout.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Tag from "@components/Tag.astro";
-import Datetime from "@components/Datetime";
-import Waline from "@components/Waline.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Tag from "@/components/Tag.astro";
+import Datetime from "@/components/Datetime";
+import Waline from "@/components/Waline.astro";
 import { type CollectionEntry, render } from "astro:content";
-import { slugifyStr } from "@utils/slugify";
-import ShareLinks from "@components/ShareLinks.astro";
-import { SITE } from "@config";
-import { generateToc } from "@utils/generateToc";
-import TOC from "@components/TOC.astro";
+import { slugifyStr } from "@/utils/slugify";
+import ShareLinks from "@/components/ShareLinks.astro";
+import { SITE } from "@/config";
+import { generateToc } from "@/utils/generateToc";
+import TOC from "@/components/TOC.astro";
 
 export interface Props {
   post: CollectionEntry<"blog">;

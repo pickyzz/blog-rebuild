@@ -6,6 +6,13 @@ interface GroupFunction<T> {
   (item: T, index?: number): GroupKey;
 }
 
+/**
+ * Group posts by a condition.
+ *
+ * @param posts The posts to group.
+ * @param groupFunction A function that takes a post and returns a group key.
+ * @returns An object whose keys are the group keys and whose values are arrays of posts.
+ */
 const getPostsByGroupCondition = (
   posts: CollectionEntry<"blog">[],
   groupFunction: GroupFunction<CollectionEntry<"blog">>

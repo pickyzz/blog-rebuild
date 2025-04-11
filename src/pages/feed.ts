@@ -1,8 +1,13 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import getSortedPosts from "@utils/getSortedPosts";
-import { SITE } from "@config";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
 
+/**
+ * Generates an RSS feed for the blog.
+ *
+ * @returns An RSS feed, in XML format.
+ */
 export async function GET() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);

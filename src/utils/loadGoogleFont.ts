@@ -7,6 +7,14 @@ export type FontOptions = {
   style: FontStyle | undefined;
 };
 
+/**
+ * Downloads a Google Font with a given text
+ *
+ * @param font Google Font name
+ * @param text Text to generate the font for
+ * @returns Promise resolving to an ArrayBuffer containing the font data
+ * @throws If the font could not be downloaded
+ */
 async function loadGoogleFont(
   font: string,
   text: string

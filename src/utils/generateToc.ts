@@ -21,6 +21,16 @@ function injectChild(items: TocItem[], item: TocItem): void {
   }
 }
 
+/**
+ * Generates a table of contents (ToC) from a list of markdown headings.
+ * 
+ * @param headings - An array of markdown headings to be processed.
+ * @param options - An object containing options to specify the minimum and maximum heading levels to include in the ToC.
+ * @param options.maxHeadingLevel - The maximum heading level to include in the ToC. Default is 4.
+ * @param options.minHeadingLevel - The minimum heading level to include in the ToC. Default is 2.
+ * @returns An array of TocItem objects representing the structured ToC.
+ */
+
 export const generateToc = (
   headings: ReadonlyArray<MarkdownHeading>,
   { maxHeadingLevel = 4, minHeadingLevel = 2 }: TocOpts = {}

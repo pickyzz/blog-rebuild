@@ -23,6 +23,11 @@ export const getReadingTime = async () => {
   return mapFrontmatter;
 };
 
+/**
+ * Maps `readingTime` to each post by slugifying the title and retrieving it from the mapFrontmatter
+ * @param posts array of CollectionEntry<"blog">
+ * @returns array of CollectionEntry<"blog"> with `readingTime` property added
+ */
 const getPostsWithRT = async (posts: CollectionEntry<"blog">[]) => {
   const mapFrontmatter = await getReadingTime();
 

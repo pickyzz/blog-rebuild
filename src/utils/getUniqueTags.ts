@@ -7,6 +7,12 @@ interface Tag {
   tagName: string;
 }
 
+/**
+ * Given an array of blog posts, returns an array of unique tags.
+ * Each tag is an object with `tag` and `tagName` properties.
+ * `tag` is the slugified tag name, and `tagName` is the original tag name.
+ * The list is sorted alphabetically by `tag`.
+ */
 const getUniqueTags = (posts: CollectionEntry<"blog">[]) => {
   const tags: Tag[] = posts
     .filter(postFilter)

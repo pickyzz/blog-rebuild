@@ -1,8 +1,14 @@
 import { Resvg } from "@resvg/resvg-js";
 import { type CollectionEntry } from "astro:content";
-import postOgImage from "@utils/og-templates/post";
-import siteOgImage from "@utils/og-templates/site";
+import postOgImage from "@/utils/og-templates/post";
+import siteOgImage from "@/utils/og-templates/site";
 
+/**
+ * Takes an SVG string and returns the PNG buffer.
+ *
+ * @param svg - The SVG string to render to PNG.
+ * @returns The PNG buffer.
+ */
 function svgBufferToPngBuffer(svg: string) {
   const resvg = new Resvg(svg);
   const pngData = resvg.render();
