@@ -11,5 +11,5 @@
 !astro.config.mjs
 !package.json
 !.prettierrc
-!.eslintrc.js
+!eslintrc.config.js
 !README.md

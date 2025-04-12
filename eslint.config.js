@@ -1,8 +1,12 @@
-const eslintPluginAstro = require('eslint-plugin-astro');
+import globals from "globals";
 
-module.exports = [
+export default [
   {
     languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: {
         parser: ["@typescript-eslint/parser", "plugin:@typescript-eslint/recommended", "eslint:recommended"],
         ecmaVersion: "latest",
@@ -10,19 +14,17 @@ module.exports = [
         warnOnUnsupportedTypeScriptVersion: false,
       },
     },
-    rules: {},
   },
-  ...eslintPluginAstro.configs['flat/recommended'],
   {
     rules: {}
   },
   {
     ignores: [
-      ".husky/*",
-      ".vscode/*",
-      "node_modules/*",
-      "public/*",
-      "dist/*",
+      ".husky/**",
+      ".vscode/**",
+      "node_modules/**",
+      "public/**",
+      "dist/**",
     ],
   }
 ];
