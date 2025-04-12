@@ -36,7 +36,7 @@ const toc = generateToc(headings);
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
   ogImageUrl ?? `/blog/${slugifyStr(title)}.png`,
-  Astro.url.origin
+  Astro.url.origin,
 ).href;
 
 const layoutProps = {
@@ -54,7 +54,7 @@ const allPosts = posts.map(({ data: { title, slug } }) => ({
   slug,
   title,
 }));
-const currentPostIndex = allPosts.findIndex(a => a.slug === post.data.slug);
+const currentPostIndex = allPosts.findIndex((a) => a.slug === post.data.slug);
 const nextPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
 const prevPost =
   currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
@@ -97,7 +97,7 @@ const prevPost =
     </article>
 
     <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {tags.map((tag) => <Tag tag={slugifyStr(tag)} />)}
     </ul>
     <div
       class="flex flex-col-reverse items-center justify-between gap-8 sm:flex-row-reverse sm:items-end sm:gap-4"
@@ -293,6 +293,6 @@ const prevPost =
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" }),
   );
 </script>

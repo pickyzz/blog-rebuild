@@ -66,7 +66,7 @@ export async function downloadImage(
   imageUrl,
   {
     isCover = false, // Notion Cover image, displays at top of posts
-  }
+  },
 ) {
   const response = await fetch(imageUrl);
   const arrayBuffer = await response.arrayBuffer();

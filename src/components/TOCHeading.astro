@@ -19,7 +19,7 @@ const {
   {
     !!children.length && (
       <ul>
-        {children.map(subheading => (
+        {children.map((subheading) => (
           <Astro.self heading={subheading} />
         ))}
       </ul>
