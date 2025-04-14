@@ -60,7 +60,7 @@ export default function Datetime({
 
 const FormattedDatetime = ({ pubDatetime, modDatetime }: DatetimesProps) => {
   const myDatetime = new Date(
-    modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime,
+    modDatetime && modDatetime > pubDatetime ? modDatetime : pubDatetime
   );
 
   const date = myDatetime.toLocaleDateString([], {

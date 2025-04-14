@@ -3,7 +3,7 @@ export type ThrottleFunction = (...args: any[]) => void;
 
 export function throttle(
   fn: ThrottleFunction,
-  delay: number,
+  delay: number
 ): ThrottleFunction {
   let lastCallTime = 0;
   let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -21,7 +21,7 @@ export function throttle(
           lastCallTime = now;
           fn(...args);
         },
-        delay - (now - lastCallTime),
+        delay - (now - lastCallTime)
       );
     } else {
       lastCallTime = now;

@@ -30,7 +30,7 @@ const {
 
 const socialImageURL = new URL(
   ogImage ?? SITE.ogImage ?? "og.png",
-  Astro.url.origin,
+  Astro.url.origin
 ).href;
 
 const structuredData = {
@@ -183,7 +183,7 @@ const structuredData = {
         const tocLinks = document.querySelectorAll('a[href^="#"]');
 
         // Add click event listener to each TOC link
-        tocLinks.forEach((link) => {
+        tocLinks.forEach(link => {
           link.addEventListener("click", function (event) {
             event.preventDefault(); // Prevent default anchor behavior
 

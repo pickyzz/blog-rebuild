@@ -41,7 +41,7 @@ const notion = new Client({
 
 // Notion Custom Block Transform START
 const n2m = new NotionToMarkdown({ notionClient: notion });
-n2m.setCustomTransformer("embed", async (block) => {
+n2m.setCustomTransformer("embed", async block => {
   const { embed } = block;
   if (!embed?.url) return "";
   return `<figure>
@@ -50,7 +50,7 @@ n2m.setCustomTransformer("embed", async (block) => {
 </figure>`;
 });
 
-n2m.setCustomTransformer("image", async (block) => {
+n2m.setCustomTransformer("image", async block => {
   const { image } = block;
   const imageUrl = image?.file?.url || image?.external?.url;
   const imageFileName = sanitizeImageString(imageUrl.split("/").pop());
@@ -60,7 +60,7 @@ n2m.setCustomTransformer("image", async (block) => {
   return `<Image src="@assets/images/blog/${fileName}" />`;
 });
 
-n2m.setCustomTransformer("video", async (block) => {
+n2m.setCustomTransformer("video", async block => {
   const { video } = block;
   const {
     external: { url: videoUrl },
@@ -102,7 +102,7 @@ const databaseResponse = await notion.databases.query(queryParams);
 const { results } = databaseResponse;
 
 // Create Pages
-const pages = results.map((page) => {
+const pages = results.map(page => {
   const { properties, cover, created_time, last_edited_time, archived } = page;
   const title = properties.title.title[0].plain_text;
   const slug = properties?.slug?.rich_text[0]?.plain_text || sanitizeUrl(title);
@@ -130,7 +130,7 @@ const pages = results.map((page) => {
 for (let page of pages) {
   console.info(
     "Fetching from Notion & Converting to Markdown: ",
-    `${page.title} [${page.id}]`,
+    `${page.title} [${page.id}]`
   );
   const mdblocks = await n2m.pageToMarkdown(page.id);
   const { parent: mdString } = n2m.toMarkdownString(mdblocks);
@@ -149,7 +149,7 @@ title: "${page.title}"
 slug: "${page.slug}"
 ogImage: ${coverFileName}
 featured: ${page.featured === "featured" ? true : false}
-tags: ${JSON.stringify(page.tags.map((tag) => tag.name))}
+tags: ${JSON.stringify(page.tags.map(tag => tag.name))}
 draft: ${page.status === "draft" ? true : false}
 pubDatetime: ${page.publish_date === undefined ? page.created_time : page.publish_date}
 modDatetime: ${page.modified_date === undefined ? page.publish_date : page.modified_date}
@@ -164,7 +164,7 @@ ${mdString}
   if (mdString)
     fs.writeFileSync(
       `${process.cwd()}/${POSTS_PATH}/${page.slug}.mdx`,
-      pageContents,
+      pageContents
     );
   else console.log(`No content for page ${page.id}`);
 

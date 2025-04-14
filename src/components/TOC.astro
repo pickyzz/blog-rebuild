@@ -18,7 +18,7 @@ const toc = generateToc(headings);
         Contents Table
       </h2>
       <ul class="mt-4">
-        {toc.map((heading) => (
+        {toc.map(heading => (
           <TOCHeading heading={heading} />
         ))}
       </ul>

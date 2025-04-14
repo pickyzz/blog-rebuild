@@ -20,7 +20,7 @@ export default defineConfig({
       include: ["**/react/*"],
     }),
     sitemap({
-      filter: (page) => SITE.showArchives || !page.endsWith("/archives"),
+      filter: page => SITE.showArchives || !page.endsWith("/archives"),
     }),
     mdx({
       extendMarkdownConfig: true,

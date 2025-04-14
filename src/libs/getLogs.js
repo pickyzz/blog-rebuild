@@ -57,7 +57,7 @@ const databaseResponse = await notion.databases.query(queryParams);
 const { results } = databaseResponse;
 
 // Create Pages
-const pages = results.map((page) => {
+const pages = results.map(page => {
   const { properties, last_edited_time } = page;
   const title = properties.title.title[0].plain_text;
 

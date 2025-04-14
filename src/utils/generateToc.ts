@@ -33,10 +33,10 @@ function injectChild(items: TocItem[], item: TocItem): void {
 
 export const generateToc = (
   headings: ReadonlyArray<MarkdownHeading>,
-  { maxHeadingLevel = 4, minHeadingLevel = 2 }: TocOpts = {},
+  { maxHeadingLevel = 4, minHeadingLevel = 2 }: TocOpts = {}
 ) => {
   // Filter out headings that are not in the body
-  const bodyHeadings = headings.filter((heading) => {
+  const bodyHeadings = headings.filter(heading => {
     return heading.depth >= minHeadingLevel && heading.depth <= maxHeadingLevel;
   });
 
