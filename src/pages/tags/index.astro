@@ -14,10 +14,10 @@ let tags = getUniqueTags(posts);
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>
-  <Header activeNav="tags" />
+  <Header />
   <Main pageTitle="Tags" pageDesc="All the tags used in posts.">
-    <ul class="max-w-[90vw] md:max-w-4xl mx-auto">
-      {tags.map(({ tag }) => <Tag {tag} size="lg" />)}
+    <ul class="mx-auto max-w-[90vw] md:max-w-4xl">
+      {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} size="lg" />)}
     </ul>
   </Main>
   <Footer />

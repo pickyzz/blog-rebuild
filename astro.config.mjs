@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
@@ -13,9 +14,6 @@ export default defineConfig({
   site: SITE.website,
   trailingSlash: "never",
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     react({
       include: ["**/react/*"],
     }),
@@ -42,9 +40,12 @@ export default defineConfig({
     extendDefaultPlugins: true,
   },
   vite: {
+    plugins: [tailwindcss()],
     optimizeDeps: {
       exclude: ["@resvg/resvg-js", "fsevents"],
     },
   },
-  scopedStyleStrategy: "where",
+  experimental: {
+    svg: true,
+  },
 });

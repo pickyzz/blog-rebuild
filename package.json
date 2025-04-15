@@ -1,5 +1,6 @@
 {
   "name": "pickyzz-blog-rebuild",
+  "type": "module",
   "version": "2.1.0",
   "author": {
     "name": "pickyzz",
@@ -11,6 +12,7 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.4",
     "@astrojs/mdx": "4.2.3",
     "@astrojs/prefetch": "0.4.1",
     "@astrojs/react": "4.2.3",
@@ -23,9 +25,11 @@
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
     "@tailwindcss/typography": "0.5.16",
+    "@tailwindcss/vite": "^4.1.3",
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@types/react": "19.1.1",
+    "@types/react-dom": "^19.1.2",
     "@typescript-eslint/parser": "8.29.1",
     "astro": "5.6.1",
     "astro-eslint-parser": "1.2.2",
@@ -50,17 +54,16 @@
     "satori": "0.12.2",
     "sharp": "0.34.1",
     "tailwind-merge": "3.2.0",
-    "tailwindcss": "3.4.17",
+    "tailwindcss": "^4.1.3",
     "tinycolor2": "1.6.0",
     "ts-node": "10.9.2",
     "typescript": "5.8.3",
     "typescript-eslint": "^8.29.1"
   },
-  "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "sync": "rimraf src/content/blog/_ && node src/libs/notion.js",
     "sync:logs": "node src/libs/getLogs.js --published",
@@ -68,10 +71,9 @@
     "generate": "rimraf dist/*_ && ([ -d 'dist' ] || mkdir dist) && ([ -d 'dist/images' ] || mkdir dist/images) && ([ -d 'src/content/blog' ] || mkdir src/content/blog) && ([ -d 'src/assets/images' ] || mkdir src/assets/images) && ([ -d 'src/assets/images/blog' ] || mkdir src/assets/images/blog) && rimraf src/content/blog/_ && node src/libs/notion.js --published && astro build",
     "astro": "astro",
     "clean": "rimraf dist",
-    "format:check": "prettier --check . --plugin=prettier-plugin-astro",
-    "format": "prettier --write . --plugin=prettier-plugin-astro",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
     "test": "playwright test",
     "lint": "eslint ."
-  },
-  "type": "module"
+  }
 }

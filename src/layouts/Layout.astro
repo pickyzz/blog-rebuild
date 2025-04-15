@@ -1,6 +1,6 @@
 ---
 import { SITE } from "@/config";
-import "@/styles/base.css";
+import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import { AstroFont } from "astro-font";
 
@@ -22,16 +22,13 @@ const {
   profile = SITE.profile,
   description = SITE.desc,
   ogImage = SITE.ogImage,
-  canonicalURL = new URL(Astro.url.pathname, Astro.site),
+  canonicalURL = new URL(Astro.url.pathname, Astro.url),
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
 } = Astro.props;
 
-const socialImageURL = new URL(
-  ogImage ?? SITE.ogImage ?? "og.png",
-  Astro.url.origin
-).href;
+const socialImageURL = new URL(ogImage ?? SITE.ogImage ?? "og.png", Astro.url);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -202,3 +199,12 @@ const structuredData = {
     </script>
   </body>
 </html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

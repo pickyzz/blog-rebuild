@@ -5,7 +5,7 @@ import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import SearchBar from "@/components/Search";
+import SearchBar from "@/components/SearchBar";
 import getSortedPosts from "@/utils/getSortedPosts";
 
 // Retrieve all published articles
@@ -19,12 +19,14 @@ const searchList = sortedPosts.map(({ data }) => ({
   data,
   slug: data.slug,
 }));
+
+const backUrl = SITE.showBackButton ? `?from=${Astro.url.pathname}` : "/";
 ---
 
 <Layout title={`Search | ${SITE.title}`}>
-  <Header activeNav="search" />
+  <Header />
   <Main pageTitle="Search" pageDesc="Search any article ...">
-    <SearchBar searchList={searchList} client:only="react" />
+    <SearchBar searchList={searchList} backUrl={backUrl} client:only="react" />
   </Main>
   <Footer />
 </Layout>
