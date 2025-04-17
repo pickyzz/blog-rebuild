@@ -24,7 +24,7 @@ test("blog page", async ({ page }) => {
   await expect(page.locator("footer")).toBeVisible();
   await expect(page.locator("main")).toBeVisible();
   await expect(page.locator("main > h1")).toBeVisible();
-  await expect(page.locator("main > h1")).toHaveText("Blog");
+  await expect(page.locator("main > h1")).toHaveText("Posts");
   await expect(page.locator("main > ul")).toBeVisible();
 });
 
