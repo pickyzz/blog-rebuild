@@ -34,4 +34,4 @@ bun.lockb
 /playwright/.cache/
 
 # pagefind 
- public/pagefind
+/public/pagefind/
