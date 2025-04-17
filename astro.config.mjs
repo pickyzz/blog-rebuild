@@ -3,7 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
-import prefetch from "@astrojs/prefetch";
 import rehypeExternalLinks from "rehype-external-links";
 import sitemap from "@astrojs/sitemap";
 
@@ -20,7 +19,6 @@ export default defineConfig({
       smartypants: true,
       gfm: true,
     }),
-    prefetch(),
   ],
   markdown: {
     remarkPlugins: [remarkReadingTime],
@@ -40,13 +38,13 @@ export default defineConfig({
       exclude: ["@resvg/resvg-js", "fsevents"],
     },
   },
-  image: {
-    // Used for all Markdown images; not configurable per-image
-    // Used for all `<Image />` and `<Picture />` components unless overridden with a prop
-    experimentalLayout: "responsive",
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'viewport',
   },
   experimental: {
     svg: true,
     responsiveImages: true,
+    clientPrerender: true
   },
 });
