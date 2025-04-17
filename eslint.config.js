@@ -25,6 +25,8 @@ export default [
       "node_modules/**",
       "public/**",
       "dist/**",
+      ".astro",
+      "public/pagefind/**"
     ],
   }
 ];

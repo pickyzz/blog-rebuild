@@ -41,7 +41,7 @@ const structuredData = {
     {
       "@type": "Person",
       name: `${author}`,
-      url: `${profile}`,
+      ...(profile && { url: profile }),
     },
   ],
 };
@@ -111,6 +111,7 @@ const structuredData = {
 
     <!-- Google JSON-LD Structured data -->
     <script
+      is:inline
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     />
@@ -148,7 +149,7 @@ const structuredData = {
 
     <ClientRouter />
 
-    <script is:inline src="/toggle-theme.js" async></script>
+    <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body class="pt-[8vh] md:pt-[12vh]">
     <!-- Google Tag Manager (noscript) -->

@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "exclude": ["dist", "public/pagefind"],
   "ts-node": {
     "compilerOptions": { "module": "es2015", "moduleResolution": "node" }
   },

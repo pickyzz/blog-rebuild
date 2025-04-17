@@ -1,6 +1,6 @@
 import satori from "satori";
 import { SITE } from "@/config";
-import loadGoogleFonts, { type FontOptions } from "../loadGoogleFont";
+import loadGoogleFonts from "../loadGoogleFont";
 
 export default async () => {
   return satori(
