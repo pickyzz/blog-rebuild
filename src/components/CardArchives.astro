@@ -15,7 +15,7 @@ const { title, pubDatetime } = frontmatter;
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
-  className: "text-xl font-medium decoration-dashed hover:underline",
+  class: "text-xl font-medium decoration-dashed hover:underline",
 };
 ---
 
@@ -34,6 +34,6 @@ const headerProps = {
     pubDatetime={pubDatetime}
     modDatetime={pubDatetime}
     size="sm"
-    className="text-base/60 mt-2"
+    class="text-base/60 mt-2"
   />
 </li>

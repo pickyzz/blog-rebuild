@@ -15,7 +15,7 @@ const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
-  className:
+  class:
     "text-white text-[1.1rem] text-center text-lg font-light decoration-dashed",
 };
 ---
@@ -49,6 +49,6 @@ const headerProps = {
   <Datetime
     pubDatetime={pubDatetime}
     modDatetime={modDatetime}
-    className="justify-center"
+    class="justify-center"
   />
 </li>
