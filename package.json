@@ -39,7 +39,7 @@
     "image-type": "5.2.0",
     "lodash.kebabcase": "4.1.1",
     "mdast-util-to-string": "4.0.0",
-    "notion-to-md": "3.1.7",
+    "notion-to-md": "3.1.8",
     "prettier": "3.5.3",
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.6.11",

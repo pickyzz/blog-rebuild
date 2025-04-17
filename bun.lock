@@ -30,7 +30,7 @@
         "image-type": "5.2.0",
         "lodash.kebabcase": "4.1.1",
         "mdast-util-to-string": "4.0.0",
-        "notion-to-md": "3.1.7",
+        "notion-to-md": "3.1.8",
         "pagefind": "1.3.0",
         "prettier": "3.5.3",
         "prettier-plugin-astro": "0.14.1",
@@ -1024,7 +1024,7 @@
 
     "normalize-range": ["normalize-range@0.1.2", "", {}, "sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA=="],
 
-    "notion-to-md": ["notion-to-md@3.1.7", "", { "dependencies": { "markdown-table": "^2.0.0", "node-fetch": "2" } }, "sha512-DXW4JzDTXmH8VY9v+3Kv2lEI2jMzN23bUSO9hqqkVkTuI4hgbAhtfkTx3L6vw7M/J7wMdkqdF88Vw5dGKwZBIw=="],
+    "notion-to-md": ["notion-to-md@3.1.8", "", { "dependencies": { "markdown-table": "^2.0.0", "node-fetch": "2" } }, "sha512-DuEslJAbmUG2IRVcoeiCdsE2tI8yXOG6NiHlzxYTcKMmkAtoj2Fgq35Gf5T8s92uzpT2ueVf3aCOq7XuVLVYOA=="],
 
     "ofetch": ["ofetch@1.4.1", "", { "dependencies": { "destr": "^2.0.3", "node-fetch-native": "^1.6.4", "ufo": "^1.5.4" } }, "sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw=="],
 
