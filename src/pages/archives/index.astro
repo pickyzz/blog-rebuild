@@ -30,7 +30,6 @@ const months = [
   "December",
 ];
 
-const backUrl = SITE.showBackButton ? `?from=${Astro.url.pathname}` : "/";
 ---
 
 <Layout title={`Archives | ${SITE.title}`}>
@@ -75,7 +74,7 @@ const backUrl = SITE.showBackButton ? `?from=${Astro.url.pathname}` : "/";
                       )
                       .map(({ data }) => (
                         <CardArchives
-                          href={`/blog/${data.slug}${backUrl}`}
+                          href={`/blog/${data.slug}`}
                           frontmatter={data}
                         />
                       ))}
@@ -86,6 +85,5 @@ const backUrl = SITE.showBackButton ? `?from=${Astro.url.pathname}` : "/";
         ))
     }
   </Main>
-
   <Footer />
 </Layout>
