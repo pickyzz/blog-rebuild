@@ -64,7 +64,7 @@
     "sync": "rimraf src/content/blog/_ && node src/libs/notion.js",
     "sync:logs": "node src/libs/getLogs.js --published",
     "sync:published": "rimraf src/content/blog/_ && node src//libs/notion.js --published",
-    "generate": "rimraf dist/*_ && ([ -d 'dist' ] || mkdir dist) && ([ -d 'dist/images' ] || mkdir dist/images) && ([ -d 'src/content/blog' ] || mkdir src/content/blog) && ([ -d 'src/assets/images' ] || mkdir src/assets/images) && ([ -d 'src/assets/images/blog' ] || mkdir src/assets/images/blog) && rimraf src/content/blog/_ && node src/libs/notion.js --published && astro build",
+    "generate": "rimraf dist/*_ && ([ -d 'dist' ] || mkdir dist) && ([ -d 'dist/images' ] || mkdir dist/images) && ([ -d 'src/content/blog' ] || mkdir src/content/blog) && ([ -d 'src/assets/images' ] || mkdir src/assets/images) && ([ -d 'src/assets/images/blog' ] || mkdir src/assets/images/blog) && rimraf src/content/blog/_ && node src/libs/notion.js --published && astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "astro": "astro",
     "clean": "rimraf dist",
     "format:check": "prettier --check .",
