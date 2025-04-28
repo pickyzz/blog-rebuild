@@ -1,7 +1,5 @@
 name: Test
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -53,8 +51,16 @@ jobs:
           bun run sync:published
           bun run test
 
-  build:
+  automerge:
     needs: test
-    if: github.ref_name == 'main'
-    uses: pickyzz/blog-rebuild/.github/workflows/deploy.yml@main
-    secrets: inherit
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Auto-merge pull request
+        run: gh pr merge "$PR_URL" --squash --admin
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
