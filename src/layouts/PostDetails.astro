@@ -76,19 +76,19 @@ const prevPost =
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="text-accent inline-block text-2xl font-bold sm:text-3xl"
+      class="text-accent my-2 inline-block text-2xl font-bold sm:text-3xl"
     >
       {title}
     </h1>
-    <p class="text-xs font-light">By : {author} | {readingTime}</p>
     <div class="flex items-center gap-4">
       <Datetime
         pubDatetime={pubDatetime}
         modDatetime={modDatetime}
-        size="lg"
-        class="my-2"
+        size="sm"
+        class="mb-2"
       />
     </div>
+    <p class="ml-1.5 text-xs font-light">By : {author} | {readingTime}</p>
     <article id="article" class="prose mx-auto mt-8 max-w-4xl">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
@@ -106,7 +106,7 @@ const prevPost =
       class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
     >
       <ShareLinks />
-      
+
       <button
         id="back-to-top"
         class="focus-outline hidden whitespace-nowrap py-1 hover:opacity-75 md:block"

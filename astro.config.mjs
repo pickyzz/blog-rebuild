@@ -40,10 +40,10 @@ export default defineConfig({
   },
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    defaultStrategy: "viewport",
   },
   experimental: {
     responsiveImages: true,
-    clientPrerender: true
+    clientPrerender: true,
   },
 });
