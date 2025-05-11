@@ -48,7 +48,7 @@
     "rimraf": "6.0.1",
     "satori": "0.12.2",
     "sharp": "0.34.1",
-    "tailwind-merge": "3.2.0",
+    "tailwind-merge": "3.3.0",
     "tailwindcss": "4.1.6",
     "tinycolor2": "1.6.0",
     "ts-node": "10.9.2",
