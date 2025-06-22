@@ -24,6 +24,8 @@ const { width, height } = imgData;
       src={imgData}
       {alt}
       loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchpriority}
       class={imageClass}
       width={width < MAX_WIDTH ? width : MAX_WIDTH}
       height={height}

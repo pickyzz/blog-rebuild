@@ -10,6 +10,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: SITE.website,
   trailingSlash: "never",
+  image: {
+    responsiveStyles: true,
+  },
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
@@ -43,7 +46,6 @@ export default defineConfig({
     defaultStrategy: "viewport",
   },
   experimental: {
-    responsiveImages: true,
     clientPrerender: true,
   },
 });
