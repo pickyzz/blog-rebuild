@@ -28,7 +28,7 @@
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@typescript-eslint/parser": "8.35.1",
-    "astro": "5.10.1",
+    "astro": "5.10.2",
     "astro-eslint-parser": "1.2.2",
     "astro-font": "1.1.0",
     "dotenv": "17.0.0",
