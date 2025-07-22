@@ -76,6 +76,12 @@ jobs:
           dist
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
 
+    - name: Install wait-on
+      run: bun add -g wait-on
+      
+    - name: Start dev server
+      run: bun run dev & wait-on http://localhost:4321
+      
     - name: Run tests
       id: test-run
       run: bun run test || echo "failed=true" >> $GITHUB_OUTPUT
