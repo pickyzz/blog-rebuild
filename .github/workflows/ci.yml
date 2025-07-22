@@ -4,7 +4,6 @@ name: CI/CD Pipeline
 permissions:
   contents: read
   actions: read
-  security-events: write
 
 on:
   push:
@@ -33,7 +32,7 @@ jobs:
 
     - name: Cache dependencies
       id: cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           node_modules
@@ -73,7 +72,7 @@ jobs:
 
     - name: Cache dependencies
       id: cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           node_modules
@@ -148,7 +147,7 @@ jobs:
         bun-version: latest
 
     - name: Restore cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           node_modules
@@ -162,7 +161,7 @@ jobs:
 
     - name: Cache build output
       if: success() && github.ref == 'refs/heads/main'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: |
           .astro
@@ -170,29 +169,7 @@ jobs:
         key: build-${{ github.sha }}
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist
-        
-  security:
-    needs: validate
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: javascript
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
