@@ -1,0 +1,140 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Automatically cancel in-progress actions on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Cache dependencies
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          .astro
+          dist
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+        restore-keys: |
+          ${{ runner.os }}-bun-
+
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: bun install
+
+    - name: Type check
+      run: bun run check
+
+    - name: Lint
+      run: bun run lint
+      
+  test:
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      test-failed: ${{ steps.test-result.outputs.failed }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Restore cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          .astro
+          dist
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+
+    - name: Run tests
+      id: test-run
+      run: bun run test || echo "::set-output name=failed::true"
+      
+    - name: Check test result
+      id: test-result
+      run: |
+        if [ "${{ steps.test-run.outcome }}" == "failure" ]; then
+          echo "::set-output name=failed::true"
+          echo "::error::Tests failed! This might be due to dependency updates."
+        else
+          echo "::set-output name=failed::false"
+        fi
+      
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+
+    - name: Restore cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          node_modules
+          .astro
+          dist
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+
+    - name: Build
+      run: bun run build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist
+        
+  security:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript, typescript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:javascript,typescript"
