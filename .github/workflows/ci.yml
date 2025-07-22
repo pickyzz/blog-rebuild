@@ -1,5 +1,11 @@
 name: CI/CD Pipeline
 
+# Define minimal required permissions
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
 on:
   push:
     branches: [ main ]
@@ -72,16 +78,16 @@ jobs:
 
     - name: Run tests
       id: test-run
-      run: bun run test || echo "::set-output name=failed::true"
+      run: bun run test || echo "failed=true" >> $GITHUB_OUTPUT
       
     - name: Check test result
       id: test-result
       run: |
         if [ "${{ steps.test-run.outcome }}" == "failure" ]; then
-          echo "::set-output name=failed::true"
+          echo "failed=true" >> $GITHUB_OUTPUT
           echo "::error::Tests failed! This might be due to dependency updates."
         else
-          echo "::set-output name=failed::false"
+          echo "failed=false" >> $GITHUB_OUTPUT
         fi
       
   build:
@@ -129,12 +135,10 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: javascript, typescript
+          languages: javascript
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
-        with:
-          category: "/language:javascript,typescript"
