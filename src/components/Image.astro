@@ -1,15 +1,17 @@
 ---
 import { Image as AstroImage } from "astro:assets";
 import { postImageImport } from "../helpers/images.mjs";
+import { optimizeImage, generateResponsiveImages } from "../utils/imageOptimization";
 
 const {
   src,
-  MAX_WIDTH = 1400, // 2x max width of blog section width (2x for retina devices). Max width on Medium is 680px, so target that as max width for articles.
-  imageClass = "w-fit h-auto bg-gray-100 rounded-xl",
+  MAX_WIDTH = 1400,
+  imageClass = "w-full h-auto bg-gray-100 rounded-xl",
   alt = "Blog Image",
-  loading = "eager",
+  loading = "lazy",
   decoding = "async",
-  fetchpriority = "high",
+  fetchpriority = "auto",
+  sizes = "(min-width: 1400px) 1400px, 100vw",
 } = Astro.props;
 
 const relativeSrc = `../${src}`;
@@ -20,17 +22,52 @@ const { width, height } = imgData;
 
 {
   imgType === "bmp" ? (
-    <img src={relativeSrc} alt={alt} class={imageClass} />
-  ) : (
-    <AstroImage
-      src={imgData}
-      {alt}
+    <img 
+      src={relativeSrc} 
+      alt={alt} 
+      class={imageClass}
       loading={loading}
       decoding={decoding}
-      fetchpriority={fetchpriority}
-      class={imageClass}
-      width={width < MAX_WIDTH ? width : MAX_WIDTH}
-      height={height}
     />
+  ) : (
+    <picture>
+      <source
+        type="image/avif"
+        srcset={(await generateResponsiveImages(imgData, {
+          sizes: [320, 640, 960, MAX_WIDTH],
+          format: 'avif',
+          quality: 75,
+          fit: 'cover',
+          position: 'center'
+        }))
+          .map(({ src, width }) => `${src} ${width}w`)
+          .join(', ')}
+        {sizes}
+      />
+      <source
+        type="image/webp"
+        srcset={(await generateResponsiveImages(imgData, {
+          sizes: [320, 640, 960, MAX_WIDTH],
+          format: 'webp',
+          quality: 80,
+          fit: 'cover',
+          position: 'center'
+        }))
+          .map(({ src, width }) => `${src} ${width}w`)
+          .join(', ')}
+        {sizes}
+      />
+      <AstroImage
+        src={imgData}
+        {alt}
+        loading={loading}
+        decoding={decoding}
+        fetchpriority={fetchpriority}
+        class={imageClass}
+        width={width < MAX_WIDTH ? width : MAX_WIDTH}
+        height={height}
+        {sizes}
+      />
+    </picture>
   )
 }
