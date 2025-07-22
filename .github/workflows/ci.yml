@@ -76,11 +76,33 @@ jobs:
           dist
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
 
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: bun install
+
+    - name: Sync published content
+      env:
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+      run: bun run sync:published
+
+    - name: Kill any process using port 4321
+      run: |
+        lsof -ti:4321 | xargs kill -9 || true
+        
     - name: Install wait-on
       run: bun add -g wait-on
       
     - name: Start dev server
-      run: bun run dev & wait-on http://localhost:4321
+      run: |
+        bun run dev &
+        echo $! > .pidfile
+        wait-on -t 60000 http://localhost:4321
+      
+    - name: Set cleanup command
+      run: |
+        echo "trap 'kill \$(cat .pidfile)' EXIT" >> $GITHUB_ENV
+        source $GITHUB_ENV
       
     - name: Run tests
       id: test-run
