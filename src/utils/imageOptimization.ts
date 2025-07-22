@@ -1,5 +1,5 @@
-import type { ImageMetadata } from 'astro';
-import { getImage } from 'astro:assets';
+import type { ImageMetadata } from "astro";
+import { getImage } from "astro:assets";
 
 // Cache for optimized images
 const imageCache = new Map<string, Promise<any>>();
@@ -7,19 +7,28 @@ const imageCache = new Map<string, Promise<any>>();
 interface OptimizeImageOptions {
   width?: number;
   height?: number;
-  format?: 'avif' | 'webp' | 'png' | 'jpg';
+  format?: "avif" | "webp" | "png" | "jpg";
   quality?: number;
-  fit?: 'cover' | 'contain' | 'fill' | 'inside' | 'outside';
-  position?: 'top' | 'right top' | 'right' | 'right bottom' | 'bottom' | 'left bottom' | 'left' | 'left top' | 'center';
+  fit?: "cover" | "contain" | "fill" | "inside" | "outside";
+  position?:
+    | "top"
+    | "right top"
+    | "right"
+    | "right bottom"
+    | "bottom"
+    | "left bottom"
+    | "left"
+    | "left top"
+    | "center";
   background?: string;
 }
 
 interface ResponsiveImageOptions {
   sizes: number[];
-  format?: 'avif' | 'webp';
+  format?: "avif" | "webp";
   quality?: number;
-  fit?: OptimizeImageOptions['fit'];
-  position?: OptimizeImageOptions['position'];
+  fit?: OptimizeImageOptions["fit"];
+  position?: OptimizeImageOptions["position"];
   minWidth?: number;
   maxWidth?: number;
 }
@@ -35,11 +44,11 @@ export async function optimizeImage(
     const {
       width,
       height,
-      format = 'webp',
+      format = "webp",
       quality = 80,
-      fit = 'cover',
-      position = 'center',
-      background
+      fit = "cover",
+      position = "center",
+      background,
     } = options;
 
     // Generate cache key
@@ -59,7 +68,7 @@ export async function optimizeImage(
       quality,
       fit,
       position,
-      background
+      background,
     });
 
     // Store in cache
@@ -68,7 +77,7 @@ export async function optimizeImage(
     const optimizedImage = await imagePromise;
     return optimizedImage;
   } catch (error) {
-    console.error('Image optimization failed:', error);
+    console.error("Image optimization failed:", error);
     // Return original image as fallback
     return { src: image.src, width: image.width, height: image.height };
   }
@@ -83,32 +92,34 @@ export async function generateResponsiveImages(
 ) {
   const {
     sizes,
-    format = 'webp',
+    format = "webp",
     quality,
     fit,
     position,
     minWidth = 320,
-    maxWidth = Math.min(1920, image.width)
+    maxWidth = Math.min(1920, image.width),
   } = options;
 
   try {
     // Filter sizes based on min/max width
-    const validSizes = sizes.filter(size => size >= minWidth && size <= maxWidth);
+    const validSizes = sizes.filter(
+      size => size >= minWidth && size <= maxWidth
+    );
 
     // Sort sizes for consistency
     const sortedSizes = [...new Set(validSizes)].sort((a, b) => a - b);
 
     // Generate images in parallel
     const images = await Promise.all(
-      sortedSizes.map(async (width) => {
+      sortedSizes.map(async width => {
         const optimized = await optimizeImage(image, {
           width,
           format,
           quality,
           fit,
-          position
+          position,
         });
-        
+
         return {
           src: optimized.src,
           width,
@@ -120,14 +131,16 @@ export async function generateResponsiveImages(
 
     return images;
   } catch (error) {
-    console.error('Responsive image generation failed:', error);
+    console.error("Responsive image generation failed:", error);
     // Return original image as fallback
-    return [{
-      src: image.src,
-      width: image.width,
-      height: image.height,
-      format: 'original'
-    }];
+    return [
+      {
+        src: image.src,
+        width: image.width,
+        height: image.height,
+        format: "original",
+      },
+    ];
   }
 }
 

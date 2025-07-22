@@ -22,9 +22,9 @@ const { width, height } = imgData;
 
 {
   imgType === "bmp" ? (
-    <img 
-      src={relativeSrc} 
-      alt={alt} 
+    <img
+      src={relativeSrc}
+      alt={alt}
       class={imageClass}
       loading={loading}
       decoding={decoding}
@@ -33,28 +33,32 @@ const { width, height } = imgData;
     <picture>
       <source
         type="image/avif"
-        srcset={(await generateResponsiveImages(imgData, {
-          sizes: [320, 640, 960, MAX_WIDTH],
-          format: 'avif',
-          quality: 75,
-          fit: 'cover',
-          position: 'center'
-        }))
+        srcset={(
+          await generateResponsiveImages(imgData, {
+            sizes: [320, 640, 960, MAX_WIDTH],
+            format: "avif",
+            quality: 75,
+            fit: "cover",
+            position: "center",
+          })
+        )
           .map(({ src, width }) => `${src} ${width}w`)
-          .join(', ')}
+          .join(", ")}
         {sizes}
       />
       <source
         type="image/webp"
-        srcset={(await generateResponsiveImages(imgData, {
-          sizes: [320, 640, 960, MAX_WIDTH],
-          format: 'webp',
-          quality: 80,
-          fit: 'cover',
-          position: 'center'
-        }))
+        srcset={(
+          await generateResponsiveImages(imgData, {
+            sizes: [320, 640, 960, MAX_WIDTH],
+            format: "webp",
+            quality: 80,
+            fit: "cover",
+            position: "center",
+          })
+        )
           .map(({ src, width }) => `${src} ${width}w`)
-          .join(', ')}
+          .join(", ")}
         {sizes}
       />
       <AstroImage
