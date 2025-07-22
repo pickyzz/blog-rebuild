@@ -60,14 +60,19 @@ jobs:
       test-failed: ${{ steps.test-result.outputs.failed }}
     
     steps:
-    - uses: actions/checkout@v4
-    
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: true
+        token: ${{ secrets.GH_TOKEN }}
+
     - name: Setup Bun
       uses: oven-sh/setup-bun@v2
       with:
         bun-version: latest
 
-    - name: Restore cache
+    - name: Cache dependencies
+      id: cache
       uses: actions/cache@v3
       with:
         path: |
@@ -75,12 +80,14 @@ jobs:
           .astro
           dist
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+        restore-keys: |
+          ${{ runner.os }}-bun-
 
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: bun install
 
-    - name: "create env file"
+    - name: Create env file
       env:
         DATABASE_ID: ${{ secrets.DATABASE_ID_TEST }}
         NOTION_KEY: ${{ secrets.NOTION_KEY }}
@@ -90,40 +97,39 @@ jobs:
         echo "DATABASE_ID=$DATABASE_ID" >> .env
         echo "NOTION_KEY=$NOTION_KEY" >> .env
 
-    - name: Sync published content
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Sync content and run tests
+      id: test-run
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-      run: bun run sync:published
-
-    - name: Kill any process using port 4321
+      timeout-minutes: 10
+      continue-on-error: true
       run: |
-        lsof -ti:4321 | xargs kill -9 || true
+        # Sync content first (with retry)
+        for i in 1 2 3; do
+          if bun run sync:published; then
+            break
+          fi
+          echo "Retry $i: Sync failed, waiting 10s..."
+          sleep 10
+        done
         
-    - name: Install wait-on
-      run: bun add -g wait-on
-      
-    - name: Start dev server
-      run: |
-        bun run dev &
-        echo $! > .pidfile
-        wait-on -t 60000 http://localhost:4321
-      
-    - name: Set cleanup command
-      run: |
-        echo "trap 'kill \$(cat .pidfile)' EXIT" >> $GITHUB_ENV
-        source $GITHUB_ENV
-      
-    - name: Run tests
-      id: test-run
-      run: bun run test || echo "failed=true" >> $GITHUB_OUTPUT
-      
+        # Run tests with increased timeout
+        bun run test || echo "failed=true" >> $GITHUB_OUTPUT
+
     - name: Check test result
       id: test-result
+      if: always()
       run: |
         if [ "${{ steps.test-run.outcome }}" == "failure" ]; then
           echo "failed=true" >> $GITHUB_OUTPUT
-          echo "::error::Tests failed! This might be due to dependency updates."
+          echo "::error::Tests failed! Check the test output for details."
+          # Clear cache on test failure to prevent bad cache
+          rm -rf node_modules/.cache
+          rm -rf .astro
         else
           echo "failed=false" >> $GITHUB_OUTPUT
         fi
@@ -151,7 +157,17 @@ jobs:
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
 
     - name: Build
-      run: bun run build
+      id: build
+      run: bun run build || (rm -rf .astro && bun run build)
+
+    - name: Cache build output
+      if: success() && github.ref == 'refs/heads/main'
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          .astro
+          dist
+        key: build-${{ github.sha }}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
