@@ -99,7 +99,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     </article>
 
     <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} class="transition duration-200 hover:scale-105" />)}
+      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
     <div
       class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"

@@ -24,9 +24,6 @@ if (!process.env.NOTION_KEY || !process.env.DATABASE_ID)
 const NOTION_KEY = process.env.NOTION_KEY;
 const DATABASE_ID = process.env.DATABASE_ID; // TODO: Import from ENV
 
-// const POSTS_PATH = `src/content/blog`;
-const THROTTLE_DURATION = 334; // ms Notion API has a rate limit of 3 requests per second, so ensure that is not exceeded
-
 const notion = new Client({
   auth: NOTION_KEY,
   config: {
