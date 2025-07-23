@@ -58,9 +58,8 @@ const allPosts = posts.map(({ data: { title, slug } }) => ({
   title,
 }));
 const currentPostIndex = allPosts.findIndex(a => a.slug === post.data.slug);
-const nextPost = currentPostIndex !== 0 ? allPosts[currentPostIndex - 1] : null;
-const prevPost =
-  currentPostIndex !== allPosts.length ? allPosts[currentPostIndex + 1] : null;
+const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
+const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 ---
 
 <Layout {...layoutProps}>
@@ -93,23 +92,23 @@ const prevPost =
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={post.data.ogImage?.src}
-        alt=""
+        alt={title ? `Cover image for ${title}` : "Blog post cover image"}
         loading="eager"
       />
       <Content />
     </article>
 
     <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
+      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} class="transition duration-200 hover:scale-105" />)}
     </ul>
     <div
       class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
     >
-      <ShareLinks />
+      <ShareLinks class="transition duration-200 hover:opacity-80" />
 
       <button
         id="back-to-top"
-        class="focus-outline hidden whitespace-nowrap py-1 hover:opacity-75 md:block"
+        class="focus-outline hidden whitespace-nowrap py-1 hover:opacity-75 md:block transition duration-200 hover:-translate-y-1"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>
@@ -204,13 +203,17 @@ const prevPost =
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
+      // Prevent duplicate copy buttons
+      if (codeBlock.querySelector(".copy-code")) continue;
+
       const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 
       const copyButton = document.createElement("button");
       copyButton.className =
-        "copy-code absolute right-3 top-3 rounded bg-accent/80 hover:bg-accent px-2 py-1 text-xs leading-4 text-white font-semibold";
+        "copy-code absolute right-3 top-3 rounded bg-accent/80 hover:bg-accent px-2 py-1 text-xs leading-4 text-white font-semibold transition duration-200";
       copyButton.innerHTML = copyButtonLabel;
+      copyButton.setAttribute("aria-label", "Copy code to clipboard");
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
 

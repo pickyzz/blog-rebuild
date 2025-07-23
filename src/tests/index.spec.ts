@@ -68,3 +68,32 @@ test("search page", async ({ page }) => {
   await expect(page.locator("main > h1")).toBeVisible();
   await expect(page.locator("main > h1")).toHaveText("Search");
 });
+
+test("navigation works from menu", async ({ page }) => {
+  await page.goto("/");
+  await page.click('a[href="/blog"]');
+  await expect(page).toHaveURL("/blog");
+  await page.click('a[href="/tags"]');
+  await expect(page).toHaveURL("/tags");
+  await page.click('a[href="/about"]');
+  await expect(page).toHaveURL("/about");
+  await page.click('a[href="/search"]');
+  await expect(page).toHaveURL("/search");
+});
+
+test("404 page shows for unknown route", async ({ page }) => {
+  await page.goto("/not-exist-page");
+  await expect(page.locator("main")).toContainText(/404|not found/i);
+});
+
+test("dark mode toggle works", async ({ page }) => {
+  await page.goto("/");
+  const toggle = page.locator('#theme-toggle, [aria-label="toggle theme"]');
+  if (await toggle.isVisible()) {
+    const body = page.locator('body');
+    const initial = await body.getAttribute('class');
+    await toggle.click();
+    const after = await body.getAttribute('class');
+    expect(initial).not.toBe(after);
+  }
+});
