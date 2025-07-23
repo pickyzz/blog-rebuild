@@ -2,7 +2,6 @@ import { Client } from "@notionhq/client";
 import fs from "fs";
 import { config } from "dotenv";
 import { parseArgs } from "node:util";
-import { delay } from "../helpers/delay.mjs";
 
 // Input Arguments
 const ARGUMENT_OPTIONS = {
@@ -60,26 +59,30 @@ const { results } = databaseResponse;
 const pages = results.map(page => {
   const { properties, last_edited_time } = page;
   const title = properties.title.title[0].plain_text;
-
-  console.info("Notion Page:", page);
-
   return {
     title,
     last_edited_time,
   };
 });
 
-fs.unlinkSync("./logs.txt"); // delete old logs file
+// Sort by last_edited_time (descending)
+pages.sort((a, b) => b.last_edited_time.localeCompare(a.last_edited_time));
 
-for (let page of pages) {
-  const timestamp = `${page.title} - ${page.last_edited_time}`;
-  fs.appendFile(`${process.cwd()}/logs.txt`, timestamp + "\n", function (err) {
-    if (err) throw err;
-    console.log("Log Saved!");
-  }); // write new logs file
+// Prepare new logs content
+const newLogs = pages.map(page => `${page.title} - ${page.last_edited_time}`).join("\n") + "\n";
 
-  console.debug(`Sleeping for ${THROTTLE_DURATION} ms...\n`);
-  await delay(THROTTLE_DURATION); // Need to throttle requests to avoid rate limiting
+// Read old logs.txt if exists
+let oldLogs = "";
+const logsPath = `${process.cwd()}/logs.txt`;
+if (fs.existsSync(logsPath)) {
+  oldLogs = fs.readFileSync(logsPath, "utf-8");
+}
+
+if (newLogs !== oldLogs) {
+  fs.writeFileSync(logsPath, newLogs, "utf-8");
+  console.log("Logs updated!");
+} else {
+  console.log("No changes detected. Logs not updated.");
 }
 
 console.info("Successfully synced posts with Notion");
