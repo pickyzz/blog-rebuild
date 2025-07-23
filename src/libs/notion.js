@@ -6,7 +6,6 @@ import { config } from "dotenv";
 import { parseArgs } from "node:util";
 import { sanitizeUrl, sanitizeImageString } from "../helpers/sanitize.mjs";
 import { downloadImage } from "../helpers/images.mjs";
-import { delay } from "../helpers/delay.mjs";
 
 // Input Arguments
 const ARGUMENT_OPTIONS = {
@@ -30,7 +29,6 @@ const NOTION_KEY = process.env.NOTION_KEY;
 const DATABASE_ID = process.env.DATABASE_ID; // TODO: Import from ENV
 
 const POSTS_PATH = `src/content/blog`;
-const THROTTLE_DURATION = 334; // ms Notion API has a rate limit of 3 requests per second, so ensure that is not exceeded
 
 const notion = new Client({
   auth: NOTION_KEY,
@@ -127,10 +125,10 @@ const pages = results.map(page => {
   };
 });
 
-for (let page of pages) {
+const pageTasks = pages.map(async page => {
   console.info(
     "Fetching from Notion & Converting to Markdown: ",
-    `${page.title} [${page.id}]`
+    `${page.title}`
   );
   const mdblocks = await n2m.pageToMarkdown(page.id);
   const { parent: mdString } = n2m.toMarkdownString(mdblocks);
@@ -167,9 +165,12 @@ ${mdString}
       pageContents
     );
   else console.log(`No content for page ${page.id}`);
+});
 
-  console.debug(`Sleeping for ${THROTTLE_DURATION} ms...\n`);
-  await delay(THROTTLE_DURATION); // Need to throttle requests to avoid rate limiting
-}
+const startTime = Date.now();
+await Promise.all(pageTasks);
 
 console.info("Successfully synced posts with Notion");
+const endTime = Date.now();
+const duration = ((endTime - startTime) / 1000).toFixed(2);
+console.info(`Sync completed in ${duration} seconds.`);

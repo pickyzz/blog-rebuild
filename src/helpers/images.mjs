@@ -80,7 +80,8 @@ export async function downloadImage(
   // console.log("Hashed Filename:", fileName);
 
   fs.writeFileSync(fileName, buffer);
-  console.info(`Image downloaded to ${fileName}`, mime);
+  const shortName = path.basename(fileName);
+  console.info(`Image downloaded: ${shortName} (${mime})`);
 
   return fileName;
 }
