@@ -6,6 +6,7 @@ import { config } from "dotenv";
 import { parseArgs } from "node:util";
 import { sanitizeUrl, sanitizeImageString } from "../helpers/sanitize.mjs";
 import { downloadImage } from "../helpers/images.mjs";
+import path from "path";
 
 // Input Arguments
 const ARGUMENT_OPTIONS = {
@@ -139,7 +140,10 @@ const pageTasks = pages.map(async page => {
   const coverFileName = page.cover
     ? await downloadImage(page.cover, { isCover: true })
     : "";
-  if (coverFileName) console.info("Cover image downloaded:", coverFileName);
+  if (coverFileName) {
+    const relativeCoverFileName = coverFileName ? path.relative(process.cwd(), coverFileName) : "";
+    console.info("Image downloaded:", relativeCoverFileName);
+  }
 
   // Generate page contents (frontmatter, MDX imports, + converted Notion markdown)
   const pageContents = `---

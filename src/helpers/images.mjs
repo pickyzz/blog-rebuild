@@ -19,25 +19,34 @@ export async function postImageImport(imageFileName) {
     return;
   }
 
-  switch (ext) {
-    case ".webp":
-      return await import(`../assets/images/blog/${name}.webp`);
-    case ".jpg":
-      return await import(`../assets/images/blog/${name}.jpg`);
-    case ".png":
-      return await import(`../assets/images/blog/${name}.png`);
-    case ".svg":
-      return await import(`../assets/images/blog/${name}.svg`);
-    case ".gif":
-      return await import(`../assets/images/blog/${name}.gif`);
-    case ".avif":
-      return await import(`../assets/images/blog/${name}.avif`);
-    case ".jpeg":
-      return await import(`../assets/images/blog/${name}.jpeg`);
-    case ".bmp":
-      return await import(`../assets/images/blog/${name}.bmp`);
-    default:
-      return await import(`../assets/images/blog/${name}.jpg`);
+  try {
+    switch (ext) {
+      case ".webp":
+        return await import(`../assets/images/blog/${name}.webp`);
+      case ".jpg":
+        return await import(`../assets/images/blog/${name}.jpg`);
+      case ".png":
+        return await import(`../assets/images/blog/${name}.png`);
+      case ".svg":
+        return await import(`../assets/images/blog/${name}.svg`);
+      case ".gif":
+        return await import(`../assets/images/blog/${name}.gif`);
+      case ".avif":
+        return await import(`../assets/images/blog/${name}.avif`);
+      case ".jpeg":
+        return await import(`../assets/images/blog/${name}.jpeg`);
+      case ".bmp":
+        return await import(`../assets/images/blog/${name}.bmp`);
+      case ".tiff":
+        return await import(`../assets/images/blog/${name}.tiff`);
+      case ".ico":
+        return await import(`../assets/images/blog/${name}.ico`);
+      default:
+        return await import(`../assets/images/blog/${name}.jpg`);
+    }
+  } catch (error) {
+    console.error(`Failed to import image: ${imageFileName}`, error);
+    return null;
   }
 
   /*
@@ -68,20 +77,36 @@ export async function downloadImage(
     isCover = false, // Notion Cover image, displays at top of posts
   }
 ) {
-  const response = await fetch(imageUrl);
-  const arrayBuffer = await response.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-  const { ext, mime } = await imageType(buffer);
+  try {
+    if (typeof imageUrl !== "string" || !/^https?:\/\/.+/.test(imageUrl)) {
+      throw new Error("Invalid imageUrl: must be a valid http(s) URL string");
+    }
+    const response = await fetch(imageUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const { ext } = await imageType(buffer);
 
-  const fileHash = hashString(imageUrl);
-  const fileName = `${process.cwd()}/${IMAGE_PATH}/${fileHash}${
-    isCover ? "-cover" : ""
-  }.${ext}`;
-  // console.log("Hashed Filename:", fileName);
+    if (!ext) {
+      throw new Error("Cannot determine image type");
+    }
 
-  fs.writeFileSync(fileName, buffer);
-  const shortName = path.basename(fileName);
-  console.info(`Image downloaded: ${shortName} (${mime})`);
+    const fileHash = hashString(imageUrl).slice(0, 10);
+    const dirPath = `${process.cwd()}/${IMAGE_PATH}`;
+    const fileName = `${dirPath}/${fileHash}${
+      isCover ? "-cover" : ""
+    }.${ext}`;
+    // console.log("Hashed Filename:", fileName);
 
-  return fileName;
+    // Ensure directory exists
+    await fs.promises.mkdir(dirPath, { recursive: true });
+
+    await fs.promises.writeFile(fileName, buffer);
+    const relativePath = path.relative(process.cwd(), fileName);
+    console.info(`Image downloaded: ${relativePath}`);
+
+    return fileName;
+  } catch (error) {
+    console.error(`Failed to download or save image from URL: ${imageUrl}\nTarget path: ${process.cwd()}/${IMAGE_PATH}\nError:`, error);
+    return null;
+  }
 }
