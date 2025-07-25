@@ -92,9 +92,7 @@ export async function downloadImage(
 
     const fileHash = hashString(imageUrl).slice(0, 10);
     const dirPath = `${process.cwd()}/${IMAGE_PATH}`;
-    const fileName = `${dirPath}/${fileHash}${
-      isCover ? "-cover" : ""
-    }.${ext}`;
+    const fileName = `${dirPath}/${fileHash}${isCover ? "-cover" : ""}.${ext}`;
     // console.log("Hashed Filename:", fileName);
 
     // Ensure directory exists
@@ -106,7 +104,10 @@ export async function downloadImage(
 
     return fileName;
   } catch (error) {
-    console.error(`Failed to download or save image from URL: ${imageUrl}\nTarget path: ${process.cwd()}/${IMAGE_PATH}\nError:`, error);
+    console.error(
+      `Failed to download or save image from URL: ${imageUrl}\nTarget path: ${process.cwd()}/${IMAGE_PATH}\nError:`,
+      error
+    );
     return null;
   }
 }

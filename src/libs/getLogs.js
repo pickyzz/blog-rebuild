@@ -66,7 +66,9 @@ const pages = results.map(page => {
 pages.sort((a, b) => b.last_edited_time.localeCompare(a.last_edited_time));
 
 // Prepare new logs content
-const newLogs = pages.map(page => `${page.title} - ${page.last_edited_time}`).join("\n") + "\n";
+const newLogs =
+  pages.map(page => `${page.title} - ${page.last_edited_time}`).join("\n") +
+  "\n";
 
 // Read old logs.txt if exists
 let oldLogs = "";

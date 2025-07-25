@@ -141,7 +141,9 @@ const pageTasks = pages.map(async page => {
     ? await downloadImage(page.cover, { isCover: true })
     : "";
   if (coverFileName) {
-    const relativeCoverFileName = coverFileName ? path.relative(process.cwd(), coverFileName) : "";
+    const relativeCoverFileName = coverFileName
+      ? path.relative(process.cwd(), coverFileName)
+      : "";
     console.info("Image downloaded:", relativeCoverFileName);
   }
 

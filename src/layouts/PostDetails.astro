@@ -58,7 +58,10 @@ const allPosts = posts.map(({ data: { title, slug } }) => ({
   title,
 }));
 const currentPostIndex = allPosts.findIndex(a => a.slug === post.data.slug);
-const prevPost = currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : null;
+const prevPost =
+  currentPostIndex < allPosts.length - 1
+    ? allPosts[currentPostIndex + 1]
+    : null;
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 ---
 
@@ -108,7 +111,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 
       <button
         id="back-to-top"
-        class="focus-outline hidden whitespace-nowrap py-1 hover:opacity-75 md:block transition duration-200 hover:-translate-y-1"
+        class="focus-outline hidden whitespace-nowrap py-1 transition duration-200 hover:-translate-y-1 hover:opacity-75 md:block"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>

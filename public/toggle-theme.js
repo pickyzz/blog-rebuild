@@ -1,16 +1,30 @@
-const primaryColorScheme = ""; // "light" | "dark"
+const primaryColorScheme = "dark"; // "light" | "dark"
 
-// Get theme data from local storage
-const currentTheme = localStorage.getItem("theme");
+// Utility: get theme from query string
+function getThemeFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("theme");
+}
+// Utility: get theme from cookie
+function getThemeFromCookie() {
+  const match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+// Utility: choose storage type
+function getThemeFromStorage() {
+  // Use sessionStorage if available, fallback to localStorage
+  return sessionStorage.getItem("theme") || localStorage.getItem("theme");
+}
 
 function getPreferTheme() {
-  // return theme value in local storage if it is set
-  if (currentTheme) return currentTheme;
-
-  // return primary color scheme if it is set
+  // Priority: query string > cookie > storage > primaryColorScheme > system
+  const queryTheme = getThemeFromQuery();
+  if (queryTheme) return queryTheme;
+  const cookieTheme = getThemeFromCookie();
+  if (cookieTheme) return cookieTheme;
+  const storageTheme = getThemeFromStorage();
+  if (storageTheme) return storageTheme;
   if (primaryColorScheme) return primaryColorScheme;
-
-  // return user device's prefer color scheme
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -19,30 +33,34 @@ function getPreferTheme() {
 let themeValue = getPreferTheme();
 
 function setPreference() {
+  // Save to both storages for flexibility
   localStorage.setItem("theme", themeValue);
+  sessionStorage.setItem("theme", themeValue);
   reflectPreference();
 }
 
 function reflectPreference() {
-  document.firstElementChild.setAttribute("data-theme", themeValue);
-
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
-
-  // Get a reference to the body element
+  if (document.firstElementChild) {
+    document.firstElementChild.setAttribute("data-theme", themeValue);
+  }
+  const themeBtn = document.querySelector("#theme-btn");
+  if (themeBtn) {
+    themeBtn.setAttribute("aria-label", themeValue);
+    // Add aria-live for accessibility
+    themeBtn.setAttribute("aria-live", "polite");
+  }
   const body = document.body;
-
-  // Check if the body element exists before using getComputedStyle
   if (body) {
-    // Get the computed styles for the body element
+    body.setAttribute("data-theme", themeValue);
     const computedStyles = window.getComputedStyle(body);
-
-    // Get the background color property
     const bgColor = computedStyles.backgroundColor;
-
-    // Set the background color in <meta theme-color ... />
-    document
-      .querySelector("meta[name='theme-color']")
-      ?.setAttribute("content", bgColor);
+    let metaThemeColor = document.querySelector("meta[name='theme-color']");
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement("meta");
+      metaThemeColor.setAttribute("name", "theme-color");
+      document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.setAttribute("content", bgColor);
   }
 }
 
@@ -74,3 +92,17 @@ window
     themeValue = isDark ? "dark" : "light";
     setPreference();
   });
+
+// sync theme across tabs/windows
+window.addEventListener("storage", event => {
+  if (event.key === "theme") {
+    themeValue = getPreferTheme(); // Always update from localStorage
+    reflectPreference();
+  }
+});
+
+// Listen for primaryColorScheme change (if changed at runtime)
+window.addEventListener("primaryColorSchemeChange", () => {
+  themeValue = getPreferTheme();
+  setPreference();
+});

@@ -90,10 +90,10 @@ test("dark mode toggle works", async ({ page }) => {
   await page.goto("/");
   const toggle = page.locator('#theme-toggle, [aria-label="toggle theme"]');
   if (await toggle.isVisible()) {
-    const body = page.locator('body');
-    const initial = await body.getAttribute('class');
+    const body = page.locator("body");
+    const initial = await body.getAttribute("class");
     await toggle.click();
-    const after = await body.getAttribute('class');
+    const after = await body.getAttribute("class");
     expect(initial).not.toBe(after);
   }
 });
