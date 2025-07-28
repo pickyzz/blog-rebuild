@@ -1,68 +1,125 @@
-## Powered by Astro & Notion
+# Blog Rebuild
 
-- V.2.0.0 Based on [Astro-paper](https://github.com/satnaing/astro-paper) theme.
+## Table of Contents
 
-- Notion API as Content Management System base on [AstroNot](https://github.com/jsonMartin/AstroNot)
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Working with Notion as CMS](#working-with-notion-as-cms)
+- [Development](#development)
+- [Production Build](#production-build)
+- [All Commands](#-all-commands)
 
-customized by [Pickyzz](https://github.com/pickyzz)
+## Overview
+
+**Powered by Astro & Notion**
+
+- V.2.0.0 based on [Astro-paper](https://github.com/satnaing/astro-paper) theme
+- Notion API as Content Management System based on [AstroNot](https://github.com/jsonMartin/AstroNot)
+- Customized by [Pickyzz](https://github.com/pickyzz)
 
 ## Requirements
 
-- Node.js and npm (or yarn, pnpm, bun)
+- Node.js (version 16 or higher)
+- npm, yarn, pnpm, or bun
+- A Notion account with API access
 
-## Work with notion as CMS
+## Getting Started
 
-- Duplicate [[This]](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4) Notion template and do not edit the table's name
+1. **Clone the repository**
 
-- Rename .env.example to .env and add your `NOTION_KEY` key and `DATABASE_ID`
+   ```bash
+   git clone https://github.com/pickyzz/blog-rebuild.git
+   cd blog-rebuild
+   ```
 
-- To sync posts for developing use `npm run sync` or `npm run sync:published`
+2. **Install dependencies**
 
-- use `npm run generate` get all published posts and build for production
+   ```bash
+   npm install
+   ```
 
-### Developing
+3. **Set up environment variables**
+   - Copy the example environment file:
+     ```bash
+     cp example.env .env
+     ```
+   - Configure your environment variables (see [Environment Variables](#environment-variables) section)
 
-Run the following command on your local environment:
+4. **Set up Notion database**
+   - Duplicate [this Notion template](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4)
+   - Do not edit the table's name or structure
 
-Then, you can run locally in development mode with live reload:
+5. **Sync content and start development**
+   ```bash
+   npm run sync:published
+   npm run dev
+   ```
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+| Variable      | Description                   | How to obtain                                                                                                                                    |
+| ------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `NOTION_KEY`  | Your Notion integration token | 1. Go to [Notion Integrations](https://www.notion.so/my-integrations)<br>2. Create a new integration<br>3. Copy the "Internal Integration Token" |
+| `DATABASE_ID` | Your Notion database ID       | 1. Open your Notion database in browser<br>2. Click "Share" → "Copy link"<br>3. Extract the ID from the URL (the part before `?v=`)              |
+
+**Example `.env` file:**
+
+```env
+NOTION_KEY='secret_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+DATABASE_ID='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
+
+## Working with Notion as CMS
+
+- **Setup**: Duplicate the [Notion template](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4) and configure your environment variables
+- **Development sync**: Use `npm run sync` (all posts) or `npm run sync:published` (published posts only)
+- **Production build**: Use `npm run generate` to sync published posts and build for production
+
+## Development
+
+Start the development server with live reload:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:4321](http://localhost:4321) with your favorite browser
-to see your project.
+Open [http://localhost:4321](http://localhost:4321) in your browser to see your project.
 
-### Deploy to production (manual)
+## Production Build
 
-You can create an optimized production build with:
+### Manual Deployment
 
-```shell
+Create an optimized production build:
+
+```bash
 npm run build
 ```
 
-or
+Or sync content and build in one command:
 
-```shell
+```bash
 npm run generate
 ```
 
-Now, your blog is ready to be deployed. All generated files are located at
-`dist` folder, which you can deploy the folder to any hosting service you
-prefer.
+The generated files will be in the `dist` folder, ready for deployment to any hosting service.
 
 ## 🧞 All Commands
 
-Note: run from the root of the project, from a terminal:
+Run these commands from the root of the project:
 
-| Command                 | Action                                                  |
-| :---------------------- | :------------------------------------------------------ |
-| `npm install`           | Installs dependencies                                   |
-| `npm run dev`           | Starts local dev server at `localhost:3000`             |
-| `npm run build`         | Build your production site to `./dist/`                 |
-| `npm run preview`       | Preview your build locally, before deploying            |
-| `npm run clean`         | Remove `./dist` folder                                  |
-| `npm run format`        | Run ESLint and report styling error                     |
-| `npm run sync`          | Sync all posts from notion database                     |
-| `npm run sync:publised` | Sync only published post from notion database           |
-| `npm run generate`      | Sync published post and build static site for deploying |
+| Command                  | Action                                                    |
+| :----------------------- | :-------------------------------------------------------- |
+| `npm install`            | Installs dependencies                                     |
+| `npm run dev`            | Starts local dev server at `localhost:4321`               |
+| `npm run build`          | Build your production site to `./dist/`                   |
+| `npm run preview`        | Preview your build locally, before deploying              |
+| `npm run clean`          | Remove `./dist` folder                                    |
+| `npm run format`         | Run Prettier and format code                              |
+| `npm run lint`           | Run ESLint and report linting errors                      |
+| `npm run sync`           | Sync all posts from Notion database                       |
+| `npm run sync:published` | Sync only published posts from Notion database            |
+| `npm run generate`       | Sync published posts and build static site for deployment |
