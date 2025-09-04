@@ -12,7 +12,7 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
-    "@notionhq/client": "4.0.2",
+    "@notionhq/client": "5.0.0",
     "@pagefind/default-ui": "1.4.0",
     "astro-font": "1.1.0",
     "image-type": "6.0.0",
