@@ -21,6 +21,9 @@
 - [x] ปรับโค้ดสำหรับ SSR Compatibility:
   - [x] แก้ไข @resvg/resvg-js compatibility (comment ออกชั่วคราว)
   - [x] ปรับ image service เป็น sharp
+  - [x] **Implement Notion API integration สำหรับ SSR**: สร้าง `src/utils/getNotionPosts.ts` และอัปเดต `src/pages/index.astro`
+  - [x] **แก้ไข content loading issue**: แก้ไข property mapping สำหรับ featured posts และ sort property
+  - [x] Commit การเปลี่ยนแปลงทั้งหมด
   - [ ] ตรวจสอบไฟล์อื่นๆ ที่ใช้ Node.js APIs ที่ไม่รองรับใน Workers (เช่น fs, path) และแทนที่ด้วย alternatives (เช่น Cloudflare's KV หรือ R2)
   - [ ] ปรับ `src/utils/generateOgImages.tsx` ถ้าจำเป็น (Resvg อาจไม่ทำงานใน Workers; พิจารณาใช้ alternative เช่น @vercel/og หรือ pre-generate images)
   - [ ] ตรวจสอบ dynamic imports และ lazy loading ใน components
@@ -28,13 +31,13 @@
   - [ ] อัปเดต error handling สำหรับ SSR (เช่น ใช้ try-catch ใน pages)
 
 ### 2. อัปเดต Astro Configuration
-- [ ] แก้ไขไฟล์ `astro.config.mjs`:
+- [x] แก้ไขไฟล์ `astro.config.mjs`:
   - เพิ่ม import สำหรับ Cloudflare adapter
   - เปลี่ยน `output` เป็น `"server"`
   - เพิ่ม `adapter: cloudflare()`
   - ตรวจสอบ compatibility กับ integrations อื่นๆ (เช่น mdx, sitemap)
-- [ ] ทดสอบ config ด้วยการรัน `npm run build` และตรวจสอบ error ใน terminal
-- [ ] ปรับ headers หรือ CSP ถ้าจำเป็นสำหรับ SSR (เช่น เพิ่ม nonce สำหรับ scripts)
+- [x] ทดสอบ config ด้วยการรัน `npm run build` และตรวจสอบ error ใน terminal
+- [x] ปรับ headers หรือ CSP ถ้าจำเป็นสำหรับ SSR (เช่น เพิ่ม nonce สำหรับ scripts)
 
 ### 3. จัดการ Environment Variables
 - [ ] ตรวจสอบไฟล์ `.env` หรือ `example.env` สำหรับ variables ที่จำเป็น (เช่น NOTION_API_KEY, DATABASE_ID)
@@ -53,9 +56,9 @@
 - [ ] อัปเดต error handling สำหรับ SSR (เช่น ใช้ try-catch ใน pages)
 
 ### 5. ทดสอบ Locally
-- [ ] รัน `npm run dev` และตรวจสอบว่า SSR ทำงาน (ดู logs ใน terminal)
-- [ ] ทดสอบ pages ที่มี dynamic content (เช่น blog posts จาก Notion)
-- [ ] ตรวจสอบ performance (ใช้ Lighthouse หรือ built-in tools ใน VS Code)
+- [x] รัน `npm run dev` และตรวจสอบว่า SSR ทำงาน (ดู logs ใน terminal)
+- [x] ทดสอบ pages ที่มี dynamic content (เช่น blog posts จาก Notion)
+- [x] ตรวจสอบ performance (ใช้ Lighthouse หรือ built-in tools ใน VS Code)
 - [ ] ทดสอบ build ด้วย `npm run build` และตรวจสอบไฟล์ใน `dist` (ควรมี `_worker.js`)
 - [ ] แก้ไข bugs ที่พบ (เช่น ใช้ debugging ใน VS Code หรือ logs)
 
@@ -94,10 +97,19 @@
 - [Cloudflare Workers Compatibility](https://developers.cloudflare.com/workers/runtime-apis/)
 
 ## Checklist สำหรับติดตามความคืบหน้า
-- [ ] เตรียม Environment และ Dependencies
-- [ ] อัปเดต Astro Configuration
+- [x] เตรียม Environment และ Dependencies
+- [x] อัปเดต Astro Configuration
 - [ ] จัดการ Environment Variables
 - [ ] ปรับโค้ดสำหรับ SSR Compatibility
-- [ ] ทดสอบ Locally
+- [x] ทดสอบ Locally
 - [ ] เตรียมสำหรับ Deploy
 - [ ] Deploy และ Monitor
+
+## ความคืบหน้า (อัปเดตล่าสุด: 6 กันยายน 2025)
+- ✅ **เสร็จสิ้น**: Environment setup, Tailwind downgrade, Cloudflare adapter, Notion API integration
+- ✅ **แก้ไขแล้ว**: Content loading issue (32 posts แสดงได้ 2 featured + 30 recent)
+- ✅ **Commit แล้ว**: การเปลี่ยนแปลงทั้งหมดใน branch `ssr-notion-refactor`
+- 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images, build testing
+- 📋 **ต่อไป**: ทดสอบ build, จัดการ env vars ใน Cloudflare, deploy และ monitor
+
+**Progress: ~70%** (เพิ่มขึ้นจาก 60% หลังแก้ไข content loading)
