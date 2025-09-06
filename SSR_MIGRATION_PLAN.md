@@ -25,6 +25,7 @@
   - [x] **แก้ไข content loading issue**: แก้ไข property mapping สำหรับ featured posts และ sort property
   - [x] **แก้ไข image display issue**: เปลี่ยน image service เป็น passthrough และเพิ่ม fallback image ใน Card component
   - [x] **แก้ไข syntax error**: แก้ไข import statement ใน Card.astro ที่เสียหาย
+  - [x] **เพิ่ม ogImage mapping**: Map ภาพจาก Notion database property (ogImage, cover, image, etc.)
   - [x] Commit การเปลี่ยนแปลงทั้งหมด
   - [ ] ตรวจสอบไฟล์อื่นๆ ที่ใช้ Node.js APIs ที่ไม่รองรับใน Workers (เช่น fs, path) และแทนที่ด้วย alternatives (เช่น Cloudflare's KV หรือ R2)
   - [ ] ปรับ `src/utils/generateOgImages.tsx` ถ้าจำเป็น (Resvg อาจไม่ทำงานใน Workers; พิจารณาใช้ alternative เช่น @vercel/og หรือ pre-generate images)

@@ -65,10 +65,11 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
       const canonicalURL = properties.canonicalURL?.url;
 
-      // Extract ogImage from Notion - try multiple possible property names
+      // Extract ogImage from Notion - try multiple sources
       let ogImage = undefined;
-      const possibleImageProps = ['ogImage', 'og_image', 'cover', 'image', 'header_image', 'thumbnail'];
 
+      // 1. Try custom ogImage property
+      const possibleImageProps = ['ogImage', 'og_image', 'cover', 'image', 'header_image', 'thumbnail'];
       for (const propName of possibleImageProps) {
         if (properties[propName]?.files?.[0]) {
           const file = properties[propName].files[0];
@@ -81,6 +82,26 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
           };
           console.log(`Found image in property "${propName}":`, imageUrl);
           break;
+        }
+      }
+
+      // 2. Try page cover image if no custom ogImage found
+      if (!ogImage && page.cover) {
+        let coverUrl = '';
+        if (page.cover.type === 'external') {
+          coverUrl = page.cover.external.url;
+        } else if (page.cover.type === 'file') {
+          coverUrl = page.cover.file.url;
+        }
+
+        if (coverUrl) {
+          ogImage = {
+            src: coverUrl,
+            width: 1200,
+            height: 630,
+            format: 'png' as const
+          };
+          console.log(`Found cover image:`, coverUrl);
         }
       }
 
