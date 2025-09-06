@@ -48,6 +48,10 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
     const posts: CollectionEntry<"blog">[] = response.results.map((page: any) => {
       const properties = page.properties;
 
+      // Debug: Log all available properties
+      console.log('Available properties:', Object.keys(properties));
+      console.log('Page properties:', Object.keys(properties).map(key => ({ [key]: properties[key]?.type })));
+
       // Extract data from Notion page properties
       const title = properties.title?.title?.[0]?.plain_text || "Untitled";
       const slug = properties.slug?.rich_text?.[0]?.plain_text || title.toLowerCase().replace(/\s+/g, '-');
@@ -60,6 +64,27 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       const author = "Pickyzz"; // Default author
       const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
       const canonicalURL = properties.canonicalURL?.url;
+
+      // Extract ogImage from Notion - try multiple possible property names
+      let ogImage = undefined;
+      const possibleImageProps = ['ogImage', 'og_image', 'cover', 'image', 'header_image', 'thumbnail'];
+
+      for (const propName of possibleImageProps) {
+        if (properties[propName]?.files?.[0]) {
+          const file = properties[propName].files[0];
+          const imageUrl = file.type === 'external' ? file.external.url : file.file.url;
+          ogImage = {
+            src: imageUrl,
+            width: 1200,
+            height: 630,
+            format: 'png' as const
+          };
+          console.log(`Found image in property "${propName}":`, imageUrl);
+          break;
+        }
+      }
+
+      console.log(`Post "${title}": ogImage =`, ogImage?.src || 'No ogImage');
 
       return {
         id: page.id,
@@ -76,6 +101,7 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
           author,
           readingTime,
           canonicalURL,
+          ogImage,
         },
         body: "", // Notion content will be fetched separately if needed
         collection: "blog",
