@@ -62,7 +62,7 @@
 - [x] รัน `npm run dev` และตรวจสอบว่า SSR ทำงาน (ดู logs ใน terminal)
 - [x] ทดสอบ pages ที่มี dynamic content (เช่น blog posts จาก Notion)
 - [x] ตรวจสอบ performance (ใช้ Lighthouse หรือ built-in tools ใน VS Code)
-- [ ] ทดสอบ build ด้วย `npm run build` และตรวจสอบไฟล์ใน `dist` (ควรมี `_worker.js`)
+- [x] ทดสอบ build ด้วย `npm run build` และตรวจสอบไฟล์ใน `dist` (ควรมี `_worker.js`)
 - [ ] แก้ไข bugs ที่พบ (เช่น ใช้ debugging ใน VS Code หรือ logs)
 
 ### 6. เตรียมสำหรับ Deploy
@@ -112,7 +112,11 @@
 - ✅ **เสร็จสิ้น**: Environment setup, Tailwind downgrade, Cloudflare adapter, Notion API integration
 - ✅ **แก้ไขแล้ว**: Content loading issue (32 posts แสดงได้ 2 featured + 30 recent)
 - ✅ **Commit แล้ว**: การเปลี่ยนแปลงทั้งหมดใน branch `ssr-notion-refactor`
-- 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images, build testing
-- 📋 **ต่อไป**: ทดสอบ build, จัดการ env vars ใน Cloudflare, deploy และ monitor
+- ✅ **เพิ่มแล้ว**: Cloudflare Images API สำหรับ optimize ภาพ (1200x630px covers, 400x400px icons, WebP format, 80% quality)
+- ✅ **เพิ่มแล้ว**: Lazy loading ใน Card component สำหรับ performance ที่ดีขึ้น
+- ✅ **แก้ไขแล้ว**: Build script สำหรับรองรับ SSR (handle Pagefind gracefully)
+- ✅ **ทดสอบแล้ว**: Build process สำเร็จ (npm run build ทำงานได้ปกติ)
+- 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images
+- 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
-**Progress: ~70%** (เพิ่มขึ้นจาก 60% หลังแก้ไข content loading)
+**Progress: ~85%** (เพิ่มขึ้นจาก 70% หลัง optimize ภาพและแก้ไข build)
