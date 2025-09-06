@@ -118,7 +118,8 @@
 - ✅ **ทดสอบแล้ว**: Build process สำเร็จ (npm run build ทำงานได้ปกติ)
 - ✅ **แก้ไขแล้ว**: Image display ใน development mode (ใช้ original Notion URLs แทน Cloudflare Images API)
 - ✅ **ทดสอบแล้ว**: Images แสดงได้ปกติใน dev server (`http://localhost:4321`)
+- ✅ **แก้ไขแล้ว**: ลบ Cloudflare Images API - ใช้ original URLs ฟรี 100%
 - 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images
 - 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
-**Progress: ~90%** (เพิ่มขึ้นจาก 85% หลังแก้ไข image display ใน dev mode)
+**Progress: ~95%** (เพิ่มขึ้นจาก 90% หลังลบ Cloudflare Images API)
