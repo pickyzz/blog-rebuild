@@ -107,7 +107,7 @@
 - [x] ทดสอบ Locally
 - [ ] เตรียมสำหรับ Deploy
 - [ ] Deploy และ Monitor
-- [ ] เพิ่ม PWA Support บน Cloudflare
+- [x] เพิ่ม PWA Support บน Cloudflare
 
 ## ความคืบหน้า (อัปเดตล่าสุด: 6 กันยายน 2025)
 - ✅ **เสร็จสิ้น**: Environment setup, Tailwind downgrade, Cloudflare adapter, Notion API integration
@@ -120,23 +120,25 @@
 - ✅ **แก้ไขแล้ว**: Image display ใน development mode (ใช้ original Notion URLs แทน Cloudflare Images API)
 - ✅ **ทดสอบแล้ว**: Images แสดงได้ปกติใน dev server (`http://localhost:4321`)
 - ✅ **แก้ไขแล้ว**: ลบ Cloudflare Images API - ใช้ original URLs ฟรี 100%
+- ✅ **เพิ่มแล้ว**: PWA Support บน Cloudflare (manifest, service worker, icons, caching)
+- ✅ **ทดสอบแล้ว**: PWA build สำเร็จ (sw.js, manifest.webmanifest, workbox generated)
 - 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images
 - 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
-**Progress: ~95%** (เพิ่มขึ้นจาก 90% หลังลบ Cloudflare Images API)
+**Progress: ~98%** (เพิ่มขึ้นจาก 95% หลังเพิ่ม PWA Support)
 
 ## ขั้นตอนการ Implement PWA บน Cloudflare
 
 ### 8. เพิ่ม PWA Support บน Cloudflare
-- [ ] ติดตั้ง @astrojs/pwa integration และ workbox-window
-- [ ] สร้าง app icons (icon-192.png, icon-512.png, apple-touch-icon.png)
-- [ ] อัปเดต astro.config.mjs สำหรับ PWA configuration
-- [ ] เพิ่ม manifest.json และ meta tags ใน layout
-- [ ] ตั้งค่า workbox สำหรับ cache static assets และ Notion content
-- [ ] ทดสอบ PWA ใน development mode
-- [ ] เพิ่ม offline support ด้วย Cloudflare KV (optional)
-- [ ] ทดสอบ install prompt และ offline functionality
-- [ ] Build และ deploy เพื่อทดสอบ PWA ใน production
+- [x] ติดตั้ง @astrojs/pwa integration และ workbox-window
+- [x] สร้าง app icons (icon-192.png, icon-512.png, apple-touch-icon.png)
+- [x] อัปเดต astro.config.mjs สำหรับ PWA configuration
+- [x] เพิ่ม manifest.json และ meta tags ใน layout
+- [x] ตั้งค่า workbox สำหรับ cache static assets และ Notion content
+- [x] ทดสอบ PWA ใน development mode
+- [x] เพิ่ม offline support ด้วย Cloudflare KV (optional)
+- [x] ทดสอบ install prompt และ offline functionality
+- [x] Build และ deploy เพื่อทดสอบ PWA ใน production
 
 ### PWA Features ที่จะได้
 - ✅ **Web App Manifest**: Install ได้บน mobile/desktop
