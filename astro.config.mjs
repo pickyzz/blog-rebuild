@@ -6,7 +6,7 @@ import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
 import rehypeExternalLinks from "rehype-external-links";
 import sitemap from "@astrojs/sitemap";
-import { vitePwa } from "@vite-pwa/astro";
+import pwa from "@vite-pwa/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,7 +29,7 @@ export default defineConfig({
       smartypants: true,
       gfm: true,
     }),
-    vitePwa({
+    pwa({
       registerType: "autoUpdate",
       manifest: {
         name: "Pickyzz Blog",
