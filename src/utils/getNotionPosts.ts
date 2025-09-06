@@ -99,31 +99,44 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
         }
 
         if (coverUrl) {
-          // Use Cloudflare Images API for optimization
-          const optimizedUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=1200,height=630,quality=80,fit=cover/${coverUrl}`;
+          // Use Cloudflare Images API for optimization in production
+          // In development, use original URL to avoid CORS/authentication issues
+          const isDev = import.meta.env.DEV;
+          let finalUrl = coverUrl;
+
+          if (!isDev) {
+            finalUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=1200,height=630,quality=80,fit=cover/${coverUrl}`;
+          }
+
           ogImage = {
-            src: optimizedUrl,
-            width: 1200,
-            height: 630,
-            format: 'webp' as const
+            src: finalUrl,
+            width: isDev ? 1200 : 1200, // Default width for dev
+            height: isDev ? 630 : 630, // Default height for dev
+            format: isDev ? 'png' as const : 'webp' as const
           };
           console.log(`Found cover image:`, coverUrl);
-          console.log(`Optimized URL:`, optimizedUrl);
+          console.log(`Final URL (${isDev ? 'dev' : 'prod'}):`, finalUrl);
         }
       }
 
       // 3. Try page icon as last resort
       if (!ogImage && page.icon && page.icon.type === 'external') {
         const iconUrl = page.icon.external.url;
-        const optimizedUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=400,height=400,quality=80/${iconUrl}`;
+        const isDev = import.meta.env.DEV;
+        let finalUrl = iconUrl;
+
+        if (!isDev) {
+          finalUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=400,height=400,quality=80/${iconUrl}`;
+        }
+
         ogImage = {
-          src: optimizedUrl,
-          width: 400,
-          height: 400,
-          format: 'webp' as const
+          src: finalUrl,
+          width: isDev ? 400 : 400, // Default width for dev
+          height: isDev ? 400 : 400, // Default height for dev
+          format: isDev ? 'png' as const : 'webp' as const
         };
         console.log(`Found icon image:`, iconUrl);
-        console.log(`Optimized icon URL:`, optimizedUrl);
+        console.log(`Final icon URL (${isDev ? 'dev' : 'prod'}):`, finalUrl);
       }
 
       console.log(`Post "${title}": ogImage =`, ogImage?.src || 'No ogImage');
