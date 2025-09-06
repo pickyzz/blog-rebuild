@@ -1,5 +1,7 @@
-@import "tailwindcss";
-@import "./typography.css";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+/* @import "./typography.css"; */
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -20,29 +22,43 @@ html[data-theme="dark"] {
   --border: #ab4b08;
 }
 
-@theme inline {
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
   --color-border: var(--border);
-}
+} */
 
 @layer base {
   * {
-    @apply border-border outline-accent/75;
+    border-color: var(--border);
+    outline-color: var(--accent);
     scrollbar-width: auto;
-    scrollbar-color: var(--color-muted) transparent;
+    scrollbar-color: var(--muted) transparent;
   }
   html {
-    @apply overflow-y-scroll scroll-smooth;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground selection:bg-accent/75 selection:text-background flex min-h-svh flex-col font-mono;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: monospace;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
   }
   a,
   button {
-    @apply outline-accent outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed focus-visible:outline-2;
+    outline-color: var(--accent);
+    outline-offset: 1px;
+  }
+  a:focus-visible,
+  button:focus-visible {
+    text-decoration: none;
+    outline-style: dashed;
+    outline-width: 2px;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -50,10 +66,16 @@ html[data-theme="dark"] {
   }
   section,
   footer {
-    @apply mx-auto max-w-4xl px-4;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 56rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
 .active-nav {
-  @apply text-accent font-bold no-underline;
+  color: var(--accent);
+  font-weight: bold;
+  text-decoration: none;
 }

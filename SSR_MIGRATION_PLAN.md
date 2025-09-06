@@ -6,8 +6,14 @@
 ## ขั้นตอนการ Implement
 
 ### 1. เตรียม Environment และ Dependencies
-- [ ] ตรวจสอบเวอร์ชัน Node.js และ npm ในเครื่อง (แนะนำ Node.js >= 18)
-- [ ] Backup โค้ดปัจจุบัน (commit หรือ branch ใหม่ เช่น `ssr-migration`)
+- [x] ตรวจสอบเวอร์ชัน Node.js และ npm ในเครื่อง (แนะนำ Node.js >= 18)
+- [x] Backup โค้ดปัจจุบัน (commit หรือ branch ใหม่ เช่น `ssr-migration`)
+- [x] **แก้ไข Tailwind CSS conflict**: Downgrade จาก v4 กลับไป v3 และเปลี่ยนเป็น @astrojs/tailwind
+  - Uninstall: `npm uninstall @tailwindcss/vite tailwindcss`
+  - Install: `npm install @astrojs/tailwind tailwindcss@^3.0.0`
+  - อัปเดต astro.config.mjs: เปลี่ยนจาก `tailwindcss` plugin เป็น `@astrojs/tailwind` integration
+  - ปรับ global.css: ลบ @theme และ @apply v4 syntax
+  - สร้าง tailwind.config.js สำหรับ v3
 - [ ] ติดตั้ง adapter สำหรับ Cloudflare:
   ```bash
   npm install @astrojs/cloudflare

@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
+import tailwind from "@astrojs/tailwind";
+import cloudflare from "@astrojs/cloudflare";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
@@ -9,11 +10,16 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
+  output: "server",
+  adapter: cloudflare(),
   trailingSlash: "never",
   image: {
-    responsiveStyles: true,
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+    },
   },
   integrations: [
+    tailwind(),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
     }),
@@ -34,12 +40,6 @@ export default defineConfig({
       wrap: true,
     },
     extendDefaultPlugins: true,
-  },
-  vite: {
-    plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js", "fsevents"],
-    },
   },
   prefetch: {
     prefetchAll: true,

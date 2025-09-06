@@ -12,8 +12,10 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^12.6.7",
     "@notionhq/client": "4.0.2",
     "@pagefind/default-ui": "1.4.0",
+    "@resvg/resvg-js": "2.6.2",
     "astro-font": "1.1.0",
     "image-type": "6.0.0",
     "lodash.kebabcase": "4.1.1",
@@ -25,20 +27,19 @@
     "satori": "0.18.2",
     "sharp": "0.34.3",
     "tailwind-merge": "3.3.1",
-    "tinycolor2": "1.6.0",
-    "@resvg/resvg-js": "2.6.2"
+    "tailwindcss": "^3.4.17",
+    "tinycolor2": "1.6.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",
     "@astrojs/mdx": "4.3.4",
     "@astrojs/rss": "4.0.12",
     "@astrojs/sitemap": "3.5.1",
-    "@astrojs/tailwind": "6.0.2",
+    "@astrojs/tailwind": "^6.0.2",
     "@playwright/test": "1.55.0",
     "@tailwindcss/aspect-ratio": "0.4.2",
     "@tailwindcss/line-clamp": "0.4.4",
-    "@tailwindcss/typography": "0.5.16",
-    "@tailwindcss/vite": "4.1.12",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@typescript-eslint/parser": "8.42.0",
@@ -54,7 +55,6 @@
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "0.6.14",
     "rimraf": "6.0.1",
-    "tailwindcss": "4.1.12",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
     "typescript-eslint": "8.42.0"
