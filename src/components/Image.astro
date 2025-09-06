@@ -12,25 +12,15 @@ const {
   fetchpriority = "high",
 } = Astro.props;
 
-const relativeSrc = `../${src}`;
-const imgType = relativeSrc.split(".").pop();
-const { default: imgData } = await postImageImport(src);
-const { width, height } = imgData;
+// For SSR compatibility, use simple img tag instead of AstroImage
+const imagePath = `/assets/images/blog/${src}`;
 ---
 
-{
-  imgType === "bmp" ? (
-    <img src={relativeSrc} alt={alt} class={imageClass} />
-  ) : (
-    <AstroImage
-      src={imgData}
-      {alt}
-      loading={loading}
-      decoding={decoding}
-      fetchpriority={fetchpriority}
-      class={imageClass}
-      width={width < MAX_WIDTH ? width : MAX_WIDTH}
-      height={height}
-    />
-  )
-}
+<img
+  src={imagePath}
+  alt={alt}
+  class={imageClass}
+  loading={loading}
+  decoding={decoding}
+  fetchpriority={fetchpriority}
+/>

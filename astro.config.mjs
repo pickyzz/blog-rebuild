@@ -15,7 +15,7 @@ export default defineConfig({
   trailingSlash: "never",
   image: {
     service: {
-      entrypoint: "astro/assets/services/sharp",
+      entrypoint: "astro/assets/services/passthrough",
     },
   },
   integrations: [
