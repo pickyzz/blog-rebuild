@@ -99,44 +99,27 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
         }
 
         if (coverUrl) {
-          // Use Cloudflare Images API for optimization in production
-          // In development, use original URL to avoid CORS/authentication issues
-          const isDev = import.meta.env.DEV;
-          let finalUrl = coverUrl;
-
-          if (!isDev) {
-            finalUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=1200,height=630,quality=80,fit=cover/${coverUrl}`;
-          }
-
+          // ใช้ original URL จาก Notion (ฟรี ไม่มีค่าใช้จ่าย)
           ogImage = {
-            src: finalUrl,
-            width: isDev ? 1200 : 1200, // Default width for dev
-            height: isDev ? 630 : 630, // Default height for dev
-            format: isDev ? 'png' as const : 'webp' as const
+            src: coverUrl,
+            width: 1200,
+            height: 630,
+            format: 'png' as const
           };
           console.log(`Found cover image:`, coverUrl);
-          console.log(`Final URL (${isDev ? 'dev' : 'prod'}):`, finalUrl);
         }
       }
 
       // 3. Try page icon as last resort
       if (!ogImage && page.icon && page.icon.type === 'external') {
         const iconUrl = page.icon.external.url;
-        const isDev = import.meta.env.DEV;
-        let finalUrl = iconUrl;
-
-        if (!isDev) {
-          finalUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=400,height=400,quality=80/${iconUrl}`;
-        }
-
         ogImage = {
-          src: finalUrl,
-          width: isDev ? 400 : 400, // Default width for dev
-          height: isDev ? 400 : 400, // Default height for dev
-          format: isDev ? 'png' as const : 'webp' as const
+          src: iconUrl,
+          width: 400,
+          height: 400,
+          format: 'png' as const
         };
         console.log(`Found icon image:`, iconUrl);
-        console.log(`Final icon URL (${isDev ? 'dev' : 'prod'}):`, finalUrl);
       }
 
       console.log(`Post "${title}": ogImage =`, ogImage?.src || 'No ogImage');
