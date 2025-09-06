@@ -14,12 +14,18 @@
   - อัปเดต astro.config.mjs: เปลี่ยนจาก `tailwindcss` plugin เป็น `@astrojs/tailwind` integration
   - ปรับ global.css: ลบ @theme และ @apply v4 syntax
   - สร้าง tailwind.config.js สำหรับ v3
-- [ ] ติดตั้ง adapter สำหรับ Cloudflare:
+- [x] ติดตั้ง adapter สำหรับ Cloudflare:
   ```bash
   npm install @astrojs/cloudflare
   ```
-- [ ] ตรวจสอบและอัปเดต dependencies อื่นๆ ที่อาจไม่เข้ากันกับ Cloudflare Workers (เช่น @resvg/resvg-js อาจต้องใช้ alternative หรือปรับโค้ด)
-- [ ] อัปเดต package.json ถ้าจำเป็น (เช่น เพิ่ม scripts สำหรับ build SSR)
+- [x] ปรับโค้ดสำหรับ SSR Compatibility:
+  - [x] แก้ไข @resvg/resvg-js compatibility (comment ออกชั่วคราว)
+  - [x] ปรับ image service เป็น sharp
+  - [ ] ตรวจสอบไฟล์อื่นๆ ที่ใช้ Node.js APIs ที่ไม่รองรับใน Workers (เช่น fs, path) และแทนที่ด้วย alternatives (เช่น Cloudflare's KV หรือ R2)
+  - [ ] ปรับ `src/utils/generateOgImages.tsx` ถ้าจำเป็น (Resvg อาจไม่ทำงานใน Workers; พิจารณาใช้ alternative เช่น @vercel/og หรือ pre-generate images)
+  - [ ] ตรวจสอบ dynamic imports และ lazy loading ใน components
+  - [ ] ทดสอบ Notion API calls ใน SSR context (ตรวจสอบ rate limits และ caching)
+  - [ ] อัปเดต error handling สำหรับ SSR (เช่น ใช้ try-catch ใน pages)
 
 ### 2. อัปเดต Astro Configuration
 - [ ] แก้ไขไฟล์ `astro.config.mjs`:
