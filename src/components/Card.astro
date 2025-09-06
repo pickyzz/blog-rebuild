@@ -32,8 +32,9 @@ const headerProps = {
       <img
         class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
         src={ogImage?.src || "/pickyzz-og.png"}
-        loading="eager"
-        fetchpriority="high"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
         alt=""
       />
       <div

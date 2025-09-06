@@ -52,6 +52,10 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       console.log('Available properties:', Object.keys(properties));
       console.log('Page properties:', Object.keys(properties).map(key => ({ [key]: properties[key]?.type })));
 
+      // Debug: Log page cover and icon
+      console.log('Page cover:', page.cover);
+      console.log('Page icon:', page.icon);
+
       // Extract data from Notion page properties
       const title = properties.title?.title?.[0]?.plain_text || "Untitled";
       const slug = properties.slug?.rich_text?.[0]?.plain_text || title.toLowerCase().replace(/\s+/g, '-');
@@ -95,14 +99,31 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
         }
 
         if (coverUrl) {
+          // Use Cloudflare Images API for optimization
+          const optimizedUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=1200,height=630,quality=80,fit=cover/${coverUrl}`;
           ogImage = {
-            src: coverUrl,
+            src: optimizedUrl,
             width: 1200,
             height: 630,
-            format: 'png' as const
+            format: 'webp' as const
           };
           console.log(`Found cover image:`, coverUrl);
+          console.log(`Optimized URL:`, optimizedUrl);
         }
+      }
+
+      // 3. Try page icon as last resort
+      if (!ogImage && page.icon && page.icon.type === 'external') {
+        const iconUrl = page.icon.external.url;
+        const optimizedUrl = `https://images.cloudflare.com/cdn-cgi/image/format=webp,width=400,height=400,quality=80/${iconUrl}`;
+        ogImage = {
+          src: optimizedUrl,
+          width: 400,
+          height: 400,
+          format: 'webp' as const
+        };
+        console.log(`Found icon image:`, iconUrl);
+        console.log(`Optimized icon URL:`, optimizedUrl);
       }
 
       console.log(`Post "${title}": ogImage =`, ogImage?.src || 'No ogImage');
