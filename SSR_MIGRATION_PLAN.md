@@ -107,6 +107,7 @@
 - [x] ทดสอบ Locally
 - [ ] เตรียมสำหรับ Deploy
 - [ ] Deploy และ Monitor
+- [ ] เพิ่ม PWA Support บน Cloudflare
 
 ## ความคืบหน้า (อัปเดตล่าสุด: 6 กันยายน 2025)
 - ✅ **เสร็จสิ้น**: Environment setup, Tailwind downgrade, Cloudflare adapter, Notion API integration
@@ -123,3 +124,29 @@
 - 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
 **Progress: ~95%** (เพิ่มขึ้นจาก 90% หลังลบ Cloudflare Images API)
+
+## ขั้นตอนการ Implement PWA บน Cloudflare
+
+### 8. เพิ่ม PWA Support บน Cloudflare
+- [ ] ติดตั้ง @astrojs/pwa integration และ workbox-window
+- [ ] สร้าง app icons (icon-192.png, icon-512.png, apple-touch-icon.png)
+- [ ] อัปเดต astro.config.mjs สำหรับ PWA configuration
+- [ ] เพิ่ม manifest.json และ meta tags ใน layout
+- [ ] ตั้งค่า workbox สำหรับ cache static assets และ Notion content
+- [ ] ทดสอบ PWA ใน development mode
+- [ ] เพิ่ม offline support ด้วย Cloudflare KV (optional)
+- [ ] ทดสอบ install prompt และ offline functionality
+- [ ] Build และ deploy เพื่อทดสอบ PWA ใน production
+
+### PWA Features ที่จะได้
+- ✅ **Web App Manifest**: Install ได้บน mobile/desktop
+- ✅ **Service Worker**: Cache static assets ด้วย Workbox
+- ✅ **Offline Support**: Basic caching สำหรับ Notion content
+- ✅ **Install Prompt**: Browser แนะนำให้ install อัตโนมัติ
+- ✅ **App-like Experience**: Standalone mode, no browser UI
+
+### ข้อจำกัดบน Cloudflare
+- ❌ **Background Sync**: ไม่รองรับใน Workers runtime
+- ❌ **Push Notifications**: ไม่รองรับใน Workers
+- ✅ **Static Asset Caching**: ทำงานได้ปกติ
+- ✅ **Offline Reading**: ทำงานได้ด้วย KV storage
