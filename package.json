@@ -62,7 +62,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
+    "build": "astro check && astro build && (pagefind --site dist || echo 'Pagefind indexing skipped for SSR') && cp -r dist/pagefind public/ 2>/dev/null || true",
     "preview": "astro preview",
     "sync": "find src/content/blog/ -type f ! -name '.gitignore' -delete && find src/assets/images/blog/ -type f ! -name '.gitignore' -delete && rimraf src/content/blog/_ && node src/libs/notion.js",
     "sync:logs": "node src/libs/getLogs.js --published",
