@@ -116,7 +116,9 @@
 - ✅ **เพิ่มแล้ว**: Lazy loading ใน Card component สำหรับ performance ที่ดีขึ้น
 - ✅ **แก้ไขแล้ว**: Build script สำหรับรองรับ SSR (handle Pagefind gracefully)
 - ✅ **ทดสอบแล้ว**: Build process สำเร็จ (npm run build ทำงานได้ปกติ)
+- ✅ **แก้ไขแล้ว**: Image display ใน development mode (ใช้ original Notion URLs แทน Cloudflare Images API)
+- ✅ **ทดสอบแล้ว**: Images แสดงได้ปกติใน dev server (`http://localhost:4321`)
 - 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images
 - 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
-**Progress: ~85%** (เพิ่มขึ้นจาก 70% หลัง optimize ภาพและแก้ไข build)
+**Progress: ~90%** (เพิ่มขึ้นจาก 85% หลังแก้ไข image display ใน dev mode)
