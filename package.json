@@ -16,6 +16,7 @@
     "@notionhq/client": "4.0.2",
     "@pagefind/default-ui": "1.4.0",
     "@resvg/resvg-js": "2.6.2",
+    "@vite-pwa/astro": "^1.1.0",
     "astro-font": "1.1.0",
     "image-type": "6.0.0",
     "lodash.kebabcase": "4.1.1",
@@ -28,7 +29,8 @@
     "sharp": "0.34.3",
     "tailwind-merge": "3.3.1",
     "tailwindcss": "^3.4.17",
-    "tinycolor2": "1.6.0"
+    "tinycolor2": "1.6.0",
+    "workbox-window": "^7.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.4",
@@ -43,6 +45,7 @@
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@typescript-eslint/parser": "8.42.0",
+    "@vite-pwa/assets-generator": "^1.0.0",
     "astro": "5.13.5",
     "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.2",

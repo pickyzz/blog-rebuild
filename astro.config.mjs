@@ -6,6 +6,7 @@ import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
 import rehypeExternalLinks from "rehype-external-links";
 import sitemap from "@astrojs/sitemap";
+import { vitePwa } from "@vite-pwa/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,6 +28,48 @@ export default defineConfig({
       extendMarkdownConfig: true,
       smartypants: true,
       gfm: true,
+    }),
+    vitePwa({
+      registerType: "autoUpdate",
+      manifest: {
+        name: "Pickyzz Blog",
+        short_name: "Pickyzz",
+        description: "Personal blog about technology, programming, and life",
+        theme_color: "#ffffff",
+        background_color: "#ffffff",
+        display: "standalone",
+        orientation: "portrait",
+        scope: "/",
+        start_url: "/",
+        icons: [
+          {
+            src: "icon-192.png",
+            sizes: "192x192",
+            type: "image/png"
+          },
+          {
+            src: "icon-512.png",
+            sizes: "512x512",
+            type: "image/png"
+          }
+        ]
+      },
+      workbox: {
+        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,woff2}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/.*$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "notion-images",
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+              }
+            }
+          }
+        ]
+      }
     }),
   ],
   markdown: {
