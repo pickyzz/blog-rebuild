@@ -5,7 +5,8 @@ import Footer from "@/components/Footer.astro";
 import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import Waline from "@/components/Waline.astro";
-import { type CollectionEntry, render } from "astro:content";
+import { getNotionPageContent } from "@/utils/notionContent";
+import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@/utils/slugify";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
@@ -22,6 +23,11 @@ export interface Props {
 
 const { post, posts } = Astro.props;
 
+// Safety check for post data
+if (!post || !post.data) {
+  return Astro.redirect('/404');
+}
+
 const {
   title,
   author,
@@ -33,7 +39,25 @@ const {
   readingTime,
 } = post.data;
 
-const { Content, headings } = await render(post);
+let Content: any = null;
+let headings: any[] = [];
+let notionContent: string = "";
+
+try {
+  // Fetch content from Notion using the page ID
+  notionContent = await getNotionPageContent(post.id);
+
+  // Create a simple content component that renders the HTML
+  Content = () => null; // We'll render the HTML directly instead
+  headings = []; // For now, we'll skip TOC generation from Notion content
+} catch (error) {
+  console.warn('Failed to fetch Notion content:', error);
+  notionContent = `<div class="error-message">
+    <p>Unable to load content from Notion.</p>
+    <p>Please try again later.</p>
+  </div>`;
+}
+
 const toc = generateToc(headings);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
@@ -98,7 +122,9 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
         alt={title ? `Cover image for ${title}` : "Blog post cover image"}
         loading="eager"
       />
-      <Content />
+
+      <!-- Render Notion content as HTML -->
+      <div class="notion-content prose prose-lg mx-auto max-w-4xl" set:html={notionContent}></div>
     </article>
 
     <ul class="my-8 flex flex-row items-center justify-center md:justify-end">

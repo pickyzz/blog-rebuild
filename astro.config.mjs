@@ -12,7 +12,7 @@ import pwa from "@vite-pwa/astro";
 export default defineConfig({
   site: SITE.website,
   output: "server",
-  adapter: cloudflare(),
+  adapter: process.env.NODE_ENV === "production" ? cloudflare() : undefined,
   trailingSlash: "never",
   image: {
     service: {

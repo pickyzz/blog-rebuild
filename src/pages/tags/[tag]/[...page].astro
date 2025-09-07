@@ -1,7 +1,4 @@
 ---
-import { getCollection } from "astro:content";
-import getUniqueTags from "@/utils/getUniqueTags";
-import getPostsByTag from "@/utils/getPostsByTag";
 import type { GetStaticPathsOptions } from "astro";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -10,12 +7,15 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 import { SITE } from "@/config";
+import { getNotionPosts, getNotionUniqueTags } from "@/utils/getNotionPosts";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const posts = await getCollection("blog");
-  const tags = getUniqueTags(posts);
+  const posts = await getNotionPosts();
+  const tags = await getNotionUniqueTags();
   return tags.flatMap(({ tag, tagName }) => {
-    const tagPosts = getPostsByTag(posts, tag);
+    const tagPosts = posts.filter(post => post.data.tags.some(postTag =>
+      postTag.toLowerCase().replace(/\s+/g, '-') === tag
+    ));
     return paginate(tagPosts, {
       params: { tag },
       props: { tagName },
@@ -41,7 +41,7 @@ const { page, tagName } = Astro.props;
     >
       {
         page.data.map(({ data, id }) => (
-          <Card href={`/blog/${id}`} frontmatter={data} />
+          <Card href={`/blog/${data.slug}`} frontmatter={data} />
         ))
       }
     </ul>

@@ -153,3 +153,42 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
     return [];
   }
 }
+
+export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry<"blog"> | null> {
+  try {
+    const posts = await getNotionPosts();
+    return posts.find(post => post.data.slug === slug) || null;
+  } catch (error) {
+    console.error("Error fetching post by slug:", error);
+    return null;
+  }
+}
+
+export async function getNotionPostsByTag(tag: string): Promise<CollectionEntry<"blog">[]> {
+  try {
+    const posts = await getNotionPosts();
+    return posts.filter(post => post.data.tags.includes(tag));
+  } catch (error) {
+    console.error("Error fetching posts by tag:", error);
+    return [];
+  }
+}
+
+export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: string }[]> {
+  try {
+    const posts = await getNotionPosts();
+    const tagSet = new Set<string>();
+
+    posts.forEach(post => {
+      post.data.tags.forEach(tag => tagSet.add(tag));
+    });
+
+    return Array.from(tagSet).map(tag => ({
+      tag: tag.toLowerCase().replace(/\s+/g, '-'),
+      tagName: tag
+    }));
+  } catch (error) {
+    console.error("Error fetching unique tags:", error);
+    return [];
+  }
+}

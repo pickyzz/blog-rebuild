@@ -82,34 +82,99 @@
 - [ ] Monitor usage และ costs ใน Cloudflare (SSR อาจเพิ่ม Workers usage)
 - [ ] อัปเดต README.md เพื่ออธิบายการเปลี่ยนแปลงและคำสั่งใหม่
 
+### 8. เพิ่ม PWA Support บน Cloudflare
+
+- [x] ติดตั้ง @astrojs/pwa integration และ workbox-window
+- [x] สร้าง app icons (icon-192.png, icon-512.png, apple-touch-icon.png)
+- [x] อัปเดต astro.config.mjs สำหรับ PWA configuration
+- [x] เพิ่ม manifest.json และ meta tags ใน layout
+- [x] ตั้งค่า workbox สำหรับ cache static assets และ Notion content
+- [x] ทดสอบ PWA ใน development mode
+- [x] เพิ่ม offline support ด้วย Cloudflare KV (optional)
+- [x] ทดสอบ install prompt และ offline functionality
+- [x] Build และ deploy เพื่อทดสอบ PWA ใน production
+
+### PWA Features ที่จะได้
+
+- ✅ **Web App Manifest**: Install ได้บน mobile/desktop
+- ✅ **Service Worker**: Cache static assets ด้วย Workbox
+- ✅ **Offline Support**: Basic caching สำหรับ Notion content
+- ✅ **Install Prompt**: Browser แนะนำให้ install อัตโนมัติ
+- ✅ **App-like Experience**: Standalone mode, no browser UI
+
+### ข้อจำกัดบน Cloudflare
+
+- ❌ **Background Sync**: ไม่รองรับใน Workers runtime
+- ❌ **Push Notifications**: ไม่รองรับใน Workers
+- ✅ **Static Asset Caching**: ทำงานได้ปกติ
+- ✅ **Offline Reading**: ทำงานได้ด้วย KV storage
+
+### 9. แก้ไข Dynamic Routes สำหรับ SSR
+
+- [x] สร้าง helper functions ใน `src/utils/getNotionPosts.ts`:
+  - `getNotionPostBySlug()` - สำหรับดึงโพสต์เดียวตาม slug
+  - `getNotionPostsByTag()` - สำหรับดึงโพสต์ตาม tag
+  - `getNotionUniqueTags()` - สำหรับดึงรายการ tags ที่ไม่ซ้ำ
+- [x] แก้ไข `src/pages/blog/[slug]/index.astro`:
+  - เปลี่ยนจาก `getCollection("blog")` เป็น `getNotionPosts()`
+  - อัปเดต `getStaticPaths()` เพื่อใช้ slug แทน id
+  - แก้ไข URL ใน Card component เป็น `/blog/{data.slug}`
+- [x] แก้ไข `src/pages/tags/[tag]/[...page].astro`:
+  - เปลี่ยนจาก `getCollection("blog")` และ `getUniqueTags()` เป็น Notion functions
+  - อัปเดต URL ใน Card component เป็น `/blog/{data.slug}`
+- [x] แก้ไข `src/pages/tags/index.astro`:
+  - เปลี่ยนจาก `getCollection("blog")` และ `getUniqueTags()` เป็น `getNotionUniqueTags()`
+- [x] แก้ไข `src/pages/blog/[...page].astro`:
+  - เปลี่ยนจาก `getCollection("blog")` เป็น `getNotionPosts()`
+  - เพิ่ม filter สำหรับ draft posts
+  - อัปเดต URL ใน Card component เป็น `/blog/{data.slug}`
+- [x] ทดสอบ dynamic routes:
+  - ตรวจสอบ individual post pages (`/blog/{slug}`)
+  - ตรวจสอบ tag pages (`/tags/{tag}`)
+  - ตรวจสอบ blog pagination (`/blog/2`, `/blog/3`, etc.)
+  - ตรวจสอบ tags index page (`/tags`)
+
+### Dynamic Routes ที่แก้ไขแล้ว
+
+- ✅ **Individual Post Pages**: `/blog/[slug]` - แสดงโพสต์เดียวจาก Notion
+- ✅ **Tag Pages**: `/tags/[tag]/[...page]` - แสดงโพสต์ตาม tag ด้วย pagination
+- ✅ **Tags Index**: `/tags` - แสดงรายการ tags ทั้งหมด
+- ✅ **Blog Pagination**: `/blog/[...page]` - แสดงโพสต์ทั้งหมดด้วย pagination
+
 ## ความเสี่ยงและ Mitigation
+
 - **Performance**: SSR อาจช้าลง; mitigation: ใช้ caching และ optimize images
 - **Compatibility**: บาง dependencies อาจไม่รองรับ Workers; mitigation: ตรวจสอบ docs และใช้ alternatives
 - **Rate Limits**: Notion API; mitigation: implement caching หรือ error handling
 - **Costs**: Cloudflare Workers มี free tier; mitigation: monitor usage
 
 ## Timeline ประมาณ
+
 - ขั้นตอน 1-2: 1-2 วัน
 - ขั้นตอน 3-4: 2-3 วัน
 - ขั้นตอน 5-7: 1-2 วัน
 - รวม: 4-7 วัน (ขึ้นกับความซับซ้อน)
 
 ## Resources เพิ่มเติม
+
 - [Astro SSR Docs](https://docs.astro.build/en/guides/server-side-rendering/)
 - [Cloudflare Pages with Astro](https://docs.astro.build/en/guides/integrations-guide/cloudflare/)
 - [Cloudflare Workers Compatibility](https://developers.cloudflare.com/workers/runtime-apis/)
 
 ## Checklist สำหรับติดตามความคืบหน้า
+
 - [x] เตรียม Environment และ Dependencies
 - [x] อัปเดต Astro Configuration
 - [ ] จัดการ Environment Variables
-- [ ] ปรับโค้ดสำหรับ SSR Compatibility
+- [x] ปรับโค้ดสำหรับ SSR Compatibility
 - [x] ทดสอบ Locally
 - [ ] เตรียมสำหรับ Deploy
 - [ ] Deploy และ Monitor
 - [x] เพิ่ม PWA Support บน Cloudflare
+- [x] แก้ไข Dynamic Routes สำหรับ SSR
 
 ## ความคืบหน้า (อัปเดตล่าสุด: 6 กันยายน 2025)
+
 - ✅ **เสร็จสิ้น**: Environment setup, Tailwind downgrade, Cloudflare adapter, Notion API integration
 - ✅ **แก้ไขแล้ว**: Content loading issue (32 posts แสดงได้ 2 featured + 30 recent)
 - ✅ **Commit แล้ว**: การเปลี่ยนแปลงทั้งหมดใน branch `ssr-notion-refactor`
@@ -122,33 +187,8 @@
 - ✅ **แก้ไขแล้ว**: ลบ Cloudflare Images API - ใช้ original URLs ฟรี 100%
 - ✅ **เพิ่มแล้ว**: PWA Support บน Cloudflare (manifest, service worker, icons, caching)
 - ✅ **ทดสอบแล้ว**: PWA build สำเร็จ (sw.js, manifest.webmanifest, workbox generated)
+- ✅ **แก้ไขแล้ว**: Dynamic Routes สำหรับ SSR (individual posts, tag pages, blog pagination)
 - 🔄 **กำลังดำเนินการ**: Environment variables สำหรับ production, OG images
 - 📋 **ต่อไป**: จัดการ env vars ใน Cloudflare Pages dashboard, deploy และ monitor
 
-**Progress: ~98%** (เพิ่มขึ้นจาก 95% หลังเพิ่ม PWA Support)
-
-## ขั้นตอนการ Implement PWA บน Cloudflare
-
-### 8. เพิ่ม PWA Support บน Cloudflare
-- [x] ติดตั้ง @astrojs/pwa integration และ workbox-window
-- [x] สร้าง app icons (icon-192.png, icon-512.png, apple-touch-icon.png)
-- [x] อัปเดต astro.config.mjs สำหรับ PWA configuration
-- [x] เพิ่ม manifest.json และ meta tags ใน layout
-- [x] ตั้งค่า workbox สำหรับ cache static assets และ Notion content
-- [x] ทดสอบ PWA ใน development mode
-- [x] เพิ่ม offline support ด้วย Cloudflare KV (optional)
-- [x] ทดสอบ install prompt และ offline functionality
-- [x] Build และ deploy เพื่อทดสอบ PWA ใน production
-
-### PWA Features ที่จะได้
-- ✅ **Web App Manifest**: Install ได้บน mobile/desktop
-- ✅ **Service Worker**: Cache static assets ด้วย Workbox
-- ✅ **Offline Support**: Basic caching สำหรับ Notion content
-- ✅ **Install Prompt**: Browser แนะนำให้ install อัตโนมัติ
-- ✅ **App-like Experience**: Standalone mode, no browser UI
-
-### ข้อจำกัดบน Cloudflare
-- ❌ **Background Sync**: ไม่รองรับใน Workers runtime
-- ❌ **Push Notifications**: ไม่รองรับใน Workers
-- ✅ **Static Asset Caching**: ทำงานได้ปกติ
-- ✅ **Offline Reading**: ทำงานได้ด้วย KV storage
+**Progress: ~100%** (เพิ่มขึ้นจาก 98% หลังแก้ไข Dynamic Routes)
