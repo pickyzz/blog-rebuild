@@ -49,6 +49,20 @@ function reflectPreference() {
     // Add aria-live for accessibility
     themeBtn.setAttribute("aria-live", "polite");
   }
+
+  // Toggle icons based on theme
+  const moonIcon = document.querySelector("#moon-icon");
+  const sunIcon = document.querySelector("#sun-icon");
+  if (moonIcon && sunIcon) {
+    if (themeValue === "light") {
+      moonIcon.style.opacity = "1";
+      sunIcon.style.opacity = "0";
+    } else {
+      moonIcon.style.opacity = "0";
+      sunIcon.style.opacity = "1";
+    }
+  }
+
   const body = document.body;
   if (body) {
     body.setAttribute("data-theme", themeValue);

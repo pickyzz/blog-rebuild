@@ -3,7 +3,7 @@ import IconX from "@/assets/icons/IconX.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
-import IconSunHigh from "@/assets/icons/IconSunHigh.svg";
+import IconSun from "@/assets/icons/IconSun.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
@@ -96,7 +96,7 @@ const isActive = (path: string) => {
                   ariaLabel="archives"
                   title="Archives"
                 >
-                  <IconArchive class="hidden sm:inline-block" />
+                  <IconArchive class="hidden sm:inline-block w-6 h-6" />
                   <span class="sm:sr-only">Archives</span>
                 </LinkButton>
               </li>
@@ -106,13 +106,13 @@ const isActive = (path: string) => {
             <LinkButton
               href="/search"
               class:list={[
-                "focus-outline flex p-3 sm:p-1",
+                "focus-outline flex justify-center p-3 sm:p-1",
                 { "[&>svg]:stroke-accent": isActive("/search") },
               ]}
               ariaLabel="search"
               title="Search"
             >
-              <IconSearch />
+              <IconSearch class="w-6 h-6" />
               <span class="sr-only">Search</span>
             </LinkButton>
           </li>
@@ -126,8 +126,10 @@ const isActive = (path: string) => {
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <IconMoon class="transition-all dark:hidden" />
-                  <IconSunHigh class="hidden transition-all dark:block" />
+                  <div class="relative w-6 h-6">
+                    <IconMoon id="moon-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
+                    <IconSun id="sun-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
+                  </div>
                 </button>
               </li>
             )
