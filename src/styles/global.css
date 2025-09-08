@@ -44,7 +44,7 @@ html[data-theme="dark"] {
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -101,12 +101,16 @@ html[data-theme="dark"] {
   font-size: 2em;
   border-bottom: 2px solid var(--border);
   padding-bottom: 0.3em;
+  display: inline-block;
+  width: fit-content;
 }
 
 .notion-content h2 {
   font-size: 1.5em;
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.2em;
+  display: inline-block;
+  width: fit-content;
 }
 
 .notion-content h3 {
@@ -208,11 +212,10 @@ html[data-theme="dark"] {
 
 .notion-content .notion-quote {
   border-left: 4px solid var(--accent);
-  padding-left: 1em;
-  margin: 1.5em 0;
+  margin: 0.75em 0;
   font-style: italic;
   background-color: var(--muted);
-  padding: 1em;
+  padding: 0.25em 0.5em 0.25em 0.75em;
   border-radius: 4px;
 }
 
@@ -277,4 +280,186 @@ html[data-theme="dark"] {
 
 .toc-link.active span {
   @apply text-accent;
+}
+
+/* Notion Code Block Enhancements */
+.notion-code-block {
+  margin: 1.5em 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75em 1em;
+  background: linear-gradient(135deg, var(--muted) 0%, rgba(0, 0, 0, 0.02) 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.language-label {
+  font-size: 0.875em;
+  font-weight: 600;
+  color: var(--foreground);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.copy-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.375em 0.875em;
+  border-radius: 6px;
+  font-size: 0.75em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+}
+
+.copy-button:hover {
+  background: var(--accent);
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+}
+
+.copy-button.copied {
+  background: #10b981 !important;
+}
+
+.copy-button.copied::after {
+  content: " ✓";
+}
+
+.code-content {
+  position: relative;
+  background: var(--muted);
+}
+
+.code-content pre {
+  margin: 0;
+  padding: 1.25em;
+  background: transparent;
+  overflow-x: auto;
+  font-size: 0.875em;
+  line-height: 1.6;
+}
+
+.code-content code {
+  background: transparent;
+  padding: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Shiki theme overrides */
+.shiki {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.shiki code {
+  background: transparent !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Scrollbar styling for code blocks */
+.code-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.code-content pre::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.code-content pre::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.code-content pre::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .code-header {
+    padding: 0.5em 0.75em;
+  }
+
+  .language-label {
+    font-size: 0.75em;
+  }
+
+  .copy-button {
+    padding: 0.25em 0.625em;
+    font-size: 0.7em;
+  }
+
+  .code-content pre {
+    padding: 1em;
+    font-size: 0.8em;
+  }
+}
+
+/* Focus states for accessibility */
+.copy-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.copy-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Dark mode adjustments */
+html[data-theme="dark"] .notion-code-block {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+html[data-theme="dark"] .code-header {
+  background: linear-gradient(135deg, #2a2d3a 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .code-content {
+  background: #1a1a1a;
+}
+
+html[data-theme="dark"] .code-content pre::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+html[data-theme="dark"] .code-content pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+html[data-theme="dark"] .code-content pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+html[data-theme="dark"] .copy-button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }

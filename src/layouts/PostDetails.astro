@@ -261,51 +261,94 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
-  function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+  /** Copy function for Notion code blocks */
+  function copyCodeBlock(button) {
+    const codeBlock = button.closest('.notion-code-block');
+    const codeElement = codeBlock.querySelector('.shiki code') || codeBlock.querySelector('code');
+    const text = codeElement?.textContent || '';
 
-    for (const codeBlock of codeBlocks) {
-      // Prevent duplicate copy buttons
-      if (codeBlock.querySelector(".copy-code")) continue;
-
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
-
-      const copyButton = document.createElement("button");
-      copyButton.className =
-        "copy-code absolute right-3 top-3 rounded bg-accent/80 hover:bg-accent px-2 py-1 text-xs leading-4 text-white font-semibold transition duration-200";
-      copyButton.innerHTML = copyButtonLabel;
-      copyButton.setAttribute("aria-label", "Copy code to clipboard");
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
-
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
-
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
+    if (!text.trim()) {
+      console.warn('No code content found to copy');
+      return;
     }
 
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      // visual feedback that task is completed
-      button.innerText = "Copied";
+    navigator.clipboard.writeText(text).then(() => {
+      const originalText = button.textContent;
+      button.textContent = 'Copied!';
+      button.classList.add('copied');
+      button.disabled = true;
 
       setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
-    }
+        button.textContent = originalText;
+        button.classList.remove('copied');
+        button.disabled = false;
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy code:', err);
+      button.textContent = 'Error';
+      setTimeout(() => {
+        button.textContent = 'Copy';
+      }, 2000);
+    });
   }
-  attachCopyButtons();
+
+  // Make function globally available
+  window.copyCodeBlock = copyCodeBlock;
+
+  /** Theme detection and code block re-rendering */
+  function initThemeAwareCodeBlocks() {
+    const codeBlocks = document.querySelectorAll('.notion-code-block');
+
+    codeBlocks.forEach(block => {
+      const language = block.dataset.language;
+      if (!language) return;
+
+      // Re-render code block with current theme
+      updateCodeBlockTheme(block, language);
+    });
+  }
+
+  function updateCodeBlockTheme(block, language) {
+    // This function would re-render the code block with the current theme
+    // For now, we'll just update the visual appearance
+    const isDark = document.documentElement.classList.contains('dark') ||
+                   document.documentElement.getAttribute('data-theme') === 'dark';
+
+    block.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  }
+
+  // Listen for theme changes
+  const themeObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        // Theme changed, update code blocks
+        setTimeout(() => {
+          initThemeAwareCodeBlocks();
+        }, 100);
+      }
+    });
+  });
+
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class', 'data-theme']
+  });
+
+  // Initialize theme-aware code blocks on load
+  document.addEventListener('DOMContentLoaded', () => {
+    initThemeAwareCodeBlocks();
+  });
+
+  // Re-initialize after Astro page transitions
+  document.addEventListener('astro:after-swap', () => {
+    setTimeout(() => {
+      initThemeAwareCodeBlocks();
+    }, 100);
+  });
+
 
   /** Scrolls the document to the top when
+
    * the "Back to Top" button is clicked. */
   function backToTop() {
     document.querySelector("#back-to-top")?.addEventListener("click", () => {
@@ -323,40 +366,61 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
   /** TOC Scroll Spy - Highlight active section */
   function initTOCScrollSpy() {
     const tocLinks = document.querySelectorAll('.toc-link');
-    const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+    // Query headings specifically within the notion-content
+    const headings = document.querySelectorAll('.notion-content h1[id], .notion-content h2[id], .notion-content h3[id], .notion-content h4[id], .notion-content h5[id], .notion-content h6[id]');
 
-    if (tocLinks.length === 0 || headings.length === 0) return;
+    console.log('TOC Scroll Spy initialized:', { tocLinks: tocLinks.length, headings: headings.length });
 
-    function updateActiveTOC() {
-      const scrollPosition = window.scrollY + window.innerHeight / 2; // Center of viewport
-      let currentSection = null;
+    if (tocLinks.length === 0 || headings.length === 0) {
+      console.warn('TOC Scroll Spy: No TOC links or headings found');
+      return;
+    }
 
-      // Find the section that's currently in the center of viewport
-      for (const heading of headings) {
+    let currentActiveLink = null;
+
+    // Function to find the heading closest to viewport center
+    function findClosestHeading() {
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
+      let closestHeading = null;
+      let minDistance = Infinity;
+
+      headings.forEach(heading => {
         const rect = heading.getBoundingClientRect();
-        const elementTop = window.scrollY + rect.top;
+        const headingCenter = window.scrollY + rect.top + rect.height / 2;
+        const distance = Math.abs(viewportCenter - headingCenter);
 
-        if (elementTop <= scrollPosition) {
-          currentSection = heading;
-        } else {
-          break; // Headings are in order, so we can break early
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestHeading = heading;
         }
-      }
+      });
 
-      // Remove active class from all TOC links
-      tocLinks.forEach(link => link.classList.remove('active'));
+      return closestHeading;
+    }
 
-      // Add active class to current section's TOC link
-      if (currentSection) {
-        const currentSlug = currentSection.id;
-        const activeLink = document.querySelector(`.toc-link[data-slug="${currentSlug}"]`);
-        if (activeLink) {
+    // Function to update active TOC link
+    function updateActiveTOC() {
+      const closestHeading = findClosestHeading();
+
+      if (closestHeading) {
+        const slug = closestHeading.id;
+        const activeLink = document.querySelector(`.toc-link[data-slug="${slug}"]`);
+
+        if (activeLink && activeLink !== currentActiveLink) {
+          // Remove active class from current active link
+          if (currentActiveLink) {
+            currentActiveLink.classList.remove('active');
+          }
+
+          // Add active class to new active link
           activeLink.classList.add('active');
+          currentActiveLink = activeLink;
+          console.log('Activated TOC link:', slug);
         }
       }
     }
 
-    // Update on scroll with throttling
+    // Throttled update function
     let scrollTimeout;
     function throttledUpdate() {
       if (!scrollTimeout) {
@@ -367,15 +431,18 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
       }
     }
 
-    // Initial update
-    updateActiveTOC();
-
     // Listen for scroll events
     window.addEventListener('scroll', throttledUpdate, { passive: true });
 
     // Update on page load and resize
     window.addEventListener('load', updateActiveTOC);
     window.addEventListener('resize', updateActiveTOC);
+
+    // Initial activation
+    setTimeout(() => {
+      updateActiveTOC();
+      console.log('Initial TOC activation completed');
+    }, 500);
   }
 
   initTOCScrollSpy();

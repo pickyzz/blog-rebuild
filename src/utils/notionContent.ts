@@ -6,7 +6,26 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypeRaw from 'rehype-raw';
+import { getHighlighter, type Highlighter } from 'shiki';
 
+// Shiki highlighter instance
+let highlighter: Highlighter | null = null;
+
+// Initialize Shiki highlighter
+async function initHighlighter(): Promise<Highlighter> {
+  if (!highlighter) {
+    highlighter = await getHighlighter({
+      themes: ['catppuccin-latte', 'dark-plus'],
+      langs: [
+        'javascript', 'typescript', 'css', 'html', 'json', 'bash',
+        'python', 'java', 'cpp', 'c', 'go', 'rust', 'php', 'ruby',
+        'swift', 'kotlin', 'dart', 'scala', 'sql', 'yaml', 'xml',
+        'markdown', 'dockerfile', 'shell'
+      ]
+    });
+  }
+  return highlighter;
+}
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
 if (!NOTION_KEY) {
@@ -145,11 +164,56 @@ n2m.setCustomTransformer("code", async (block: any) => {
   const content = code?.rich_text?.[0]?.plain_text || "";
   const caption = code?.caption?.[0]?.plain_text || "";
 
-  return `<div class="notion-code-block">
-  <pre><code class="language-${language}">${content}</code></pre>
+  try {
+    const hl = await initHighlighter();
+
+    // Escape HTML entities in content
+    const escapedContent = content
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    // Detect theme (this will be handled on client-side)
+    const theme = 'light'; // Default to light, will be updated by client-side script
+
+    // Generate highlighted HTML
+    const highlightedCode = hl.codeToHtml(escapedContent, language, theme);
+
+    return `<div class="notion-code-block" data-language="${language}">
+  <div class="code-header">
+    <span class="language-label">${language}</span>
+    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
+  </div>
+  <div class="code-content">
+    ${highlightedCode}
+  </div>
   ${caption ? `<figcaption>${caption}</figcaption>` : ''}
 </div>`;
+  } catch (error) {
+    console.warn('Syntax highlighting failed:', error);
+    // Fallback to plain text with basic styling
+    const escapedContent = content
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    return `<div class="notion-code-block" data-language="${language}">
+  <div class="code-header">
+    <span class="language-label">${language}</span>
+    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
+  </div>
+  <div class="code-content">
+    <pre><code class="language-${language}">${escapedContent}</code></pre>
+  </div>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+</div>`;
+  }
 });
+
 
 n2m.setCustomTransformer("quote", async (block: any) => {
   const { quote } = block;
