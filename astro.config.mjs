@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, passthroughImageService } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import cloudflare from "@astrojs/cloudflare";
 import { SITE } from "./src/config";
@@ -15,9 +15,7 @@ export default defineConfig({
   adapter: process.env.NODE_ENV === "production" ? cloudflare() : undefined,
   trailingSlash: "never",
   image: {
-    service: {
-      entrypoint: "astro/assets/services/passthrough",
-    },
+    service: passthroughImageService(),
   },
   integrations: [
     tailwind(),
