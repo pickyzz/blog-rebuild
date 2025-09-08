@@ -179,7 +179,100 @@ const structuredData = {
 
     <!-- TOC Script -->
     <script is:inline>
+      // TOC Highlight and Click Handling
+      let debounceTimer = null;
+      let rafId = null;
+
+      // Debounce function to prevent rapid firing
+      function debounce(func, wait) {
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(debounceTimer);
+            func(...args);
+          };
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(later, wait);
+        };
+      }
+
+      // Function to update active TOC link
+      const updateActiveTocLink = debounce(() => {
+        const headings = Array.from(document.querySelectorAll('.notion-content h1[id], .notion-content h2[id], .notion-content h3[id], .notion-content h4[id], .notion-content h5[id], .notion-content h6[id]'));
+
+        console.log('=== TOC Debug: Update Active Link ===');
+        console.log('Total headings found:', headings.length);
+        console.log('Viewport height:', window.innerHeight);
+        console.log('Scroll position:', window.scrollY);
+
+        // Find the heading at the top of the viewport
+        let topHeading = null;
+        let minTop = Infinity;
+
+        console.log('--- Phase 1: Finding headings in viewport (rect.top >= 0) ---');
+        headings.forEach((heading, index) => {
+          const rect = heading.getBoundingClientRect();
+          console.log(`Heading ${index}: ${heading.tagName} id="${heading.id}" rect.top=${rect.top.toFixed(2)} rect.bottom=${rect.bottom.toFixed(2)}`);
+          if (rect.top >= 0 && rect.top < minTop) {
+            minTop = rect.top;
+            topHeading = heading;
+            console.log(`  -> Selected as topHeading (in viewport): ${heading.id}`);
+          }
+        });
+
+        // If no heading is at or below the top, find the closest one above
+        if (!topHeading) {
+          console.log('--- Phase 2: No heading in viewport, finding closest above ---');
+          minTop = Infinity;
+          headings.forEach((heading, index) => {
+            const rect = heading.getBoundingClientRect();
+            console.log(`Heading ${index}: ${heading.tagName} id="${heading.id}" rect.top=${rect.top.toFixed(2)} (abs: ${Math.abs(rect.top).toFixed(2)})`);
+            if (rect.top < 0 && Math.abs(rect.top) < Math.abs(minTop)) {
+              minTop = rect.top;
+              topHeading = heading;
+              console.log(`  -> Selected as topHeading (above viewport): ${heading.id}`);
+            }
+          });
+        }
+
+        console.log('Final selection:', topHeading ? `id="${topHeading.id}" rect.top=${topHeading.getBoundingClientRect().top.toFixed(2)}` : 'None');
+
+        if (topHeading) {
+          const id = topHeading.id;
+          const tocLink = document.querySelector(`a[href="#${id}"]`);
+          console.log('TOC link found:', tocLink ? 'Yes' : 'No');
+          if (tocLink && !tocLink.classList.contains('active')) {
+            console.log('Updating active TOC link to:', id);
+            // Remove active from all links
+            const activeLinks = document.querySelectorAll('.toc-link.active');
+            activeLinks.forEach(link => {
+              link.classList.remove('active');
+            });
+            // Add active to current link
+            tocLink.classList.add('active');
+          } else {
+            console.log('TOC link already active or not found');
+          }
+        }
+        console.log('=== End TOC Debug ===\n');
+      }, 100); // 100ms debounce
+
+      // Function to handle scroll with requestAnimationFrame
+      function handleScroll() {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        rafId = requestAnimationFrame(updateActiveTocLink);
+      }
+
       document.addEventListener("astro:page-load", function () {
+        // Cleanup previous timer and raf
+        if (debounceTimer) {
+          clearTimeout(debounceTimer);
+        }
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+
         // Find all the links inside the TOC
         const tocLinks = document.querySelectorAll('a[href^="#"]');
 
@@ -193,12 +286,28 @@ const structuredData = {
             const targetElement = document.getElementById(targetId);
 
             // Scroll the target element into view, with the target in the center
-            targetElement.scrollIntoView({
-              behavior: "smooth",
-              block: "center", // This ensures the target is in the center of the screen
-            });
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center", // This ensures the target is in the center of the screen
+              });
+            }
           });
         });
+
+        // Listen to scroll events with requestAnimationFrame
+        window.addEventListener('scroll', handleScroll, { passive: true });
+      });
+
+      // Cleanup on page change
+      document.addEventListener("astro:before-swap", function () {
+        if (debounceTimer) {
+          clearTimeout(debounceTimer);
+        }
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        window.removeEventListener('scroll', handleScroll);
       });
     </script>
   </body>

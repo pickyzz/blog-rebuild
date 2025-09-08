@@ -15,7 +15,7 @@ let highlighter: Highlighter | null = null;
 async function initHighlighter(): Promise<Highlighter> {
   if (!highlighter) {
     highlighter = await getHighlighter({
-      themes: ['catppuccin-latte', 'dark-plus'],
+      themes: ['github-light', 'dark-plus'],
       langs: [
         'javascript', 'typescript', 'css', 'html', 'json', 'bash',
         'python', 'java', 'cpp', 'c', 'go', 'rust', 'php', 'ruby',

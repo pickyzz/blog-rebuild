@@ -363,7 +363,8 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
 
-  /** TOC Scroll Spy - Highlight active section */
+  /** TOC Scroll Spy - Highlight active section - DISABLED to avoid conflict with Layout.astro */
+  /*
   function initTOCScrollSpy() {
     const tocLinks = document.querySelectorAll('.toc-link');
     // Query headings specifically within the notion-content
@@ -444,6 +445,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
       console.log('Initial TOC activation completed');
     }, 500);
   }
+  */
 
-  initTOCScrollSpy();
+  // initTOCScrollSpy(); // Disabled to avoid conflict
 </script>

@@ -96,7 +96,7 @@ export default defineConfig({
     ],
     shikiConfig: {
       // theme: "catppuccin-macchiato",
-      themes: { light: "catppuccin-latte", dark: "dark-plus" },
+      themes: { light: "github-light", dark: "dark-plus" },
       wrap: true,
     },
     extendDefaultPlugins: true,
