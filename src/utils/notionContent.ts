@@ -17,6 +17,33 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
+// Cache configuration
+const CACHE_TTL = 10 * 60 * 1000; // 10 minutes for content (longer than posts)
+const contentCache = new Map<string, { data: string, timestamp: number }>();
+const blocksCache = new Map<string, { data: any[], timestamp: number }>();
+
+// Helper function to check if cache is valid
+function isCacheValid(timestamp: number): boolean {
+  return Date.now() - timestamp < CACHE_TTL;
+}
+
+// Helper function to get cached data or null if expired
+function getCachedData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string): T | null {
+  const cached = cache.get(key);
+  if (cached && isCacheValid(cached.timestamp)) {
+    return cached.data;
+  }
+  if (cached) {
+    cache.delete(key); // Remove expired cache
+  }
+  return null;
+}
+
+// Helper function to set cache data
+function setCacheData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string, data: T): void {
+  cache.set(key, { data, timestamp: Date.now() });
+}
+
 // Initialize Notion to Markdown converter
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
@@ -117,6 +144,13 @@ n2m.setCustomTransformer("callout", async (block: any) => {
 });
 
 export async function getNotionPageContent(pageId: string): Promise<string> {
+  // Check cache first
+  const cacheKey = `content_${pageId}`;
+  const cachedContent = getCachedData(contentCache, cacheKey);
+  if (cachedContent) {
+    return cachedContent;
+  }
+
   try {
     // Fetch page blocks from Notion
     const mdblocks = await n2m.pageToMarkdown(pageId);
@@ -125,7 +159,9 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
     const { parent: mdString } = n2m.toMarkdownString(mdblocks);
 
     if (!mdString) {
-      return "<p>No content available</p>";
+      const noContent = "<p>No content available</p>";
+      setCacheData(contentCache, cacheKey, noContent);
+      return noContent;
     }
 
     // Convert markdown to HTML
@@ -137,24 +173,43 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
       .use(rehypeStringify)
       .process(mdString);
 
-    return String(htmlContent);
+    const result = String(htmlContent);
+
+    // Cache the result
+    setCacheData(contentCache, cacheKey, result);
+    return result;
   } catch (error) {
     console.error("Error fetching Notion page content:", error);
-    return `<div class="error-message">
+    const errorContent = `<div class="error-message">
       <p>Unable to load content from Notion.</p>
       <p>Error: ${error instanceof Error ? error.message : 'Unknown error'}</p>
     </div>`;
+    // Cache error content for a shorter time to allow retries
+    setCacheData(contentCache, cacheKey, errorContent);
+    return errorContent;
   }
 }
 
 export async function getNotionPageBlocks(pageId: string) {
+  // Check cache first
+  const cacheKey = `blocks_${pageId}`;
+  const cachedBlocks = getCachedData(blocksCache, cacheKey);
+  if (cachedBlocks) {
+    return cachedBlocks;
+  }
+
   try {
     const response = await notion.blocks.children.list({
       block_id: pageId,
     });
+
+    // Cache the result
+    setCacheData(blocksCache, cacheKey, response.results);
     return response.results;
   } catch (error) {
     console.error("Error fetching Notion page blocks:", error);
+    // Cache empty array for errors to avoid repeated failed requests
+    setCacheData(blocksCache, cacheKey, []);
     return [];
   }
 }

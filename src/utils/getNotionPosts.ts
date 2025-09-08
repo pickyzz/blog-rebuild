@@ -12,6 +12,33 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
+// Cache configuration
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
+const postsCache = new Map<string, { data: CollectionEntry<"blog">[], timestamp: number }>();
+const tagsCache = new Map<string, { data: { tag: string; tagName: string }[], timestamp: number }>();
+
+// Helper function to check if cache is valid
+function isCacheValid(timestamp: number): boolean {
+  return Date.now() - timestamp < CACHE_TTL;
+}
+
+// Helper function to get cached data or null if expired
+function getCachedData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string): T | null {
+  const cached = cache.get(key);
+  if (cached && isCacheValid(cached.timestamp)) {
+    return cached.data;
+  }
+  if (cached) {
+    cache.delete(key); // Remove expired cache
+  }
+  return null;
+}
+
+// Helper function to set cache data
+function setCacheData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string, data: T): void {
+  cache.set(key, { data, timestamp: Date.now() });
+}
+
 export interface NotionPost {
   id: string;
   title: string;
@@ -28,6 +55,13 @@ export interface NotionPost {
 }
 
 export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
+  // Check cache first
+  const cacheKey = 'all_posts';
+  const cachedPosts = getCachedData(postsCache, cacheKey);
+  if (cachedPosts) {
+    return cachedPosts;
+  }
+
   try {
     const response = await notion.databases.query({
       database_id: DATABASE_ID,
@@ -47,14 +81,6 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
 
     const posts: CollectionEntry<"blog">[] = response.results.map((page: any) => {
       const properties = page.properties;
-
-      // Debug: Log all available properties
-      console.log('Available properties:', Object.keys(properties));
-      console.log('Page properties:', Object.keys(properties).map(key => ({ [key]: properties[key]?.type })));
-
-      // Debug: Log page cover and icon
-      console.log('Page cover:', page.cover);
-      console.log('Page icon:', page.icon);
 
       // Extract data from Notion page properties
       const title = properties.title?.title?.[0]?.plain_text || "Untitled";
@@ -84,7 +110,6 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
             height: 630,
             format: 'png' as const
           };
-          console.log(`Found image in property "${propName}":`, imageUrl);
           break;
         }
       }
@@ -99,14 +124,12 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
         }
 
         if (coverUrl) {
-          // ใช้ original URL จาก Notion (ฟรี ไม่มีค่าใช้จ่าย)
           ogImage = {
             src: coverUrl,
             width: 1200,
             height: 630,
             format: 'png' as const
           };
-          console.log(`Found cover image:`, coverUrl);
         }
       }
 
@@ -119,10 +142,7 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
           height: 400,
           format: 'png' as const
         };
-        console.log(`Found icon image:`, iconUrl);
       }
-
-      console.log(`Post "${title}": ogImage =`, ogImage?.src || 'No ogImage');
 
       return {
         id: page.id,
@@ -147,6 +167,8 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       };
     });
 
+    // Cache the result
+    setCacheData(postsCache, cacheKey, posts);
     return posts;
   } catch (error) {
     console.error("Error fetching posts from Notion:", error);
@@ -177,6 +199,13 @@ export async function getNotionPostsByTag(tagName: string): Promise<CollectionEn
 }
 
 export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: string }[]> {
+  // Check cache first
+  const cacheKey = 'unique_tags';
+  const cachedTags = getCachedData(tagsCache, cacheKey);
+  if (cachedTags) {
+    return cachedTags;
+  }
+
   try {
     const posts = await getNotionPosts();
     const tagSet = new Set<string>();
@@ -185,10 +214,14 @@ export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: str
       post.data.tags.forEach(tag => tagSet.add(tag));
     });
 
-    return Array.from(tagSet).map(tag => ({
+    const tags = Array.from(tagSet).map(tag => ({
       tag: tag.toLowerCase().replace(/\s+/g, '-'),
       tagName: tag
     }));
+
+    // Cache the result
+    setCacheData(tagsCache, cacheKey, tags);
+    return tags;
   } catch (error) {
     console.error("Error fetching unique tags:", error);
     return [];
