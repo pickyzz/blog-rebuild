@@ -269,3 +269,12 @@ html[data-theme="dark"] {
 .badge-md {
   @apply px-2.5 py-1 text-sm;
 }
+
+/* TOC Active State */
+.toc-link.active {
+  @apply text-foreground font-semibold bg-muted rounded px-2 py-1 border-l-2 border-accent;
+}
+
+.toc-link.active span {
+  @apply text-accent;
+}

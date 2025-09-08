@@ -49,13 +49,47 @@ try {
 
   // Create a simple content component that renders the HTML
   Content = () => null; // We'll render the HTML directly instead
-  headings = []; // For now, we'll skip TOC generation from Notion content
+
+  // Extract headings from Notion content for TOC and add id attributes
+  const headingRegex = /<h([1-6])([^>]*)>(.*?)<\/h[1-6]>/gi;
+  const extractedHeadings: any[] = [];
+  let processedContent = notionContent;
+  let match;
+  let headingIndex = 0;
+
+  while ((match = headingRegex.exec(notionContent)) !== null) {
+    const [, level, existingAttrs, content] = match;
+    const depth = parseInt(level);
+    const text = content.replace(/<[^>]*>/g, '').trim(); // Remove HTML tags from text
+
+    if (text && depth >= 2 && depth <= 4) { // Only include h2-h4 for TOC
+      const slug = slugifyStr(text);
+
+      extractedHeadings.push({
+        depth,
+        text,
+        slug
+      });
+
+      // Add id attribute to heading if it doesn't already have one
+      const fullMatch = match[0];
+      if (!existingAttrs.includes('id=')) {
+        const newHeading = `<h${level}${existingAttrs} id="${slug}">${content}</h${level}>`;
+        processedContent = processedContent.replace(fullMatch, newHeading);
+      }
+    }
+    headingIndex++;
+  }
+
+  notionContent = processedContent;
+  headings = extractedHeadings;
 } catch (error) {
   console.warn('Failed to fetch Notion content:', error);
   notionContent = `<div class="error-message">
     <p>Unable to load content from Notion.</p>
     <p>Please try again later.</p>
   </div>`;
+  headings = [];
 }
 
 const toc = generateToc(headings);
@@ -285,4 +319,64 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
+
+  /** TOC Scroll Spy - Highlight active section */
+  function initTOCScrollSpy() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+
+    if (tocLinks.length === 0 || headings.length === 0) return;
+
+    function updateActiveTOC() {
+      const scrollPosition = window.scrollY + window.innerHeight / 2; // Center of viewport
+      let currentSection = null;
+
+      // Find the section that's currently in the center of viewport
+      for (const heading of headings) {
+        const rect = heading.getBoundingClientRect();
+        const elementTop = window.scrollY + rect.top;
+
+        if (elementTop <= scrollPosition) {
+          currentSection = heading;
+        } else {
+          break; // Headings are in order, so we can break early
+        }
+      }
+
+      // Remove active class from all TOC links
+      tocLinks.forEach(link => link.classList.remove('active'));
+
+      // Add active class to current section's TOC link
+      if (currentSection) {
+        const currentSlug = currentSection.id;
+        const activeLink = document.querySelector(`.toc-link[data-slug="${currentSlug}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      }
+    }
+
+    // Update on scroll with throttling
+    let scrollTimeout;
+    function throttledUpdate() {
+      if (!scrollTimeout) {
+        scrollTimeout = setTimeout(() => {
+          updateActiveTOC();
+          scrollTimeout = null;
+        }, 100); // Update every 100ms
+      }
+    }
+
+    // Initial update
+    updateActiveTOC();
+
+    // Listen for scroll events
+    window.addEventListener('scroll', throttledUpdate, { passive: true });
+
+    // Update on page load and resize
+    window.addEventListener('load', updateActiveTOC);
+    window.addEventListener('resize', updateActiveTOC);
+  }
+
+  initTOCScrollSpy();
 </script>

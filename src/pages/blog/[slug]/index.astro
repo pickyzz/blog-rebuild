@@ -9,7 +9,7 @@ export interface Props {
   post: CollectionEntry<"blog">;
 }
 
-export const prerender = false;
+export const prerender = true;
 
 export async function getStaticPaths() {
   const posts = await getNotionPosts();
@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { post: staticPost } = Astro.props;
 
-// In SSR mode, getStaticPaths is ignored, so we need to fetch the post dynamically
+// Use static post from getStaticPaths, fallback to dynamic fetch for dev mode
 const post = staticPost || await getNotionPostBySlug(slug);
 
 if (!post) {
