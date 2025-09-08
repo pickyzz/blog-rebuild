@@ -17,20 +17,26 @@ const notion = new Client({
   auth: NOTION_KEY,
 });
 
-// Cache configuration
-const CACHE_TTL = 10 * 60 * 1000; // 10 minutes for content (longer than posts)
-const contentCache = new Map<string, { data: string, timestamp: number }>();
-const blocksCache = new Map<string, { data: any[], timestamp: number }>();
+// TTL Configuration for different content types (in milliseconds)
+const CACHE_CONFIG = {
+  PAGE_CONTENT: 15 * 60 * 1000,    // 15 minutes - content changes less frequently
+  PAGE_BLOCKS: 20 * 60 * 1000,     // 20 minutes - blocks are stable
+  ERROR_CONTENT: 1 * 60 * 1000,     // 1 minute - retry errors sooner
+  ERROR_BLOCKS: 2 * 60 * 1000,      // 2 minutes - retry block errors
+} as const;
+
+const contentCache = new Map<string, { data: string, timestamp: number; ttl: number }>();
+const blocksCache = new Map<string, { data: any[], timestamp: number; ttl: number }>();
 
 // Helper function to check if cache is valid
-function isCacheValid(timestamp: number): boolean {
-  return Date.now() - timestamp < CACHE_TTL;
+function isCacheValid(timestamp: number, ttl: number): boolean {
+  return Date.now() - timestamp < ttl;
 }
 
 // Helper function to get cached data or null if expired
-function getCachedData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string): T | null {
+function getCachedData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string): T | null {
   const cached = cache.get(key);
-  if (cached && isCacheValid(cached.timestamp)) {
+  if (cached && isCacheValid(cached.timestamp, cached.ttl)) {
     return cached.data;
   }
   if (cached) {
@@ -39,9 +45,31 @@ function getCachedData<T>(cache: Map<string, { data: T, timestamp: number }>, ke
   return null;
 }
 
-// Helper function to set cache data
-function setCacheData<T>(cache: Map<string, { data: T, timestamp: number }>, key: string, data: T): void {
-  cache.set(key, { data, timestamp: Date.now() });
+// Helper function to set cache data with specific TTL
+function setCacheData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string, data: T, ttl: number): void {
+  cache.set(key, { data, timestamp: Date.now(), ttl });
+}
+
+// Helper function to invalidate specific cache entry
+function invalidateCache(cache: Map<string, any>, key: string): void {
+  cache.delete(key);
+}
+
+// Helper function to clear all expired cache entries
+function clearExpiredCache(cache: Map<string, { timestamp: number; ttl: number }>): void {
+  for (const [key, value] of cache.entries()) {
+    if (!isCacheValid(value.timestamp, value.ttl)) {
+      cache.delete(key);
+    }
+  }
+}
+
+// Helper function to get cache stats
+function getCacheStats(cache: Map<string, any>): { size: number; keys: string[] } {
+  return {
+    size: cache.size,
+    keys: Array.from(cache.keys())
+  };
 }
 
 // Initialize Notion to Markdown converter
@@ -160,7 +188,7 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
 
     if (!mdString) {
       const noContent = "<p>No content available</p>";
-      setCacheData(contentCache, cacheKey, noContent);
+      setCacheData(contentCache, cacheKey, noContent, CACHE_CONFIG.PAGE_CONTENT);
       return noContent;
     }
 
@@ -176,7 +204,7 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
     const result = String(htmlContent);
 
     // Cache the result
-    setCacheData(contentCache, cacheKey, result);
+    setCacheData(contentCache, cacheKey, result, CACHE_CONFIG.PAGE_CONTENT);
     return result;
   } catch (error) {
     console.error("Error fetching Notion page content:", error);
@@ -185,7 +213,7 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
       <p>Error: ${error instanceof Error ? error.message : 'Unknown error'}</p>
     </div>`;
     // Cache error content for a shorter time to allow retries
-    setCacheData(contentCache, cacheKey, errorContent);
+    setCacheData(contentCache, cacheKey, errorContent, CACHE_CONFIG.ERROR_CONTENT);
     return errorContent;
   }
 }
@@ -204,12 +232,40 @@ export async function getNotionPageBlocks(pageId: string) {
     });
 
     // Cache the result
-    setCacheData(blocksCache, cacheKey, response.results);
+    setCacheData(blocksCache, cacheKey, response.results, CACHE_CONFIG.PAGE_BLOCKS);
     return response.results;
   } catch (error) {
     console.error("Error fetching Notion page blocks:", error);
     // Cache empty array for errors to avoid repeated failed requests
-    setCacheData(blocksCache, cacheKey, []);
+    setCacheData(blocksCache, cacheKey, [], CACHE_CONFIG.ERROR_BLOCKS);
     return [];
   }
+}
+
+// Cache management functions
+export function invalidateAllContentCaches(): void {
+  contentCache.clear();
+  blocksCache.clear();
+}
+
+export function invalidatePageContent(pageId: string): void {
+  const contentKey = `content_${pageId}`;
+  const blocksKey = `blocks_${pageId}`;
+  invalidateCache(contentCache, contentKey);
+  invalidateCache(blocksCache, blocksKey);
+}
+
+export function getContentCacheStatistics(): {
+  content: { size: number; keys: string[] };
+  blocks: { size: number; keys: string[] };
+} {
+  return {
+    content: getCacheStats(contentCache),
+    blocks: getCacheStats(blocksCache),
+  };
+}
+
+export function cleanupExpiredContentCaches(): void {
+  clearExpiredCache(contentCache);
+  clearExpiredCache(blocksCache);
 }

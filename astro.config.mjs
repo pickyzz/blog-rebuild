@@ -8,12 +8,16 @@ import mdx from "@astrojs/mdx";
 import rehypeExternalLinks from "rehype-external-links";
 import sitemap from "@astrojs/sitemap";
 import pwa from "@vite-pwa/astro";
+import { loadEnv } from "vite";
+
+// Load environment variables
+const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE.website,
   output: "server",
-  adapter: process.env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : cloudflare(),
+  adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : cloudflare(),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
