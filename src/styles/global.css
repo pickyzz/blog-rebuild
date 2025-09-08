@@ -248,3 +248,24 @@ html[data-theme="dark"] {
 .notion-content .error-message p {
   margin: 0.5em 0;
 }
+
+/* Badge Styles */
+.badge {
+  @apply inline-flex items-center px-2 py-1 text-xs font-medium rounded-full;
+}
+
+.badge-primary {
+  @apply bg-accent text-background;
+}
+
+.badge-outline {
+  @apply border border-accent text-accent bg-transparent;
+}
+
+.badge-sm {
+  @apply px-1.5 py-0.5 text-xs;
+}
+
+.badge-md {
+  @apply px-2.5 py-1 text-sm;
+}

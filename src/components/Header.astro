@@ -62,23 +62,23 @@ const isActive = (path: string) => {
           id="menu-items"
           class:list={[
             "mt-4 grid w-44 grid-cols-2 place-content-center gap-2",
-            "[&>li>a]:hover:text-accent [&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
+            "[&>li>a]:block [&>li>a]:px-4 [&>li>a]:py-3 [&>li>a]:text-center [&>li>a]:font-medium sm:[&>li>a]:px-2 sm:[&>li>a]:py-1",
             "hidden",
             "sm:ml-0 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0",
           ]}
         >
           <li class="col-span-2">
-            <a href="/blog" class:list={{ "active-nav": isActive("/blog") }}>
+            <a href="/blog" class:list={["hover:text-accent", { "active-nav": isActive("/blog") }]}>
               Posts
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+            <a href="/tags" class:list={["hover:text-accent", { "active-nav": isActive("/tags") }]}>
               Tags
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/about" class:list={{ "active-nav": isActive("/about") }}>
+            <a href="/about" class:list={["hover:text-accent", { "active-nav": isActive("/about") }]}>
               About
             </a>
           </li>
@@ -88,7 +88,7 @@ const isActive = (path: string) => {
                 <LinkButton
                   href="/archives"
                   class:list={[
-                    "focus-outline flex justify-center p-3 sm:p-1",
+                    "focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 transition-transform duration-200",
                     {
                       "active-nav [&>svg]:stroke-accent": isActive("/archives"),
                     },
@@ -106,7 +106,7 @@ const isActive = (path: string) => {
             <LinkButton
               href="/search"
               class:list={[
-                "focus-outline flex justify-center p-3 sm:p-1",
+                "focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 transition-transform duration-200",
                 { "[&>svg]:stroke-accent": isActive("/search") },
               ]}
               ariaLabel="search"
@@ -121,12 +121,12 @@ const isActive = (path: string) => {
               <li class="col-span-1 flex items-center justify-center">
                 <button
                   id="theme-btn"
-                  class="focus-outline flex justify-center p-3 sm:p-1 hover:[&>svg]:stroke-accent"
+                  class="focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 hover:[&>div]:text-accent transition-all duration-200"
                   title="Toggles light & dark"
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <div class="relative w-6 h-6">
+                  <div class="relative w-6 h-6 text-foreground transition-all duration-200">
                     <IconMoon id="moon-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
                     <IconSun id="sun-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
                   </div>
