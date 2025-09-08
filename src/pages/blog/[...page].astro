@@ -1,4 +1,5 @@
 ---
+import type { GetStaticPathsOptions } from "astro";
 import { SITE } from "@/config";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -6,34 +7,56 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
-import type { GetStaticPaths } from "astro";
+
+import type { CollectionEntry } from "astro:content";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getNotionPosts } from "@/utils/getNotionPosts";
 
-export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getNotionPosts();
-  const publishedPosts = posts.filter(post => !post.data.draft);
-  return paginate(getSortedPosts(publishedPosts), { pageSize: SITE.postPerPage });
-}) satisfies GetStaticPaths;
+export const prerender = true;
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  try {
+    const posts = await getNotionPosts();
+    const publishedPosts = posts.filter(post => !post.data.draft);
+    const sortedPosts = getSortedPosts(publishedPosts);
+
+    return paginate(sortedPosts, {
+      pageSize: SITE.postPerPage,
+    });
+  } catch (error) {
+    console.error("Error in getStaticPaths:", error);
+    // Return empty pagination if there's an error
+    return paginate([], {
+      pageSize: SITE.postPerPage,
+    });
+  }
+}
 
 const { page } = Astro.props;
+
+
 ---
 
 <Layout title={`Posts | ${SITE.title}`}>
   <Header />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    <ul
-      class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2"
-    >
-      {
-        page.data.map(({ data, id }) => (
-          <Card href={`/blog/${data.slug}`} frontmatter={data} />
-        ))
-      }
-    </ul>
+    <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+    {page.data && page.data.length > 0 ? (
+      <ul
+        class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2"
+      >
+        {
+          page.data.map(({ data, id }) => (
+            <Card href={`/blog/post/${data.slug}`} frontmatter={data} />
+          ))
+        }
+      </ul>
+    ) : (
+      <p class="text-center">No posts available.</p>
+    )}
   </Main>
 
   <Pagination {page} />
 
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer noMarginTop={page.lastPage > 1} /></search>
+</search_and_replace>
 </Layout>

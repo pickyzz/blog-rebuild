@@ -31,31 +31,11 @@ export default defineConfig({
     }),
     pwa({
       registerType: "autoUpdate",
-      manifest: {
-        name: "Pickyzz Blog",
-        short_name: "Pickyzz",
-        description: "Personal blog about technology, programming, and life",
-        theme_color: "#ffffff",
-        background_color: "#ffffff",
-        display: "standalone",
-        orientation: "portrait",
-        scope: "/",
-        start_url: "/",
-        icons: [
-          {
-            src: "icon-192.png",
-            sizes: "192x192",
-            type: "image/png"
-          },
-          {
-            src: "icon-512.png",
-            sizes: "512x512",
-            type: "image/png"
-          }
-        ]
-      },
+      manifest: false, // Use external manifest file
       workbox: {
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,woff2}"],
+        navigateFallback: "/offline",
+        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/.*$/,
@@ -67,9 +47,24 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
               }
             }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*$/,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "google-fonts",
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              }
+            }
           }
         ]
-      }
+      },
+      injectManifest: {
+        swSrc: "src/sw.ts"
+      },
+      strategies: "injectManifest"
     }),
   ],
   markdown: {

@@ -9,6 +9,8 @@ export interface Props {
   post: CollectionEntry<"blog">;
 }
 
+export const prerender = false;
+
 export async function getStaticPaths() {
   const posts = await getNotionPosts();
 
