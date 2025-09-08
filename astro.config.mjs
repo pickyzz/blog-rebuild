@@ -1,6 +1,7 @@
 import { defineConfig, passthroughImageService } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import cloudflare from "@astrojs/cloudflare";
+import node from "@astrojs/node";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 import mdx from "@astrojs/mdx";
@@ -12,7 +13,7 @@ import pwa from "@vite-pwa/astro";
 export default defineConfig({
   site: SITE.website,
   output: "server",
-  adapter: process.env.NODE_ENV === "production" ? cloudflare() : undefined,
+  adapter: process.env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : cloudflare(),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
@@ -31,38 +32,57 @@ export default defineConfig({
       registerType: "autoUpdate",
       manifest: false, // Use external manifest file
       workbox: {
-        globPatterns: ["**/*.{css,js,html,svg,png,ico,txt,woff2}"],
-        navigateFallback: "/offline",
-        navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/.*$/,
-            handler: "CacheFirst",
+            urlPattern: ({ request }) => request.destination === 'style' ||
+                                          request.destination === 'script' ||
+                                          request.destination === 'image' ||
+                                          request.destination === 'font',
+            handler: 'CacheFirst',
             options: {
-              cacheName: "notion-images",
+              cacheName: 'static-assets',
               expiration: {
                 maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-              }
-            }
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+            },
           },
           {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*$/,
-            handler: "StaleWhileRevalidate",
+            urlPattern: ({ request }) => request.destination === 'document',
+            handler: 'NetworkFirst',
             options: {
-              cacheName: "google-fonts",
+              cacheName: 'pages',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+              },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.origin === 'https://prod-files-secure.s3.us-west-2.amazonaws.com',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'notion-images',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.origin === 'https://fonts.googleapis.com' ||
+                                      url.origin === 'https://fonts.gstatic.com',
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'google-fonts',
               expiration: {
                 maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-              }
-            }
-          }
-        ]
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+            },
+          },
+        ],
       },
-      injectManifest: {
-        swSrc: "src/sw.ts"
-      },
-      strategies: "injectManifest"
     }),
   ],
   markdown: {

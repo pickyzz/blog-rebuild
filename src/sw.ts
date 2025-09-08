@@ -1,5 +1,18 @@
 /// <reference lib="webworker" />
 
+// Type declarations for Service Worker environment
+declare const self: ServiceWorkerGlobalScope;
+
+interface SyncEvent extends ExtendableEvent {
+  readonly tag: string;
+}
+
+declare global {
+  interface Window {
+    __WB_MANIFEST: any[];
+  }
+}
+
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
@@ -69,20 +82,27 @@ registerRoute(
 );
 
 // Handle offline fallback
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match('/offline') || caches.match('/404');
+      fetch(event.request).catch(async () => {
+        const offlineResponse = await caches.match('/offline');
+        if (offlineResponse) return offlineResponse;
+
+        const notFoundResponse = await caches.match('/404');
+        if (notFoundResponse) return notFoundResponse;
+
+        return new Response('Offline page not found', { status: 404 });
       })
     );
   }
 });
 
 // Background sync for failed requests (if needed)
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(doBackgroundSync());
+self.addEventListener('sync', (event: Event) => {
+  const extendableEvent = event as ExtendableEvent;
+  if ((extendableEvent as any).tag === 'background-sync') {
+    extendableEvent.waitUntil(doBackgroundSync());
   }
 });
 
@@ -92,26 +112,27 @@ async function doBackgroundSync() {
 }
 
 // Push notification handling (placeholder - not implemented per requirements)
-self.addEventListener('push', (event) => {
+self.addEventListener('push', (event: Event) => {
   // Push notifications not implemented per requirements
   console.log('Push received but not handled');
 });
 
 // Message handling for communication with main thread
-self.addEventListener('message', (event) => {
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });
 
 // Install event
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (event: ExtendableEvent) => {
   console.log('Service Worker installing.');
+  console.log('SW: Install event triggered, skipping waiting');
   self.skipWaiting();
 });
 
 // Activate event
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
   console.log('Service Worker activating.');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
