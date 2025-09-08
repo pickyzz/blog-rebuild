@@ -1,5 +1,6 @@
 ---
-import type { GetStaticPathsOptions } from "astro";
+import type { GetStaticPathsOptions, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -7,25 +8,28 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 import { SITE } from "@/config";
-import { getNotionPosts, getNotionUniqueTags } from "@/utils/getNotionPosts";
+import { getNotionPostsByTag, getNotionUniqueTags } from "@/utils/getNotionPosts";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const posts = await getNotionPosts();
   const tags = await getNotionUniqueTags();
-  return tags.flatMap(({ tag, tagName }) => {
-    const tagPosts = posts.filter(post => post.data.tags.some(postTag =>
-      postTag.toLowerCase().replace(/\s+/g, '-') === tag
-    ));
-    return paginate(tagPosts, {
+  const result = [];
+  for (const { tag, tagName } of tags) {
+    const tagPosts = await getNotionPostsByTag(tagName);
+    result.push(...paginate(tagPosts, {
       params: { tag },
       props: { tagName },
       pageSize: SITE.postPerPage,
-    });
-  });
+    }));
+  }
+  return result;
 }
+
+
+export const prerender = true;
 const params = Astro.params;
 const { tag } = params;
-const { page, tagName } = Astro.props;
+const { tagName } = Astro.props;
+const { page } = Astro.props;
 ---
 
 <Layout title={`Tag: ${tagName} | ${SITE.title}`}>
@@ -35,12 +39,11 @@ const { page, tagName } = Astro.props;
     titleTransition={tag}
     pageDesc={`All the articles with the tag "${tagName}".`}
   >
-    <h1 slot="title" transition:name={tag}>{`Tag:${tag}`}</h1>
     <ul
       class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2"
     >
       {
-        page.data.map(({ data, id }) => (
+        page?.data?.map(({ data, id }: any) => (
           <Card href={`/blog/${data.slug}`} frontmatter={data} />
         ))
       }
@@ -49,5 +52,5 @@ const { page, tagName } = Astro.props;
 
   <Pagination {page} />
 
-  <Footer noMarginTop={page.lastPage > 1} />
+  <Footer noMarginTop={page?.lastPage > 1} />
 </Layout>

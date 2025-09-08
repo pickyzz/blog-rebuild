@@ -164,10 +164,12 @@ export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry
   }
 }
 
-export async function getNotionPostsByTag(tag: string): Promise<CollectionEntry<"blog">[]> {
+export async function getNotionPostsByTag(tagName: string): Promise<CollectionEntry<"blog">[]> {
   try {
     const posts = await getNotionPosts();
-    return posts.filter(post => post.data.tags.includes(tag));
+    return posts.filter(post => post.data.tags.some((postTag: string) =>
+      postTag.toLowerCase().replace(/\s+/g, '-') === tagName.toLowerCase().replace(/\s+/g, '-')
+    ));
   } catch (error) {
     console.error("Error fetching posts by tag:", error);
     return [];
