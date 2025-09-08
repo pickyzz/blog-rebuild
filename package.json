@@ -41,7 +41,7 @@
     "@tailwindcss/vite": "4.1.13",
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
-    "@typescript-eslint/parser": "8.42.0",
+    "@typescript-eslint/parser": "8.43.0",
     "astro": "5.13.5",
     "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.2",
@@ -57,7 +57,7 @@
     "tailwindcss": "4.1.13",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
-    "typescript-eslint": "8.42.0"
+    "typescript-eslint": "8.43.0"
   },
   "scripts": {
     "dev": "astro dev",
