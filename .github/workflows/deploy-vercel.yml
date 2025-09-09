@@ -32,12 +32,6 @@ jobs:
           if [ -n "$DATABASE_ID" ]; then echo "DATABASE_ID=$DATABASE_ID" >> .env; fi
 
       - name: Install dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
-
-      - name: Install dependencies
         run: bun install
 
       - name: Build (production)
@@ -54,44 +48,8 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          DEPLOY_LOG: deploy-output.log
         run: |
           # Deploy the prebuilt ./dist directory from repo root so Vercel uses the provided files
           if [ -z "$VERCEL_TOKEN" ]; then echo "VERCEL_TOKEN is not set; aborting"; exit 1; fi
           if [ -z "$VERCEL_PROJECT_ID" ]; then echo "VERCEL_PROJECT_ID is not set; aborting"; exit 1; fi
-          # Capture full CLI output to $DEPLOY_LOG for later summary/debug
-          vercel deploy --prebuilt ./dist --prod --project "$VERCEL_PROJECT_ID" --token "$VERCEL_TOKEN" --confirm 2>&1 | tee "$DEPLOY_LOG"
-
-      - name: Append Vercel deploy summary to Actions Summary
-        if: always()
-        env:
-          DEPLOY_LOG: deploy-output.log
-          GITHUB_STEP_SUMMARY: ${{ env.GITHUB_STEP_SUMMARY }}
-        run: |
-          echo '## Vercel Deploy Summary' >> $GITHUB_STEP_SUMMARY
-          if [ -f "$DEPLOY_LOG" ]; then
-            # Extract Inspect and Production URLs
-            INSPECT_URL=$(grep -Eo 'Inspect: https?://[^ ]+' "$DEPLOY_LOG" | head -n1 | sed 's/Inspect: //') || true
-            PROD_URL=$(grep -Eo 'Production: https?://[^ ]+' "$DEPLOY_LOG" | head -n1 | sed 's/Production: //') || true
-            if [ -n "$INSPECT_URL" ]; then echo "- Inspect: $INSPECT_URL" >> $GITHUB_STEP_SUMMARY; fi
-            if [ -n "$PROD_URL" ]; then echo "- Production: $PROD_URL" >> $GITHUB_STEP_SUMMARY; fi
-            echo '' >> $GITHUB_STEP_SUMMARY
-            echo '### Last 200 lines of deploy log' >> $GITHUB_STEP_SUMMARY
-            tail -n 200 "$DEPLOY_LOG" >> $GITHUB_STEP_SUMMARY
-          else
-            echo 'No deploy log found.' >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: Check dist contents
-        run: |
-          echo "Listing dist contents"
-          ls -la dist || (echo "dist missing" && exit 1)
-          count=$(find dist -type f | wc -l)
-          echo "dist file count: $count"
-          if [ "$count" -eq "0" ]; then echo "dist is empty" && exit 1; fi
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
+          vercel deploy --prebuilt ./dist --prod --project "$VERCEL_PROJECT_ID" --token "$VERCEL_TOKEN" --confirm
