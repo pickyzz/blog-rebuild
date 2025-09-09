@@ -22,6 +22,8 @@ if (Astro.response && Astro.response.headers) {
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+
+export const prerender = true;
 ---
 
 <Layout>

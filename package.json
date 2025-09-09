@@ -69,16 +69,18 @@
     "typescript-eslint": "8.42.0"
   },
   "scripts": {
-    "dev": "bun --env-file=.env run astro dev",
-    "dev:prod": "bun --env-file=.env run astro dev",
-    "start": "bun --env-file=.env run astro dev",
-    "preview": "bun --env-file=.env run astro preview",
+    "dev": "astro dev",
+    "dev:prod": "astro dev",
+    "start": "astro dev",
+    "preview": "NODE_ENV=development astro preview",
+    "preview:bun": "bun --env-file=.env run astro preview",
+    "preview:dev": "NODE_ENV=development astro build && NODE_ENV=development astro preview",
     "astro": "astro",
     "clean": "rimraf dist",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "test": "playwright test",
     "lint": "eslint .",
-    "build": "bun --env-file=.env run astro build"
+    "build": "astro build"
   }
 }
