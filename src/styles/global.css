@@ -173,6 +173,19 @@ html[data-theme="dark"] {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /* remove debug border */
+}
+
+.notion-content img {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
 }
 
 .notion-content figure {
