@@ -1,0 +1,53 @@
+name: Build (GitHub) and Deploy to Vercel
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Bun runtime
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: canary
+
+      - name: Create .env from secrets (if provided)
+        if: ${{ secrets.NOTION_KEY != '' || secrets.DATABASE_ID != '' }}
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+        run: |
+          echo "Creating .env from provided secrets"
+          touch .env
+          if [ -n "$NOTION_KEY" ]; then echo "NOTION_KEY=$NOTION_KEY" >> .env; fi
+          if [ -n "$DATABASE_ID" ]; then echo "DATABASE_ID=$DATABASE_ID" >> .env; fi
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build (production)
+        env:
+          NODE_ENV: production
+        run: |
+          # Ensure a production build so astro uses the Vercel adapter (see astro.config.mjs)
+          bun run build
+
+      - name: Deploy prebuilt output to Vercel (official)
+        uses: vercel/action@v3
+        with:
+          token: ${{ secrets.VERCEL_TOKEN }}
+          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          args: '--prebuilt ./dist --prod --confirm'
+          working-directory: './dist'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
