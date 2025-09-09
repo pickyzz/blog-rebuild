@@ -79,13 +79,13 @@
     "dev": "bun --env-file=.env run astro dev",
     "dev:prod": "bun --env-file=.env run astro dev",
     "start": "bun --env-file=.env run astro dev",
-    "preview:dev": "bun --env-file=.env run astro preview",
-    "preview:prod": "bun --env-file=.env run astro preview",
+    "preview": "bun --env-file=.env run astro preview",
     "astro": "astro",
     "clean": "rimraf dist",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "test": "playwright test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "bun run astro build"
   }
 }
