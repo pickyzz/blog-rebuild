@@ -35,3 +35,4 @@ bun.lockb
 
 # pagefind 
 /public/pagefind/
+.vercel
