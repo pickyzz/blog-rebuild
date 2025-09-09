@@ -2,7 +2,7 @@ name: Build (GitHub) and Deploy to Vercel
 
 on:
   push:
-    branches: [ main ]
+    branches: [ ssr-notion-refactor ]
   workflow_dispatch:
 
 jobs:
