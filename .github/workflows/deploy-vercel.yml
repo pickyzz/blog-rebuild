@@ -22,7 +22,6 @@ jobs:
           bun-version: canary
 
       - name: Create .env from secrets (if provided)
-        if: ${{ secrets.NOTION_KEY != '' || secrets.DATABASE_ID != '' }}
         env:
           NOTION_KEY: ${{ secrets.NOTION_KEY }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
