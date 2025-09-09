@@ -3,61 +3,128 @@
 @import "tailwindcss/utilities";
 @import "./typography.css";
 
-/* Prism.js syntax highlighting themes - inline styles for better compatibility */
-.prism-token.comment,
-.prism-token.prolog,
-.prism-token.doctype,
-.prism-token.cdata {
+/* Prism.js GitHub theme for light mode */
+html[data-theme="light"] .notion-content .code-content pre {
+  background: #f6f8fa !important;
+  color: #24292e !important;
+}
+
+html[data-theme="light"] .notion-content .token.comment,
+html[data-theme="light"] .notion-content .token.prolog,
+html[data-theme="light"] .notion-content .token.doctype,
+html[data-theme="light"] .notion-content .token.cdata {
   color: #6a737d;
 }
 
-.prism-token.punctuation {
+html[data-theme="light"] .notion-content .token.punctuation {
   color: #24292e;
 }
 
-.prism-token.property,
-.prism-token.tag,
-.prism-token.constant,
-.prism-token.symbol,
-.prism-token.deleted {
+html[data-theme="light"] .notion-content .token.property,
+html[data-theme="light"] .notion-content .token.tag,
+html[data-theme="light"] .notion-content .token.constant,
+html[data-theme="light"] .notion-content .token.symbol,
+html[data-theme="light"] .notion-content .token.deleted {
   color: #005cc5;
 }
 
-.prism-token.boolean,
-.prism-token.number {
+html[data-theme="light"] .notion-content .token.boolean,
+html[data-theme="light"] .notion-content .token.number {
   color: #005cc5;
 }
 
-.prism-token.selector,
-.prism-token.attr-name,
-.prism-token.string,
-.prism-token.char,
-.prism-token.builtin,
-.prism-token.inserted {
+html[data-theme="light"] .notion-content .token.selector,
+html[data-theme="light"] .notion-content .token.attr-name,
+html[data-theme="light"] .notion-content .token.string,
+html[data-theme="light"] .notion-content .token.char,
+html[data-theme="light"] .notion-content .token.builtin,
+html[data-theme="light"] .notion-content .token.inserted {
   color: #032f62;
 }
 
-.prism-token.operator,
-.prism-token.entity,
-.prism-token.url,
-.prism-token.variable {
+html[data-theme="light"] .notion-content .token.operator,
+html[data-theme="light"] .notion-content .token.entity,
+html[data-theme="light"] .notion-content .token.url,
+html[data-theme="light"] .notion-content .token.variable {
   color: #d73a49;
 }
 
-.prism-token.atrule,
-.prism-token.attr-value,
-.prism-token.function,
-.prism-token.class-name {
+html[data-theme="light"] .notion-content .token.atrule,
+html[data-theme="light"] .notion-content .token.attr-value,
+html[data-theme="light"] .notion-content .token.function,
+html[data-theme="light"] .notion-content .token.class-name {
   color: #6f42c1;
 }
 
-.prism-token.keyword {
+html[data-theme="light"] .notion-content .token.keyword {
   color: #d73a49;
 }
 
-.prism-token.regex,
-.prism-token.important {
+html[data-theme="light"] .notion-content .token.regex,
+html[data-theme="light"] .notion-content .token.important {
   color: #e36209;
+}
+
+/* Prism.js Dracula theme for dark mode */
+html[data-theme="dark"] .notion-content .code-content pre {
+  background: #282a36 !important;
+  color: #f8f8f2 !important;
+}
+
+html[data-theme="dark"] .notion-content .token.comment,
+html[data-theme="dark"] .notion-content .token.prolog,
+html[data-theme="dark"] .notion-content .token.doctype,
+html[data-theme="dark"] .notion-content .token.cdata {
+  color: #6272a4;
+}
+
+html[data-theme="dark"] .notion-content .token.punctuation {
+  color: #f8f8f2;
+}
+
+html[data-theme="dark"] .notion-content .token.property,
+html[data-theme="dark"] .notion-content .token.tag,
+html[data-theme="dark"] .notion-content .token.constant,
+html[data-theme="dark"] .notion-content .token.symbol,
+html[data-theme="dark"] .notion-content .token.deleted {
+  color: #ff79c6;
+}
+
+html[data-theme="dark"] .notion-content .token.boolean,
+html[data-theme="dark"] .notion-content .token.number {
+  color: #bd93f9;
+}
+
+html[data-theme="dark"] .notion-content .token.selector,
+html[data-theme="dark"] .notion-content .token.attr-name,
+html[data-theme="dark"] .notion-content .token.string,
+html[data-theme="dark"] .notion-content .token.char,
+html[data-theme="dark"] .notion-content .token.builtin,
+html[data-theme="dark"] .notion-content .token.inserted {
+  color: #f1fa8c;
+}
+
+html[data-theme="dark"] .notion-content .token.operator,
+html[data-theme="dark"] .notion-content .token.entity,
+html[data-theme="dark"] .notion-content .token.url,
+html[data-theme="dark"] .notion-content .token.variable {
+  color: #ff79c6;
+}
+
+html[data-theme="dark"] .notion-content .token.atrule,
+html[data-theme="dark"] .notion-content .token.attr-value,
+html[data-theme="dark"] .notion-content .token.function,
+html[data-theme="dark"] .notion-content .token.class-name {
+  color: #50fa7b;
+}
+
+html[data-theme="dark"] .notion-content .token.keyword {
+  color: #ff79c6;
+}
+
+html[data-theme="dark"] .notion-content .token.regex,
+html[data-theme="dark"] .notion-content .token.important {
+  color: #ffb86c;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -332,7 +399,7 @@ html[data-theme="dark"] {
 }
 
 .badge-outline {
-  @apply border border-accent text-accent bg-transparent;
+  @apply bg-transparent border border-accent text-accent;
 }
 
 .badge-sm {
@@ -345,7 +412,7 @@ html[data-theme="dark"] {
 
 /* TOC Active State */
 .toc-link.active {
-  @apply text-foreground font-semibold bg-muted rounded px-2 py-1 border-l-2 border-accent;
+  @apply px-2 py-1 font-semibold border-l-2 rounded text-foreground bg-muted border-accent;
 }
 
 .toc-link.active span {
@@ -435,22 +502,7 @@ html[data-theme="dark"] {
   line-height: inherit;
 }
 
-/* Shiki theme overrides */
-/* Restore shiki default background and text color for github-light */
-.shiki.github-light {
-  background: #f6f8fa !important;
-  color: #24292f !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 6px;
-}
-.shiki.github-light code {
-  background: transparent !important;
-  color: inherit !important;
-  padding: 0 !important;
-  font-size: inherit !important;
-  line-height: inherit !important;
-}
+/* Shiki theme overrides - REMOVED (using Prism now) */
 
 /* Scrollbar styling for code blocks */
 .code-content pre::-webkit-scrollbar {
@@ -518,7 +570,7 @@ html[data-theme="dark"] .code-header {
 }
 
 html[data-theme="dark"] .code-content {
-  background: #1a1a1a;
+  background: #282a36;
 }
 
 html[data-theme="dark"] .code-content pre::-webkit-scrollbar-track {

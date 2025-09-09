@@ -7,15 +7,73 @@ import remarkRehype from 'remark-rehype';
 import rehypeStringify from 'rehype-stringify';
 import rehypeRaw from 'rehype-raw';
 import Prism from 'prismjs';
-// Import only essential Prism components to avoid conflicts
+// Import Prism components in correct order to avoid dependency conflicts
+import 'prismjs/components/prism-core';
+import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-shell-session';
 import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-php';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-swift';
+import 'prismjs/components/prism-kotlin';
+import 'prismjs/components/prism-dart';
+import 'prismjs/components/prism-scala';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-yaml';
+import 'prismjs/components/prism-docker';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-markdown';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-graphql';
+import 'prismjs/components/prism-powershell';
+import 'prismjs/components/prism-scss';
+import 'prismjs/components/prism-sass';
+import 'prismjs/components/prism-less';
+// Try importing bash component directly
+import 'prismjs/components/prism-bash';
+// Try other shell-related components
+import 'prismjs/components/prism-shell-session';
+import 'prismjs/components/prism-batch';
+
+// Custom fallback for shell languages if Prism components fail to load
+if (!Prism.languages.bash && !Prism.languages.shell && !Prism.languages['shell-session']) {
+  // Create a simple shell language definition
+  Prism.languages.shell = {
+    comment: {
+      pattern: /(^|[^\\])#.*/,
+      lookbehind: true
+    },
+    string: {
+      pattern: /(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,
+      greedy: true
+    },
+    variable: {
+      pattern: /\$[a-zA-Z_][a-zA-Z0-9_]*/,
+      greedy: true
+    },
+    function: {
+      pattern: /\b\w+\(\)/,
+      greedy: true
+    },
+    keyword: /\b(?:if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|cd|ls|pwd|mkdir|rm|cp|mv|cat|grep|sed|awk|chmod|chown|sudo|apt|yum|brew|npm|git|docker|kubectl)\b/
+  };
+
+  // Alias bash to shell
+  Prism.languages.bash = Prism.languages.shell;
+  Prism.languages['shell-session'] = Prism.languages.shell;
+}
 // REMOVE shiki imports and initHighlighter
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
@@ -156,9 +214,90 @@ n2m.setCustomTransformer("code", async (block: any) => {
   const caption = code?.caption?.[0]?.plain_text || "";
 
   try {
+    // Map Notion language names to Prism language names
+    const languageMap: { [key: string]: string } = {
+      'javascript': 'javascript',
+      'js': 'javascript',
+      'typescript': 'typescript',
+      'ts': 'typescript',
+      'python': 'python',
+      'py': 'python',
+      'java': 'java',
+      'c': 'c',
+      'cpp': 'cpp',
+      'c++': 'cpp',
+      'csharp': 'csharp',
+      'c#': 'csharp',
+      'php': 'php',
+      'ruby': 'ruby',
+      'go': 'go',
+      'rust': 'rust',
+      'swift': 'swift',
+      'kotlin': 'kotlin',
+      'dart': 'dart',
+      'scala': 'scala',
+      'sql': 'sql',
+      'html': 'markup',
+      'xml': 'markup',
+      'css': 'css',
+      'scss': 'scss',
+      'sass': 'sass',
+      'less': 'less',
+      'json': 'json',
+      'yaml': 'yaml',
+      'yml': 'yaml',
+      'dockerfile': 'docker',
+      'bash': 'bash',
+      'shell': 'bash',
+      'sh': 'bash',
+      'powershell': 'powershell',
+      'markdown': 'markdown',
+      'md': 'markdown',
+      'graphql': 'graphql',
+      'jsx': 'jsx',
+      'tsx': 'tsx',
+      'text': 'text',
+      'plain': 'text',
+      'plaintext': 'text'
+    };
+
+    // Normalize language name
+    const normalizedLanguage = languageMap[language.toLowerCase()] || 'text';
+
+    // Check if Prism supports this language, with fallbacks
+    let prismLanguage = Prism.languages[normalizedLanguage];
+    if (!prismLanguage) {
+      // Try common fallbacks for shell languages
+      if (['bash', 'shell', 'sh'].includes(normalizedLanguage)) {
+        prismLanguage = Prism.languages['bash'] || Prism.languages['shell'] || Prism.languages['text'];
+      } else {
+        prismLanguage = Prism.languages['text'];
+      }
+    }
+
+    if (!prismLanguage) {
+      // Fallback to plain text with basic styling
+      const escapedContent = content
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+      return `<div class="notion-code-block" data-language="${language}">
+  <div class="code-header">
+    <span class="language-label">${language}</span>
+    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
+  </div>
+  <div class="code-content">
+    <pre><code class="language-${normalizedLanguage}">${escapedContent}</code></pre>
+  </div>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+</div>`;
+    }
+
     // Use Prism for syntax highlighting
-    const prismLanguage = Prism.languages[language] || Prism.languages.text;
-    const highlightedContent = Prism.highlight(content, prismLanguage, language);
+    const highlightedContent = Prism.highlight(content, prismLanguage, normalizedLanguage);
 
     return `<div class="notion-code-block" data-language="${language}">
   <div class="code-header">
@@ -166,12 +305,11 @@ n2m.setCustomTransformer("code", async (block: any) => {
     <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
   </div>
   <div class="code-content">
-    <pre><code class="language-${language}">${highlightedContent}</code></pre>
+    <pre><code class="language-${normalizedLanguage}">${highlightedContent}</code></pre>
   </div>
   ${caption ? `<figcaption>${caption}</figcaption>` : ''}
 </div>`;
   } catch (error) {
-    console.warn('Syntax highlighting failed for language:', language, error);
     // Fallback to plain text with basic styling
     const escapedContent = content
       .replace(/&/g, '&amp;')
@@ -250,7 +388,6 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
     setCacheData(contentCache, cacheKey, result, CACHE_CONFIG.PAGE_CONTENT);
     return result;
   } catch (error) {
-    console.error("Error fetching Notion page content:", error);
     const errorContent = `<div class="error-message">
       <p>Unable to load content from Notion.</p>
       <p>Error: ${error instanceof Error ? error.message : 'Unknown error'}</p>
@@ -278,7 +415,6 @@ export async function getNotionPageBlocks(pageId: string) {
     setCacheData(blocksCache, cacheKey, response.results, CACHE_CONFIG.PAGE_BLOCKS);
     return response.results;
   } catch (error) {
-    console.error("Error fetching Notion page blocks:", error);
     // Cache empty array for errors to avoid repeated failed requests
     setCacheData(blocksCache, cacheKey, [], CACHE_CONFIG.ERROR_BLOCKS);
     return [];
