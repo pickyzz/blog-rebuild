@@ -12,7 +12,6 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.7",
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
@@ -33,7 +32,6 @@
     "remark-parse": "^11.0.0",
     "satori": "0.18.2",
     "sharp": "0.34.3",
-    "shiki": "0.14.7",
     "tailwind-merge": "3.3.1",
     "tailwindcss": "^3.4.17",
     "tinycolor2": "1.6.0",
@@ -52,15 +50,10 @@
     "@astrojs/sitemap": "3.5.1",
     "@astrojs/tailwind": "^6.0.2",
     "@playwright/test": "1.55.0",
-    "@tailwindcss/aspect-ratio": "0.4.2",
-    "@tailwindcss/line-clamp": "0.4.4",
-    "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@types/prismjs": "^1.26.5",
     "@typescript-eslint/parser": "8.42.0",
-    "@vite-pwa/assets-generator": "^1.0.0",
     "astro": "5.13.5",
-    "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.2",
     "eslint": "9.34.0",
     "eslint-plugin-astro": "1.3.1",
@@ -86,6 +79,6 @@
     "format": "prettier --write .",
     "test": "playwright test",
     "lint": "eslint .",
-    "build": "bun run astro build"
+    "build": "bun --env-file=.env run astro build"
   }
 }

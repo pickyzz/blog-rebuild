@@ -150,6 +150,12 @@
     content: "`";
   }
 
+  /* Remove backtick marker for code inside .shiki (shiki already renders code as-is) */
+  .shiki code::before,
+  .shiki code::after {
+    content: none !important;
+  }
+
   .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
     content: "`";
   }

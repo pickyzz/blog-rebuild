@@ -3,6 +3,63 @@
 @import "tailwindcss/utilities";
 @import "./typography.css";
 
+/* Prism.js syntax highlighting themes - inline styles for better compatibility */
+.prism-token.comment,
+.prism-token.prolog,
+.prism-token.doctype,
+.prism-token.cdata {
+  color: #6a737d;
+}
+
+.prism-token.punctuation {
+  color: #24292e;
+}
+
+.prism-token.property,
+.prism-token.tag,
+.prism-token.constant,
+.prism-token.symbol,
+.prism-token.deleted {
+  color: #005cc5;
+}
+
+.prism-token.boolean,
+.prism-token.number {
+  color: #005cc5;
+}
+
+.prism-token.selector,
+.prism-token.attr-name,
+.prism-token.string,
+.prism-token.char,
+.prism-token.builtin,
+.prism-token.inserted {
+  color: #032f62;
+}
+
+.prism-token.operator,
+.prism-token.entity,
+.prism-token.url,
+.prism-token.variable {
+  color: #d73a49;
+}
+
+.prism-token.atrule,
+.prism-token.attr-value,
+.prism-token.function,
+.prism-token.class-name {
+  color: #6f42c1;
+}
+
+.prism-token.keyword {
+  color: #d73a49;
+}
+
+.prism-token.regex,
+.prism-token.important {
+  color: #e36209;
+}
+
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root,
@@ -379,14 +436,17 @@ html[data-theme="dark"] {
 }
 
 /* Shiki theme overrides */
-.shiki {
-  background: transparent !important;
+/* Restore shiki default background and text color for github-light */
+.shiki.github-light {
+  background: #f6f8fa !important;
+  color: #24292f !important;
   margin: 0 !important;
   padding: 0 !important;
+  border-radius: 6px;
 }
-
-.shiki code {
+.shiki.github-light code {
   background: transparent !important;
+  color: inherit !important;
   padding: 0 !important;
   font-size: inherit !important;
   line-height: inherit !important;
