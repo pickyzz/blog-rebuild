@@ -1,7 +1,6 @@
 ---
 import { type CollectionEntry } from "astro:content";
 import PostDetails from "@/layouts/PostDetails.astro";
-import getPostsWithRT from "@/utils/getPostsWithRT";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getNotionPosts, getNotionPostBySlug } from "@/utils/getNotionPosts";
 
@@ -9,25 +8,15 @@ export interface Props {
   post: CollectionEntry<"blog">;
 }
 
-/* SSR mode: cache-control header for real-time Notion content */
-export async function getStaticPaths() {
-  const posts = await getNotionPosts();
+/* SSR mode: enable server-side rendering and set cache headers below */
+export const ssr = true;
 
-  const postsWithRT = await getPostsWithRT(posts); // replace reading time logic with this func
-
-  const postResult = postsWithRT.map(post => ({
-    params: { slug: post.data.slug },
-    props: { post },
-  }));
-
-  return postResult;
+const slug = Astro.params.slug;
+if (typeof slug !== "string" || !slug) {
+  return Astro.redirect('/404');
 }
-
-const { slug } = Astro.params;
-const { post: staticPost } = Astro.props;
-
-// Use static post from getStaticPaths, fallback to dynamic fetch for dev mode
-const post = staticPost || await getNotionPostBySlug(slug);
+const slugStr: string = slug;
+const post = await getNotionPostBySlug(slugStr);
 
 if (!post) {
   return Astro.redirect('/404');
@@ -41,9 +30,9 @@ if (!post.data) {
   return Astro.redirect('/404');
 }
 
-/* Set cache-control header for SSR response */
+/* Set cache-control header for SSR response (Vercel Edge: fresh 5 minutes) */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+  Astro.response.headers.set("cache-control", "public, max-age=300, stale-while-revalidate=600");
 }
 ---
 
