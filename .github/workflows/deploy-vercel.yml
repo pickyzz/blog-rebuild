@@ -41,6 +41,9 @@ jobs:
           # Ensure a production build so astro uses the Vercel adapter (see astro.config.mjs)
           bun run build
 
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
       - name: Deploy prebuilt output to Vercel (action)
         uses: BetaHuhn/deploy-to-vercel-action@latest
         with:
