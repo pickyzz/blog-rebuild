@@ -8,6 +8,10 @@ import { SITE } from "@/config";
 import { getNotionUniqueTags } from "@/utils/getNotionPosts";
 
 const tags = await getNotionUniqueTags();
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+}
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>

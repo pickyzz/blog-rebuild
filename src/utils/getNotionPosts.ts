@@ -14,10 +14,11 @@ const notion = new Client({
 
 // TTL Configuration for different content types (in milliseconds)
 const CACHE_CONFIG = {
-  POSTS: 2 * 60 * 1000,      // 2 minutes - posts change frequently
-  TAGS: 10 * 60 * 1000,      // 10 minutes - tags change less frequently
-  POST_BY_SLUG: 5 * 60 * 1000, // 5 minutes - individual posts
-  POSTS_BY_TAG: 5 * 60 * 1000, // 5 minutes - filtered posts
+  POSTS: 2 * 60 * 1000,
+  TAGS: 10 * 60 * 1000,
+  POST_BY_SLUG_NEW: 2 * 60 * 1000,
+  POST_BY_SLUG_OLD: 15 * 60 * 1000,
+  POSTS_BY_TAG: 5 * 60 * 1000,
 } as const;
 
 const postsCache = new Map<string, { data: CollectionEntry<"blog">[], timestamp: number; ttl: number }>();
@@ -211,15 +212,26 @@ export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry
   const cacheKey = `post_${slug}`;
   const cachedPost = getCachedData(postBySlugCache, cacheKey);
   if (cachedPost !== null) {
+    console.info(`[CACHE HIT] postBySlug: ${slug}`);
     return cachedPost;
   }
+  console.info(`[CACHE MISS] postBySlug: ${slug}`);
 
   try {
     const posts = await getNotionPosts();
     const post = posts.find(post => post.data.slug === slug) || null;
 
-    // Cache the result
-    setCacheData(postBySlugCache, cacheKey, post, CACHE_CONFIG.POST_BY_SLUG);
+    // Smart TTL
+    let ttl = CACHE_CONFIG.POST_BY_SLUG_OLD;
+    if (post && post.data && post.data.pubDatetime) {
+      const pubDate = new Date(post.data.pubDatetime);
+      const now = new Date();
+      const diffMinutes = (now.getTime() - pubDate.getTime()) / (1000 * 60);
+      if (diffMinutes < 60 * 24) {
+        ttl = CACHE_CONFIG.POST_BY_SLUG_NEW;
+      }
+    }
+    setCacheData(postBySlugCache, cacheKey, post, ttl);
     return post;
   } catch (error) {
     console.error("Error fetching post by slug:", error);

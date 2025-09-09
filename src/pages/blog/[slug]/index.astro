@@ -9,8 +9,7 @@ export interface Props {
   post: CollectionEntry<"blog">;
 }
 
-export const prerender = true;
-
+/* SSR mode: cache-control header for real-time Notion content */
 export async function getStaticPaths() {
   const posts = await getNotionPosts();
 
@@ -40,6 +39,11 @@ const sortedPosts = getSortedPosts(posts);
 // Add safety check for post data
 if (!post.data) {
   return Astro.redirect('/404');
+}
+
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
 }
 ---
 

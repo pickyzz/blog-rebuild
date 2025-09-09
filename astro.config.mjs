@@ -1,6 +1,6 @@
 import { defineConfig, passthroughImageService } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import cloudflare from "@astrojs/cloudflare";
+import vercel from "@astrojs/vercel";
 import node from "@astrojs/node";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
@@ -17,7 +17,7 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 export default defineConfig({
   site: SITE.website,
   output: "server",
-  adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : cloudflare(),
+  adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : vercel({ edge: true }),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),

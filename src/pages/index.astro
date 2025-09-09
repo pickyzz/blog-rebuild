@@ -14,6 +14,11 @@ import { getNotionPosts } from "@/utils/getNotionPosts";
 
 const posts = await getNotionPosts();
 
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+}
+
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
