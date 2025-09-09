@@ -7,6 +7,7 @@ import { parseArgs } from "node:util";
 import { sanitizeUrl, sanitizeImageString } from "../helpers/sanitize.mjs";
 import { downloadImage } from "../helpers/images.mjs";
 import path from "path";
+import { NotionPageSchema } from "./notion.types";
 
 // Input Arguments
 const ARGUMENT_OPTIONS = {
@@ -100,15 +101,16 @@ if (isPublished) {
 const databaseResponse = await notion.databases.query(queryParams);
 const { results } = databaseResponse;
 
-// Create Pages
-const pages = results.map(page => {
+/**
+ * Create Pages with validation
+ * Only valid pages (matching NotionPageSchema) will be included.
+ */
+const pages = results.reduce((acc, page) => {
   const { properties, cover, created_time, last_edited_time, archived } = page;
   const title = properties.title.title[0].plain_text;
   const slug = properties?.slug?.rich_text[0]?.plain_text || sanitizeUrl(title);
 
-  console.info("Notion Page:", page);
-
-  return {
+  const mapped = {
     id: page.id,
     title,
     type: page.object,
@@ -124,7 +126,20 @@ const pages = results.map(page => {
     description: properties?.description?.rich_text[0]?.plain_text,
     slug,
   };
-});
+
+  const validation = NotionPageSchema.safeParse(mapped);
+  if (!validation.success) {
+    console.error("Invalid Notion page schema:", {
+      errors: validation.error.errors,
+      pageId: page.id,
+      title,
+    });
+    // skip this page
+    return acc;
+  }
+  acc.push(mapped);
+  return acc;
+}, []);
 
 const pageTasks = pages.map(async page => {
   console.info(

@@ -62,6 +62,41 @@ function clearExpiredCache(cache: Map<string, { timestamp: number; ttl: number }
   }
 }
 
+/**
+ * Retry helper with exponential backoff for Notion API requests.
+ * Retries on 429 (rate limit) or 5xx errors.
+ * Logs every retry and error.
+ */
+async function fetchWithRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries = 4,
+  baseDelay = 1000
+): Promise<T> {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      const status = error?.status || error?.code || error?.response?.status;
+      const isRetryable =
+        status === 429 ||
+        (typeof status === "number" && status >= 500 && status < 600);
+
+      if (!isRetryable || attempt >= maxRetries) {
+        console.error(`[NOTION API ERROR] Attempt ${attempt + 1}:`, error);
+        throw error;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt) + Math.floor(Math.random() * 300);
+      console.warn(
+        `[NOTION API RETRY] Attempt ${attempt + 1} failed (status: ${status}). Retrying in ${delay}ms...`
+      );
+      await new Promise((res) => setTimeout(res, delay));
+      attempt++;
+    }
+  }
+}
+
 // Helper function to get cache stats
 function getCacheStats(cache: Map<string, any>): { size: number; keys: string[] } {
   return {
@@ -94,21 +129,23 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
   }
 
   try {
-    const response = await notion.databases.query({
-      database_id: DATABASE_ID,
-      filter: {
-        property: "status",
-        select: {
-          equals: "published",
+    const response = await fetchWithRetry(() =>
+      notion.databases.query({
+        database_id: DATABASE_ID,
+        filter: {
+          property: "status",
+          select: {
+            equals: "published",
+          },
         },
-      },
-      sorts: [
-        {
-          property: "publish_date",
-          direction: "descending",
-        },
-      ],
-    });
+        sorts: [
+          {
+            property: "publish_date",
+            direction: "descending",
+          },
+        ],
+      })
+    );
 
     const posts: CollectionEntry<"blog">[] = response.results.map((page: any) => {
       const properties = page.properties;

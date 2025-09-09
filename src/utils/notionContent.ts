@@ -1,6 +1,8 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { unified } from 'unified';
+// --- sanitize import for HTML output ---
+import { sanitize } from "../helpers/sanitize.mjs";
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
@@ -384,9 +386,12 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
 
     const result = String(htmlContent);
 
+    // Sanitize HTML output before caching and returning
+    const sanitized = sanitize(result);
+
     // Cache the result
-    setCacheData(contentCache, cacheKey, result, CACHE_CONFIG.PAGE_CONTENT);
-    return result;
+    setCacheData(contentCache, cacheKey, sanitized, CACHE_CONFIG.PAGE_CONTENT);
+    return sanitized;
   } catch (error) {
     const errorContent = `<div class="error-message">
       <p>Unable to load content from Notion.</p>
