@@ -41,12 +41,11 @@ jobs:
           # Ensure a production build so astro uses the Vercel adapter (see astro.config.mjs)
           bun run build
 
-      - name: Deploy prebuilt output to Vercel (official)
-        uses: vercel/action@v3
+      - name: Deploy prebuilt output to Vercel (action)
+        uses: BetaHuhn/deploy-to-vercel-action@latest
         with:
-          token: ${{ secrets.VERCEL_TOKEN }}
-          project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          args: '--prebuilt ./dist --prod --confirm'
-          working-directory: './dist'
-        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          WORKING_DIRECTORY: './dist'
