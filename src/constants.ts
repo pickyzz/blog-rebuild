@@ -22,12 +22,12 @@ export const SOCIALS = [
     linkTitle: `${SITE.title} on Facebook`,
     icon: IconFacebook,
   },
-  {
-    name: "LinkedIn",
-    href: "https://github.com/pickyzz",
-    linkTitle: `${SITE.title} on LinkedIn`,
-    icon: IconLinkedin,
-  },
+  // {
+  //   name: "LinkedIn",
+  //   href: "https://github.com/pickyzz",
+  //   linkTitle: `${SITE.title} on LinkedIn`,
+  //   icon: IconLinkedin,
+  // },
   {
     name: "Mail",
     href: "mailto:contact@pickyzz.dev",
