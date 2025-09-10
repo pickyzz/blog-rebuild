@@ -10,12 +10,14 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@/utils/slugify";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
+import Card from "@/components/Card.astro";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
 import { generateToc } from "@/utils/generateToc";
 import TOC from "@/components/TOC.astro";
 import readingTimeLib from "reading-time";
+import getPostsByTag from "@/utils/getPostsByTag";
 
 export interface Props {
   post: any;
@@ -121,6 +123,7 @@ const layoutProps = {
   modDatetime,
   ogImage: ogUrl,
   scrollSmooth: true,
+  robots: "index, follow",
 };
 
 const breadcrumbStructuredData = {
@@ -159,9 +162,36 @@ const prevPost =
     ? allPosts[currentPostIndex + 1]
     : null;
 const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
+
+// Create page layout props including prev/next so Layout can render rel="prev"/rel="next" links
+const pageLayoutProps = { ...layoutProps, prevPost, nextPost };
+
+/* ========== Related Posts ========== */
+let relatedPosts: any[] = [];
+if (tags && tags.length > 0 && posts) {
+  // Get posts with the same first tag, excluding current post and prev/next posts
+  const firstTag = tags[0];
+  // Cast incoming posts to the expected CollectionEntry type to satisfy TypeScript
+  const postsWithSameTag = getPostsByTag(
+    posts as unknown as import("astro:content").CollectionEntry<"blog">[],
+    firstTag
+  )
+    .filter(p =>
+      p.data.slug !== post.data.slug &&
+      p.data.slug !== (prevPost?.slug ?? null) &&
+      p.data.slug !== (nextPost?.slug ?? null)
+    )
+    .slice(0, 2); // Limit to 2 related posts
+  
+  relatedPosts = postsWithSameTag.map(({ data }) => ({
+    slug: data.slug,
+    title: data.title,
+    ogImage: data.ogImage
+  }));
+}
 ---
 
-<Layout {...layoutProps}>
+<Layout {...pageLayoutProps}>
   <!-- BreadcrumbList Schema -->
   <script
     is:inline
@@ -180,7 +210,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="text-accent my-2 inline-block text-2xl font-bold sm:text-3xl"
+      class="inline-block my-2 text-2xl font-bold text-accent sm:text-3xl"
     >
       {title}
     </h1>
@@ -193,7 +223,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
       />
     </div>
     <p class="ml-1.5 text-xs font-light">By : {author}{readingTime ? ` | ${readingTime}` : ''}</p>
-    <article id="article" class="prose mx-auto mt-8 max-w-4xl">
+    <article id="article" class="max-w-4xl mx-auto mt-8 prose">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={post.data.ogImage?.src}
@@ -202,10 +232,10 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
       />
 
       <!-- Render Notion content as HTML -->
-      <div class="notion-content prose prose-lg mx-auto max-w-4xl" set:html={notionContent}></div>
+      <div class="max-w-4xl mx-auto prose prose-lg notion-content" set:html={notionContent}></div>
     </article>
 
-    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
+    <ul class="flex flex-row items-center justify-center my-8 md:justify-end">
       {(tags || []).map((tag: string) => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
     <div
@@ -215,7 +245,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 
       <button
         id="back-to-top"
-        class="focus-outline hidden whitespace-nowrap py-1 transition duration-200 hover:-translate-y-1 hover:opacity-75 md:block"
+        class="hidden py-1 transition duration-200 focus-outline whitespace-nowrap hover:-translate-y-1 hover:opacity-75 md:block"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>
@@ -232,10 +262,10 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
             href={`/blog/${prevPost.slug}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
-            <IconChevronLeft class="inline-block flex-none" />
+            <IconChevronLeft class="flex-none inline-block" />
             <div>
               <span>Older Post</span>
-              <div class="text-accent/85 pt-2 text-sm">{prevPost.title}</div>
+              <div class="pt-2 text-sm text-accent/85">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -244,17 +274,47 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
         nextPost && (
           <a
             href={`/blog/${nextPost.slug}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex justify-end w-full gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
               <span>Later Post</span>
-              <div class="text-accent/85 pt-2 text-sm">{nextPost.title}</div>
+              <div class="pt-2 text-sm text-accent/85">{nextPost.title}</div>
             </div>
-            <IconChevronRight class="inline-block flex-none" />
+            <IconChevronRight class="flex-none inline-block" />
           </a>
         )
       }
     </div>
+
+    <!-- Related Posts Section -->
+    {relatedPosts && relatedPosts.length > 0 && (
+      <section class="mt-12">
+        <h2 class="mb-6 text-2xl font-bold text-center text-accent">โพสต์ที่เกี่ยวข้อง</h2>
+        <div class="grid gap-6 sm:grid-cols-2">
+          {relatedPosts.map((relatedPost) => (
+            <a
+              href={`/blog/${relatedPost.slug}`}
+              class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+            >
+              <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
+                <img
+                  class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
+                  src={relatedPost.ogImage?.src || "/pickyzz-og.png"}
+                  alt={relatedPost.title}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2">
+                  <h2 class="text-white text-[1.1rem] text-center text-lg font-light decoration-dashed">
+                    {relatedPost.title}
+                  </h2>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
 
     <Waline />
   </main>

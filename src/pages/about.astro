@@ -118,7 +118,89 @@ export const prerender = true;
           </div>
         </div>
       </div>
+
+      <!-- FAQ Section -->
+      <section class="mx-auto mb-12 max-w-[80vw] md:max-w-4xl">
+        <h2 class="mb-8 text-3xl font-bold text-center">Frequently Asked Questions</h2>
+        <div class="space-y-6">
+          <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-2">What is your background in front-end development?</h3>
+            <p class="text-gray-700 dark:text-gray-300">
+              I have a Bachelor's degree in Science from KMUTNB, Thailand, and I'm passionate about front-end development.
+              I specialize in modern web technologies and have earned several certifications from FreeCodeCamp.
+            </p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-2">What technologies do you work with?</h3>
+            <p class="text-gray-700 dark:text-gray-300">
+              I work with HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS, Astro, Svelte, and Lua.
+              I'm always learning and exploring new technologies to stay current with industry trends.
+            </p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-2">How can I contact you?</h3>
+            <p class="text-gray-700 dark:text-gray-300">
+              You can reach me via email at <a href="mailto:contact@pickyzz.dev" class="text-blue-500 hover:underline">contact@pickyzz.dev</a>
+              or follow me on <a href="https://twitter.com/p1ckyzz" class="text-blue-500 hover:underline">Twitter @p1ckyzz</a>
+              and <a href="https://github.com/pickyzz" class="text-blue-500 hover:underline">GitHub @pickyzz</a>.
+            </p>
+          </div>
+
+          <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg">
+            <h3 class="text-xl font-semibold mb-2">What are your certifications?</h3>
+            <p class="text-gray-700 dark:text-gray-300">
+              I have completed Responsive Web Design, JavaScript Algorithms and Data Structures, and Front End Development Libraries
+              certifications from FreeCodeCamp. You can view my certificates above.
+            </p>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
+
+  <!-- FAQ Schema JSON-LD -->
+  <script type="application/ld+json" define:vars={{ SITE }}>
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is your background in front-end development?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "I have a Bachelor's degree in Science from KMUTNB, Thailand, and I'm passionate about front-end development. I specialize in modern web technologies and have earned several certifications from FreeCodeCamp."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What technologies do you work with?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "I work with HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS, Astro, Svelte, and Lua. I'm always learning and exploring new technologies to stay current with industry trends."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I contact you?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can reach me via email at contact@pickyzz.dev or follow me on Twitter @p1ckyzz and GitHub @pickyzz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are your certifications?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "I have completed Responsive Web Design, JavaScript Algorithms and Data Structures, and Front End Development Libraries certifications from FreeCodeCamp. You can view my certificates above."
+        }
+      }
+    ]
+  }
+  </script>
+
   <Footer />
 </Layout>

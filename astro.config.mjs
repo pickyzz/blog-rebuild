@@ -63,6 +63,31 @@ export default defineConfig({
     tailwind(),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
+      serialize(item) {
+        // Set priority and changefreq based on page type
+        if (item.url === SITE.website || item.url === `${SITE.website}/`) {
+          // Homepage
+          item.priority = 1.0;
+          item.changefreq = 'daily';
+        } else if (item.url.includes('/blog/')) {
+          // Blog pages
+          item.priority = 0.8;
+          item.changefreq = 'weekly';
+        } else if (item.url.includes('/tags/')) {
+          // Tag pages
+          item.priority = 0.6;
+          item.changefreq = 'monthly';
+        } else if (item.url.includes('/about') || item.url.includes('/archives')) {
+          // About and archives pages
+          item.priority = 0.5;
+          item.changefreq = 'yearly';
+        } else {
+          // Other pages
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
+        }
+        return item;
+      },
     }),
     mdx({
       extendMarkdownConfig: true,

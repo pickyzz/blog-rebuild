@@ -13,6 +13,7 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  robots?: string;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
+  robots = "index, follow",
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage ?? SITE.ogImage ?? "og.png", Astro.url);
@@ -49,6 +51,9 @@ const structuredData = {
 <!doctype html>
 <html lang="th" class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
+    {/* Prev/Next links for articles (set by page via layout props) */}
+    {Astro.props.prevPost && <link rel="prev" href={`/blog/${Astro.props.prevPost.slug}`} />}
+    {Astro.props.nextPost && <link rel="next" href={`/blog/${Astro.props.nextPost.slug}`} />}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -78,6 +83,7 @@ const structuredData = {
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <meta name="keywords" content="front-end development, React, JavaScript, HTML, CSS, ภาษาไทย, บล็อก, tutorial, web development" />
+    <meta name="robots" content={robots} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Open Graph / Facebook -->
@@ -172,6 +178,47 @@ const structuredData = {
       href="https://unpkg.com/@waline/client@v3/dist/waline.css"
     />
     <!-- Waline comment end -->
+
+    <!-- Web Vitals Monitoring -->
+    <script is:inline>
+      // Load web-vitals library
+      (function() {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js';
+        script.onload = function() {
+          // web-vitals is now available as window.webVitals
+          function sendToAnalytics({ name, delta, value, id }) {
+            // Push to dataLayer (GTM) if available
+            if (window.dataLayer && typeof window.dataLayer.push === 'function') {
+              window.dataLayer.push({
+                event: 'web-vitals',
+                event_category: 'Web Vitals',
+                event_action: name,
+                event_label: id,
+                value: Math.round(name === 'CLS' ? delta * 1000 : delta),
+                metric_value: value
+              });
+            }
+    
+            // Also log to console for debugging
+            console.log(`${name}:`, {
+              delta: Math.round(delta),
+              value: Math.round(value),
+              id
+            });
+          }
+          // Track Core Web Vitals
+          if (window.webVitals) {
+            window.webVitals.getCLS(sendToAnalytics);
+            window.webVitals.getFID(sendToAnalytics);
+            window.webVitals.getFCP(sendToAnalytics);
+            window.webVitals.getLCP(sendToAnalytics);
+            window.webVitals.getTTFB(sendToAnalytics);
+          }
+        };
+        document.head.appendChild(script);
+      })();
+    </script>
 
     <ClientRouter />
 

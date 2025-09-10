@@ -49,7 +49,7 @@ if (Astro.response && Astro.response.headers) {
 
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`Posts | ${SITE.title}`} canonicalURL={currentPage === 1 ? `${SITE.website}blog` : `${SITE.website}blog?page=${currentPage}`}>
   <Header />
     <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     {page.data && page.data.length > 0 ? (
