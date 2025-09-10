@@ -17,6 +17,22 @@ const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
 export default defineConfig({
   site: SITE.website,
   output: "server",
+  vite: {
+    // Externalize resvg native package to avoid bundling .node files with esbuild
+    ssr: {
+      external: ["@resvg/resvg-js"]
+    },
+    // Prevent Vite optimizeDeps from pre-bundling the native package during dev
+    optimizeDeps: {
+      exclude: ["@resvg/resvg-js"]
+    },
+    // Ensure Rollup also treats the package as external for builds
+    build: {
+      rollupOptions: {
+        external: ["@resvg/resvg-js"]
+      }
+    }
+  },
   adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : vercel({ edge: true }),
   trailingSlash: "never",
   image: {

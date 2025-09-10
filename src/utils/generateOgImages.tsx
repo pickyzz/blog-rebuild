@@ -1,5 +1,3 @@
-// ปรับปรุงให้รองรับการสร้าง OG image ที่ optimized และ next-gen format
-import { Resvg } from "@resvg/resvg-js";
 import { type CollectionEntry } from "astro:content";
 import postOgImage from "@/utils/og-templates/post";
 import siteOgImage from "@/utils/og-templates/site";
@@ -11,14 +9,17 @@ import siteOgImage from "@/utils/og-templates/site";
  * @param format - Output format: "png" | "webp"
  * @returns The image buffer.
  */
-function svgBufferToImageBuffer(svg: string, format: "png" | "webp" = "png") {
+async function svgBufferToImageBuffer(svg: string, format: "png" | "webp" = "png") {
+  // Dynamic import to avoid bundling native .node files by esbuild
+  const { Resvg } = await import("@resvg/resvg-js");
   const resvg = new Resvg(svg, {
     fitTo: { mode: "width", value: 1200 },
     background: "#fefbfb"
   });
   const imgData = resvg.render();
-  if (format === "webp" && typeof imgData.asWebp === "function") {
-    return imgData.asWebp({ quality: 90 }); // webp output, if supported
+  // asWebp may not exist on all backends — cast to any for optional support
+  if (format === "webp" && typeof (imgData as any).asWebp === "function") {
+    return (imgData as any).asWebp({ quality: 90 }); // webp output, if supported
   }
   return imgData.asPng();
 }
