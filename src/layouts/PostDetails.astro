@@ -15,10 +15,11 @@ import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
 import { generateToc } from "@/utils/generateToc";
 import TOC from "@/components/TOC.astro";
+import readingTimeLib from "reading-time";
 
 export interface Props {
-  post: CollectionEntry<"blog">;
-  posts: CollectionEntry<"blog">[];
+  post: any;
+  posts: any[];
 }
 
 const { post, posts } = Astro.props;
@@ -36,8 +37,8 @@ const {
   pubDatetime,
   modDatetime,
   tags,
-  readingTime,
 } = post.data;
+let readingTime = post.data.readingTime;
 
 let Content: any = null;
 let headings: any[] = [];
@@ -84,14 +85,30 @@ try {
   notionContent = processedContent;
   headings = extractedHeadings;
 } catch (error) {
-  console.warn('Failed to fetch Notion content:', error);
+  console.warn('Failed to fetch Notion content:', error instanceof Error ? error.message : String(error));
   notionContent = `<div class="error-message">
     <p>Unable to load content from Notion.</p>
     <p>Please try again later.</p>
   </div>`;
   headings = [];
 }
-
+ 
+// Ensure readingTime exists: compute from fetched Notion HTML if missing
+if (!readingTime) {
+  try {
+    const textOnly = notionContent.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const rt = readingTimeLib(textOnly);
+    readingTime = rt?.text ?? null;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn("[PostDetails] failed to compute reading time:", err instanceof Error ? err.message : String(err));
+  }
+}
+ 
+// Log readingTime during SSR for debugging
+// eslint-disable-next-line no-console
+console.info(`[PostDetails] SSR readingTime for ${post?.data?.slug ?? title}: ${readingTime}`);
+ 
 const toc = generateToc(headings);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
@@ -111,11 +128,11 @@ const layoutProps = {
 };
 
 /* ========== Prev/Next Posts ========== */
-const allPosts = posts.map(({ data: { title, slug } }) => ({
-  slug,
-  title,
+const allPosts = (posts || []).map(({ data }: any) => ({
+  slug: data?.slug,
+  title: data?.title,
 }));
-const currentPostIndex = allPosts.findIndex(a => a.slug === post.data.slug);
+const currentPostIndex = allPosts.findIndex(a => a.slug === (post?.data?.slug ?? null));
 const prevPost =
   currentPostIndex < allPosts.length - 1
     ? allPosts[currentPostIndex + 1]
@@ -148,7 +165,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
         class="mb-2"
       />
     </div>
-    <p class="ml-1.5 text-xs font-light">By : {author} | {readingTime}</p>
+    <p class="ml-1.5 text-xs font-light">By : {author}{readingTime ? ` | ${readingTime}` : ''}</p>
     <article id="article" class="prose mx-auto mt-8 max-w-4xl">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
@@ -162,7 +179,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     </article>
 
     <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
+      {(tags || []).map((tag: string) => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
     </ul>
     <div
       class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
@@ -317,22 +334,27 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     block.setAttribute('data-theme', isDark ? 'dark' : 'light');
   }
 
-  // Listen for theme changes
-  const themeObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-        // Theme changed, update code blocks
-        setTimeout(() => {
-          initThemeAwareCodeBlocks();
-        }, 100);
-      }
+  // Listen for theme changes (guarded to avoid redeclaration)
+  if (!window.__themeObserver) {
+    window.__themeObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme')) {
+          // Theme changed, update code blocks
+          setTimeout(() => {
+            initThemeAwareCodeBlocks();
+          }, 100);
+        }
+      });
     });
-  });
-
-  themeObserver.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class', 'data-theme']
-  });
+  
+    window.__themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme']
+    });
+  } else {
+    // Already initialized; do nothing to avoid duplicate observer
+    // console.log('[themeObserver] already initialized');
+  }
 
   // Initialize theme-aware code blocks on load
   document.addEventListener('DOMContentLoaded', () => {
@@ -351,9 +373,44 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 
    * the "Back to Top" button is clicked. */
   function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    function scrollHandler() {
+      console.log('[backToTop] click - scrolling to top (smooth)');
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        // Fallback for older browsers
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+      }
+    }
+
+    function attach() {
+      const btn = document.querySelector("#back-to-top");
+      console.log('[backToTop] attach called, button found:', !!btn);
+      if (!btn) return;
+      // Remove any existing inline handler to avoid duplicates, then add listener
+      try {
+        btn.onclick = null;
+      } catch (e) {
+        /* ignore */
+      }
+      btn.addEventListener("click", scrollHandler);
+    }
+
+    // Attach immediately (for full page loads)
+    attach();
+
+    // Re-attach after Astro client navigation or page load events
+    document.addEventListener("astro:page-load", attach);
+    document.addEventListener("astro:after-swap", () => {
+      attach();
+      // Keep existing behavior of jumping to top after swap
+      try {
+        window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      } catch (e) {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
     });
   }
   backToTop();

@@ -3,11 +3,11 @@ import { type CollectionEntry } from "astro:content";
 import PostDetails from "@/layouts/PostDetails.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getNotionPosts, getNotionPostBySlug } from "@/utils/getNotionPosts";
-
+ 
 export interface Props {
   post: CollectionEntry<"blog">;
 }
-
+ 
 /* SSR mode: enable server-side rendering and set cache headers below */
 export const ssr = true;
 
