@@ -2,7 +2,6 @@
 import { SITE } from "@/config";
 import "@/styles/global.css";
 import { ClientRouter } from "astro:transitions";
-import { AstroFont } from "astro-font";
 
 export interface Props {
   title?: string;
@@ -118,20 +117,19 @@ const structuredData = {
       set:html={JSON.stringify(structuredData)}
     />
 
-    <!-- Load Google Font with Astro-font -->
-    <AstroFont
-      config={[
-        {
-          src: [],
-          name: "IBM Plex Mono",
-          googleFontsURL:
-            "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap",
-          preload: true,
-          display: "swap",
-          fallback: "sans-serif",
-          cssVariable: "font-ibm",
-        },
-      ]}
+    <!-- Load Google Font -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap"
+      rel="stylesheet"
     />
 
     <meta name="theme-color" content="#ffffff" />

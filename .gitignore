@@ -24,8 +24,8 @@ pnpm-debug.log*
 # ignore .astro directory
 .astro
 
-# Bun lockb
-bun.lockb
+# Bun
+bun.lock
 
 # playwright
 /test-results/

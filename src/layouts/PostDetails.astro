@@ -85,7 +85,6 @@ try {
   notionContent = processedContent;
   headings = extractedHeadings;
 } catch (error) {
-  console.warn('Failed to fetch Notion content:', error instanceof Error ? error.message : String(error));
   notionContent = `<div class="error-message">
     <p>Unable to load content from Notion.</p>
     <p>Please try again later.</p>
@@ -100,14 +99,11 @@ if (!readingTime) {
     const rt = readingTimeLib(textOnly);
     readingTime = rt?.text ?? null;
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn("[PostDetails] failed to compute reading time:", err instanceof Error ? err.message : String(err));
+    // Reading time computation failed - silently continue
   }
 }
  
-// Log readingTime during SSR for debugging
-// eslint-disable-next-line no-console
-console.info(`[PostDetails] SSR readingTime for ${post?.data?.slug ?? title}: ${readingTime}`);
+// Reading time logged for debugging (removed for production)
  
 const toc = generateToc(headings);
 
@@ -285,7 +281,6 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     const text = codeElement?.textContent || '';
 
     if (!text.trim()) {
-      console.warn('No code content found to copy');
       return;
     }
 
@@ -300,8 +295,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
         button.classList.remove('copied');
         button.disabled = false;
       }, 2000);
-    }).catch(err => {
-      console.error('Failed to copy code:', err);
+    }).catch(() => {
       button.textContent = 'Error';
       setTimeout(() => {
         button.textContent = 'Copy';
@@ -353,7 +347,6 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     });
   } else {
     // Already initialized; do nothing to avoid duplicate observer
-    // console.log('[themeObserver] already initialized');
   }
 
   // Initialize theme-aware code blocks on load
@@ -374,7 +367,6 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
    * the "Back to Top" button is clicked. */
   function backToTop() {
     function scrollHandler() {
-      console.log('[backToTop] click - scrolling to top (smooth)');
       try {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
@@ -386,7 +378,6 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 
     function attach() {
       const btn = document.querySelector("#back-to-top");
-      console.log('[backToTop] attach called, button found:', !!btn);
       if (!btn) return;
       // Remove any existing inline handler to avoid duplicates, then add listener
       try {
@@ -420,89 +411,4 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
 
-  /** TOC Scroll Spy - Highlight active section - DISABLED to avoid conflict with Layout.astro */
-  /*
-  function initTOCScrollSpy() {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    // Query headings specifically within the notion-content
-    const headings = document.querySelectorAll('.notion-content h1[id], .notion-content h2[id], .notion-content h3[id], .notion-content h4[id], .notion-content h5[id], .notion-content h6[id]');
-
-    console.log('TOC Scroll Spy initialized:', { tocLinks: tocLinks.length, headings: headings.length });
-
-    if (tocLinks.length === 0 || headings.length === 0) {
-      console.warn('TOC Scroll Spy: No TOC links or headings found');
-      return;
-    }
-
-    let currentActiveLink = null;
-
-    // Function to find the heading closest to viewport center
-    function findClosestHeading() {
-      const viewportCenter = window.scrollY + window.innerHeight / 2;
-      let closestHeading = null;
-      let minDistance = Infinity;
-
-      headings.forEach(heading => {
-        const rect = heading.getBoundingClientRect();
-        const headingCenter = window.scrollY + rect.top + rect.height / 2;
-        const distance = Math.abs(viewportCenter - headingCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestHeading = heading;
-        }
-      });
-
-      return closestHeading;
-    }
-
-    // Function to update active TOC link
-    function updateActiveTOC() {
-      const closestHeading = findClosestHeading();
-
-      if (closestHeading) {
-        const slug = closestHeading.id;
-        const activeLink = document.querySelector(`.toc-link[data-slug="${slug}"]`);
-
-        if (activeLink && activeLink !== currentActiveLink) {
-          // Remove active class from current active link
-          if (currentActiveLink) {
-            currentActiveLink.classList.remove('active');
-          }
-
-          // Add active class to new active link
-          activeLink.classList.add('active');
-          currentActiveLink = activeLink;
-          console.log('Activated TOC link:', slug);
-        }
-      }
-    }
-
-    // Throttled update function
-    let scrollTimeout;
-    function throttledUpdate() {
-      if (!scrollTimeout) {
-        scrollTimeout = setTimeout(() => {
-          updateActiveTOC();
-          scrollTimeout = null;
-        }, 100); // Update every 100ms
-      }
-    }
-
-    // Listen for scroll events
-    window.addEventListener('scroll', throttledUpdate, { passive: true });
-
-    // Update on page load and resize
-    window.addEventListener('load', updateActiveTOC);
-    window.addEventListener('resize', updateActiveTOC);
-
-    // Initial activation
-    setTimeout(() => {
-      updateActiveTOC();
-      console.log('Initial TOC activation completed');
-    }, 500);
-  }
-  */
-
-  // initTOCScrollSpy(); // Disabled to avoid conflict
 </script>

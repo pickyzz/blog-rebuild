@@ -1,11 +1,10 @@
 ---
-import { type CollectionEntry } from "astro:content";
 import PostDetails from "@/layouts/PostDetails.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getNotionPosts, getNotionPostBySlug } from "@/utils/getNotionPosts";
  
 export interface Props {
-  post: CollectionEntry<"blog">;
+  post: any;
 }
  
 /* SSR mode: enable server-side rendering and set cache headers below */
@@ -16,7 +15,7 @@ if (typeof slug !== "string" || !slug) {
   return Astro.redirect('/404');
 }
 const slugStr: string = slug;
-const post = await getNotionPostBySlug(slugStr);
+const post = await getNotionPostBySlug(slugStr) as any;
 
 if (!post) {
   return Astro.redirect('/404');
