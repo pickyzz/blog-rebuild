@@ -158,7 +158,7 @@ n2m.setCustomTransformer("image", async (block: any) => {
 </figure>`;
   }
 
-  return `<img src="${imageUrl}" alt="" loading="lazy" class="notion-image" />`;
+  return `<img src="${imageUrl}" alt="Image from blog post" loading="lazy" class="notion-image" />`;
 });
 
 n2m.setCustomTransformer("video", async (block: any) => {

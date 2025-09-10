@@ -30,13 +30,34 @@ export default defineConfig({
     build: {
       rollupOptions: {
         external: ["@resvg/resvg-js"]
+      },
+      // Optimize CSS and JS bundles
+      cssMinify: true,
+      minify: 'esbuild',
+      sourcemap: false,
+      // Split chunks for better caching
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['astro', 'astro/components'],
+            ui: ['@astrojs/tailwind', 'tailwindcss']
+          }
+        }
       }
+    },
+    // Optimize CSS processing
+    css: {
+      devSourcemap: false
     }
   },
   adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : vercel({ edge: true }),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
+  },
+  compressHTML: true,
+  build: {
+    inlineStylesheets: 'auto'
   },
   integrations: [
     tailwind(),
@@ -83,6 +104,7 @@ export default defineConfig({
                 maxEntries: 50,
                 maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
               },
+              networkTimeoutSeconds: 3,
             },
           },
           {
@@ -111,6 +133,10 @@ export default defineConfig({
             },
           },
         ],
+        // Optimize service worker
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
       },
     }),
   ],
@@ -129,6 +155,13 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "viewport",
+  },
+  // Add resource hints for better performance
+  output: "server",
+  server: {
+    headers: {
+      "Link": "</favicon.ico>; rel=preload; as=image, </apple-touch-icon.png>; rel=preload; as=image"
+    }
   },
   experimental: {
     clientPrerender: true,
@@ -160,6 +193,11 @@ export default defineConfig({
         key: "Content-Security-Policy",
         value:
           "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;",
+      },
+      // Performance headers
+      {
+        key: "X-DNS-Prefetch-Control",
+        value: "on",
       },
     ],
   },

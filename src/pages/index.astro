@@ -26,7 +26,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 export const prerender = true;
 ---
 
-<Layout>
+<Layout description="บล็อกส่วนตัวของ Parinya (Pickyzz) T. ผู้พัฒนา front-end ที่เรียนรู้ด้วยตนเอง แชร์ความรู้เกี่ยวกับ React, JavaScript, HTML, CSS และเทคโนโลยีเว็บอื่นๆ ในภาษาไทย">
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pb-6 pt-8">
@@ -62,6 +62,7 @@ export const prerender = true;
                       href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
+                      priority="high"
                     />
                   )
               )}
@@ -88,6 +89,7 @@ export const prerender = true;
                       href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
+                      priority="low"
                     />
                   )
               )}

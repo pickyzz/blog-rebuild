@@ -123,6 +123,31 @@ const layoutProps = {
   scrollSmooth: true,
 };
 
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": SITE.website
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": `${SITE.website}blog/`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": title,
+      "item": new URL(Astro.url.pathname, Astro.url)
+    }
+  ]
+};
+
 /* ========== Prev/Next Posts ========== */
 const allPosts = (posts || []).map(({ data }: any) => ({
   slug: data?.slug,
@@ -137,6 +162,12 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
 ---
 
 <Layout {...layoutProps}>
+  <!-- BreadcrumbList Schema -->
+  <script
+    is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbStructuredData)}
+  />
   <Header />
   <TOC headings={toc} />
   <BackButton />
@@ -166,7 +197,7 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={post.data.ogImage?.src}
-        alt={title ? `Cover image for ${title}` : "Blog post cover image"}
+        alt={title ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}` : "Blog post cover image"}
         loading="eager"
       />
 
@@ -352,14 +383,27 @@ const nextPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : null;
   // Initialize theme-aware code blocks on load
   document.addEventListener('DOMContentLoaded', () => {
     initThemeAwareCodeBlocks();
+    initLazyLoading();
   });
 
   // Re-initialize after Astro page transitions
   document.addEventListener('astro:after-swap', () => {
     setTimeout(() => {
       initThemeAwareCodeBlocks();
+      initLazyLoading();
     }, 100);
   });
+
+  /** Initialize lazy loading for images in Notion content */
+  function initLazyLoading() {
+    const images = document.querySelectorAll('.notion-content img:not([loading])');
+    images.forEach(img => {
+      if (!img.hasAttribute('loading')) {
+        img.setAttribute('loading', 'lazy');
+        img.setAttribute('decoding', 'async');
+      }
+    });
+  }
 
 
   /** Scrolls the document to the top when
