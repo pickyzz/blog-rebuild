@@ -33,3 +33,6 @@ pnpm-debug.log*
 # pagefind 
 /public/pagefind/
 .vercel
+
+# CRUSH
+CRUSH.md

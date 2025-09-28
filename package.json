@@ -60,7 +60,8 @@
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
-    "typescript-eslint": "8.42.0"
+    "typescript-eslint": "8.42.0",
+    "vitest": "^1.6.1"
   },
   "scripts": {
     "dev": "astro dev",
@@ -74,6 +75,8 @@
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "test": "playwright test",
+    "test:unit": "vitest",
+    "test:unit:watch": "vitest --watch",
     "lint": "eslint .",
     "build": "astro build",
     "postbuild": "pagefind --site ./dist/client --output-path ./public/pagefind"

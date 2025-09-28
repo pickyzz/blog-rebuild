@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Notion custom transformers > image > renders image with caption 1`] = `"<figure><img src="https://img.com/1.png" /><figcaption>caption1</figcaption></figure>"`;
