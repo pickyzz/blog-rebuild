@@ -1,4 +1,4 @@
-import type { CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 import getSortedPosts from "./getSortedPosts";
 import { slugifyAll } from "./slugify";
 

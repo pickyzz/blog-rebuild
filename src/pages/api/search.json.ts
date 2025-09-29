@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ request }) => {
     const filteredPosts = posts.filter(post => {
       const title = post.data.title.toLowerCase();
       const description = post.data.description?.toLowerCase() || '';
-      const tags = post.data.tags.map(tag => tag.toLowerCase()).join(' ');
+      const tags = post.data.tags.map((tag: string) => tag.toLowerCase()).join(' ');
 
       return title.includes(query) ||
              description.includes(query) ||

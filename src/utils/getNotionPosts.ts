@@ -1,5 +1,5 @@
 import { Client } from "@notionhq/client";
-import type { CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 const DATABASE_ID = import.meta.env.DATABASE_ID;
@@ -21,10 +21,10 @@ const CACHE_CONFIG = {
   POSTS_BY_TAG: 5 * 60 * 1000,
 } as const;
 
-const postsCache = new Map<string, { data: CollectionEntry<"blog">[], timestamp: number; ttl: number }>();
+const postsCache = new Map<string, { data: BlogPost[], timestamp: number; ttl: number }>();
 const tagsCache = new Map<string, { data: { tag: string; tagName: string }[], timestamp: number; ttl: number }>();
-const postBySlugCache = new Map<string, { data: CollectionEntry<"blog"> | null, timestamp: number; ttl: number }>();
-const postsByTagCache = new Map<string, { data: CollectionEntry<"blog">[], timestamp: number; ttl: number }>();
+const postBySlugCache = new Map<string, { data: BlogPost | null, timestamp: number; ttl: number }>();
+const postsByTagCache = new Map<string, { data: BlogPost[], timestamp: number; ttl: number }>();
 
 // Helper function to check if cache is valid
 function isCacheValid(timestamp: number, ttl: number): boolean {
@@ -273,7 +273,7 @@ export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry
   } catch (error) {
     console.error("Error fetching post by slug:", error);
     // Cache null result for failed requests to avoid repeated API calls
-    setCacheData(postBySlugCache, cacheKey, null, CACHE_CONFIG.POST_BY_SLUG / 4); // Shorter TTL for errors
+    setCacheData(postBySlugCache, cacheKey, null, CACHE_CONFIG.POST_BY_SLUG_OLD / 4); // Shorter TTL for errors
     return null;
   }
 }
@@ -316,7 +316,7 @@ export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: str
     const tagSet = new Set<string>();
 
     posts.forEach(post => {
-      post.data.tags.forEach(tag => tagSet.add(tag));
+      post.data.tags.forEach((tag: string) => tagSet.add(tag));
     });
 
     const tags = Array.from(tagSet).map(tag => ({

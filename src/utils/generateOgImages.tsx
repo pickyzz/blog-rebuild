@@ -1,4 +1,4 @@
-import { type CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 import postOgImage from "@/utils/og-templates/post";
 import siteOgImage from "@/utils/og-templates/site";
 
@@ -24,7 +24,7 @@ async function svgBufferToImageBuffer(svg: string, format: "png" | "webp" = "png
   return imgData.asPng();
 }
 
-export async function generateOgImageForPost(post: CollectionEntry<"blog">, format: "png" | "webp" = "png") {
+export async function generateOgImageForPost(post: BlogPost, format: "png" | "webp" = "png") {
   const svg = await postOgImage(post);
   return svgBufferToImageBuffer(svg, format);
 }
