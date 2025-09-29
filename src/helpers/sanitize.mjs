@@ -6,6 +6,8 @@ export function sanitize(html) {
     .replace(/on\w+="[^"]*"/gi, "")
     .replace(/on\w+='[^']*'/gi, "")
     .replace(/javascript:/gi, "")
+    .replace(/data:/gi, "")
+    .replace(/vbscript:/gi, "")
     .replace(/<iframe[\s\S]*?>[\s\S]*?<\/iframe>/gi, (m) =>
       m.includes("youtube.com") || m.includes("youtu.be") ? m : ""
     )
