@@ -11,10 +11,13 @@ export function sanitize(html) {
       .replace(/javascript:/gi, "")
       .replace(/data:/gi, "")
       .replace(/vbscript:/gi, "")
-      .replace(/<iframe[\s\S]*?>[\s\S]*<\/iframe\s*>/gi, m =>
-        m.includes("youtube.com") || m.includes("youtu.be") ? m : ""
-      )
-      .replace(/<iframe[^>]*>/gi, "")
+      .replace(/<iframe[^>]*>[\s\S]*?<\/iframe\s*>/gi, m => {
+        // Allow only YouTube embed iframes for security
+        if (m.includes("youtube.com/embed/") || m.includes("youtu.be/embed/")) {
+          return m;
+        }
+        return "";
+      })
       .replace(/<object[\s\S]*?>[\s\S]*<\/object\s*>/gi, "")
       .replace(/<embed[\s\S]*?>[\s\S]*<\/embed\s*>/gi, "")
       .replace(/<link[\s\S]*?\s*>/gi, "")
