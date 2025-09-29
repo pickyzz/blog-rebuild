@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "src/pages/**/*.ts": {
+      "runtime": "@astrojs/vercel/edge"
+    }
+  },
   "headers": [
     {
       "source": "/:all*.(js|css|svg|png|jpg|jpeg|webp|ico|webmanifest)",
