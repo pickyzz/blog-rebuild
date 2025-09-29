@@ -58,10 +58,20 @@ try {
   let match;
   let headingIndex = 0;
 
+  // Store heading mappings for adding IDs
+  const headingMappings: Array<{original: string, new: string}> = [];
+
   while ((match = headingRegex.exec(notionContent)) !== null) {
     const [, level, existingAttrs, content] = match;
     const depth = parseInt(level);
-    const text = content.replace(/<[^>]*>/g, '').trim(); // Remove HTML tags from text
+
+    // Better text extraction - handle nested HTML elements using regex
+    // Remove all HTML tags to get clean text
+    const text = content
+      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
+      .replace(/&[a-zA-Z0-9#]+;/g, '') // Remove HTML entities
+      .trim();
 
     if (text && depth >= 2 && depth <= 4) { // Only include h2-h4 for TOC
       const slug = slugifyStr(text);
@@ -72,15 +82,20 @@ try {
         slug
       });
 
-      // Add id attribute to heading if it doesn't already have one
-      const fullMatch = match[0];
+      // Store mapping for ID replacement if needed
       if (!existingAttrs.includes('id=')) {
+        const fullMatch = match[0];
         const newHeading = `<h${level}${existingAttrs} id="${slug}">${content}</h${level}>`;
-        processedContent = processedContent.replace(fullMatch, newHeading);
+        headingMappings.push({ original: fullMatch, new: newHeading });
       }
     }
     headingIndex++;
   }
+
+  // Apply heading ID replacements
+  headingMappings.forEach(({ original, new: newHeading }) => {
+    processedContent = processedContent.replace(original, newHeading);
+  });
 
   notionContent = processedContent;
   headings = extractedHeadings;

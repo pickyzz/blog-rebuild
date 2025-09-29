@@ -10,8 +10,8 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeRaw from 'rehype-raw';
 import Prism from 'prismjs';
 // Import Prism components in correct order to avoid dependency conflicts
-import 'prismjs/components/prism-core';
-import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs/components/prism-core.js';
+import 'prismjs/plugins/autoloader/prism-autoloader.js';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-markup';
