@@ -528,4 +528,122 @@ if (tags && tags.length > 0 && posts) {
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
 
+  /** TOC Scroll Highlighting Logic */
+  function initTocHighlighting() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+    
+    if (tocLinks.length === 0 || headings.length === 0) return;
+    
+    let currentActiveLink = null;
+    let ticking = false;
+    let lastScrollY = window.scrollY;
+    
+    // Function to find the heading that's currently in view
+    function findActiveHeading() {
+      const scrollY = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const scrollCenter = scrollY + windowHeight / 2;
+      
+      // Find the heading closest to the center of the viewport
+      let activeHeading = null;
+      let minDistance = Infinity;
+      
+      headings.forEach(heading => {
+        const rect = heading.getBoundingClientRect();
+        const headingTop = rect.top + scrollY;
+        const headingCenter = headingTop + rect.height / 2;
+        const distance = Math.abs(scrollCenter - headingCenter);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          activeHeading = heading;
+        }
+      });
+      
+      return activeHeading;
+    }
+    
+    // Function to update active TOC link immediately
+    function updateActiveTocLinkImmediate() {
+      const activeHeading = findActiveHeading();
+      if (!activeHeading) return;
+      
+      const activeId = activeHeading.id;
+      const activeTocLink = document.querySelector(`.toc-link[data-slug="${activeId}"]`);
+      
+      if (activeTocLink && activeTocLink !== currentActiveLink) {
+        // Remove previous active state
+        if (currentActiveLink) {
+          currentActiveLink.classList.remove('active');
+        }
+        
+        // Add new active state
+        activeTocLink.classList.add('active');
+        currentActiveLink = activeTocLink;
+      }
+    }
+    
+    // Throttled update with shorter delay
+    function updateActiveTocLinkThrottled() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveTocLinkImmediate();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    
+    // Immediate update for fast response
+    function handleScrollImmediate() {
+      const currentScrollY = window.scrollY;
+      
+      // Only update if scrolled significantly (reduce unnecessary updates)
+      if (Math.abs(currentScrollY - lastScrollY) > 10) {
+        updateActiveTocLinkImmediate();
+        lastScrollY = currentScrollY;
+      }
+    }
+    
+    // Smooth scroll for TOC links with faster animation
+    tocLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('data-slug');
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          const headerHeight = 80; // Account for fixed header
+          const targetPosition = targetElement.offsetTop - headerHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Initialize active state
+    updateActiveTocLinkImmediate();
+    
+    // Use immediate updates for faster response, with fallback to throttled updates
+    window.addEventListener('scroll', handleScrollImmediate, { passive: true });
+    
+    // Fallback throttled update for heavy scroll operations
+    let throttledTimer;
+    window.addEventListener('scroll', () => {
+      clearTimeout(throttledTimer);
+      throttledTimer = setTimeout(updateActiveTocLinkThrottled, 16); // ~60fps
+    }, { passive: true });
+  }
+  
+  // Initialize TOC highlighting when DOM is ready
+  document.addEventListener('DOMContentLoaded', initTocHighlighting);
+  // Re-initialize after Astro page transitions
+  document.addEventListener('astro:after-swap', () => {
+    setTimeout(initTocHighlighting, 100);
+  });
+
 </script>
