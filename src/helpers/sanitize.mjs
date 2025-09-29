@@ -5,21 +5,48 @@ export function sanitize(html) {
   if (typeof html !== "string") return "";
   return sanitizeHtml(html, {
     allowedTags: [
-      "b", "i", "em", "strong", "a", "ul", "ol", "li", "p", "br", "span",
-      "img", "blockquote", "pre", "code", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
-     "iframe"
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "ul",
+      "ol",
+      "li",
+      "p",
+      "br",
+      "span",
+      "img",
+      "blockquote",
+      "pre",
+      "code",
+      "hr",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "iframe",
     ],
     allowedAttributes: {
       a: ["href", "name", "target", "rel"],
       img: ["src", "alt", "title", "width", "height"],
-      iframe: ["src", "width", "height", "frameborder", "allow", "allowfullscreen"],
-      "*": ["style", "class"]
+      iframe: [
+        "src",
+        "width",
+        "height",
+        "frameborder",
+        "allow",
+        "allowfullscreen",
+      ],
+      "*": ["style", "class"],
     },
     allowedSchemes: ["http", "https", "mailto"],
     allowProtocolRelative: false,
     allowedIframeHostnames: ["www.youtube.com", "youtube.com", "youtu.be"],
     transformTags: {
-      iframe: function(tagName, attribs) {
+      iframe: function (tagName, attribs) {
         let src = attribs.src || "";
         if (
           src.startsWith("https://www.youtube.com/embed/") ||
@@ -34,15 +61,17 @@ export function sanitize(html) {
               width: attribs.width || "560",
               height: attribs.height || "315",
               frameborder: attribs.frameborder || "0",
-              allow: attribs.allow || "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-              allowfullscreen: "true"
-            }
+              allow:
+                attribs.allow ||
+                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+              allowfullscreen: "true",
+            },
           };
         }
         // All other iframes removed
         return { tagName: "", text: "" };
-      }
-    }
+      },
+    },
   });
 }
 
