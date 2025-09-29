@@ -4,6 +4,7 @@ import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSun from "@/assets/icons/IconSun.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
+import IconSearch from "@/assets/icons/IconSearch.svg";
 import LinkButton from "./LinkButton.astro";
 import { SITE } from "@/config";
 
@@ -79,6 +80,11 @@ const isActive = (path: string) => {
           <li class="col-span-2">
             <a href="/about" class:list={["hover:text-accent", { "active-nav": isActive("/about") }]}>
               About
+            </a>
+          </li>
+          <li class="col-span-2">
+            <a href="/search" class:list={["hover:text-accent", { "active-nav": isActive("/search") }]}>
+              Search
             </a>
           </li>
           {

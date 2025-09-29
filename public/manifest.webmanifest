@@ -73,6 +73,18 @@
           "sizes": "192x192"
         }
       ]
+    },
+    {
+      "name": "Search Posts",
+      "short_name": "Search",
+      "description": "Search blog posts",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
