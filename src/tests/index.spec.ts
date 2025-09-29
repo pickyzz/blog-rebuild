@@ -55,20 +55,6 @@ test("about page", async ({ page }) => {
   await expect(page.locator("main > section")).toBeVisible();
 });
 
-test("search page", async ({ page }) => {
-  await page.goto("/search");
-  await expect(page).toHaveTitle(/Search/);
-  await expect(page).toHaveURL("/search");
-  await expect(page.locator("body")).toBeVisible();
-  await expect(page.locator("#nav-menu")).toBeVisible();
-  await expect(page.locator("#main-content")).toBeVisible();
-  await expect(page.getByLabel("breadcrumb")).toBeVisible();
-  await expect(page.locator("footer")).toBeVisible();
-  await expect(page.locator("main")).toBeVisible();
-  await expect(page.locator("main > h1")).toBeVisible();
-  await expect(page.locator("main > h1")).toHaveText("Search");
-});
-
 test("navigation works from menu", async ({ page }) => {
   await page.goto("/");
   await page.click('a[href="/blog"]');

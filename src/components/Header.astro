@@ -1,7 +1,6 @@
 ---
 import IconX from "@/assets/icons/IconX.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
-import IconSearch from "@/assets/icons/IconSearch.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSun from "@/assets/icons/IconSun.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
@@ -102,20 +101,6 @@ const isActive = (path: string) => {
               </li>
             )
           }
-          <li class="col-span-1 flex items-center justify-center">
-            <LinkButton
-              href="/search"
-              class:list={[
-                "focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 transition-transform duration-200",
-                { "[&>svg]:stroke-accent": isActive("/search") },
-              ]}
-              ariaLabel="search"
-              title="Search"
-            >
-              <IconSearch class="w-6 h-6" />
-              <span class="sr-only">Search</span>
-            </LinkButton>
-          </li>
           {
             SITE.lightAndDarkMode && (
               <li class="col-span-1 flex items-center justify-center">

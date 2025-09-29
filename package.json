@@ -15,11 +15,9 @@
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
-    "@pagefind/default-ui": "1.4.0",
     "@resvg/resvg-js": "2.6.2",
     "@vite-pwa/astro": "^1.1.0",
     "notion-to-md": "3.1.9",
-    "pagefind": "1.4.0",
     "prismjs": "^1.30.0",
     "reading-time": "1.5.0",
     "rehype-external-links": "3.0.0",
@@ -78,7 +76,6 @@
     "test:unit": "vitest",
     "test:unit:watch": "vitest --watch",
     "lint": "eslint .",
-    "build": "astro build",
-    "postbuild": "pagefind --site ./dist/client --output-path ./public/pagefind"
+    "build": "astro build"
   }
 }
