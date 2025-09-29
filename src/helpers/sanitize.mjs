@@ -1,34 +1,49 @@
+import sanitizeHtml from "sanitize-html";
+
 export function sanitize(html) {
-  // XSS sanitizer: removes <script>, on* attributes, javascript: URLs, and dangerous tags
+  // Robust XSS sanitizer using sanitize-html library
   if (typeof html !== "string") return "";
-  let prev;
-  let sanitized = html;
-  do {
-    prev = sanitized;
-    sanitized = sanitized
-      .replace(/<script[\s\S]*?>[\s\S]*?<\/script[^>]*>/gi, "")
-      .replace(/on\w+\s*=\s*(["'][^"']*["']|[^\s>]+)/gi, "")
-      .replace(/javascript:/gi, "")
-      .replace(/data:/gi, "")
-      .replace(/vbscript:/gi, "")
-      .replace(/<object[\s\S]*?>[\s\S]*<\/object\s*>/gi, "")
-      .replace(/<embed[\s\S]*?>[\s\S]*<\/embed\s*>/gi, "")
-      .replace(/<link[\s\S]*?\s*>/gi, "")
-      .replace(/<meta[\s\S]*?\s*>/gi, "");
-    // Robustly sanitize <iframe> tags with repeat loop
-    let iframePrev;
-    do {
-      iframePrev = sanitized;
-      sanitized = sanitized.replace(/<iframe[^>]*>[\s\S]*?<\/iframe\s*>/gi, m => {
-        // Allow only YouTube embed iframes for security
-        if (m.includes("youtube.com/embed/") || m.includes("youtu.be/embed/")) {
-          return m;
+  return sanitizeHtml(html, {
+    allowedTags: [
+      "b", "i", "em", "strong", "a", "ul", "ol", "li", "p", "br", "span",
+      "img", "blockquote", "pre", "code", "hr", "h1", "h2", "h3", "h4", "h5", "h6",
+     "iframe"
+    ],
+    allowedAttributes: {
+      a: ["href", "name", "target", "rel"],
+      img: ["src", "alt", "title", "width", "height"],
+      iframe: ["src", "width", "height", "frameborder", "allow", "allowfullscreen"],
+      "*": ["style", "class"]
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+    allowProtocolRelative: false,
+    allowedIframeHostnames: ["www.youtube.com", "youtube.com", "youtu.be"],
+    transformTags: {
+      iframe: function(tagName, attribs) {
+        let src = attribs.src || "";
+        if (
+          src.startsWith("https://www.youtube.com/embed/") ||
+          src.startsWith("https://youtube.com/embed/") ||
+          src.startsWith("https://youtu.be/embed/")
+        ) {
+          // Only allow safe attributes on allowed YouTube iframes
+          return {
+            tagName: "iframe",
+            attribs: {
+              src: src,
+              width: attribs.width || "560",
+              height: attribs.height || "315",
+              frameborder: attribs.frameborder || "0",
+              allow: attribs.allow || "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+              allowfullscreen: "true"
+            }
+          };
         }
-        return "";
-      });
-    } while (sanitized !== iframePrev);
-  } while (sanitized !== prev);
-  return sanitized;
+        // All other iframes removed
+        return { tagName: "", text: "" };
+      }
+    }
+  });
 }
 
 export function sanitizeUrl(str) {
