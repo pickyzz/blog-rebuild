@@ -78,5 +78,8 @@
     "test:unit:watch": "vitest --watch",
     "lint": "eslint .",
     "build": "astro build"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

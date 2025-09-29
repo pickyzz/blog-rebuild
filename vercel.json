@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "src/pages/**/*.astro": {
+      "runtime": "nodejs20.x"
+    }
+  },
   "headers": [
     {
       "source": "/:all*.(js|css|svg|png|jpg|jpeg|webp|ico|webmanifest)",
