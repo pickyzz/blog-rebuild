@@ -43,7 +43,7 @@
     "@playwright/test": "1.55.1",
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
-    "@types/prismjs": "^1.26.5",
+    "@types/prismjs": "1.26.5",
     "@typescript-eslint/parser": "8.44.1",
     "astro": "5.14.1",
     "astro-eslint-parser": "1.2.2",
