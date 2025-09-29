@@ -33,8 +33,18 @@ const page = {
   currentPage,
   lastPage,
   url: "/blog",
-  prev: currentPage > 2 ? `/blog?page=${currentPage - 1}` : (currentPage === 2 ? "/blog" : undefined),
-  next: currentPage < lastPage ? (currentPage + 1 === 1 ? "/blog" : `/blog?page=${currentPage + 1}`) : undefined,
+  prev:
+    currentPage > 2
+      ? `/blog?page=${currentPage - 1}`
+      : currentPage === 2
+        ? "/blog"
+        : undefined,
+  next:
+    currentPage < lastPage
+      ? currentPage + 1 === 1
+        ? "/blog"
+        : `/blog?page=${currentPage + 1}`
+      : undefined,
   start: start + 1,
   end: Math.min(end, sortedPosts.length),
   total: sortedPosts.length,
@@ -43,32 +53,35 @@ const page = {
 
 /* Set cache-control header for SSR response */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
 }
-
-
 ---
 
-<Layout title={`Posts | ${SITE.title}`} canonicalURL={currentPage === 1 ? `${SITE.website}blog` : `${SITE.website}blog?page=${currentPage}`}>
+<Layout
+  title={`Posts | ${SITE.title}`}
+  canonicalURL={currentPage === 1
+    ? `${SITE.website}blog`
+    : `${SITE.website}blog?page=${currentPage}`}
+>
   <Header />
-    <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
-    {page.data && page.data.length > 0 ? (
-      <ul
-        class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2"
-      >
-        {
-          page.data.map(({ data, id }) => (
+  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+    {
+      page.data && page.data.length > 0 ? (
+        <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
+          {page.data.map(({ data, id }) => (
             <Card href={`/blog/${data.slug}`} frontmatter={data} />
-          ))
-        }
-      </ul>
-    ) : (
-      <p class="text-center">No posts available.</p>
-    )}
+          ))}
+        </ul>
+      ) : (
+        <p class="text-center">No posts available.</p>
+      )
+    }
   </Main>
 
   <Pagination {page} />
 
   <Footer noMarginTop={page && page.lastPage > 1} />
-</search_and_replace>
 </Layout>

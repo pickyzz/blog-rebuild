@@ -20,7 +20,7 @@ const { tag, tagName, size = "sm" } = Astro.props;
     href={`/tags/${tag}`}
     transition:name={tag}
     class:list={[
-      "group-hover:text-accent relative pr-2 text-lg underline decoration-dashed focus-visible:p-1 group-hover:-top-0.5",
+      "relative pr-2 text-lg underline decoration-dashed focus-visible:p-1 group-hover:-top-0.5 group-hover:text-accent",
       { "text-sm": size === "sm" },
     ]}
   >

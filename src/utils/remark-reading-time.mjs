@@ -24,8 +24,11 @@ export function remarkReadingTime() {
     } catch (err) {
       // swallow errors to avoid breaking build; log minimal info if available
       // console.warn is safe in build-time plugins
-       
-      console.warn("[remark-reading-time] failed to compute reading time:", err?.message ?? err);
+
+      console.warn(
+        "[remark-reading-time] failed to compute reading time:",
+        err?.message ?? err
+      );
     }
   };
 }

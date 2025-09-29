@@ -1,40 +1,40 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import Hr from '../components/Hr.astro';
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hr from "../components/Hr.astro";
 
 export const prerender = false; // Enable SSR for dynamic search
 ---
 
 <Layout title="Search" description="Search blog posts">
   <Header />
-  <main class="container mx-auto px-4 py-8 max-w-4xl">
+  <main class="container mx-auto max-w-4xl px-4 py-8">
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-4">Search Posts</h1>
+      <h1 class="mb-4 text-3xl font-bold">Search Posts</h1>
       <form id="searchForm" class="mb-6">
         <div class="flex gap-2">
           <input
             type="text"
             id="searchInput"
             placeholder="Search by title, description, or tags..."
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             required
           />
           <button
             type="submit"
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            class="rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Search
           </button>
         </div>
       </form>
-      <div id="loading" class="hidden text-gray-600 dark:text-gray-400 mb-4">
+      <div id="loading" class="mb-4 hidden text-gray-600 dark:text-gray-400">
         Searching...
       </div>
-      <div id="error" class="hidden text-red-600 dark:text-red-400 mb-4"></div>
+      <div id="error" class="mb-4 hidden text-red-600 dark:text-red-400"></div>
       <div id="results" class="hidden">
-        <div class="flex justify-between items-center mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <h2 id="resultsTitle" class="text-xl font-semibold"></h2>
           <button
             id="clearBtn"
@@ -72,47 +72,50 @@ export const prerender = false; // Enable SSR for dynamic search
     query: string;
   }
 
-  const searchForm = document.getElementById('searchForm') as HTMLFormElement;
-  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
-  const loading = document.getElementById('loading')!;
-  const error = document.getElementById('error')!;
-  const results = document.getElementById('results')!;
-  const resultsTitle = document.getElementById('resultsTitle')!;
-  const postsList = document.getElementById('postsList')!;
-  const noResults = document.getElementById('noResults')!;
-  const clearBtn = document.getElementById('clearBtn')!;
+  const searchForm = document.getElementById("searchForm") as HTMLFormElement;
+  const searchInput = document.getElementById(
+    "searchInput"
+  ) as HTMLInputElement;
+  const loading = document.getElementById("loading")!;
+  const error = document.getElementById("error")!;
+  const results = document.getElementById("results")!;
+  const resultsTitle = document.getElementById("resultsTitle")!;
+  const postsList = document.getElementById("postsList")!;
+  const noResults = document.getElementById("noResults")!;
+  const clearBtn = document.getElementById("clearBtn")!;
 
   function showLoading() {
-    loading.classList.remove('hidden');
-    error.classList.add('hidden');
-    results.classList.add('hidden');
-    noResults.classList.add('hidden');
+    loading.classList.remove("hidden");
+    error.classList.add("hidden");
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
   }
 
   function showError(message: string) {
-    loading.classList.add('hidden');
-    error.classList.remove('hidden');
+    loading.classList.add("hidden");
+    error.classList.remove("hidden");
     error.textContent = message;
-    results.classList.add('hidden');
-    noResults.classList.add('hidden');
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
   }
 
   function showResults(data: SearchResponse) {
-    loading.classList.add('hidden');
-    error.classList.add('hidden');
+    loading.classList.add("hidden");
+    error.classList.add("hidden");
 
     if (data.posts.length === 0) {
-      noResults.classList.remove('hidden');
-      results.classList.add('hidden');
+      noResults.classList.remove("hidden");
+      results.classList.add("hidden");
       return;
     }
 
-    resultsTitle.textContent = `${data.total} result${data.total !== 1 ? 's' : ''} for "${data.query}"`;
-    postsList.innerHTML = '';
+    resultsTitle.textContent = `${data.total} result${data.total !== 1 ? "s" : ""} for "${data.query}"`;
+    postsList.innerHTML = "";
 
     data.posts.forEach(post => {
-      const postElement = document.createElement('article');
-      postElement.className = 'border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow';
+      const postElement = document.createElement("article");
+      postElement.className =
+        "border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow";
 
       const pubDate = new Date(post.data.pubDatetime).toLocaleDateString();
 
@@ -126,7 +129,7 @@ export const prerender = false; // Enable SSR for dynamic search
         <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
           <span>${post.data.author} • ${pubDate}</span>
           <div class="flex gap-1">
-            ${post.data.tags.map(tag => `<span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${tag}</span>`).join('')}
+            ${post.data.tags.map(tag => `<span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${tag}</span>`).join("")}
           </div>
         </div>
       `;
@@ -134,16 +137,16 @@ export const prerender = false; // Enable SSR for dynamic search
       postsList.appendChild(postElement);
     });
 
-    results.classList.remove('hidden');
-    noResults.classList.add('hidden');
+    results.classList.remove("hidden");
+    noResults.classList.add("hidden");
   }
 
   function clearResults() {
-    searchInput.value = '';
-    loading.classList.add('hidden');
-    error.classList.add('hidden');
-    results.classList.add('hidden');
-    noResults.classList.add('hidden');
+    searchInput.value = "";
+    loading.classList.add("hidden");
+    error.classList.add("hidden");
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
     searchInput.focus();
   }
 
@@ -151,7 +154,9 @@ export const prerender = false; // Enable SSR for dynamic search
     try {
       showLoading();
 
-      const response = await fetch(`/api/search.json?q=${encodeURIComponent(query)}`);
+      const response = await fetch(
+        `/api/search.json?q=${encodeURIComponent(query)}`
+      );
       if (!response.ok) {
         throw new Error(`Search failed: ${response.status}`);
       }
@@ -159,11 +164,11 @@ export const prerender = false; // Enable SSR for dynamic search
       const data: SearchResponse = await response.json();
       showResults(data);
     } catch (err) {
-      showError(err instanceof Error ? err.message : 'An error occurred');
+      showError(err instanceof Error ? err.message : "An error occurred");
     }
   }
 
-  searchForm.addEventListener('submit', (e) => {
+  searchForm.addEventListener("submit", e => {
     e.preventDefault();
     const query = searchInput.value.trim();
     if (query) {
@@ -171,7 +176,7 @@ export const prerender = false; // Enable SSR for dynamic search
     }
   });
 
-  clearBtn.addEventListener('click', clearResults);
+  clearBtn.addEventListener("click", clearResults);
 
   // Focus search input on page load
   searchInput.focus();

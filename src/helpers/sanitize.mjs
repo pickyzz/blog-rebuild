@@ -6,19 +6,19 @@ export function sanitize(html) {
   do {
     prev = sanitized;
     sanitized = sanitized
-      .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-      .replace(/on\w+="[^"]*"/gi, "")
-      .replace(/on\w+='[^']*'/gi, "")
+      .replace(/<script[\s\S]*?>[\s\S]*?<\/script[^>]*>/gi, "")
+      .replace(/on\w+\s*=\s*(["'][^"']*["']|[^\s>]+)/gi, "")
       .replace(/javascript:/gi, "")
       .replace(/data:/gi, "")
       .replace(/vbscript:/gi, "")
-      .replace(/<iframe[\s\S]*?>[\s\S]*?<\/iframe>/gi, (m) =>
+      .replace(/<iframe[\s\S]*?>[\s\S]*<\/iframe\s*>/gi, m =>
         m.includes("youtube.com") || m.includes("youtu.be") ? m : ""
       )
-      .replace(/<object[\s\S]*?>[\s\S]*?<\/object>/gi, "")
-      .replace(/<embed[\s\S]*?>[\s\S]*?<\/embed>/gi, "")
-      .replace(/<link[\s\S]*?>/gi, "")
-      .replace(/<meta[\s\S]*?>/gi, "");
+      .replace(/<iframe[^>]*>/gi, "")
+      .replace(/<object[\s\S]*?>[\s\S]*<\/object\s*>/gi, "")
+      .replace(/<embed[\s\S]*?>[\s\S]*<\/embed\s*>/gi, "")
+      .replace(/<link[\s\S]*?\s*>/gi, "")
+      .replace(/<meta[\s\S]*?\s*>/gi, "");
   } while (sanitized !== prev);
   return sanitized;
 }

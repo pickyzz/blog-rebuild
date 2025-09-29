@@ -119,16 +119,16 @@ npm run test:unit:watch
 
 Run these commands from the root of the project:
 
-| Command                  | Action                                                    |
-| :----------------------- | :-------------------------------------------------------- |
-| `npm install`            | Installs dependencies                                     |
-| `npm run dev`            | Starts local dev server at `localhost:4321`               |
-| `npm run build`          | Build your production site to `./dist/`                   |
-| `npm run preview`        | Preview your build locally, before deploying              |
-| `npm run clean`          | Remove `./dist` folder                                    |
-| `npm run format`         | Run Prettier and format code                              |
-| `npm run format:check`   | Check code formatting without modifying files             |
-| `npm run lint`           | Run ESLint and report linting errors                      |
-| `npm test`               | Run E2E tests with Playwright                              |
-| `npm run test:unit`      | Run unit tests with Vitest                                |
-| `npm run test:unit:watch`| Run unit tests in watch mode                              |
+| Command                   | Action                                        |
+| :------------------------ | :-------------------------------------------- |
+| `npm install`             | Installs dependencies                         |
+| `npm run dev`             | Starts local dev server at `localhost:4321`   |
+| `npm run build`           | Build your production site to `./dist/`       |
+| `npm run preview`         | Preview your build locally, before deploying  |
+| `npm run clean`           | Remove `./dist` folder                        |
+| `npm run format`          | Run Prettier and format code                  |
+| `npm run format:check`    | Check code formatting without modifying files |
+| `npm run lint`            | Run ESLint and report linting errors          |
+| `npm test`                | Run E2E tests with Playwright                 |
+| `npm run test:unit`       | Run unit tests with Vitest                    |
+| `npm run test:unit:watch` | Run unit tests in watch mode                  |

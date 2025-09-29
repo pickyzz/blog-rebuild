@@ -40,7 +40,10 @@ export async function GET() {
 
   // Add Cache-Control header for SSR caching
   try {
-    rssResponse.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=300");
+    rssResponse.headers.set(
+      "Cache-Control",
+      "public, s-maxage=3600, stale-while-revalidate=300"
+    );
   } catch (e) {
     // headers might be immutable in some environments
   }

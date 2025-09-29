@@ -52,10 +52,21 @@ const structuredData = {
 <html lang="th" class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
     {/* Prev/Next links for articles (set by page via layout props) */}
-    {Astro.props.prevPost && <link rel="prev" href={`/blog/${Astro.props.prevPost.slug}`} />}
-    {Astro.props.nextPost && <link rel="next" href={`/blog/${Astro.props.nextPost.slug}`} />}
+    {
+      Astro.props.prevPost && (
+        <link rel="prev" href={`/blog/${Astro.props.prevPost.slug}`} />
+      )
+    }
+    {
+      Astro.props.nextPost && (
+        <link rel="next" href={`/blog/${Astro.props.nextPost.slug}`} />
+      )
+    }
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
@@ -82,7 +93,10 @@ const structuredData = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
-    <meta name="keywords" content="front-end development, React, JavaScript, HTML, CSS, ภาษาไทย, บล็อก, tutorial, web development" />
+    <meta
+      name="keywords"
+      content="front-end development, React, JavaScript, HTML, CSS, ภาษาไทย, บล็อก, tutorial, web development"
+    />
     <meta name="robots" content={robots} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -134,23 +148,16 @@ const structuredData = {
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": SITE.title,
-        "url": SITE.website,
-        "logo": `${SITE.website}${SITE.ogImage}`,
-        "description": SITE.desc
+        name: SITE.title,
+        url: SITE.website,
+        logo: `${SITE.website}${SITE.ogImage}`,
+        description: SITE.desc,
       })}
     />
 
     <!-- Load Google Font -->
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="preload"
       href="https://fonts.gstatic.com/s/ibmplexmono/v19/-F6pfjptAgt5VM-kVkqdyU8n3kwq0nJN2qk_-k.woff2"
@@ -182,29 +189,32 @@ const structuredData = {
     <!-- Web Vitals Monitoring -->
     <script is:inline>
       // Load web-vitals library
-      (function() {
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js';
-        script.onload = function() {
+      (function () {
+        const script = document.createElement("script");
+        script.src = "https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js";
+        script.onload = function () {
           // web-vitals is now available as window.webVitals
           function sendToAnalytics({ name, delta, value, id }) {
             // Push to dataLayer (GTM) if available
-            if (window.dataLayer && typeof window.dataLayer.push === 'function') {
+            if (
+              window.dataLayer &&
+              typeof window.dataLayer.push === "function"
+            ) {
               window.dataLayer.push({
-                event: 'web-vitals',
-                event_category: 'Web Vitals',
+                event: "web-vitals",
+                event_category: "Web Vitals",
                 event_action: name,
                 event_label: id,
-                value: Math.round(name === 'CLS' ? delta * 1000 : delta),
-                metric_value: value
+                value: Math.round(name === "CLS" ? delta * 1000 : delta),
+                metric_value: value,
               });
             }
-    
+
             // Also log to console for debugging
             console.log(`${name}:`, {
               delta: Math.round(delta),
               value: Math.round(value),
-              id
+              id,
             });
           }
           // Track Core Web Vitals
@@ -267,24 +277,28 @@ const structuredData = {
 
       // Function to update active TOC link
       const updateActiveTocLink = debounce(() => {
-        const headings = Array.from(document.querySelectorAll('.notion-content h1[id], .notion-content h2[id], .notion-content h3[id], .notion-content h4[id], .notion-content h5[id], .notion-content h6[id]'));
-     
+        const headings = Array.from(
+          document.querySelectorAll(
+            ".notion-content h1[id], .notion-content h2[id], .notion-content h3[id], .notion-content h4[id], .notion-content h5[id], .notion-content h6[id]"
+          )
+        );
+
         // Find the heading at the top of the viewport
         let topHeading = null;
         let minTop = Infinity;
-     
-        headings.forEach((heading) => {
+
+        headings.forEach(heading => {
           const rect = heading.getBoundingClientRect();
           if (rect.top >= 0 && rect.top < minTop) {
             minTop = rect.top;
             topHeading = heading;
           }
         });
-     
+
         // If no heading is at or below the top, find the closest one above
         if (!topHeading) {
           minTop = Infinity;
-          headings.forEach((heading) => {
+          headings.forEach(heading => {
             const rect = heading.getBoundingClientRect();
             if (rect.top < 0 && Math.abs(rect.top) < Math.abs(minTop)) {
               minTop = rect.top;
@@ -292,18 +306,18 @@ const structuredData = {
             }
           });
         }
-     
+
         if (topHeading) {
           const id = topHeading.id;
           const tocLink = document.querySelector(`a[href="#${id}"]`);
-          if (tocLink && !tocLink.classList.contains('active')) {
+          if (tocLink && !tocLink.classList.contains("active")) {
             // Remove active from all links
-            const activeLinks = document.querySelectorAll('.toc-link.active');
+            const activeLinks = document.querySelectorAll(".toc-link.active");
             activeLinks.forEach(link => {
-              link.classList.remove('active');
+              link.classList.remove("active");
             });
             // Add active to current link
-            tocLink.classList.add('active');
+            tocLink.classList.add("active");
           }
         }
       }, 100); // 100ms debounce
@@ -348,7 +362,7 @@ const structuredData = {
         });
 
         // Listen to scroll events with requestAnimationFrame
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener("scroll", handleScroll, { passive: true });
       });
 
       // Cleanup on page change
@@ -359,7 +373,7 @@ const structuredData = {
         if (rafId) {
           cancelAnimationFrame(rafId);
         }
-        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener("scroll", handleScroll);
       });
     </script>
   </body>

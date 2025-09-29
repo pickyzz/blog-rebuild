@@ -7,9 +7,9 @@ import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 import { getNotionPosts } from "@/utils/getNotionPosts";
- 
+
 export const prerender = true;
- 
+
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
   return Astro.redirect("/404");
@@ -18,7 +18,10 @@ if (!SITE.showArchives) {
 const allPosts = await getNotionPosts();
 /* Set cache-control header for SSR response */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
 }
 const posts = allPosts.filter(({ data }) => !data.draft);
 

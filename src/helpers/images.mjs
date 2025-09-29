@@ -112,15 +112,28 @@ export async function downloadImage(
   }
 }
 // Generate responsive image attributes for <img> tag
-export function generateResponsiveImageAttrs({ src, formats = ["webp", "jpeg"], widths = [400, 800, 1200, 1400], sizes = "100vw", alt = "", loading = "lazy", decoding = "async", fetchpriority = "auto", className = "" }) {
+export function generateResponsiveImageAttrs({
+  src,
+  formats = ["webp", "jpeg"],
+  widths = [400, 800, 1200, 1400],
+  sizes = "100vw",
+  alt = "",
+  loading = "lazy",
+  decoding = "async",
+  fetchpriority = "auto",
+  className = "",
+}) {
   // src: base filename without extension, e.g. "cover"
   // formats: preferred formats, e.g. ["webp", "jpeg"]
   // widths: responsive widths
   // sizes: sizes attribute for <img>
   // Returns: { srcset, sizes, type, ... }
-  const srcset = formats.map(format =>
-    `${widths.map(w => `/assets/images/blog/${src}-${w}.${format} ${w}w`).join(", ")}`
-  ).join(", ");
+  const srcset = formats
+    .map(
+      format =>
+        `${widths.map(w => `/assets/images/blog/${src}-${w}.${format} ${w}w`).join(", ")}`
+    )
+    .join(", ");
   const type = formats[0] === "webp" ? "image/webp" : `image/${formats[0]}`;
   return {
     src: `/assets/images/blog/${src}-${widths[widths.length - 1]}.${formats[formats.length - 1]}`,
@@ -131,6 +144,6 @@ export function generateResponsiveImageAttrs({ src, formats = ["webp", "jpeg"], 
     loading,
     decoding,
     fetchpriority,
-    className
+    className,
   };
 }

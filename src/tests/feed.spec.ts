@@ -38,9 +38,11 @@ describe("RSS feed generation", () => {
 
   beforeAll(() => {
     vi.spyOn(notionPosts, "getNotionPosts").mockResolvedValue(fakePosts as any);
-    vi.spyOn(notionContent, "getNotionPageContent").mockImplementation(async (id: string) => {
-      return `<p>Content for ${id}</p>`;
-    });
+    vi.spyOn(notionContent, "getNotionPageContent").mockImplementation(
+      async (id: string) => {
+        return `<p>Content for ${id}</p>`;
+      }
+    );
   });
 
   afterAll(() => {
@@ -55,7 +57,9 @@ describe("RSS feed generation", () => {
     expect(text).toContain("<rss");
     expect(text).toContain("<item");
     // Check link and content for one post
-    expect(text).toContain(new URL(`blog/${fakePosts[0].data.slug}`, SITE.website).toString());
+    expect(text).toContain(
+      new URL(`blog/${fakePosts[0].data.slug}`, SITE.website).toString()
+    );
     // content may be HTML-escaped in feed generator
     expect(text).toContain("Content for 1");
   });

@@ -36,7 +36,9 @@ const headerProps = {
         loading="lazy"
         decoding="async"
         fetchpriority={priority}
-        alt={title ? `Cover image for blog post: ${title}` : "Blog post cover image"}
+        alt={title
+          ? `Cover image for blog post: ${title}`
+          : "Blog post cover image"}
       />
       <div
         class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2"

@@ -8,7 +8,10 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 import { SITE } from "@/config";
-import { getNotionPostsByTag, getNotionUniqueTags } from "@/utils/getNotionPosts";
+import {
+  getNotionPostsByTag,
+  getNotionUniqueTags,
+} from "@/utils/getNotionPosts";
 
 /* SSR pagination: dynamic, real-time */
 import { URL } from "url";
@@ -32,8 +35,18 @@ const page = {
   currentPage,
   lastPage,
   url: `/tags/${tagName}`,
-  prev: currentPage > 2 ? `/tags/${tagName}?page=${currentPage - 1}` : (currentPage === 2 ? `/tags/${tagName}` : undefined),
-  next: currentPage < lastPage ? (currentPage + 1 === 1 ? `/tags/${tagName}` : `/tags/${tagName}?page=${currentPage + 1}`) : undefined,
+  prev:
+    currentPage > 2
+      ? `/tags/${tagName}?page=${currentPage - 1}`
+      : currentPage === 2
+        ? `/tags/${tagName}`
+        : undefined,
+  next:
+    currentPage < lastPage
+      ? currentPage + 1 === 1
+        ? `/tags/${tagName}`
+        : `/tags/${tagName}?page=${currentPage + 1}`
+      : undefined,
   start: start + 1,
   end: Math.min(end, posts.length),
   total: posts.length,
@@ -42,7 +55,10 @@ const page = {
 
 /* Set cache-control header for SSR response */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
 }
 ---
 

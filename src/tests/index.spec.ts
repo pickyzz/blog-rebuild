@@ -119,7 +119,9 @@ test("sanitize: removes script and dangerous HTML from Notion content", async ()
   expect(sanitized).not.toContain("onerror=");
   expect(sanitized).not.toContain("javascript:");
   expect(sanitized).not.toContain('<iframe src="https://evil.com"></iframe>');
-  expect(sanitized).toContain('<iframe src="https://youtube.com/embed/abc"></iframe>');
+  expect(sanitized).toContain(
+    '<iframe src="https://youtube.com/embed/abc"></iframe>'
+  );
   expect(sanitized).not.toContain("<object");
   expect(sanitized).not.toContain("<embed");
   expect(sanitized).not.toContain("<link");
@@ -138,7 +140,7 @@ test("NotionPageSchema: valid page passes validation", () => {
     cover: "https://example.com/image.png",
     tags: [
       { id: "t1", name: "tag1", color: "red" },
-      { id: "t2", name: "tag2" }
+      { id: "t2", name: "tag2" },
     ],
     created_time: "2023-01-01T00:00:00.000Z",
     last_edited_time: "2023-01-02T00:00:00.000Z",
@@ -148,7 +150,7 @@ test("NotionPageSchema: valid page passes validation", () => {
     publish_date: "2023-01-01",
     modified_date: "2023-01-02",
     description: "desc",
-    slug: "test-title"
+    slug: "test-title",
   };
   const result = NotionPageSchema.safeParse(validPage);
   expect(result.success).toBe(true);
@@ -163,7 +165,7 @@ test("NotionPageSchema: invalid page fails validation", () => {
     created_time: "2023-01-01T00:00:00.000Z",
     last_edited_time: "2023-01-02T00:00:00.000Z",
     archived: false,
-    slug: "test-title"
+    slug: "test-title",
     // missing required fields
   };
   const result = NotionPageSchema.safeParse(invalidPage);

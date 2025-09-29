@@ -22,18 +22,22 @@ const attrs = generateResponsiveImageAttrs({
   loading,
   decoding,
   fetchpriority,
-  className: imageClass
+  className: imageClass,
 });
 ---
 
 <picture>
-  {formats.map(format => (
-    <source
-      srcset={widths.map(w => `/assets/images/blog/${src}-${w}.${format} ${w}w`).join(", ")}
-      type={`image/${format}`}
-      sizes={sizes}
-    />
-  ))}
+  {
+    formats.map(format => (
+      <source
+        srcset={widths
+          .map(w => `/assets/images/blog/${src}-${w}.${format} ${w}w`)
+          .join(", ")}
+        type={`image/${format}`}
+        sizes={sizes}
+      />
+    ))
+  }
   <img
     src={`/assets/images/blog/${src}-${widths[widths.length - 1]}.${formats[formats.length - 1]}`}
     alt={alt}

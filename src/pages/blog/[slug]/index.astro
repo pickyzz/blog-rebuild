@@ -2,23 +2,23 @@
 import PostDetails from "@/layouts/PostDetails.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { getNotionPosts, getNotionPostBySlug } from "@/utils/getNotionPosts";
- 
+
 export interface Props {
   post: any;
 }
- 
+
 /* SSR mode: enable server-side rendering and set cache headers below */
 export const ssr = true;
 
 const slug = Astro.params.slug;
 if (typeof slug !== "string" || !slug) {
-  return Astro.redirect('/404');
+  return Astro.redirect("/404");
 }
 const slugStr: string = slug;
-const post = await getNotionPostBySlug(slugStr) as any;
+const post = (await getNotionPostBySlug(slugStr)) as any;
 
 if (!post) {
-  return Astro.redirect('/404');
+  return Astro.redirect("/404");
 }
 
 const posts = await getNotionPosts();
@@ -26,12 +26,15 @@ const sortedPosts = getSortedPosts(posts);
 
 // Add safety check for post data
 if (!post.data) {
-  return Astro.redirect('/404');
+  return Astro.redirect("/404");
 }
 
 /* Set cache-control header for SSR response (Vercel Edge: fresh 5 minutes) */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=300, stale-while-revalidate=600");
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=300, stale-while-revalidate=600"
+  );
 }
 ---
 

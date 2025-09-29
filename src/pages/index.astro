@@ -16,7 +16,10 @@ const posts = await getNotionPosts();
 
 /* Set cache-control header for SSR response */
 if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set("cache-control", "public, max-age=30, stale-while-revalidate=60");
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
 }
 
 const sortedPosts = getSortedPosts(posts);
@@ -26,7 +29,9 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 export const prerender = true;
 ---
 
-<Layout description="บล็อกส่วนตัวของ Parinya (Pickyzz) T. ผู้พัฒนา front-end ที่เรียนรู้ด้วยตนเอง แชร์ความรู้เกี่ยวกับ React, JavaScript, HTML, CSS และเทคโนโลยีเว็บอื่นๆ ในภาษาไทย">
+<Layout
+  description="บล็อกส่วนตัวของ Parinya (Pickyzz) T. ผู้พัฒนา front-end ที่เรียนรู้ด้วยตนเอง แชร์ความรู้เกี่ยวกับ React, JavaScript, HTML, CSS และเทคโนโลยีเว็บอื่นๆ ในภาษาไทย"
+>
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pb-6 pt-8">

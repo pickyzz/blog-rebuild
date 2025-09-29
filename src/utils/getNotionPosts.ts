@@ -21,10 +21,22 @@ const CACHE_CONFIG = {
   POSTS_BY_TAG: 5 * 60 * 1000,
 } as const;
 
-const postsCache = new Map<string, { data: BlogPost[], timestamp: number; ttl: number }>();
-const tagsCache = new Map<string, { data: { tag: string; tagName: string }[], timestamp: number; ttl: number }>();
-const postBySlugCache = new Map<string, { data: BlogPost | null, timestamp: number; ttl: number }>();
-const postsByTagCache = new Map<string, { data: BlogPost[], timestamp: number; ttl: number }>();
+const postsCache = new Map<
+  string,
+  { data: BlogPost[]; timestamp: number; ttl: number }
+>();
+const tagsCache = new Map<
+  string,
+  { data: { tag: string; tagName: string }[]; timestamp: number; ttl: number }
+>();
+const postBySlugCache = new Map<
+  string,
+  { data: BlogPost | null; timestamp: number; ttl: number }
+>();
+const postsByTagCache = new Map<
+  string,
+  { data: BlogPost[]; timestamp: number; ttl: number }
+>();
 
 // Helper function to check if cache is valid
 function isCacheValid(timestamp: number, ttl: number): boolean {
@@ -32,7 +44,10 @@ function isCacheValid(timestamp: number, ttl: number): boolean {
 }
 
 // Helper function to get cached data or null if expired
-function getCachedData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string): T | null {
+function getCachedData<T>(
+  cache: Map<string, { data: T; timestamp: number; ttl: number }>,
+  key: string
+): T | null {
   const cached = cache.get(key);
   if (cached && isCacheValid(cached.timestamp, cached.ttl)) {
     return cached.data;
@@ -44,7 +59,12 @@ function getCachedData<T>(cache: Map<string, { data: T, timestamp: number; ttl: 
 }
 
 // Helper function to set cache data with specific TTL
-function setCacheData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string, data: T, ttl: number): void {
+function setCacheData<T>(
+  cache: Map<string, { data: T; timestamp: number; ttl: number }>,
+  key: string,
+  data: T,
+  ttl: number
+): void {
   cache.set(key, { data, timestamp: Date.now(), ttl });
 }
 
@@ -54,7 +74,9 @@ function invalidateCache(cache: Map<string, any>, key: string): void {
 }
 
 // Helper function to clear all expired cache entries
-function clearExpiredCache(cache: Map<string, { timestamp: number; ttl: number }>): void {
+function clearExpiredCache(
+  cache: Map<string, { timestamp: number; ttl: number }>
+): void {
   for (const [key, value] of cache.entries()) {
     if (!isCacheValid(value.timestamp, value.ttl)) {
       cache.delete(key);
@@ -87,21 +109,25 @@ async function fetchWithRetry<T>(
         throw error;
       }
 
-      const delay = baseDelay * Math.pow(2, attempt) + Math.floor(Math.random() * 300);
+      const delay =
+        baseDelay * Math.pow(2, attempt) + Math.floor(Math.random() * 300);
       console.warn(
         `[NOTION API RETRY] Attempt ${attempt + 1} failed (status: ${status}). Retrying in ${delay}ms...`
       );
-      await new Promise((res) => setTimeout(res, delay));
+      await new Promise(res => setTimeout(res, delay));
       attempt++;
     }
   }
 }
 
 // Helper function to get cache stats
-function getCacheStats(cache: Map<string, any>): { size: number; keys: string[] } {
+function getCacheStats(cache: Map<string, any>): {
+  size: number;
+  keys: string[];
+} {
   return {
     size: cache.size,
-    keys: Array.from(cache.keys())
+    keys: Array.from(cache.keys()),
   };
 }
 
@@ -122,7 +148,7 @@ export interface NotionPost {
 
 export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
   // Check cache first
-  const cacheKey = 'all_posts';
+  const cacheKey = "all_posts";
   const cachedPosts = getCachedData(postsCache, cacheKey);
   if (cachedPosts) {
     return cachedPosts;
@@ -147,93 +173,109 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       })
     );
 
-    const posts: CollectionEntry<"blog">[] = response.results.map((page: any) => {
-      const properties = page.properties;
+    const posts: CollectionEntry<"blog">[] = response.results.map(
+      (page: any) => {
+        const properties = page.properties;
 
-      // Extract data from Notion page properties
-      const title = properties.title?.title?.[0]?.plain_text || "Untitled";
-      const slug = properties.slug?.rich_text?.[0]?.plain_text || title.toLowerCase().replace(/\s+/g, '-');
-      const description = properties.description?.rich_text?.[0]?.plain_text || "";
-      const pubDatetime = properties.publish_date?.date?.start || new Date().toISOString();
-      const modDatetime = properties.modified_date?.date?.start;
-      const featured = properties.featured?.select?.name === "featured" || false;
-      const draft = properties.status?.select?.name !== "published";
-      const tags = properties.tags?.multi_select?.map((tag: any) => tag.name) || [];
-      const author = "Pickyzz"; // Default author
-      const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
-      const canonicalURL = properties.canonicalURL?.url;
+        // Extract data from Notion page properties
+        const title = properties.title?.title?.[0]?.plain_text || "Untitled";
+        const slug =
+          properties.slug?.rich_text?.[0]?.plain_text ||
+          title.toLowerCase().replace(/\s+/g, "-");
+        const description =
+          properties.description?.rich_text?.[0]?.plain_text || "";
+        const pubDatetime =
+          properties.publish_date?.date?.start || new Date().toISOString();
+        const modDatetime = properties.modified_date?.date?.start;
+        const featured =
+          properties.featured?.select?.name === "featured" || false;
+        const draft = properties.status?.select?.name !== "published";
+        const tags =
+          properties.tags?.multi_select?.map((tag: any) => tag.name) || [];
+        const author = "Pickyzz"; // Default author
+        const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
+        const canonicalURL = properties.canonicalURL?.url;
 
-      // Extract ogImage from Notion - try multiple sources
-      let ogImage = undefined;
+        // Extract ogImage from Notion - try multiple sources
+        let ogImage = undefined;
 
-      // 1. Try custom ogImage property
-      const possibleImageProps = ['ogImage', 'og_image', 'cover', 'image', 'header_image', 'thumbnail'];
-      for (const propName of possibleImageProps) {
-        if (properties[propName]?.files?.[0]) {
-          const file = properties[propName].files[0];
-          const imageUrl = file.type === 'external' ? file.external.url : file.file.url;
+        // 1. Try custom ogImage property
+        const possibleImageProps = [
+          "ogImage",
+          "og_image",
+          "cover",
+          "image",
+          "header_image",
+          "thumbnail",
+        ];
+        for (const propName of possibleImageProps) {
+          if (properties[propName]?.files?.[0]) {
+            const file = properties[propName].files[0];
+            const imageUrl =
+              file.type === "external" ? file.external.url : file.file.url;
+            ogImage = {
+              src: imageUrl,
+              width: 1200,
+              height: 630,
+              format: "png" as const,
+            };
+            break;
+          }
+        }
+
+        // 2. Try page cover image if no custom ogImage found
+        if (!ogImage && page.cover) {
+          let coverUrl = "";
+          if (page.cover.type === "external") {
+            coverUrl = page.cover.external.url;
+          } else if (page.cover.type === "file") {
+            coverUrl = page.cover.file.url;
+          }
+
+          if (coverUrl) {
+            ogImage = {
+              src: coverUrl,
+              width: 1200,
+              height: 630,
+              format: "png" as const,
+            };
+          }
+        }
+
+        // 3. Try page icon as last resort
+        if (!ogImage && page.icon && page.icon.type === "external") {
+          const iconUrl = page.icon.external.url;
           ogImage = {
-            src: imageUrl,
-            width: 1200,
-            height: 630,
-            format: 'png' as const
-          };
-          break;
-        }
-      }
-
-      // 2. Try page cover image if no custom ogImage found
-      if (!ogImage && page.cover) {
-        let coverUrl = '';
-        if (page.cover.type === 'external') {
-          coverUrl = page.cover.external.url;
-        } else if (page.cover.type === 'file') {
-          coverUrl = page.cover.file.url;
-        }
-
-        if (coverUrl) {
-          ogImage = {
-            src: coverUrl,
-            width: 1200,
-            height: 630,
-            format: 'png' as const
+            src: iconUrl,
+            width: 400,
+            height: 400,
+            format: "png" as const,
           };
         }
-      }
 
-      // 3. Try page icon as last resort
-      if (!ogImage && page.icon && page.icon.type === 'external') {
-        const iconUrl = page.icon.external.url;
-        ogImage = {
-          src: iconUrl,
-          width: 400,
-          height: 400,
-          format: 'png' as const
+        return {
+          id: page.id,
+          slug,
+          data: {
+            title,
+            slug,
+            description,
+            pubDatetime: new Date(pubDatetime),
+            modDatetime: modDatetime ? new Date(modDatetime) : undefined,
+            featured,
+            draft,
+            tags,
+            author,
+            readingTime,
+            canonicalURL,
+            ogImage,
+          },
+          body: "", // Notion content will be fetched separately if needed
+          collection: "blog",
+          render: () => ({ Content: () => null }), // Placeholder render function
         };
       }
-
-      return {
-        id: page.id,
-        slug,
-        data: {
-          title,
-          slug,
-          description,
-          pubDatetime: new Date(pubDatetime),
-          modDatetime: modDatetime ? new Date(modDatetime) : undefined,
-          featured,
-          draft,
-          tags,
-          author,
-          readingTime,
-          canonicalURL,
-          ogImage,
-        },
-        body: "", // Notion content will be fetched separately if needed
-        collection: "blog",
-        render: () => ({ Content: () => null }), // Placeholder render function
-      };
-    });
+    );
 
     // Cache the result
     setCacheData(postsCache, cacheKey, posts, CACHE_CONFIG.POSTS);
@@ -244,7 +286,9 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
   }
 }
 
-export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry<"blog"> | null> {
+export async function getNotionPostBySlug(
+  slug: string
+): Promise<CollectionEntry<"blog"> | null> {
   // Check cache first
   const cacheKey = `post_${slug}`;
   const cachedPost = getCachedData(postBySlugCache, cacheKey);
@@ -273,12 +317,19 @@ export async function getNotionPostBySlug(slug: string): Promise<CollectionEntry
   } catch (error) {
     console.error("Error fetching post by slug:", error);
     // Cache null result for failed requests to avoid repeated API calls
-    setCacheData(postBySlugCache, cacheKey, null, CACHE_CONFIG.POST_BY_SLUG_OLD / 4); // Shorter TTL for errors
+    setCacheData(
+      postBySlugCache,
+      cacheKey,
+      null,
+      CACHE_CONFIG.POST_BY_SLUG_OLD / 4
+    ); // Shorter TTL for errors
     return null;
   }
 }
 
-export async function getNotionPostsByTag(tagName: string): Promise<CollectionEntry<"blog">[]> {
+export async function getNotionPostsByTag(
+  tagName: string
+): Promise<CollectionEntry<"blog">[]> {
   // Check cache first
   const cacheKey = `posts_tag_${tagName}`;
   const cachedPosts = getCachedData(postsByTagCache, cacheKey);
@@ -288,12 +339,21 @@ export async function getNotionPostsByTag(tagName: string): Promise<CollectionEn
 
   try {
     const posts = await getNotionPosts();
-    const filteredPosts = posts.filter(post => post.data.tags.some((postTag: string) =>
-      postTag.toLowerCase().replace(/\s+/g, '-') === tagName.toLowerCase().replace(/\s+/g, '-')
-    ));
+    const filteredPosts = posts.filter(post =>
+      post.data.tags.some(
+        (postTag: string) =>
+          postTag.toLowerCase().replace(/\s+/g, "-") ===
+          tagName.toLowerCase().replace(/\s+/g, "-")
+      )
+    );
 
     // Cache the result
-    setCacheData(postsByTagCache, cacheKey, filteredPosts, CACHE_CONFIG.POSTS_BY_TAG);
+    setCacheData(
+      postsByTagCache,
+      cacheKey,
+      filteredPosts,
+      CACHE_CONFIG.POSTS_BY_TAG
+    );
     return filteredPosts;
   } catch (error) {
     console.error("Error fetching posts by tag:", error);
@@ -303,9 +363,11 @@ export async function getNotionPostsByTag(tagName: string): Promise<CollectionEn
   }
 }
 
-export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: string }[]> {
+export async function getNotionUniqueTags(): Promise<
+  { tag: string; tagName: string }[]
+> {
   // Check cache first
-  const cacheKey = 'unique_tags';
+  const cacheKey = "unique_tags";
   const cachedTags = getCachedData(tagsCache, cacheKey);
   if (cachedTags) {
     return cachedTags;
@@ -320,8 +382,8 @@ export async function getNotionUniqueTags(): Promise<{ tag: string; tagName: str
     });
 
     const tags = Array.from(tagSet).map(tag => ({
-      tag: tag.toLowerCase().replace(/\s+/g, '-'),
-      tagName: tag
+      tag: tag.toLowerCase().replace(/\s+/g, "-"),
+      tagName: tag,
     }));
 
     // Cache the result

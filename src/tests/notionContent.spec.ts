@@ -16,8 +16,8 @@ describe("Notion custom transformers", () => {
       const block = {
         image: {
           file: { url: "https://img.com/1.png" },
-          caption: [{ plain_text: "caption1" }]
-        }
+          caption: [{ plain_text: "caption1" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toMatchSnapshot();
@@ -28,8 +28,8 @@ describe("Notion custom transformers", () => {
     it("renders image without caption", async () => {
       const block = {
         image: {
-          external: { url: "https://img.com/2.png" }
-        }
+          external: { url: "https://img.com/2.png" },
+        },
       };
       const html = await transformer(block);
       expect(html).toContain('img src="https://img.com/2.png"');
@@ -49,8 +49,8 @@ describe("Notion custom transformers", () => {
       const block = {
         video: {
           external: { url: "https://youtube.com/watch?v=abc123" },
-          caption: [{ plain_text: "yt" }]
-        }
+          caption: [{ plain_text: "yt" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("youtube.com/embed/abc123");
@@ -60,8 +60,8 @@ describe("Notion custom transformers", () => {
     it("renders normal video", async () => {
       const block = {
         video: {
-          file: { url: "https://cdn.com/vid.mp4" }
-        }
+          file: { url: "https://cdn.com/vid.mp4" },
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("<video");
@@ -81,8 +81,8 @@ describe("Notion custom transformers", () => {
       const block = {
         embed: {
           url: "https://example.com",
-          caption: [{ plain_text: "caption" }]
-        }
+          caption: [{ plain_text: "caption" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("iframe");
@@ -103,8 +103,8 @@ describe("Notion custom transformers", () => {
         code: {
           language: "javascript",
           rich_text: [{ plain_text: "console.log(1);" }],
-          caption: [{ plain_text: "js code" }]
-        }
+          caption: [{ plain_text: "js code" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("language-javascript");
@@ -116,8 +116,8 @@ describe("Notion custom transformers", () => {
       const block = {
         code: {
           language: "unknownlang",
-          rich_text: [{ plain_text: "abc" }]
-        }
+          rich_text: [{ plain_text: "abc" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("language-text");
@@ -136,8 +136,8 @@ describe("Notion custom transformers", () => {
     it("renders quote block", async () => {
       const block = {
         quote: {
-          rich_text: [{ plain_text: "quoted text" }]
-        }
+          rich_text: [{ plain_text: "quoted text" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("blockquote");
@@ -157,8 +157,8 @@ describe("Notion custom transformers", () => {
       const block = {
         callout: {
           rich_text: [{ plain_text: "callout text" }],
-          icon: { emoji: "🚀" }
-        }
+          icon: { emoji: "🚀" },
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("callout-icon");
@@ -169,8 +169,8 @@ describe("Notion custom transformers", () => {
     it("renders callout with default emoji", async () => {
       const block = {
         callout: {
-          rich_text: [{ plain_text: "default emoji" }]
-        }
+          rich_text: [{ plain_text: "default emoji" }],
+        },
       };
       const html = await transformer(block);
       expect(html).toContain("💡");

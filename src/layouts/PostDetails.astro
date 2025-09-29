@@ -26,18 +26,11 @@ const { post, posts } = Astro.props;
 
 // Safety check for post data
 if (!post || !post.data) {
-  return Astro.redirect('/404');
+  return Astro.redirect("/404");
 }
 
-const {
-  title,
-  author,
-  description,
-  ogImage,
-  pubDatetime,
-  modDatetime,
-  tags,
-} = post.data;
+const { title, author, description, ogImage, pubDatetime, modDatetime, tags } =
+  post.data;
 let readingTime = post.data.readingTime;
 
 let Content: any = null;
@@ -59,7 +52,7 @@ try {
   let headingIndex = 0;
 
   // Store heading mappings for adding IDs
-  const headingMappings: Array<{original: string, new: string}> = [];
+  const headingMappings: Array<{ original: string; new: string }> = [];
 
   while ((match = headingRegex.exec(notionContent)) !== null) {
     const [, level, existingAttrs, content] = match;
@@ -68,22 +61,23 @@ try {
     // Better text extraction - handle nested HTML elements using regex
     // Remove all HTML tags to get clean text
     const text = content
-      .replace(/<[^>]*>/g, '') // Remove HTML tags
-      .replace(/&nbsp;/g, ' ') // Replace non-breaking spaces
-      .replace(/&[a-zA-Z0-9#]+;/g, '') // Remove HTML entities
+      .replace(/<[^>]*>/g, "") // Remove HTML tags
+      .replace(/&nbsp;/g, " ") // Replace non-breaking spaces
+      .replace(/&[a-zA-Z0-9#]+;/g, "") // Remove HTML entities
       .trim();
 
-    if (text && depth >= 2 && depth <= 4) { // Only include h2-h4 for TOC
+    if (text && depth >= 2 && depth <= 4) {
+      // Only include h2-h4 for TOC
       const slug = slugifyStr(text);
 
       extractedHeadings.push({
         depth,
         text,
-        slug
+        slug,
       });
 
       // Store mapping for ID replacement if needed
-      if (!existingAttrs.includes('id=')) {
+      if (!existingAttrs.includes("id=")) {
         const fullMatch = match[0];
         const newHeading = `<h${level}${existingAttrs} id="${slug}">${content}</h${level}>`;
         headingMappings.push({ original: fullMatch, new: newHeading });
@@ -106,20 +100,23 @@ try {
   </div>`;
   headings = [];
 }
- 
+
 // Ensure readingTime exists: compute from fetched Notion HTML if missing
 if (!readingTime) {
   try {
-    const textOnly = notionContent.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const textOnly = notionContent
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     const rt = readingTimeLib(textOnly);
     readingTime = rt?.text ?? null;
   } catch (err) {
     // Reading time computation failed - silently continue
   }
 }
- 
+
 // Reading time logged for debugging (removed for production)
- 
+
 const toc = generateToc(headings);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
@@ -142,26 +139,26 @@ const layoutProps = {
 const breadcrumbStructuredData = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [
+  itemListElement: [
     {
       "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": SITE.website
+      position: 1,
+      name: "Home",
+      item: SITE.website,
     },
     {
       "@type": "ListItem",
-      "position": 2,
-      "name": "Blog",
-      "item": `${SITE.website}blog/`
+      position: 2,
+      name: "Blog",
+      item: `${SITE.website}blog/`,
     },
     {
       "@type": "ListItem",
-      "position": 3,
-      "name": title,
-      "item": new URL(Astro.url.pathname, Astro.url)
-    }
-  ]
+      position: 3,
+      name: title,
+      item: new URL(Astro.url.pathname, Astro.url),
+    },
+  ],
 };
 
 /* ========== Prev/Next Posts ========== */
@@ -169,7 +166,9 @@ const allPosts = (posts || []).map(({ data }: any) => ({
   slug: data?.slug,
   title: data?.title,
 }));
-const currentPostIndex = allPosts.findIndex(a => a.slug === (post?.data?.slug ?? null));
+const currentPostIndex = allPosts.findIndex(
+  a => a.slug === (post?.data?.slug ?? null)
+);
 const prevPost =
   currentPostIndex < allPosts.length - 1
     ? allPosts[currentPostIndex + 1]
@@ -189,17 +188,18 @@ if (tags && tags.length > 0 && posts) {
     posts as unknown as import("astro:content").CollectionEntry<"blog">[],
     firstTag
   )
-    .filter(p =>
-      p.data.slug !== post.data.slug &&
-      p.data.slug !== (prevPost?.slug ?? null) &&
-      p.data.slug !== (nextPost?.slug ?? null)
+    .filter(
+      p =>
+        p.data.slug !== post.data.slug &&
+        p.data.slug !== (prevPost?.slug ?? null) &&
+        p.data.slug !== (nextPost?.slug ?? null)
     )
     .slice(0, 2); // Limit to 2 related posts
-  
+
   relatedPosts = postsWithSameTag.map(({ data }) => ({
     slug: data.slug,
     title: data.title,
-    ogImage: data.ogImage
+    ogImage: data.ogImage,
   }));
 }
 ---
@@ -223,7 +223,7 @@ if (tags && tags.length > 0 && posts) {
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="inline-block my-2 text-2xl font-bold text-accent sm:text-3xl"
+      class="my-2 inline-block text-2xl font-bold text-accent sm:text-3xl"
     >
       {title}
     </h1>
@@ -235,21 +235,32 @@ if (tags && tags.length > 0 && posts) {
         class="mb-2"
       />
     </div>
-    <p class="ml-1.5 text-xs font-light">By : {author}{readingTime ? ` | ${readingTime}` : ''}</p>
-    <article id="article" class="max-w-4xl mx-auto mt-8 prose">
+    <p class="ml-1.5 text-xs font-light">
+      By : {author}{readingTime ? ` | ${readingTime}` : ""}
+    </p>
+    <article id="article" class="prose mx-auto mt-8 max-w-4xl">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={post.data.ogImage?.src}
-        alt={title ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}` : "Blog post cover image"}
+        alt={title
+          ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}`
+          : "Blog post cover image"}
         loading="eager"
       />
 
       <!-- Render Notion content as HTML -->
-      <div class="max-w-4xl mx-auto prose prose-lg notion-content" set:html={notionContent}></div>
+      <div
+        class="prose prose-lg notion-content mx-auto max-w-4xl"
+        set:html={notionContent}
+      />
     </article>
 
-    <ul class="flex flex-row items-center justify-center my-8 md:justify-end">
-      {(tags || []).map((tag: string) => <Tag tag={slugifyStr(tag)} tagName={tag} />)}
+    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
+      {
+        (tags || []).map((tag: string) => (
+          <Tag tag={slugifyStr(tag)} tagName={tag} />
+        ))
+      }
     </ul>
     <div
       class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
@@ -258,7 +269,7 @@ if (tags && tags.length > 0 && posts) {
 
       <button
         id="back-to-top"
-        class="hidden py-1 transition duration-200 focus-outline whitespace-nowrap hover:-translate-y-1 hover:opacity-75 md:block"
+        class="focus-outline hidden whitespace-nowrap py-1 transition duration-200 hover:-translate-y-1 hover:opacity-75 md:block"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>
@@ -275,10 +286,10 @@ if (tags && tags.length > 0 && posts) {
             href={`/blog/${prevPost.slug}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
-            <IconChevronLeft class="flex-none inline-block" />
+            <IconChevronLeft class="inline-block flex-none" />
             <div>
               <span>Older Post</span>
-              <div class="pt-2 text-sm text-accent/85">{prevPost.title}</div>
+              <div class="text-accent/85 pt-2 text-sm">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -287,47 +298,51 @@ if (tags && tags.length > 0 && posts) {
         nextPost && (
           <a
             href={`/blog/${nextPost.slug}`}
-            class="flex justify-end w-full gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
               <span>Later Post</span>
-              <div class="pt-2 text-sm text-accent/85">{nextPost.title}</div>
+              <div class="text-accent/85 pt-2 text-sm">{nextPost.title}</div>
             </div>
-            <IconChevronRight class="flex-none inline-block" />
+            <IconChevronRight class="inline-block flex-none" />
           </a>
         )
       }
     </div>
 
     <!-- Related Posts Section -->
-    {relatedPosts && relatedPosts.length > 0 && (
-      <section class="mt-12">
-        <h2 class="mb-6 text-2xl font-bold text-center text-accent">โพสต์ที่เกี่ยวข้อง</h2>
-        <div class="grid gap-6 sm:grid-cols-2">
-          {relatedPosts.map((relatedPost) => (
-            <a
-              href={`/blog/${relatedPost.slug}`}
-              class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
-            >
-              <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
-                <img
-                  class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
-                  src={relatedPost.ogImage?.src || "/pickyzz-og.png"}
-                  alt={relatedPost.title}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2">
-                  <h2 class="text-white text-[1.1rem] text-center text-lg font-light decoration-dashed">
-                    {relatedPost.title}
-                  </h2>
+    {
+      relatedPosts && relatedPosts.length > 0 && (
+        <section class="mt-12">
+          <h2 class="mb-6 text-center text-2xl font-bold text-accent">
+            โพสต์ที่เกี่ยวข้อง
+          </h2>
+          <div class="grid gap-6 sm:grid-cols-2">
+            {relatedPosts.map(relatedPost => (
+              <a
+                href={`/blog/${relatedPost.slug}`}
+                class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+              >
+                <div class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover">
+                  <img
+                    class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
+                    src={relatedPost.ogImage?.src || "/pickyzz-og.png"}
+                    alt={relatedPost.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2">
+                    <h2 class="text-center text-[1.1rem] text-lg font-light text-white decoration-dashed">
+                      {relatedPost.title}
+                    </h2>
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <Waline />
   </main>
@@ -380,31 +395,35 @@ if (tags && tags.length > 0 && posts) {
    * allowing users to copy code easily. */
   /** Copy function for Notion code blocks */
   function copyCodeBlock(button) {
-    const codeBlock = button.closest('.notion-code-block');
-    const codeElement = codeBlock.querySelector('.shiki code') || codeBlock.querySelector('code');
-    const text = codeElement?.textContent || '';
+    const codeBlock = button.closest(".notion-code-block");
+    const codeElement =
+      codeBlock.querySelector(".shiki code") || codeBlock.querySelector("code");
+    const text = codeElement?.textContent || "";
 
     if (!text.trim()) {
       return;
     }
 
-    navigator.clipboard.writeText(text).then(() => {
-      const originalText = button.textContent;
-      button.textContent = 'Copied!';
-      button.classList.add('copied');
-      button.disabled = true;
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        const originalText = button.textContent;
+        button.textContent = "Copied!";
+        button.classList.add("copied");
+        button.disabled = true;
 
-      setTimeout(() => {
-        button.textContent = originalText;
-        button.classList.remove('copied');
-        button.disabled = false;
-      }, 2000);
-    }).catch(() => {
-      button.textContent = 'Error';
-      setTimeout(() => {
-        button.textContent = 'Copy';
-      }, 2000);
-    });
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove("copied");
+          button.disabled = false;
+        }, 2000);
+      })
+      .catch(() => {
+        button.textContent = "Error";
+        setTimeout(() => {
+          button.textContent = "Copy";
+        }, 2000);
+      });
   }
 
   // Make function globally available
@@ -412,7 +431,7 @@ if (tags && tags.length > 0 && posts) {
 
   /** Theme detection and code block re-rendering */
   function initThemeAwareCodeBlocks() {
-    const codeBlocks = document.querySelectorAll('.notion-code-block');
+    const codeBlocks = document.querySelectorAll(".notion-code-block");
 
     codeBlocks.forEach(block => {
       const language = block.dataset.language;
@@ -426,17 +445,22 @@ if (tags && tags.length > 0 && posts) {
   function updateCodeBlockTheme(block, language) {
     // This function would re-render the code block with the current theme
     // For now, we'll just update the visual appearance
-    const isDark = document.documentElement.classList.contains('dark') ||
-                   document.documentElement.getAttribute('data-theme') === 'dark';
+    const isDark =
+      document.documentElement.classList.contains("dark") ||
+      document.documentElement.getAttribute("data-theme") === "dark";
 
-    block.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    block.setAttribute("data-theme", isDark ? "dark" : "light");
   }
 
   // Listen for theme changes (guarded to avoid redeclaration)
   if (!window.__themeObserver) {
-    window.__themeObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme')) {
+    window.__themeObserver = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (
+          mutation.type === "attributes" &&
+          (mutation.attributeName === "class" ||
+            mutation.attributeName === "data-theme")
+        ) {
           // Theme changed, update code blocks
           setTimeout(() => {
             initThemeAwareCodeBlocks();
@@ -444,23 +468,23 @@ if (tags && tags.length > 0 && posts) {
         }
       });
     });
-  
+
     window.__themeObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class', 'data-theme']
+      attributeFilter: ["class", "data-theme"],
     });
   } else {
     // Already initialized; do nothing to avoid duplicate observer
   }
 
   // Initialize theme-aware code blocks on load
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     initThemeAwareCodeBlocks();
     initLazyLoading();
   });
 
   // Re-initialize after Astro page transitions
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener("astro:after-swap", () => {
     setTimeout(() => {
       initThemeAwareCodeBlocks();
       initLazyLoading();
@@ -469,15 +493,16 @@ if (tags && tags.length > 0 && posts) {
 
   /** Initialize lazy loading for images in Notion content */
   function initLazyLoading() {
-    const images = document.querySelectorAll('.notion-content img:not([loading])');
+    const images = document.querySelectorAll(
+      ".notion-content img:not([loading])"
+    );
     images.forEach(img => {
-      if (!img.hasAttribute('loading')) {
-        img.setAttribute('loading', 'lazy');
-        img.setAttribute('decoding', 'async');
+      if (!img.hasAttribute("loading")) {
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("decoding", "async");
       }
     });
   }
-
 
   /** Scrolls the document to the top when
 
@@ -485,7 +510,7 @@ if (tags && tags.length > 0 && posts) {
   function backToTop() {
     function scrollHandler() {
       try {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (err) {
         // Fallback for older browsers
         document.body.scrollTop = 0; // For Safari
@@ -530,60 +555,64 @@ if (tags && tags.length > 0 && posts) {
 
   /** TOC Scroll Highlighting Logic */
   function initTocHighlighting() {
-    const tocLinks = document.querySelectorAll('.toc-link');
-    const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
-    
+    const tocLinks = document.querySelectorAll(".toc-link");
+    const headings = document.querySelectorAll(
+      "h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"
+    );
+
     if (tocLinks.length === 0 || headings.length === 0) return;
-    
+
     let currentActiveLink = null;
     let ticking = false;
     let lastScrollY = window.scrollY;
-    
+
     // Function to find the heading that's currently in view
     function findActiveHeading() {
       const scrollY = window.pageYOffset;
       const windowHeight = window.innerHeight;
       const scrollCenter = scrollY + windowHeight / 2;
-      
+
       // Find the heading closest to the center of the viewport
       let activeHeading = null;
       let minDistance = Infinity;
-      
+
       headings.forEach(heading => {
         const rect = heading.getBoundingClientRect();
         const headingTop = rect.top + scrollY;
         const headingCenter = headingTop + rect.height / 2;
         const distance = Math.abs(scrollCenter - headingCenter);
-        
+
         if (distance < minDistance) {
           minDistance = distance;
           activeHeading = heading;
         }
       });
-      
+
       return activeHeading;
     }
-    
+
     // Function to update active TOC link immediately
     function updateActiveTocLinkImmediate() {
       const activeHeading = findActiveHeading();
       if (!activeHeading) return;
-      
+
       const activeId = activeHeading.id;
-      const activeTocLink = document.querySelector(`.toc-link[data-slug="${activeId}"]`);
-      
+      const activeTocLink = document.querySelector(
+        `.toc-link[data-slug="${activeId}"]`
+      );
+
       if (activeTocLink && activeTocLink !== currentActiveLink) {
         // Remove previous active state
         if (currentActiveLink) {
-          currentActiveLink.classList.remove('active');
+          currentActiveLink.classList.remove("active");
         }
-        
+
         // Add new active state
-        activeTocLink.classList.add('active');
+        activeTocLink.classList.add("active");
         currentActiveLink = activeTocLink;
       }
     }
-    
+
     // Throttled update with shorter delay
     function updateActiveTocLinkThrottled() {
       if (!ticking) {
@@ -594,56 +623,59 @@ if (tags && tags.length > 0 && posts) {
         ticking = true;
       }
     }
-    
+
     // Immediate update for fast response
     function handleScrollImmediate() {
       const currentScrollY = window.scrollY;
-      
+
       // Only update if scrolled significantly (reduce unnecessary updates)
       if (Math.abs(currentScrollY - lastScrollY) > 10) {
         updateActiveTocLinkImmediate();
         lastScrollY = currentScrollY;
       }
     }
-    
+
     // Smooth scroll for TOC links with faster animation
     tocLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
+      link.addEventListener("click", e => {
         e.preventDefault();
-        const targetId = link.getAttribute('data-slug');
+        const targetId = link.getAttribute("data-slug");
         const targetElement = document.getElementById(targetId);
-        
+
         if (targetElement) {
           const headerHeight = 80; // Account for fixed header
           const targetPosition = targetElement.offsetTop - headerHeight;
-          
+
           window.scrollTo({
             top: targetPosition,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
       });
     });
-    
+
     // Initialize active state
     updateActiveTocLinkImmediate();
-    
+
     // Use immediate updates for faster response, with fallback to throttled updates
-    window.addEventListener('scroll', handleScrollImmediate, { passive: true });
-    
+    window.addEventListener("scroll", handleScrollImmediate, { passive: true });
+
     // Fallback throttled update for heavy scroll operations
     let throttledTimer;
-    window.addEventListener('scroll', () => {
-      clearTimeout(throttledTimer);
-      throttledTimer = setTimeout(updateActiveTocLinkThrottled, 16); // ~60fps
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        clearTimeout(throttledTimer);
+        throttledTimer = setTimeout(updateActiveTocLinkThrottled, 16); // ~60fps
+      },
+      { passive: true }
+    );
   }
-  
+
   // Initialize TOC highlighting when DOM is ready
-  document.addEventListener('DOMContentLoaded', initTocHighlighting);
+  document.addEventListener("DOMContentLoaded", initTocHighlighting);
   // Re-initialize after Astro page transitions
-  document.addEventListener('astro:after-swap', () => {
+  document.addEventListener("astro:after-swap", () => {
     setTimeout(initTocHighlighting, 100);
   });
-
 </script>

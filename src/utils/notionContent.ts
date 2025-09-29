@@ -1,80 +1,85 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
-import { unified } from 'unified';
+import { unified } from "unified";
 // --- sanitize import for HTML output ---
 import { sanitize } from "../helpers/sanitize.mjs";
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import rehypeRaw from 'rehype-raw';
-import Prism from 'prismjs';
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeRaw from "rehype-raw";
+import Prism from "prismjs";
 // Import Prism components in correct order to avoid dependency conflicts
-import 'prismjs/components/prism-core.js';
-import 'prismjs/plugins/autoloader/prism-autoloader.js';
-import 'prismjs/components/prism-clike.js';
-import 'prismjs/components/prism-javascript.js';
-import 'prismjs/components/prism-markup.js';
-import 'prismjs/components/prism-css.js';
-import 'prismjs/components/prism-bash.js';
-import 'prismjs/components/prism-shell-session.js';
-import 'prismjs/components/prism-python.js';
-import 'prismjs/components/prism-java.js';
-import 'prismjs/components/prism-c.js';
-import 'prismjs/components/prism-cpp.js';
-import 'prismjs/components/prism-csharp.js';
-import 'prismjs/components/prism-php.js';
-import 'prismjs/components/prism-ruby.js';
-import 'prismjs/components/prism-go.js';
-import 'prismjs/components/prism-rust.js';
-import 'prismjs/components/prism-swift.js';
-import 'prismjs/components/prism-kotlin.js';
-import 'prismjs/components/prism-dart.js';
-import 'prismjs/components/prism-scala.js';
-import 'prismjs/components/prism-sql.js';
-import 'prismjs/components/prism-yaml.js';
-import 'prismjs/components/prism-docker.js';
-import 'prismjs/components/prism-json.js';
-import 'prismjs/components/prism-markdown.js';
-import 'prismjs/components/prism-jsx.js';
-import 'prismjs/components/prism-tsx.js';
-import 'prismjs/components/prism-graphql.js';
-import 'prismjs/components/prism-powershell.js';
-import 'prismjs/components/prism-scss.js';
-import 'prismjs/components/prism-sass.js';
-import 'prismjs/components/prism-less.js';
+import "prismjs/components/prism-core.js";
+import "prismjs/plugins/autoloader/prism-autoloader.js";
+import "prismjs/components/prism-clike.js";
+import "prismjs/components/prism-javascript.js";
+import "prismjs/components/prism-markup.js";
+import "prismjs/components/prism-css.js";
+import "prismjs/components/prism-bash.js";
+import "prismjs/components/prism-shell-session.js";
+import "prismjs/components/prism-python.js";
+import "prismjs/components/prism-java.js";
+import "prismjs/components/prism-c.js";
+import "prismjs/components/prism-cpp.js";
+import "prismjs/components/prism-csharp.js";
+import "prismjs/components/prism-php.js";
+import "prismjs/components/prism-ruby.js";
+import "prismjs/components/prism-go.js";
+import "prismjs/components/prism-rust.js";
+import "prismjs/components/prism-swift.js";
+import "prismjs/components/prism-kotlin.js";
+import "prismjs/components/prism-dart.js";
+import "prismjs/components/prism-scala.js";
+import "prismjs/components/prism-sql.js";
+import "prismjs/components/prism-yaml.js";
+import "prismjs/components/prism-docker.js";
+import "prismjs/components/prism-json.js";
+import "prismjs/components/prism-markdown.js";
+import "prismjs/components/prism-jsx.js";
+import "prismjs/components/prism-tsx.js";
+import "prismjs/components/prism-graphql.js";
+import "prismjs/components/prism-powershell.js";
+import "prismjs/components/prism-scss.js";
+import "prismjs/components/prism-sass.js";
+import "prismjs/components/prism-less.js";
 // Try importing bash component directly
-import 'prismjs/components/prism-bash.js';
+import "prismjs/components/prism-bash.js";
 // Try other shell-related components
-import 'prismjs/components/prism-shell-session.js';
-import 'prismjs/components/prism-batch.js';
+import "prismjs/components/prism-shell-session.js";
+import "prismjs/components/prism-batch.js";
 
 // Custom fallback for shell languages if Prism components fail to load
-if (!Prism.languages.bash && !Prism.languages.shell && !Prism.languages['shell-session']) {
+if (
+  !Prism.languages.bash &&
+  !Prism.languages.shell &&
+  !Prism.languages["shell-session"]
+) {
   // Create a simple shell language definition
   Prism.languages.shell = {
     comment: {
       pattern: /(^|[^\\])#.*/,
-      lookbehind: true
+      lookbehind: true,
     },
     string: {
       pattern: /(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,
-      greedy: true
+      greedy: true,
     },
     variable: {
       pattern: /\$[a-zA-Z_][a-zA-Z0-9_]*/,
-      greedy: true
+      greedy: true,
     },
     function: {
       pattern: /\b\w+\(\)/,
-      greedy: true
+      greedy: true,
     },
-    keyword: /\b(?:if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|cd|ls|pwd|mkdir|rm|cp|mv|cat|grep|sed|awk|chmod|chown|sudo|apt|yum|brew|npm|git|docker|kubectl)\b/
+    keyword:
+      /\b(?:if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|cd|ls|pwd|mkdir|rm|cp|mv|cat|grep|sed|awk|chmod|chown|sudo|apt|yum|brew|npm|git|docker|kubectl)\b/,
   };
 
   // Alias bash to shell
   Prism.languages.bash = Prism.languages.shell;
-  Prism.languages['shell-session'] = Prism.languages.shell;
+  Prism.languages["shell-session"] = Prism.languages.shell;
 }
 // REMOVE shiki imports and initHighlighter
 const NOTION_KEY = import.meta.env.NOTION_KEY;
@@ -89,14 +94,20 @@ const notion = new Client({
 
 // TTL Configuration for different content types (in milliseconds)
 const CACHE_CONFIG = {
-  PAGE_CONTENT: 15 * 60 * 1000,    // 15 minutes - content changes less frequently
-  PAGE_BLOCKS: 20 * 60 * 1000,     // 20 minutes - blocks are stable
-  ERROR_CONTENT: 1 * 60 * 1000,     // 1 minute - retry errors sooner
-  ERROR_BLOCKS: 2 * 60 * 1000,      // 2 minutes - retry block errors
+  PAGE_CONTENT: 15 * 60 * 1000, // 15 minutes - content changes less frequently
+  PAGE_BLOCKS: 20 * 60 * 1000, // 20 minutes - blocks are stable
+  ERROR_CONTENT: 1 * 60 * 1000, // 1 minute - retry errors sooner
+  ERROR_BLOCKS: 2 * 60 * 1000, // 2 minutes - retry block errors
 } as const;
 
-const contentCache = new Map<string, { data: string, timestamp: number; ttl: number }>();
-const blocksCache = new Map<string, { data: any[], timestamp: number; ttl: number }>();
+const contentCache = new Map<
+  string,
+  { data: string; timestamp: number; ttl: number }
+>();
+const blocksCache = new Map<
+  string,
+  { data: any[]; timestamp: number; ttl: number }
+>();
 
 // Helper function to check if cache is valid
 function isCacheValid(timestamp: number, ttl: number): boolean {
@@ -104,7 +115,10 @@ function isCacheValid(timestamp: number, ttl: number): boolean {
 }
 
 // Helper function to get cached data or null if expired
-function getCachedData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string): T | null {
+function getCachedData<T>(
+  cache: Map<string, { data: T; timestamp: number; ttl: number }>,
+  key: string
+): T | null {
   const cached = cache.get(key);
   if (cached && isCacheValid(cached.timestamp, cached.ttl)) {
     return cached.data;
@@ -116,7 +130,12 @@ function getCachedData<T>(cache: Map<string, { data: T, timestamp: number; ttl: 
 }
 
 // Helper function to set cache data with specific TTL
-function setCacheData<T>(cache: Map<string, { data: T, timestamp: number; ttl: number }>, key: string, data: T, ttl: number): void {
+function setCacheData<T>(
+  cache: Map<string, { data: T; timestamp: number; ttl: number }>,
+  key: string,
+  data: T,
+  ttl: number
+): void {
   cache.set(key, { data, timestamp: Date.now(), ttl });
 }
 
@@ -126,7 +145,9 @@ function invalidateCache(cache: Map<string, any>, key: string): void {
 }
 
 // Helper function to clear all expired cache entries
-function clearExpiredCache(cache: Map<string, { timestamp: number; ttl: number }>): void {
+function clearExpiredCache(
+  cache: Map<string, { timestamp: number; ttl: number }>
+): void {
   for (const [key, value] of cache.entries()) {
     if (!isCacheValid(value.timestamp, value.ttl)) {
       cache.delete(key);
@@ -135,10 +156,13 @@ function clearExpiredCache(cache: Map<string, { timestamp: number; ttl: number }
 }
 
 // Helper function to get cache stats
-function getCacheStats(cache: Map<string, any>): { size: number; keys: string[] } {
+function getCacheStats(cache: Map<string, any>): {
+  size: number;
+  keys: string[];
+} {
   return {
     size: cache.size,
-    keys: Array.from(cache.keys())
+    keys: Array.from(cache.keys()),
   };
 }
 
@@ -166,24 +190,34 @@ n2m.setCustomTransformer("video", async (block: any) => {
   const videoUrl = video?.file?.url || video?.external?.url;
   const caption = video?.caption?.[0]?.plain_text || "";
 
-  // Handle YouTube videos
-  if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-    let videoId = "";
-    if (videoUrl.includes("youtube.com/watch")) {
-      videoId = videoUrl.split("v=")[1]?.split("&")[0];
-    } else if (videoUrl.includes("youtu.be/")) {
-      videoId = videoUrl.split("youtu.be/")[1]?.split("?")[0];
-    }
+  // Handle YouTube videos with precise hostname check
+  try {
+    const url = new URL(videoUrl);
+    if (
+      url.hostname === "youtube.com" ||
+      url.hostname === "www.youtube.com" ||
+      url.hostname === "youtu.be"
+    ) {
+      let videoId = "";
+      if (url.hostname === "youtu.be") {
+        videoId = url.pathname.slice(1).split("/")[0];
+      } else if (url.searchParams.has("v")) {
+        videoId = url.searchParams.get("v") || "";
+      }
 
-    if (videoId) {
-      return `<figure class="notion-video">
+      // Validate video ID: must be exactly 11 characters, alphanumeric + _ -
+      if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+        return `<figure class="notion-video">
   <iframe width="100%" height="480" src="https://www.youtube.com/embed/${videoId}"
     title="YouTube video player" frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen></iframe>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </figure>`;
+      }
     }
+  } catch (e) {
+    // Invalid URL, fall back to generic video handling
   }
 
   // Handle other video formats
@@ -192,7 +226,7 @@ n2m.setCustomTransformer("video", async (block: any) => {
     <source src="${videoUrl}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </figure>`;
 });
 
@@ -205,7 +239,7 @@ n2m.setCustomTransformer("embed", async (block: any) => {
 
   return `<figure class="notion-embed">
   <iframe src="${url}" width="100%" height="400" frameborder="0"></iframe>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </figure>`;
 });
 
@@ -218,73 +252,76 @@ n2m.setCustomTransformer("code", async (block: any) => {
   try {
     // Map Notion language names to Prism language names
     const languageMap: { [key: string]: string } = {
-      'javascript': 'javascript',
-      'js': 'javascript',
-      'typescript': 'typescript',
-      'ts': 'typescript',
-      'python': 'python',
-      'py': 'python',
-      'java': 'java',
-      'c': 'c',
-      'cpp': 'cpp',
-      'c++': 'cpp',
-      'csharp': 'csharp',
-      'c#': 'csharp',
-      'php': 'php',
-      'ruby': 'ruby',
-      'go': 'go',
-      'rust': 'rust',
-      'swift': 'swift',
-      'kotlin': 'kotlin',
-      'dart': 'dart',
-      'scala': 'scala',
-      'sql': 'sql',
-      'html': 'markup',
-      'xml': 'markup',
-      'css': 'css',
-      'scss': 'scss',
-      'sass': 'sass',
-      'less': 'less',
-      'json': 'json',
-      'yaml': 'yaml',
-      'yml': 'yaml',
-      'dockerfile': 'docker',
-      'bash': 'bash',
-      'shell': 'bash',
-      'sh': 'bash',
-      'powershell': 'powershell',
-      'markdown': 'markdown',
-      'md': 'markdown',
-      'graphql': 'graphql',
-      'jsx': 'jsx',
-      'tsx': 'tsx',
-      'text': 'text',
-      'plain': 'text',
-      'plaintext': 'text'
+      javascript: "javascript",
+      js: "javascript",
+      typescript: "typescript",
+      ts: "typescript",
+      python: "python",
+      py: "python",
+      java: "java",
+      c: "c",
+      cpp: "cpp",
+      "c++": "cpp",
+      csharp: "csharp",
+      "c#": "csharp",
+      php: "php",
+      ruby: "ruby",
+      go: "go",
+      rust: "rust",
+      swift: "swift",
+      kotlin: "kotlin",
+      dart: "dart",
+      scala: "scala",
+      sql: "sql",
+      html: "markup",
+      xml: "markup",
+      css: "css",
+      scss: "scss",
+      sass: "sass",
+      less: "less",
+      json: "json",
+      yaml: "yaml",
+      yml: "yaml",
+      dockerfile: "docker",
+      bash: "bash",
+      shell: "bash",
+      sh: "bash",
+      powershell: "powershell",
+      markdown: "markdown",
+      md: "markdown",
+      graphql: "graphql",
+      jsx: "jsx",
+      tsx: "tsx",
+      text: "text",
+      plain: "text",
+      plaintext: "text",
     };
 
     // Normalize language name
-    const normalizedLanguage = languageMap[language.toLowerCase()] || 'text';
+    const normalizedLanguage = languageMap[language.toLowerCase()] || "text";
 
     // Check if Prism supports this language, with fallbacks
     let prismLanguage = Prism.languages[normalizedLanguage];
     if (!prismLanguage) {
       // Try common fallbacks for shell languages
-      if (['bash', 'shell', 'sh'].includes(normalizedLanguage)) {
-        prismLanguage = Prism.languages['bash'] || Prism.languages['shell'] || Prism.languages['text'];
+      if (["bash", "shell", "sh"].includes(normalizedLanguage)) {
+        prismLanguage =
+          Prism.languages["bash"] ||
+          Prism.languages["shell"] ||
+          Prism.languages["text"];
       } else {
-        prismLanguage = Prism.languages['text'];
+        prismLanguage = Prism.languages["text"];
       }
     }
 
     if (!prismLanguage) {
       // Fallback to plain text with basic styling
       const escapedContent = content
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 
       return `<div class="notion-code-block" data-language="${language}">
   <div class="code-header">
@@ -294,12 +331,16 @@ n2m.setCustomTransformer("code", async (block: any) => {
   <div class="code-content">
     <pre><code class="language-${normalizedLanguage}">${escapedContent}</code></pre>
   </div>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </div>`;
     }
 
     // Use Prism for syntax highlighting
-    const highlightedContent = Prism.highlight(content, prismLanguage, normalizedLanguage);
+    const highlightedContent = Prism.highlight(
+      content,
+      prismLanguage,
+      normalizedLanguage
+    );
 
     return `<div class="notion-code-block" data-language="${language}">
   <div class="code-header">
@@ -309,16 +350,16 @@ n2m.setCustomTransformer("code", async (block: any) => {
   <div class="code-content">
     <pre><code class="language-${normalizedLanguage}">${highlightedContent}</code></pre>
   </div>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </div>`;
   } catch (error) {
     // Fallback to plain text with basic styling
     const escapedContent = content
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
 
     return `<div class="notion-code-block" data-language="${language}">
   <div class="code-header">
@@ -328,11 +369,10 @@ n2m.setCustomTransformer("code", async (block: any) => {
   <div class="code-content">
     <pre><code class="language-${language}">${escapedContent}</code></pre>
   </div>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ''}
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </div>`;
   }
 });
-
 
 n2m.setCustomTransformer("quote", async (block: any) => {
   const { quote } = block;
@@ -371,7 +411,12 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
 
     if (!mdString) {
       const noContent = "<p>No content available</p>";
-      setCacheData(contentCache, cacheKey, noContent, CACHE_CONFIG.PAGE_CONTENT);
+      setCacheData(
+        contentCache,
+        cacheKey,
+        noContent,
+        CACHE_CONFIG.PAGE_CONTENT
+      );
       return noContent;
     }
 
@@ -395,10 +440,15 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
   } catch (error) {
     const errorContent = `<div class="error-message">
       <p>Unable to load content from Notion.</p>
-      <p>Error: ${error instanceof Error ? error.message : 'Unknown error'}</p>
+      <p>Error: ${error instanceof Error ? error.message : "Unknown error"}</p>
     </div>`;
     // Cache error content for a shorter time to allow retries
-    setCacheData(contentCache, cacheKey, errorContent, CACHE_CONFIG.ERROR_CONTENT);
+    setCacheData(
+      contentCache,
+      cacheKey,
+      errorContent,
+      CACHE_CONFIG.ERROR_CONTENT
+    );
     return errorContent;
   }
 }
@@ -417,7 +467,12 @@ export async function getNotionPageBlocks(pageId: string) {
     });
 
     // Cache the result
-    setCacheData(blocksCache, cacheKey, response.results, CACHE_CONFIG.PAGE_BLOCKS);
+    setCacheData(
+      blocksCache,
+      cacheKey,
+      response.results,
+      CACHE_CONFIG.PAGE_BLOCKS
+    );
     return response.results;
   } catch (error) {
     // Cache empty array for errors to avoid repeated failed requests

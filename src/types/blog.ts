@@ -16,7 +16,7 @@ export interface BlogPost {
       src: string;
       width: number;
       height: number;
-      format: 'png' | 'jpg' | 'jpeg' | 'webp';
+      format: "png" | "jpg" | "jpeg" | "webp";
     };
   };
   body: string;

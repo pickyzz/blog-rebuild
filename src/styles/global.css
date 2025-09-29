@@ -168,7 +168,9 @@ html[data-theme="dark"] {
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-family:
+      ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono",
+      Menlo, monospace;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -269,7 +271,7 @@ html[data-theme="dark"] {
   background-color: var(--muted);
   padding: 0.2em 0.4em;
   border-radius: 3px;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.9em;
 }
 
@@ -391,7 +393,7 @@ html[data-theme="dark"] {
 
 /* Badge Styles */
 .badge {
-  @apply inline-flex items-center px-2 py-1 text-xs font-medium rounded-full;
+  @apply inline-flex items-center rounded-full px-2 py-1 text-xs font-medium;
 }
 
 .badge-primary {
@@ -399,7 +401,7 @@ html[data-theme="dark"] {
 }
 
 .badge-outline {
-  @apply bg-transparent border border-accent text-accent;
+  @apply border border-accent bg-transparent text-accent;
 }
 
 .badge-sm {
@@ -412,7 +414,7 @@ html[data-theme="dark"] {
 
 /* TOC Active State */
 .toc-link.active {
-  @apply px-2 py-1 font-semibold border-l-2 rounded text-foreground bg-muted border-accent;
+  @apply rounded border-l-2 border-accent bg-muted px-2 py-1 font-semibold text-foreground;
 }
 
 .toc-link.active span {
@@ -433,7 +435,11 @@ html[data-theme="dark"] {
   justify-content: space-between;
   align-items: center;
   padding: 0.75em 1em;
-  background: linear-gradient(135deg, var(--muted) 0%, rgba(0, 0, 0, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--muted) 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -497,7 +503,8 @@ html[data-theme="dark"] {
 .code-content code {
   background: transparent;
   padding: 0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family:
+    "JetBrains Mono", "Fira Code", "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: inherit;
   line-height: inherit;
 }
@@ -565,7 +572,11 @@ html[data-theme="dark"] .notion-code-block {
 }
 
 html[data-theme="dark"] .code-header {
-  background: linear-gradient(135deg, #2a2d3a 0%, rgba(255, 255, 255, 0.02) 100%);
+  background: linear-gradient(
+    135deg,
+    #2a2d3a 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 

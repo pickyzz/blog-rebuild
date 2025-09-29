@@ -26,7 +26,7 @@ const isActive = (path: string) => {
   <a
     id="skip-to-content"
     href="#main-content"
-    class="bg-background text-accent absolute -top-full left-16 z-50 px-3 py-2 backdrop-blur-lg transition-all focus:top-4"
+    class="absolute -top-full left-16 z-50 bg-background px-3 py-2 text-accent backdrop-blur-lg transition-all focus:top-4"
   >
     Skip to content
   </a>
@@ -68,22 +68,46 @@ const isActive = (path: string) => {
           ]}
         >
           <li class="col-span-2">
-            <a href="/blog" class:list={["hover:text-accent", { "active-nav": isActive("/blog") }]}>
+            <a
+              href="/blog"
+              class:list={[
+                "hover:text-accent",
+                { "active-nav": isActive("/blog") },
+              ]}
+            >
               Posts
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/tags" class:list={["hover:text-accent", { "active-nav": isActive("/tags") }]}>
+            <a
+              href="/tags"
+              class:list={[
+                "hover:text-accent",
+                { "active-nav": isActive("/tags") },
+              ]}
+            >
               Tags
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/about" class:list={["hover:text-accent", { "active-nav": isActive("/about") }]}>
+            <a
+              href="/about"
+              class:list={[
+                "hover:text-accent",
+                { "active-nav": isActive("/about") },
+              ]}
+            >
               About
             </a>
           </li>
           <li class="col-span-2">
-            <a href="/search" class:list={["hover:text-accent", { "active-nav": isActive("/search") }]}>
+            <a
+              href="/search"
+              class:list={[
+                "hover:text-accent",
+                { "active-nav": isActive("/search") },
+              ]}
+            >
               Search
             </a>
           </li>
@@ -93,7 +117,7 @@ const isActive = (path: string) => {
                 <LinkButton
                   href="/archives"
                   class:list={[
-                    "focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 transition-transform duration-200",
+                    "focus-outline flex justify-center p-3 transition-transform duration-200 hover:rotate-6 sm:p-1",
                     {
                       "active-nav [&>svg]:stroke-accent": isActive("/archives"),
                     },
@@ -101,7 +125,7 @@ const isActive = (path: string) => {
                   ariaLabel="archives"
                   title="Archives"
                 >
-                  <IconArchive class="hidden sm:inline-block w-6 h-6" />
+                  <IconArchive class="hidden h-6 w-6 sm:inline-block" />
                   <span class="sm:sr-only">Archives</span>
                 </LinkButton>
               </li>
@@ -112,14 +136,20 @@ const isActive = (path: string) => {
               <li class="col-span-1 flex items-center justify-center">
                 <button
                   id="theme-btn"
-                  class="focus-outline flex justify-center p-3 sm:p-1 hover:rotate-6 hover:[&>div]:text-accent transition-all duration-200"
+                  class="focus-outline flex justify-center p-3 transition-all duration-200 hover:rotate-6 sm:p-1 hover:[&>div]:text-accent"
                   title="Toggles light & dark"
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <div class="relative w-6 h-6 text-foreground transition-all duration-200">
-                    <IconMoon id="moon-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
-                    <IconSun id="sun-icon" class="w-6 h-6 transition-opacity duration-300 ease-in-out absolute inset-0" />
+                  <div class="relative h-6 w-6 text-foreground transition-all duration-200">
+                    <IconMoon
+                      id="moon-icon"
+                      class="absolute inset-0 h-6 w-6 transition-opacity duration-300 ease-in-out"
+                    />
+                    <IconSun
+                      id="sun-icon"
+                      class="absolute inset-0 h-6 w-6 transition-opacity duration-300 ease-in-out"
+                    />
                   </div>
                 </button>
               </li>

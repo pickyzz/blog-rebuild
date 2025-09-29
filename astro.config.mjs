@@ -11,7 +11,7 @@ import pwa from "@vite-pwa/astro";
 import { loadEnv } from "vite";
 
 // Load environment variables
-const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
+const env = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,44 +20,47 @@ export default defineConfig({
   vite: {
     // Externalize resvg native package to avoid bundling .node files with esbuild
     ssr: {
-      external: ["@resvg/resvg-js"]
+      external: ["@resvg/resvg-js"],
     },
     // Prevent Vite optimizeDeps from pre-bundling the native package during dev
     optimizeDeps: {
-      exclude: ["@resvg/resvg-js"]
+      exclude: ["@resvg/resvg-js"],
     },
     // Ensure Rollup also treats the package as external for builds
     build: {
       rollupOptions: {
-        external: ["@resvg/resvg-js"]
+        external: ["@resvg/resvg-js"],
       },
       // Optimize CSS and JS bundles
       cssMinify: true,
-      minify: 'esbuild',
+      minify: "esbuild",
       sourcemap: false,
       // Split chunks for better caching
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['astro', 'astro/components'],
-            ui: ['@astrojs/tailwind', 'tailwindcss']
-          }
-        }
-      }
+            vendor: ["astro", "astro/components"],
+            ui: ["@astrojs/tailwind", "tailwindcss"],
+          },
+        },
+      },
     },
     // Optimize CSS processing
     css: {
-      devSourcemap: false
-    }
+      devSourcemap: false,
+    },
   },
-  adapter: env.NODE_ENV !== "production" ? node({ mode: "standalone" }) : vercel({ edge: true }),
+  adapter:
+    env.NODE_ENV !== "production"
+      ? node({ mode: "standalone" })
+      : vercel({ edge: true }),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
   },
   compressHTML: true,
   build: {
-    inlineStylesheets: 'auto'
+    inlineStylesheets: "auto",
   },
   integrations: [
     tailwind(),
@@ -68,23 +71,26 @@ export default defineConfig({
         if (item.url === SITE.website || item.url === `${SITE.website}/`) {
           // Homepage
           item.priority = 1.0;
-          item.changefreq = 'daily';
-        } else if (item.url.includes('/blog/')) {
+          item.changefreq = "daily";
+        } else if (item.url.includes("/blog/")) {
           // Blog pages
           item.priority = 0.8;
-          item.changefreq = 'weekly';
-        } else if (item.url.includes('/tags/')) {
+          item.changefreq = "weekly";
+        } else if (item.url.includes("/tags/")) {
           // Tag pages
           item.priority = 0.6;
-          item.changefreq = 'monthly';
-        } else if (item.url.includes('/about') || item.url.includes('/archives')) {
+          item.changefreq = "monthly";
+        } else if (
+          item.url.includes("/about") ||
+          item.url.includes("/archives")
+        ) {
           // About and archives pages
           item.priority = 0.5;
-          item.changefreq = 'yearly';
+          item.changefreq = "yearly";
         } else {
           // Other pages
           item.priority = 0.7;
-          item.changefreq = 'monthly';
+          item.changefreq = "monthly";
         }
         return item;
       },
@@ -134,7 +140,8 @@ export default defineConfig({
           },
           {
             urlPattern: ({ url }) =>
-              url.origin === "https://prod-files-secure.s3.us-west-2.amazonaws.com",
+              url.origin ===
+              "https://prod-files-secure.s3.us-west-2.amazonaws.com",
             handler: "CacheFirst",
             options: {
               cacheName: "notion-images",
@@ -185,8 +192,8 @@ export default defineConfig({
   output: "server",
   server: {
     headers: {
-      "Link": "</favicon.ico>; rel=preload; as=image, </apple-touch-icon.png>; rel=preload; as=image"
-    }
+      Link: "</favicon.ico>; rel=preload; as=image, </apple-touch-icon.png>; rel=preload; as=image",
+    },
   },
   experimental: {
     clientPrerender: true,
