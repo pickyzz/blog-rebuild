@@ -1,140 +1,183 @@
 ---
-import { SITE } from "@/config";
-import Layout from "@/layouts/Layout.astro";
-import Main from "@/layouts/Main.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
-import "@pagefind/default-ui/css/ui.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Hr from "../components/Hr.astro";
 
-const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
+export const prerender = false; // Enable SSR for dynamic search
 ---
 
-<Layout title={`Search | ${SITE.title}`}>
+<Layout title="Search" description="Search blog posts">
   <Header />
-  <Main pageTitle="Search" pageDesc="Search any article ...">
-    <!-- Search bar -->
-    <div id="pagefind-search" transition:persist data-backurl={backUrl}></div>
-  </Main>
+  <main class="container mx-auto max-w-4xl px-4 py-8">
+    <div class="mb-8">
+      <h1 class="mb-4 text-3xl font-bold">Search Posts</h1>
+      <form id="searchForm" class="mb-6">
+        <div class="flex gap-2">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by title, description, or tags..."
+            class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            required
+          />
+          <button
+            type="submit"
+            class="rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+      <div id="loading" class="mb-4 hidden text-gray-600 dark:text-gray-400">
+        Searching...
+      </div>
+      <div id="error" class="mb-4 hidden text-red-600 dark:text-red-400"></div>
+      <div id="results" class="hidden">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 id="resultsTitle" class="text-xl font-semibold"></h2>
+          <button
+            id="clearBtn"
+            class="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            Clear
+          </button>
+        </div>
+        <div id="postsList" class="space-y-4"></div>
+      </div>
+      <div id="noResults" class="hidden text-gray-600 dark:text-gray-400">
+        No posts found matching your search.
+      </div>
+    </div>
+  </main>
   <Footer />
 </Layout>
 
 <script>
-  function initSearch() {
-    const pageFindSearch: HTMLElement | null =
-      document.querySelector("#pagefind-search");
+  interface Post {
+    id: string;
+    slug: string;
+    data: {
+      title: string;
+      description: string;
+      pubDatetime: string;
+      tags: string[];
+      author: string;
+    };
+  }
 
-    if (!pageFindSearch) return;
+  interface SearchResponse {
+    posts: Post[];
+    total: number;
+    query: string;
+  }
 
-    const params = new URLSearchParams(window.location.search);
+  const searchForm = document.getElementById("searchForm") as HTMLFormElement;
+  const searchInput = document.getElementById(
+    "searchInput"
+  ) as HTMLInputElement;
+  const loading = document.getElementById("loading")!;
+  const error = document.getElementById("error")!;
+  const results = document.getElementById("results")!;
+  const resultsTitle = document.getElementById("resultsTitle")!;
+  const postsList = document.getElementById("postsList")!;
+  const noResults = document.getElementById("noResults")!;
+  const clearBtn = document.getElementById("clearBtn")!;
 
-    const onIdle = window.requestIdleCallback || (cb => setTimeout(cb, 1));
+  function showLoading() {
+    loading.classList.remove("hidden");
+    error.classList.add("hidden");
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
+  }
 
-    onIdle(async () => {
-      // @ts-expect-error — Missing types for @pagefind/default-ui package.
-      const { PagefindUI } = await import("@pagefind/default-ui");
+  function showError(message: string) {
+    loading.classList.add("hidden");
+    error.classList.remove("hidden");
+    error.textContent = message;
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
+  }
 
-      // Display warning inn dev mode
-      if (import.meta.env.DEV) {
-        pageFindSearch.innerHTML = `
-            <div class="bg-muted/75 rounded p-4 space-y-4 mb-4">
-              <p><strong>DEV mode Warning! </strong>You need to build the project at least once to see the search results during development.</p>
-              <code class="block bg-black text-white px-2 py-1 rounded">pnpm run build</code>
-            </div>
-          `;
-      }
+  function showResults(data: SearchResponse) {
+    loading.classList.add("hidden");
+    error.classList.add("hidden");
 
-      // Init pagefind ui
-      const search = new PagefindUI({
-        element: "#pagefind-search",
-        showSubResults: true,
-        showImages: false,
-        processTerm: function (term: string) {
-          params.set("q", term); // Update the `q` parameter in the URL
-          history.replaceState(history.state, "", "?" + params.toString()); // Push the new URL without reloading
+    if (data.posts.length === 0) {
+      noResults.classList.remove("hidden");
+      results.classList.add("hidden");
+      return;
+    }
 
-          const backUrl = pageFindSearch?.dataset?.backurl;
-          sessionStorage.setItem("backUrl", backUrl + "?" + params.toString());
+    resultsTitle.textContent = `${data.total} result${data.total !== 1 ? "s" : ""} for "${data.query}"`;
+    postsList.innerHTML = "";
 
-          return term;
-        },
-      });
+    data.posts.forEach(post => {
+      const postElement = document.createElement("article");
+      postElement.className =
+        "border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow";
 
-      // If search param exists (eg: search?q=astro), trigger search
-      const query = params.get("q");
-      if (query) {
-        search.triggerSearch(query);
-      }
+      const pubDate = new Date(post.data.pubDatetime).toLocaleDateString();
 
-      // Reset search param if search input is cleared
-      const searchInput = document.querySelector(".pagefind-ui__search-input");
-      const clearButton = document.querySelector(".pagefind-ui__search-clear");
-      searchInput?.addEventListener("input", resetSearchParam);
-      clearButton?.addEventListener("click", resetSearchParam);
+      postElement.innerHTML = `
+        <h3 class="text-lg font-semibold mb-2">
+          <a href="/blog/${post.slug}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            ${post.data.title}
+          </a>
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-2">${post.data.description}</p>
+        <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <span>${post.data.author} • ${pubDate}</span>
+          <div class="flex gap-1">
+            ${post.data.tags.map(tag => `<span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${tag}</span>`).join("")}
+          </div>
+        </div>
+      `;
 
-      function resetSearchParam(e: Event) {
-        if ((e.target as HTMLInputElement)?.value.trim() === "") {
-          history.replaceState(history.state, "", window.location.pathname);
-        }
-      }
+      postsList.appendChild(postElement);
     });
+
+    results.classList.remove("hidden");
+    noResults.classList.add("hidden");
   }
 
-  document.addEventListener("astro:after-swap", () => {
-    const pagefindSearch = document.querySelector("#pagefind-search");
+  function clearResults() {
+    searchInput.value = "";
+    loading.classList.add("hidden");
+    error.classList.add("hidden");
+    results.classList.add("hidden");
+    noResults.classList.add("hidden");
+    searchInput.focus();
+  }
 
-    // if pagefind search form already exists, don't initialize search component
-    if (pagefindSearch && pagefindSearch.querySelector("form")) return;
+  async function performSearch(query: string) {
+    try {
+      showLoading();
 
-    initSearch();
+      const response = await fetch(
+        `/api/search.json?q=${encodeURIComponent(query)}`
+      );
+      if (!response.ok) {
+        throw new Error(`Search failed: ${response.status}`);
+      }
+
+      const data: SearchResponse = await response.json();
+      showResults(data);
+    } catch (err) {
+      showError(err instanceof Error ? err.message : "An error occurred");
+    }
+  }
+
+  searchForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (query) {
+      performSearch(query);
+    }
   });
-  initSearch();
+
+  clearBtn.addEventListener("click", clearResults);
+
+  // Focus search input on page load
+  searchInput.focus();
 </script>
-
-<style is:global>
-  #pagefind-search {
-    --pagefind-ui-font: var(--font-mono);
-    --pagefind-ui-text: var(--foreground);
-    --pagefind-ui-background: var(--background);
-    --pagefind-ui-border: var(--border);
-    --pagefind-ui-primary: var(--accent);
-    --pagefind-ui-tag: var(--background);
-    --pagefind-ui-border-radius: 0.375rem;
-    --pagefind-ui-border-width: 1px;
-    --pagefind-ui-image-border-radius: 8px;
-    --pagefind-ui-image-box-ratio: 3 / 2;
-
-    form::before {
-      background-color: var(--foreground);
-    }
-
-    input {
-      font-weight: 400;
-      border: 1px solid var(--border);
-    }
-
-    input:focus-visible {
-      outline: 1px solid var(--accent);
-    }
-
-    .pagefind-ui__result-title a {
-      color: var(--accent);
-      outline-offset: 1px;
-      outline-color: var(--accent);
-    }
-
-    .pagefind-ui__result-title a:focus-visible,
-    .pagefind-ui__search-clear:focus-visible {
-      text-decoration-line: none;
-      outline-width: 2px;
-      outline-style: dashed;
-    }
-
-    .pagefind-ui__result:last-of-type {
-      border-bottom: 0;
-    }
-
-    .pagefind-ui__result-nested .pagefind-ui__result-link:before {
-      font-family: system-ui;
-    }
-  }
-</style>

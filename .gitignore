@@ -24,9 +24,6 @@ pnpm-debug.log*
 # ignore .astro directory
 .astro
 
-# Bun lockb
-bun.lockb
-
 # playwright
 /test-results/
 /playwright-report/
@@ -35,3 +32,7 @@ bun.lockb
 
 # pagefind 
 /public/pagefind/
+.vercel
+
+# CRUSH
+CRUSH.md

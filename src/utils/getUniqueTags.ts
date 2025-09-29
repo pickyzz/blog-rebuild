@@ -1,5 +1,5 @@
 import { slugifyStr } from "./slugify";
-import type { CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 import postFilter from "./postFilter";
 
 interface Tag {
@@ -13,7 +13,7 @@ interface Tag {
  * `tag` is the slugified tag name, and `tagName` is the original tag name.
  * The list is sorted alphabetically by `tag`.
  */
-const getUniqueTags = (posts: CollectionEntry<"blog">[]) => {
+const getUniqueTags = (posts: BlogPost[]) => {
   const tags: Tag[] = posts
     .filter(postFilter)
     .flatMap(post => post.data.tags)

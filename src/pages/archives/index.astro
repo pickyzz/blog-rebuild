@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import CardArchives from "@/components/CardArchives.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
@@ -7,13 +6,24 @@ import { SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
+import { getNotionPosts } from "@/utils/getNotionPosts";
+
+export const prerender = true;
 
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
   return Astro.redirect("/404");
 }
 
-const posts = await getCollection("blog", ({ data }) => !data.draft);
+const allPosts = await getNotionPosts();
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
+}
+const posts = allPosts.filter(({ data }) => !data.draft);
 
 const months = [
   "January",

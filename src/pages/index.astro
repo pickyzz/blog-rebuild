@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -11,15 +10,28 @@ import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { getNotionPosts } from "@/utils/getNotionPosts";
 
-const posts = await getCollection("blog");
+const posts = await getNotionPosts();
+
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
+}
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+
+export const prerender = true;
 ---
 
-<Layout>
+<Layout
+  description="บล็อกส่วนตัวของ Parinya (Pickyzz) T. ผู้พัฒนา front-end ที่เรียนรู้ด้วยตนเอง แชร์ความรู้เกี่ยวกับ React, JavaScript, HTML, CSS และเทคโนโลยีเว็บอื่นๆ ในภาษาไทย"
+>
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pb-6 pt-8">
@@ -55,6 +67,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
                       href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
+                      priority="high"
                     />
                   )
               )}
@@ -81,6 +94,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
                       href={`/blog/${data.slug}`}
                       frontmatter={data}
                       secHeading={false}
+                      priority="low"
                     />
                   )
               )}

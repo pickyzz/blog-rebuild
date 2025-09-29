@@ -1,4 +1,4 @@
-import type { CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 import postFilter from "./postFilter";
 
 const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {

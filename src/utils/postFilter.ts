@@ -1,5 +1,5 @@
 import { SITE } from "@/config";
-import type { CollectionEntry } from "astro:content";
+import type { BlogPost } from "@/types";
 
 /**
  * Filter for Astro's content collection.

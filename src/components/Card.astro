@@ -7,9 +7,10 @@ export interface Props {
   href?: string;
   frontmatter: CollectionEntry<"blog">["data"];
   secHeading?: boolean;
+  priority?: "high" | "low";
 }
 
-const { href, frontmatter, secHeading = true } = Astro.props;
+const { href, frontmatter, secHeading = true, priority = "low" } = Astro.props;
 
 const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
 
@@ -31,10 +32,13 @@ const headerProps = {
     >
       <img
         class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
-        src={ogImage?.src}
-        loading="eager"
-        fetchpriority="high"
-        alt=""
+        src={ogImage?.src || "/pickyzz-og.png"}
+        loading="lazy"
+        decoding="async"
+        fetchpriority={priority}
+        alt={title
+          ? `Cover image for blog post: ${title}`
+          : "Blog post cover image"}
       />
       <div
         class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2"

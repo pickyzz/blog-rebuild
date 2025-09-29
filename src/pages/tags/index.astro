@@ -1,16 +1,20 @@
 ---
-import { getCollection } from "astro:content";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import Tag from "@/components/Tag.astro";
-import getUniqueTags from "@/utils/getUniqueTags";
 import { SITE } from "@/config";
+import { getNotionUniqueTags } from "@/utils/getNotionPosts";
 
-const posts = await getCollection("blog");
-
-let tags = getUniqueTags(posts);
+const tags = await getNotionUniqueTags();
+/* Set cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=30, stale-while-revalidate=60"
+  );
+}
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>

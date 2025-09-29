@@ -9,9 +9,26 @@ import { toString } from "mdast-util-to-string";
  * @return {import('unified').Plugin<[], import('mdast').Root>} A unified plugin
  */
 export function remarkReadingTime() {
-  return function (tree, { data }) {
-    const textOnPage = toString(tree);
-    const readingTime = getReadingTime(textOnPage);
-    data.astro.frontmatter.readingTime = readingTime.text;
+  return function (tree, vfile) {
+    try {
+      const textOnPage = toString(tree) || "";
+      const readingTime = getReadingTime(textOnPage);
+
+      // Ensure vfile.data and frontmatter objects exist
+      if (!vfile || typeof vfile !== "object") return;
+      vfile.data = vfile.data || {};
+      vfile.data.astro = vfile.data.astro || {};
+      vfile.data.astro.frontmatter = vfile.data.astro.frontmatter || {};
+
+      vfile.data.astro.frontmatter.readingTime = readingTime?.text ?? null;
+    } catch (err) {
+      // swallow errors to avoid breaking build; log minimal info if available
+      // console.warn is safe in build-time plugins
+
+      console.warn(
+        "[remark-reading-time] failed to compute reading time:",
+        err?.message ?? err
+      );
+    }
   };
 }

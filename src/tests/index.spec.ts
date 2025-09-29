@@ -62,11 +62,10 @@ test("search page", async ({ page }) => {
   await expect(page.locator("body")).toBeVisible();
   await expect(page.locator("#nav-menu")).toBeVisible();
   await expect(page.locator("#main-content")).toBeVisible();
-  await expect(page.getByLabel("breadcrumb")).toBeVisible();
   await expect(page.locator("footer")).toBeVisible();
   await expect(page.locator("main")).toBeVisible();
   await expect(page.locator("main > h1")).toBeVisible();
-  await expect(page.locator("main > h1")).toHaveText("Search");
+  await expect(page.locator("main > h1")).toHaveText("Search Posts");
 });
 
 test("navigation works from menu", async ({ page }) => {
@@ -96,4 +95,79 @@ test("dark mode toggle works", async ({ page }) => {
     const after = await body.getAttribute("class");
     expect(initial).not.toBe(after);
   }
+});
+test("sanitize: removes script and dangerous HTML from Notion content", async () => {
+  // Import sanitize directly for unit test
+  const { sanitize } = await import("../helpers/sanitize.mjs");
+
+  const malicious = `
+    <div>Safe</div>
+    <script>alert('xss')</script>
+    <img src="x" onerror="alert('xss')" />
+    <a href="javascript:alert('xss')">link</a>
+    <iframe src="https://evil.com"></iframe>
+    <iframe src="https://youtube.com/embed/abc"></iframe>
+    <object data="evil"></object>
+    <embed src="evil"></embed>
+    <link rel="stylesheet" href="evil.css">
+    <meta http-equiv="refresh" content="0;url=evil">
+  `;
+  const sanitized = sanitize(malicious);
+
+  expect(sanitized).toContain("<div>Safe</div>");
+  expect(sanitized).not.toContain("<script");
+  expect(sanitized).not.toContain("onerror=");
+  expect(sanitized).not.toContain("javascript:");
+  expect(sanitized).not.toContain('<iframe src="https://evil.com"></iframe>');
+  expect(sanitized).toContain(
+    '<iframe src="https://youtube.com/embed/abc"></iframe>'
+  );
+  expect(sanitized).not.toContain("<object");
+  expect(sanitized).not.toContain("<embed");
+  expect(sanitized).not.toContain("<link");
+  expect(sanitized).not.toContain("<meta");
+});
+
+// --- NotionPageSchema validation tests ---
+import { NotionPageSchema } from "../libs/notion.types";
+import { z } from "zod";
+
+test("NotionPageSchema: valid page passes validation", () => {
+  const validPage = {
+    id: "abc123",
+    title: "Test Title",
+    type: "page",
+    cover: "https://example.com/image.png",
+    tags: [
+      { id: "t1", name: "tag1", color: "red" },
+      { id: "t2", name: "tag2" },
+    ],
+    created_time: "2023-01-01T00:00:00.000Z",
+    last_edited_time: "2023-01-02T00:00:00.000Z",
+    featured: null,
+    archived: false,
+    status: "published",
+    publish_date: "2023-01-01",
+    modified_date: "2023-01-02",
+    description: "desc",
+    slug: "test-title",
+  };
+  const result = NotionPageSchema.safeParse(validPage);
+  expect(result.success).toBe(true);
+});
+
+test("NotionPageSchema: invalid page fails validation", () => {
+  const invalidPage = {
+    id: 123, // should be string
+    title: "Test Title",
+    type: "page",
+    tags: [],
+    created_time: "2023-01-01T00:00:00.000Z",
+    last_edited_time: "2023-01-02T00:00:00.000Z",
+    archived: false,
+    slug: "test-title",
+    // missing required fields
+  };
+  const result = NotionPageSchema.safeParse(invalidPage);
+  expect(result.success).toBe(false);
 });

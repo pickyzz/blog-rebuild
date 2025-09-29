@@ -9,13 +9,14 @@
 - [Working with Notion as CMS](#working-with-notion-as-cms)
 - [Development](#development)
 - [Production Build](#production-build)
+- [Testing](#testing)
 - [All Commands](#-all-commands)
 
 ## Overview
 
 **Powered by Astro & Notion**
 
-- V.2.0.0 based on [Astro-paper](https://github.com/satnaing/astro-paper) theme
+- V.2.1.0 based on [Astro-paper](https://github.com/satnaing/astro-paper) theme
 - Notion API as Content Management System based on [AstroNot](https://github.com/jsonMartin/AstroNot)
 - Customized by [Pickyzz](https://github.com/pickyzz)
 
@@ -99,27 +100,35 @@ Create an optimized production build:
 npm run build
 ```
 
-Or sync content and build in one command:
+## Testing
+
+Run the test suite:
 
 ```bash
-npm run generate
-```
+# E2E tests with Playwright
+npm test
 
-The generated files will be in the `dist` folder, ready for deployment to any hosting service.
+# Unit tests with Vitest
+npm run test:unit
+
+# Unit tests in watch mode
+npm run test:unit:watch
+```
 
 ## 🧞 All Commands
 
 Run these commands from the root of the project:
 
-| Command                  | Action                                                    |
-| :----------------------- | :-------------------------------------------------------- |
-| `npm install`            | Installs dependencies                                     |
-| `npm run dev`            | Starts local dev server at `localhost:4321`               |
-| `npm run build`          | Build your production site to `./dist/`                   |
-| `npm run preview`        | Preview your build locally, before deploying              |
-| `npm run clean`          | Remove `./dist` folder                                    |
-| `npm run format`         | Run Prettier and format code                              |
-| `npm run lint`           | Run ESLint and report linting errors                      |
-| `npm run sync`           | Sync all posts from Notion database                       |
-| `npm run sync:published` | Sync only published posts from Notion database            |
-| `npm run generate`       | Sync published posts and build static site for deployment |
+| Command                   | Action                                        |
+| :------------------------ | :-------------------------------------------- |
+| `npm install`             | Installs dependencies                         |
+| `npm run dev`             | Starts local dev server at `localhost:4321`   |
+| `npm run build`           | Build your production site to `./dist/`       |
+| `npm run preview`         | Preview your build locally, before deploying  |
+| `npm run clean`           | Remove `./dist` folder                        |
+| `npm run format`          | Run Prettier and format code                  |
+| `npm run format:check`    | Check code formatting without modifying files |
+| `npm run lint`            | Run ESLint and report linting errors          |
+| `npm test`                | Run E2E tests with Playwright                 |
+| `npm run test:unit`       | Run unit tests with Vitest                    |
+| `npm run test:unit:watch` | Run unit tests in watch mode                  |
