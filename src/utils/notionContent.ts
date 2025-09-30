@@ -175,14 +175,17 @@ n2m.setCustomTransformer("image", async (block: any) => {
   const imageUrl = image?.file?.url || image?.external?.url;
   const caption = image?.caption?.[0]?.plain_text || "";
 
+  // Use proxy URL instead of direct Notion URL to handle expiration
+  const proxyUrl = `/api/image/${block.id}`;
+
   if (caption) {
     return `<figure class="notion-image">
-  <img src="${imageUrl}" alt="${caption}" loading="lazy" />
+  <img src="${proxyUrl}" alt="${caption}" loading="lazy" />
   <figcaption>${caption}</figcaption>
 </figure>`;
   }
 
-  return `<img src="${imageUrl}" alt="Image from blog post" loading="lazy" class="notion-image" />`;
+  return `<img src="${proxyUrl}" alt="Image from blog post" loading="lazy" class="notion-image" />`;
 });
 
 n2m.setCustomTransformer("video", async (block: any) => {
