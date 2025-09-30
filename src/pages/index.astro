@@ -25,8 +25,8 @@ if (Astro.response && Astro.response.headers) {
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+export const prerender = false; // Use SSR so index always reflects Notion content
 
-export const prerender = true;
 ---
 
 <Layout

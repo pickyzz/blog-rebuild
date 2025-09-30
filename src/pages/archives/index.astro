@@ -8,7 +8,7 @@ import Main from "@/layouts/Main.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
 import { getNotionPosts } from "@/utils/getNotionPosts";
 
-export const prerender = true;
+export const prerender = false; // Use SSR so archives reflect Notion updates
 
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
