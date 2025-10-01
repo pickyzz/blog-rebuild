@@ -3,6 +3,7 @@ import IconX from "@/assets/icons/IconX.svg";
 import IconMoon from "@/assets/icons/IconMoon.svg";
 import IconArchive from "@/assets/icons/IconArchive.svg";
 import IconSun from "@/assets/icons/IconSun.svg";
+import IconAuto from "@/assets/icons/IconAuto.svg";
 import IconMenuDeep from "@/assets/icons/IconMenuDeep.svg";
 import IconSearch from "@/assets/icons/IconSearch.svg";
 import LinkButton from "./LinkButton.astro";
@@ -137,7 +138,7 @@ const isActive = (path: string) => {
                 <button
                   id="theme-btn"
                   class="focus-outline flex justify-center p-3 transition-all duration-200 hover:rotate-6 sm:p-1 hover:[&>div]:text-accent"
-                  title="Toggles light & dark"
+                  title="Toggles light, dark & auto"
                   aria-label="auto"
                   aria-live="polite"
                 >
@@ -148,6 +149,10 @@ const isActive = (path: string) => {
                     />
                     <IconSun
                       id="sun-icon"
+                      class="absolute inset-0 h-6 w-6 transition-opacity duration-300 ease-in-out"
+                    />
+                    <IconAuto
+                      id="auto-icon"
                       class="absolute inset-0 h-6 w-6 transition-opacity duration-300 ease-in-out"
                     />
                   </div>

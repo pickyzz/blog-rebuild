@@ -40,32 +40,42 @@ function setPreference() {
 }
 
 function reflectPreference() {
+  const actualTheme = themeValue === "auto" 
+    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    : themeValue;
+    
   if (document.firstElementChild) {
-    document.firstElementChild.setAttribute("data-theme", themeValue);
+    document.firstElementChild.setAttribute("data-theme", actualTheme);
   }
   const themeBtn = document.querySelector("#theme-btn");
   if (themeBtn) {
     themeBtn.setAttribute("aria-label", themeValue);
-    // Add aria-live for accessibility
     themeBtn.setAttribute("aria-live", "polite");
   }
 
   // Toggle icons based on theme
   const moonIcon = document.querySelector("#moon-icon");
   const sunIcon = document.querySelector("#sun-icon");
-  if (moonIcon && sunIcon) {
+  const autoIcon = document.querySelector("#auto-icon");
+  
+  if (moonIcon && sunIcon && autoIcon) {
+    // Reset all icons
+    moonIcon.style.opacity = "0";
+    sunIcon.style.opacity = "0";
+    autoIcon.style.opacity = "0";
+    
     if (themeValue === "light") {
       moonIcon.style.opacity = "1";
-      sunIcon.style.opacity = "0";
-    } else {
-      moonIcon.style.opacity = "0";
+    } else if (themeValue === "dark") {
       sunIcon.style.opacity = "1";
+    } else if (themeValue === "auto") {
+      autoIcon.style.opacity = "1";
     }
   }
 
   const body = document.body;
   if (body) {
-    body.setAttribute("data-theme", themeValue);
+    body.setAttribute("data-theme", actualTheme);
     const computedStyles = window.getComputedStyle(body);
     const bgColor = computedStyles.backgroundColor;
     let metaThemeColor = document.querySelector("meta[name='theme-color']");
@@ -81,30 +91,68 @@ function reflectPreference() {
 // set early so no page flashes / CSS is made aware
 reflectPreference();
 
-window.onload = () => {
-  function setThemeFeature() {
-    // set on load so screen readers can get the latest value on the button
-    reflectPreference();
+// Initialize immediately if DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeTheme);
+} else {
+  initializeTheme();
+}
 
-    // now this script can find and listen for clicks on the control
-    document.querySelector("#theme-btn")?.addEventListener("click", () => {
-      themeValue = themeValue === "light" ? "dark" : "light";
-      setPreference();
-    });
+function initializeTheme() {
+  setThemeFeature();
+}
+
+function setThemeFeature() {
+  // set on load so screen readers can get the latest value on the button
+  reflectPreference();
+
+  // Remove existing event listeners to prevent duplicates
+  const existingBtn = document.querySelector("#theme-btn");
+  if (existingBtn) {
+    existingBtn.replaceWith(existingBtn.cloneNode(true));
   }
 
-  setThemeFeature();
+  // now this script can find and listen for clicks on the control
+  const themeBtn = document.querySelector("#theme-btn");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      
+      if (themeValue === "light") {
+        themeValue = "dark";
+      } else if (themeValue === "dark") {
+        themeValue = "auto";
+      } else {
+        themeValue = "light";
+      }
+      
+      setPreference();
+    });
+  } else {
+    // Retry after a short delay
+    setTimeout(() => {
+      setThemeFeature();
+    }, 100);
+  }
+}
 
-  // Runs on view transitions navigation
-  document.addEventListener("astro:after-swap", setThemeFeature);
-};
+// Runs on view transitions navigation
+document.addEventListener("astro:after-swap", () => {
+  setThemeFeature();
+});
+
+// Also handle window load as fallback
+window.addEventListener('load', () => {
+  setThemeFeature();
+});
 
 // sync with system changes
 window
   .matchMedia("(prefers-color-scheme: dark)")
   .addEventListener("change", ({ matches: isDark }) => {
-    themeValue = isDark ? "dark" : "light";
-    setPreference();
+    if (themeValue === "auto") {
+      reflectPreference();
+    }
   });
 
 // sync theme across tabs/windows
