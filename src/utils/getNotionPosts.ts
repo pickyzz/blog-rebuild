@@ -14,10 +14,17 @@ const notion = new Client({
 
 // TTL Configuration for different content types (in milliseconds) - configurable via env vars for development flexibility
 const CACHE_CONFIG = {
-  POSTS: parseInt(import.meta.env.POSTS_CACHE_TTL || (import.meta.env.NODE_ENV === "development" ? "30000" : "120000")), // 30s dev, 2min prod
+  POSTS: parseInt(
+    import.meta.env.POSTS_CACHE_TTL ||
+      (import.meta.env.NODE_ENV === "development" ? "30000" : "120000")
+  ), // 30s dev, 2min prod
   TAGS: parseInt(import.meta.env.TAGS_CACHE_TTL || "600000"), // 10 minutes
-  POST_BY_SLUG_NEW: parseInt(import.meta.env.POST_BY_SLUG_NEW_CACHE_TTL || "120000"), // 2 minutes
-  POST_BY_SLUG_OLD: parseInt(import.meta.env.POST_BY_SLUG_OLD_CACHE_TTL || "900000"), // 15 minutes
+  POST_BY_SLUG_NEW: parseInt(
+    import.meta.env.POST_BY_SLUG_NEW_CACHE_TTL || "120000"
+  ), // 2 minutes
+  POST_BY_SLUG_OLD: parseInt(
+    import.meta.env.POST_BY_SLUG_OLD_CACHE_TTL || "900000"
+  ), // 15 minutes
   POSTS_BY_TAG: parseInt(import.meta.env.POSTS_BY_TAG_CACHE_TTL || "300000"), // 5 minutes
 } as const;
 

@@ -40,10 +40,13 @@ function setPreference() {
 }
 
 function reflectPreference() {
-  const actualTheme = themeValue === "auto" 
-    ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-    : themeValue;
-    
+  const actualTheme =
+    themeValue === "auto"
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"
+      : themeValue;
+
   if (document.firstElementChild) {
     document.firstElementChild.setAttribute("data-theme", actualTheme);
   }
@@ -57,13 +60,13 @@ function reflectPreference() {
   const moonIcon = document.querySelector("#moon-icon");
   const sunIcon = document.querySelector("#sun-icon");
   const autoIcon = document.querySelector("#auto-icon");
-  
+
   if (moonIcon && sunIcon && autoIcon) {
     // Reset all icons
     moonIcon.style.opacity = "0";
     sunIcon.style.opacity = "0";
     autoIcon.style.opacity = "0";
-    
+
     if (themeValue === "light") {
       moonIcon.style.opacity = "1";
     } else if (themeValue === "dark") {
@@ -92,8 +95,8 @@ function reflectPreference() {
 reflectPreference();
 
 // Initialize immediately if DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeTheme);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeTheme);
 } else {
   initializeTheme();
 }
@@ -115,9 +118,9 @@ function setThemeFeature() {
   // now this script can find and listen for clicks on the control
   const themeBtn = document.querySelector("#theme-btn");
   if (themeBtn) {
-    themeBtn.addEventListener("click", (e) => {
+    themeBtn.addEventListener("click", e => {
       e.preventDefault();
-      
+
       if (themeValue === "light") {
         themeValue = "dark";
       } else if (themeValue === "dark") {
@@ -125,7 +128,7 @@ function setThemeFeature() {
       } else {
         themeValue = "light";
       }
-      
+
       setPreference();
     });
   } else {
@@ -142,7 +145,7 @@ document.addEventListener("astro:after-swap", () => {
 });
 
 // Also handle window load as fallback
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
   setThemeFeature();
 });
 

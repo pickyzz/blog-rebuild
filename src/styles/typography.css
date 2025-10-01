@@ -43,6 +43,16 @@
     font-weight: 600;
   }
 
+  .prose :where(em):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    color: var(--foreground);
+    font-style: italic;
+  }
+
+  .prose :where(del):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    color: var(--foreground);
+    text-decoration: line-through;
+  }
+
   .prose :where(ol):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     counter-reset: list-counter;
     margin-top: 1.25em;
@@ -65,6 +75,13 @@
     font-weight: 400;
   }
 
+  .prose :where(ul):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    list-style-type: disc;
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1.625em;
+  }
+
   .prose
     :where(ul > li):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     margin-top: 0.5em;
@@ -76,6 +93,30 @@
       :where([class~="not-prose"], [class~="not-prose"] *)
     ) {
     color: var(--accent);
+  }
+
+  .prose
+    :where(ul ul, ol ul):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    list-style-type: circle;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose
+    :where(ul ul ul, ol ul ul):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    list-style-type: square;
+  }
+
+  .prose
+    :where(ol ol, ul ol):not(
+      :where([class~="not-prose"], [class~="not-prose"] *)
+    ) {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
   }
 
   .prose :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -147,6 +188,30 @@
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     line-height: 1.5;
+  }
+
+  .prose :where(h5):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    color: var(--foreground);
+    font-weight: 600;
+    font-size: 0.875em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.5;
+  }
+
+  .prose :where(h6):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    color: var(--foreground);
+    font-weight: 600;
+    font-size: 0.75em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.5;
+  }
+
+  .prose
+    :where(figure):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
 
   .prose

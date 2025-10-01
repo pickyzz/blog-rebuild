@@ -9,30 +9,39 @@ export const POST: APIRoute = async () => {
     invalidateAllCaches();
     invalidateAllContentCaches();
 
-    console.log("[CACHE REFRESH] All caches invalidated at", new Date().toISOString());
+    console.log(
+      "[CACHE REFRESH] All caches invalidated at",
+      new Date().toISOString()
+    );
 
-    return new Response(JSON.stringify({
-      success: true,
-      message: "All caches invalidated successfully",
-      timestamp: new Date().toISOString()
-    }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json"
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "All caches invalidated successfully",
+        timestamp: new Date().toISOString(),
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
   } catch (error) {
     console.error("[CACHE REFRESH ERROR]", error);
-    return new Response(JSON.stringify({
-      success: false,
-      message: "Failed to invalidate caches",
-      error: error instanceof Error ? error.message : "Unknown error"
-    }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json"
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: "Failed to invalidate caches",
+        error: error instanceof Error ? error.message : "Unknown error",
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
   }
 };
 
@@ -42,7 +51,7 @@ export const GET: APIRoute = async () => {
   return new Response("Use POST method for cache refresh", {
     status: 405,
     headers: {
-      "Allow": "POST"
-    }
+      Allow: "POST",
+    },
   });
 };

@@ -54,7 +54,8 @@ export const GET: APIRoute = async ({ params }) => {
     }
 
     const imageBlock = block as any;
-    const imageUrl = imageBlock.image?.file?.url || imageBlock.image?.external?.url;
+    const imageUrl =
+      imageBlock.image?.file?.url || imageBlock.image?.external?.url;
 
     if (!imageUrl) {
       return new Response("Image URL not found", { status: 404 });
