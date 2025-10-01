@@ -31,7 +31,7 @@ export function sanitize(html) {
     ],
     allowedAttributes: {
       a: ["href", "name", "target", "rel"],
-      img: ["src", "alt", "title", "width", "height"],
+      img: ["src", "alt", "title", "width", "height", "data-large", "data-src"],
       iframe: [
         "src",
         "width",
