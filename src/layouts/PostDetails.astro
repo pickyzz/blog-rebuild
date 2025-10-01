@@ -240,8 +240,9 @@ if (tags && tags.length > 0 && posts) {
     </p>
     <article id="article" class="prose mx-auto mt-8 max-w-4xl">
       <img
-        class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
+        class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center img-loading blurry-load"
         src={post.data.ogImage?.src}
+        data-large={post.data.ogImage?.src}
         alt={title
           ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}`
           : "Blog post cover image"}

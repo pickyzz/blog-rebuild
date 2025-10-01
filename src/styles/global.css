@@ -599,3 +599,14 @@ html[data-theme="dark"] .code-content pre::-webkit-scrollbar-thumb:hover {
 html[data-theme="dark"] .copy-button:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
+
+img.img-loading {
+  filter: blur(10px);
+  opacity: 0.7;
+  transition: filter 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+img.img-loaded {
+  filter: blur(0);
+  opacity: 1;
+}

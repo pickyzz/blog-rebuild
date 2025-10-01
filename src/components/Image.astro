@@ -41,7 +41,7 @@ const attrs = generateResponsiveImageAttrs({
   <img
     src={`/assets/images/blog/${src}-${widths[widths.length - 1]}.${formats[formats.length - 1]}`}
     alt={alt}
-    class={imageClass}
+    class={`${imageClass} img-loading`}
     loading={loading}
     decoding={decoding}
     fetchpriority={fetchpriority}
@@ -49,3 +49,96 @@ const attrs = generateResponsiveImageAttrs({
     style="max-width:100%;height:auto;"
   />
 </picture>
+
+<style>
+  .blurry-load {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  .blurry-load img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: filter 600ms ease, opacity 400ms ease;
+    filter: blur(20px) scale(1.02);
+  }
+  .blurry-load img.img-loaded {
+    filter: none;
+    opacity: 1;
+  }
+  .blurry-load .no-filter {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 37%, #f0f0f0 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s linear infinite;
+    min-height: 1px;
+  }
+  @keyframes shimmer {
+    0% { background-position: 100% 0 }
+    100% { background-position: -100% 0 }
+  }
+</style>
+
+<script type="module" client:load>
+  const init = () => {
+    const lazyImages = document.querySelectorAll("img.img-loading");
+    lazyImages.forEach(img => {
+      const wrapper = img.closest('.blurry-load') || img.parentElement;
+      // If no data-large provided, consider it already loaded
+      if (!img.dataset.large) {
+        img.classList.add('img-loaded');
+        return;
+      }
+
+      const applyLoaded = () => {
+        try { img.classList.add('img-loaded'); } catch(e){}
+      };
+
+      const applyFallback = () => {
+        // remove blur visually by adding loaded class; optionally set placeholder
+        applyLoaded();
+      };
+
+      const loadImage = () => {
+        const big = new Image();
+        let timedOut = false;
+        const timeout = setTimeout(() => {
+          timedOut = true;
+          console.warn('blurry-load: image load timeout for', img.dataset.large);
+          applyFallback();
+        }, 8000);
+
+        big.src = img.dataset.large;
+        big.decoding = 'async';
+        big.onload = () => {
+          if (timedOut) return;
+          clearTimeout(timeout);
+          img.src = big.src;
+          applyLoaded();
+        };
+        big.onerror = () => {
+          clearTimeout(timeout);
+          console.warn('blurry-load: failed to load', img.dataset.large);
+          applyFallback();
+        };
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              loadImage();
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { rootMargin: '200px' });
+        io.observe(img);
+      } else {
+        loadImage();
+      }
+    });
+  };
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') init();
+  else document.addEventListener('DOMContentLoaded', init);
+</script>
