@@ -396,7 +396,7 @@ if (tags && tags.length > 0 && posts) {
   /** Attaches copy buttons to code blocks in the document,
    * allowing users to copy code easily. */
   /** Copy function for Notion code blocks */
-  function copyCodeBlock(button) {
+  async function copyCodeBlock(button) {
     const codeBlock = button.closest(".notion-code-block");
     const codeElement =
       codeBlock.querySelector(".code-content code") ||
@@ -424,35 +424,60 @@ if (tags && tags.length > 0 && posts) {
         button.removeAttribute('data-copied');
       }, 1600);
     } catch (err) {
-      // fallback for insecure contexts
+      // Fallback for insecure contexts where Clipboard API isn't available.
+      // We avoid deprecated document.execCommand and instead select the text
+      // and prompt the user to press Cmd/Ctrl+C to copy manually.
+      const tempTA = document.createElement('textarea');
+      tempTA.value = text;
+      tempTA.setAttribute('readonly', '');
+      // Keep it visually hidden but selectable
+      tempTA.style.position = 'fixed';
+      tempTA.style.top = '-1000px';
+      tempTA.style.opacity = '0';
+      document.body.appendChild(tempTA);
       try {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-        // class-based transient state for fallback copy; mirror client-side label change
-        const labelSpan = button.querySelector && button.querySelector('.icon-label');
-        const origLabel = labelSpan ? labelSpan.textContent : null;
-        if (labelSpan) labelSpan.textContent = 'copied';
-        button.classList.add("copied");
-        button.disabled = true;
-        button.setAttribute('data-copied','true');
-        setTimeout(() => {
-          if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
-          button.classList.remove("copied");
-          button.disabled = false;
-          button.removeAttribute('data-copied');
-        }, 1600);
-      } catch (e) {
-        console.error("Failed to copy code:", e);
-        // show subtle error state via class only
-        button.classList.add('copy-error');
-        setTimeout(() => {
-          button.classList.remove('copy-error');
-        }, 1200);
+        tempTA.focus();
+        tempTA.select();
+      } catch (_) {
+        // ignore selection failures
       }
+
+      const labelSpan = button.querySelector && button.querySelector('.icon-label');
+      const origLabel = labelSpan ? labelSpan.textContent : null;
+  const isTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0);
+  const isMac = navigator.platform ? /Mac|iPhone|iPod|iPad/.test(navigator.platform) : false;
+  const promptText = isTouch ? 'long-press to copy' : (isMac ? 'press ⌘+C' : 'press Ctrl+C');
+
+      // Inform user to press copy keys
+      if (labelSpan) labelSpan.textContent = promptText;
+      button.classList.add('copy-manual');
+      button.setAttribute('aria-live', 'polite');
+
+      // Listen briefly for the copy key combo to provide success UI
+      let handled = false;
+      const keyHandler = (e) => {
+        const isCopyCombo = (isMac && e.metaKey && e.key.toLowerCase() === 'c') || (!isMac && e.ctrlKey && e.key.toLowerCase() === 'c');
+        if (isCopyCombo) {
+          handled = true;
+          button.classList.remove('copy-manual');
+          button.classList.add('copied');
+          if (labelSpan) labelSpan.textContent = 'copied';
+          setTimeout(() => {
+            if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
+            button.classList.remove('copied');
+          }, 1200);
+        }
+      };
+      window.addEventListener('keydown', keyHandler, { once: true });
+
+      // Cleanup hidden textarea and restore label after a short delay
+      setTimeout(() => {
+        try { tempTA.remove(); } catch (_) { /* noop */ }
+        if (!handled) {
+          if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
+          button.classList.remove('copy-manual');
+        }
+      }, 3000);
     }
   }
 

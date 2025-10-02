@@ -1,18 +1,16 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { unified } from "unified";
-// --- sanitize import for HTML output ---
 import { sanitize } from "../helpers/sanitize.mjs";
 import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
-import { visit } from "unist-util-visit";
+
 // Shiki will be dynamically imported when needed to avoid load-time errors in environments
 // where it may not be installed. We will lazy-initialize a highlighter with a small set of
 // commonly used languages and a readable theme.
-
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
@@ -117,7 +115,7 @@ async function ensureShiki() {
     shikiHighlighter = await createHighlighter({ themes: ['github-light', 'github-dark-dimmed'], langs });
     return shikiHighlighter;
   } catch (err) {
-    console.warn('Shiki init failed, falling back to plain code blocks:', err);
+    // Shiki initialization failed; proceed without highlighter
     shikiHighlighter = null;
     return null;
   }
@@ -233,11 +231,6 @@ n2m.setCustomTransformer("code", async (block: any) => {
   const content = code?.rich_text?.map((rt: any) => rt.plain_text).join("") || "";
   const caption = code?.caption?.[0]?.plain_text || "";
 
-  console.log("=== CODE TRANSFORMER CALLED ===");
-  console.log("Language:", language);
-  console.log("Content length:", content.length);
-  console.log("Content preview:", content.substring(0, 100));
-
   // Try to highlight with Shiki; fall back to escaped pre/code. To avoid the
   // markdown/html pipeline escaping our highlighted HTML (which can happen
   // when the transformer output is treated as literal code), we emit a small
@@ -254,12 +247,12 @@ n2m.setCustomTransformer("code", async (block: any) => {
       // base64 so we can safely carry it through the pipeline in an attribute
       const b64 = Buffer.from(combined, 'utf8').toString('base64');
       placeholderHtml = `<div data-shiki-b64="${b64}"></div>`;
-      console.log(`Shiki placeholder created for language: ${language}`);
+      // placeholder generated successfully
     } else {
-      console.warn('Shiki highlighter not available, falling back to plain code');
+      // Shiki highlighter not available, falling back to plain code
     }
   } catch (err) {
-    console.error('Shiki highlighting failed:', err);
+    // Shiki highlighting failed; fall back to plain code
     placeholderHtml = null;
   }
 
@@ -382,9 +375,6 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
       return noContent;
     }
 
-    console.log("=== MARKDOWN STRING (first 500 chars) ===");
-    console.log(mdString.substring(0, 500));
-
     // Convert markdown to HTML
     const htmlContent = await unified()
       .use(remarkParse)
@@ -395,9 +385,6 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
       .process(mdString);
 
     let result = String(htmlContent);
-
-    console.log("=== HTML OUTPUT (first 500 chars) ===");
-    console.log(result.substring(0, 500));
 
     // Some code blocks were ending up with our Shiki-generated HTML escaped
     // (for example: &lt;div class="shiki-wrap" ... &gt;). This typically happens
