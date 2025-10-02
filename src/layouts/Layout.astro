@@ -257,6 +257,9 @@ const structuredData = {
       src="https://cdn.jsdelivr.net/gh/pickyzz/blog-rebuild@main/public/cookies.js"
     ></script>
 
+  <!-- Code copy button script -->
+  <script is:inline type="module" src="/src/scripts/code-copy.js"></script>
+
     <!-- TOC Script -->
     <script is:inline>
       // TOC Highlight and Click Handling
@@ -374,6 +377,113 @@ const structuredData = {
           cancelAnimationFrame(rafId);
         }
         window.removeEventListener("scroll", handleScroll);
+      });
+    </script>
+
+  <!-- Blur Loading Script -->
+  <script type="module">
+      const initBlurLoading = () => {
+        // Clear any existing observers to prevent duplicates
+        if (window.blurLoadingObservers) {
+          window.blurLoadingObservers.forEach(observer => observer.disconnect());
+          window.blurLoadingObservers = [];
+        }
+
+        const lazyImages = document.querySelectorAll("img.img-loading");
+        lazyImages.forEach(img => {
+          // Skip if already processed
+          if (img.dataset.blurProcessed) return;
+          img.dataset.blurProcessed = 'true';
+
+          const wrapper = img.closest('.blurry-load') || img.parentElement;
+          // If no data-large provided, consider it already loaded
+          if (!img.dataset.large) {
+            img.classList.add('img-loaded');
+            return;
+          }
+
+          const applyLoaded = () => {
+            try { img.classList.add('img-loaded'); } catch(e){}
+          };
+
+          const applyFallback = () => {
+            // remove blur visually by adding loaded class; optionally set placeholder
+            applyLoaded();
+          };
+
+          const loadImage = () => {
+            const big = new Image();
+            let timedOut = false;
+            const timeout = setTimeout(() => {
+              timedOut = true;
+              console.warn('blurry-load: image load timeout for', img.dataset.large);
+              applyFallback();
+            }, 8000);
+
+            big.src = img.dataset.large;
+            big.decoding = 'async';
+            big.onload = () => {
+              if (timedOut) return;
+              clearTimeout(timeout);
+              img.src = big.src;
+              applyLoaded();
+            };
+            big.onerror = () => {
+              clearTimeout(timeout);
+              console.warn('blurry-load: failed to load', img.dataset.large);
+              applyFallback();
+            };
+          };
+
+          // Check if image is already in viewport
+          const isInViewport = (element) => {
+            const rect = element.getBoundingClientRect();
+            return (
+              rect.top >= 0 &&
+              rect.left >= 0 &&
+              rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+              rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+          };
+
+          if ('IntersectionObserver' in window) {
+            // If already in viewport, load immediately
+            if (isInViewport(img)) {
+              loadImage();
+              return;
+            }
+
+            const io = new IntersectionObserver((entries, observer) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  loadImage();
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { rootMargin: '200px' });
+
+            io.observe(img);
+
+            // Store observer for cleanup
+            if (!window.blurLoadingObservers) window.blurLoadingObservers = [];
+            window.blurLoadingObservers.push(io);
+          } else {
+            loadImage();
+          }
+        });
+      };
+
+      // Initial load
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initBlurLoading();
+      } else {
+        document.addEventListener('DOMContentLoaded', initBlurLoading);
+      }
+
+      // Re-initialize on page navigation (Astro SPA-like routing)
+      document.addEventListener('astro:page-load', () => {
+        // Small delay to ensure DOM is fully updated
+        setTimeout(initBlurLoading, 100);
       });
     </script>
   </body>

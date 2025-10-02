@@ -161,3 +161,51 @@ test("card hover zoom effect works on index page", async ({ page }) => {
 
   console.log("Card hover zoom test completed");
 });
+
+test("video embed has consistent border radius", async ({ page }) => {
+  // Go to the specific post with video embed
+  await page.goto("/blog/2023-review");
+
+  // Wait for page to load
+  await page.waitForSelector("main");
+
+  // Find YouTube iframe
+  const youtubeIframe = page.locator('iframe[src*="youtube.com"]');
+
+  // Check if video exists
+  const videoExists = await youtubeIframe.count() > 0;
+  if (!videoExists) {
+    console.log("No YouTube video found in this post");
+    return;
+  }
+
+  console.log("Found YouTube video embed, checking border radius");
+
+  // Check border radius of iframe
+  const borderRadius = await youtubeIframe.evaluate((iframe) => {
+    const computedStyle = window.getComputedStyle(iframe);
+    return computedStyle.borderRadius;
+  });
+
+  console.log(`YouTube iframe border radius: ${borderRadius}`);
+
+  // Should have border radius (8px from CSS)
+  expect(borderRadius).toBe("8px");
+
+  // Also check that it's consistent with other elements
+  // Compare with an image in the same post
+  const postImage = page.locator("article img").first();
+  if (await postImage.count() > 0) {
+    const imageBorderRadius = await postImage.evaluate((img) => {
+      const computedStyle = window.getComputedStyle(img);
+      return computedStyle.borderRadius;
+    });
+
+    console.log(`Post image border radius: ${imageBorderRadius}`);
+
+    // Should be consistent
+    expect(borderRadius).toBe(imageBorderRadius);
+  }
+
+  console.log("Video embed border radius test completed");
+});

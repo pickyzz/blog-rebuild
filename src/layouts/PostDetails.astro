@@ -223,7 +223,7 @@ if (tags && tags.length > 0 && posts) {
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="my-2 inline-block text-2xl font-bold text-accent sm:text-3xl"
+      class="inline-block my-2 text-2xl font-bold text-accent sm:text-3xl"
     >
       {title}
     </h1>
@@ -238,7 +238,7 @@ if (tags && tags.length > 0 && posts) {
     <p class="ml-1.5 text-xs font-light">
       By : {author}{readingTime ? ` | ${readingTime}` : ""}
     </p>
-    <article id="article" class="prose mx-auto mt-8 max-w-4xl">
+    <article id="article" class="max-w-4xl mx-auto mt-8 prose">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center img-loading blurry-load"
         src={post.data.ogImage?.src}
@@ -251,12 +251,12 @@ if (tags && tags.length > 0 && posts) {
 
       <!-- Render Notion content as HTML -->
       <div
-        class="prose prose-lg notion-content mx-auto max-w-4xl"
+        class="max-w-4xl mx-auto prose prose-lg notion-content"
         set:html={notionContent}
       />
     </article>
 
-    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
+    <ul class="flex flex-row items-center justify-center my-8 md:justify-end">
       {
         (tags || []).map((tag: string) => (
           <Tag tag={slugifyStr(tag)} tagName={tag} />
@@ -270,7 +270,7 @@ if (tags && tags.length > 0 && posts) {
 
       <button
         id="back-to-top"
-        class="focus-outline hidden whitespace-nowrap py-1 transition duration-200 hover:-translate-y-1 hover:opacity-75 md:block"
+        class="hidden py-1 transition duration-200 focus-outline whitespace-nowrap hover:-translate-y-1 hover:opacity-75 md:block"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>
@@ -287,10 +287,10 @@ if (tags && tags.length > 0 && posts) {
             href={`/blog/${prevPost.slug}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
-            <IconChevronLeft class="inline-block flex-none" />
+            <IconChevronLeft class="flex-none inline-block" />
             <div>
               <span>Older Post</span>
-              <div class="text-accent/85 pt-2 text-sm">{prevPost.title}</div>
+              <div class="pt-2 text-sm text-accent/85">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -299,13 +299,13 @@ if (tags && tags.length > 0 && posts) {
         nextPost && (
           <a
             href={`/blog/${nextPost.slug}`}
-            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex justify-end w-full gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
               <span>Later Post</span>
-              <div class="text-accent/85 pt-2 text-sm">{nextPost.title}</div>
+              <div class="pt-2 text-sm text-accent/85">{nextPost.title}</div>
             </div>
-            <IconChevronRight class="inline-block flex-none" />
+            <IconChevronRight class="flex-none inline-block" />
           </a>
         )
       }
@@ -315,7 +315,7 @@ if (tags && tags.length > 0 && posts) {
     {
       relatedPosts && relatedPosts.length > 0 && (
         <section class="mt-12">
-          <h2 class="mb-6 text-center text-2xl font-bold text-accent">
+          <h2 class="mb-6 text-2xl font-bold text-center text-accent">
             โพสต์ที่เกี่ยวข้อง
           </h2>
           <div class="grid gap-6 sm:grid-cols-2">
@@ -324,10 +324,11 @@ if (tags && tags.length > 0 && posts) {
                 href={`/blog/${relatedPost.slug}`}
                 class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
               >
-                <div class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover">
+                <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
                   <img
-                    class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100"
+                    class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
                     src={relatedPost.ogImage?.src || "/pickyzz-og.png"}
+                    data-large={relatedPost.ogImage?.src || "/pickyzz-og.png"}
                     alt={relatedPost.title}
                     loading="lazy"
                     decoding="async"
@@ -398,37 +399,76 @@ if (tags && tags.length > 0 && posts) {
   function copyCodeBlock(button) {
     const codeBlock = button.closest(".notion-code-block");
     const codeElement =
-      codeBlock.querySelector(".shiki code") || codeBlock.querySelector("code");
+      codeBlock.querySelector(".code-content code") ||
+      codeBlock.querySelector("code");
     const text = codeElement?.textContent || "";
 
     if (!text.trim()) {
       return;
     }
 
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        const originalText = button.textContent;
-        button.textContent = "Copied!";
+    try {
+      await navigator.clipboard.writeText(text);
+      // Mirror client-side behavior: temporarily change visible label to 'copied'
+      const labelSpan = button.querySelector && button.querySelector('.icon-label');
+      const origLabel = labelSpan ? labelSpan.textContent : null;
+      if (labelSpan) labelSpan.textContent = 'copied';
+      // Use class-based transient state
+      button.classList.add("copied");
+      button.disabled = true;
+      button.setAttribute('data-copied','true');
+      setTimeout(() => {
+        if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
+        button.classList.remove("copied");
+        button.disabled = false;
+        button.removeAttribute('data-copied');
+      }, 1600);
+    } catch (err) {
+      // fallback for insecure contexts
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        // class-based transient state for fallback copy; mirror client-side label change
+        const labelSpan = button.querySelector && button.querySelector('.icon-label');
+        const origLabel = labelSpan ? labelSpan.textContent : null;
+        if (labelSpan) labelSpan.textContent = 'copied';
         button.classList.add("copied");
         button.disabled = true;
-
+        button.setAttribute('data-copied','true');
         setTimeout(() => {
-          button.textContent = originalText;
+          if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
           button.classList.remove("copied");
           button.disabled = false;
-        }, 2000);
-      })
-      .catch(() => {
-        button.textContent = "Error";
+          button.removeAttribute('data-copied');
+        }, 1600);
+      } catch (e) {
+        console.error("Failed to copy code:", e);
+        // show subtle error state via class only
+        button.classList.add('copy-error');
         setTimeout(() => {
-          button.textContent = "Copy";
-        }, 2000);
-      });
+          button.classList.remove('copy-error');
+        }, 1200);
+      }
+    }
   }
 
   // Make function globally available
   window.copyCodeBlock = copyCodeBlock;
+
+  // Initialize Prism for code highlighting
+  function initPrism() {
+    if (window.Prism) {
+      // Re-run Prism on all code blocks that are not already highlighted by Shiki
+      const codeBlocks = document.querySelectorAll('.notion-code-block pre[class*="language-"]:not(.shiki)');
+      codeBlocks.forEach(block => {
+        window.Prism.highlightElement(block);
+      });
+    }
+  }
 
   /** Theme detection and code block re-rendering */
   function initThemeAwareCodeBlocks() {
@@ -482,6 +522,7 @@ if (tags && tags.length > 0 && posts) {
   document.addEventListener("DOMContentLoaded", () => {
     initThemeAwareCodeBlocks();
     initLazyLoading();
+    initPrism();
   });
 
   // Re-initialize after Astro page transitions
@@ -489,6 +530,7 @@ if (tags && tags.length > 0 && posts) {
     setTimeout(() => {
       initThemeAwareCodeBlocks();
       initLazyLoading();
+      initPrism();
     }, 100);
   });
 

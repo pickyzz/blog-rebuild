@@ -8,80 +8,12 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
-import Prism from "prismjs";
-// Import Prism components in correct order to avoid dependency conflicts
-import "prismjs/components/prism-core.js";
-import "prismjs/plugins/autoloader/prism-autoloader.js";
-import "prismjs/components/prism-clike.js";
-import "prismjs/components/prism-javascript.js";
-import "prismjs/components/prism-markup.js";
-import "prismjs/components/prism-css.js";
-import "prismjs/components/prism-bash.js";
-import "prismjs/components/prism-shell-session.js";
-import "prismjs/components/prism-python.js";
-import "prismjs/components/prism-java.js";
-import "prismjs/components/prism-c.js";
-import "prismjs/components/prism-cpp.js";
-import "prismjs/components/prism-csharp.js";
-import "prismjs/components/prism-php.js";
-import "prismjs/components/prism-ruby.js";
-import "prismjs/components/prism-go.js";
-import "prismjs/components/prism-rust.js";
-import "prismjs/components/prism-swift.js";
-import "prismjs/components/prism-kotlin.js";
-import "prismjs/components/prism-dart.js";
-import "prismjs/components/prism-scala.js";
-import "prismjs/components/prism-sql.js";
-import "prismjs/components/prism-yaml.js";
-import "prismjs/components/prism-docker.js";
-import "prismjs/components/prism-json.js";
-import "prismjs/components/prism-markdown.js";
-import "prismjs/components/prism-jsx.js";
-import "prismjs/components/prism-tsx.js";
-import "prismjs/components/prism-graphql.js";
-import "prismjs/components/prism-powershell.js";
-import "prismjs/components/prism-scss.js";
-import "prismjs/components/prism-sass.js";
-import "prismjs/components/prism-less.js";
-// Try importing bash component directly
-import "prismjs/components/prism-bash.js";
-// Try other shell-related components
-import "prismjs/components/prism-shell-session.js";
-import "prismjs/components/prism-batch.js";
+import { visit } from "unist-util-visit";
+// Shiki will be dynamically imported when needed to avoid load-time errors in environments
+// where it may not be installed. We will lazy-initialize a highlighter with a small set of
+// commonly used languages and a readable theme.
 
-// Custom fallback for shell languages if Prism components fail to load
-if (
-  !Prism.languages.bash &&
-  !Prism.languages.shell &&
-  !Prism.languages["shell-session"]
-) {
-  // Create a simple shell language definition
-  Prism.languages.shell = {
-    comment: {
-      pattern: /(^|[^\\])#.*/,
-      lookbehind: true,
-    },
-    string: {
-      pattern: /(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,
-      greedy: true,
-    },
-    variable: {
-      pattern: /\$[a-zA-Z_][a-zA-Z0-9_]*/,
-      greedy: true,
-    },
-    function: {
-      pattern: /\b\w+\(\)/,
-      greedy: true,
-    },
-    keyword:
-      /\b(?:if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|cd|ls|pwd|mkdir|rm|cp|mv|cat|grep|sed|awk|chmod|chown|sudo|apt|yum|brew|npm|git|docker|kubectl)\b/,
-  };
 
-  // Alias bash to shell
-  Prism.languages.bash = Prism.languages.shell;
-  Prism.languages["shell-session"] = Prism.languages.shell;
-}
-// REMOVE shiki imports and initHighlighter
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
 if (!NOTION_KEY) {
@@ -169,6 +101,28 @@ function getCacheStats(cache: Map<string, any>): {
 // Initialize Notion to Markdown converter
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
+// Shiki highlighter instance (lazy-loaded)
+let shikiHighlighter: any = null;
+async function ensureShiki() {
+  if (shikiHighlighter) return shikiHighlighter;
+  try {
+    const shiki = await import('shiki');
+  const shikiAny = shiki as any;
+  const createHighlighter = shikiAny.createHighlighter || shikiAny.getHighlighter || shikiAny.getSingletonHighlighter;
+    // Load a compact set of common languages to keep startup reasonable. Shiki will
+    // still work for other langs if bundledLanguages are available, but this covers
+    // typical blog languages.
+    const langs = ['javascript','typescript','tsx','jsx','python','bash','json','html','css','yaml','go','rust'];
+    // Preload both GitHub light/dark Shiki themes so we can render both variants
+    shikiHighlighter = await createHighlighter({ themes: ['github-light', 'github-dark-dimmed'], langs });
+    return shikiHighlighter;
+  } catch (err) {
+    console.warn('Shiki init failed, falling back to plain code blocks:', err);
+    shikiHighlighter = null;
+    return null;
+  }
+}
+
 // Custom transformers for better HTML output
 n2m.setCustomTransformer("image", async (block: any) => {
   const { image } = block;
@@ -250,132 +204,102 @@ n2m.setCustomTransformer("embed", async (block: any) => {
 n2m.setCustomTransformer("code", async (block: any) => {
   const { code } = block;
   const language = code?.language || "text";
-  const content = code?.rich_text?.[0]?.plain_text || "";
+  const displayLanguage = (lang: string) => {
+    const map: Record<string, string> = {
+      ts: "TypeScript",
+      typescript: "TypeScript",
+      js: "JavaScript",
+      javascript: "JavaScript",
+      jsx: "JSX",
+      tsx: "TSX",
+      json: "JSON",
+      css: "CSS",
+      scss: "SCSS",
+      html: "HTML",
+      bash: "Bash",
+      sh: "Shell",
+      shell: "Shell",
+      md: "Markdown",
+      markdown: "Markdown",
+      yaml: "YAML",
+      yml: "YAML",
+      text: "text",
+    };
+    const key = lang?.toLowerCase?.() || "";
+    if (map[key]) return map[key];
+    // For unknown languages, keep lowercase as Notion often shows lowercase identifiers
+    return key || "text";
+  };
+  const content = code?.rich_text?.map((rt: any) => rt.plain_text).join("") || "";
   const caption = code?.caption?.[0]?.plain_text || "";
 
+  console.log("=== CODE TRANSFORMER CALLED ===");
+  console.log("Language:", language);
+  console.log("Content length:", content.length);
+  console.log("Content preview:", content.substring(0, 100));
+
+  // Try to highlight with Shiki; fall back to escaped pre/code. To avoid the
+  // markdown/html pipeline escaping our highlighted HTML (which can happen
+  // when the transformer output is treated as literal code), we emit a small
+  // base64 placeholder that we will replace with the real HTML after the
+  // unified pipeline finishes its work. The placeholder uses a data- attribute
+  // so it survives sanitizeHtml.
+  let placeholderHtml: string | null = null;
   try {
-    // Map Notion language names to Prism language names
-    const languageMap: { [key: string]: string } = {
-      javascript: "javascript",
-      js: "javascript",
-      typescript: "typescript",
-      ts: "typescript",
-      python: "python",
-      py: "python",
-      java: "java",
-      c: "c",
-      cpp: "cpp",
-      "c++": "cpp",
-      csharp: "csharp",
-      "c#": "csharp",
-      php: "php",
-      ruby: "ruby",
-      go: "go",
-      rust: "rust",
-      swift: "swift",
-      kotlin: "kotlin",
-      dart: "dart",
-      scala: "scala",
-      sql: "sql",
-      html: "markup",
-      xml: "markup",
-      css: "css",
-      scss: "scss",
-      sass: "sass",
-      less: "less",
-      json: "json",
-      yaml: "yaml",
-      yml: "yaml",
-      dockerfile: "docker",
-      bash: "bash",
-      shell: "bash",
-      sh: "bash",
-      powershell: "powershell",
-      markdown: "markdown",
-      md: "markdown",
-      graphql: "graphql",
-      jsx: "jsx",
-      tsx: "tsx",
-      text: "text",
-      plain: "text",
-      plaintext: "text",
-    };
-
-    // Normalize language name
-    const normalizedLanguage = languageMap[language.toLowerCase()] || "text";
-
-    // Check if Prism supports this language, with fallbacks
-    let prismLanguage = Prism.languages[normalizedLanguage];
-    if (!prismLanguage) {
-      // Try common fallbacks for shell languages
-      if (["bash", "shell", "sh"].includes(normalizedLanguage)) {
-        prismLanguage =
-          Prism.languages["bash"] ||
-          Prism.languages["shell"] ||
-          Prism.languages["text"];
-      } else {
-        prismLanguage = Prism.languages["text"];
-      }
+    const highlighter = await ensureShiki();
+    if (highlighter) {
+      const lightHtml = highlighter.codeToHtml(content, { lang: language, theme: 'github-light' });
+      const darkHtml = highlighter.codeToHtml(content, { lang: language, theme: 'github-dark-dimmed' });
+      const combined = `${lightHtml}\n<!--SHIKI-SPLIT-->\n${darkHtml}`;
+      // base64 so we can safely carry it through the pipeline in an attribute
+      const b64 = Buffer.from(combined, 'utf8').toString('base64');
+      placeholderHtml = `<div data-shiki-b64="${b64}"></div>`;
+      console.log(`Shiki placeholder created for language: ${language}`);
+    } else {
+      console.warn('Shiki highlighter not available, falling back to plain code');
     }
+  } catch (err) {
+    console.error('Shiki highlighting failed:', err);
+    placeholderHtml = null;
+  }
 
-    if (!prismLanguage) {
-      // Fallback to plain text with basic styling
-      const escapedContent = content
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
-
-      return `<div class="notion-code-block" data-language="${language}">
-  <div class="code-header">
-    <span class="language-label">${language}</span>
-    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
-  </div>
-  <div class="code-content">
-    <pre><code class="language-${normalizedLanguage}">${escapedContent}</code></pre>
-  </div>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
-</div>`;
-    }
-
-    // Use Prism for syntax highlighting
-    const highlightedContent = Prism.highlight(
-      content,
-      prismLanguage,
-      normalizedLanguage
-    );
-
+  if (placeholderHtml) {
     return `<div class="notion-code-block" data-language="${language}">
   <div class="code-header">
-    <span class="language-label">${language}</span>
-    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
+    <span class="language-label">${displayLanguage(language)}</span>
+    <button class="copy-button" aria-label="Copy code">
+      <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><rect x="8" y="5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></rect></svg>
+      <span class="icon-label">Copy</span>
+    </button>
   </div>
   <div class="code-content">
-    <pre><code class="language-${normalizedLanguage}">${highlightedContent}</code></pre>
-  </div>
-  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
-</div>`;
-  } catch (error) {
-    // Fallback to plain text with basic styling
-    const escapedContent = content
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-
-    return `<div class="notion-code-block" data-language="${language}">
-  <div class="code-header">
-    <span class="language-label">${language}</span>
-    <button class="copy-button" onclick="copyCodeBlock(this)" aria-label="Copy code">Copy</button>
-  </div>
-  <div class="code-content">
-    <pre><code class="language-${language}">${escapedContent}</code></pre>
+    ${placeholderHtml}
   </div>
   ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </div>`;
   }
+
+  // Fallback: escape HTML and render plain code block
+  const escapedContent = content
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+  return `<div class="notion-code-block" data-language="${language}">
+<div class="code-header">
+<span class="language-label">${displayLanguage(language)}</span>
+<button class="copy-button" aria-label="Copy code">
+  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><rect x="8" y="5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></rect></svg>
+  <span class="icon-label">Copy</span>
+</button>
+</div>
+<div class="code-content">
+<pre class="language-${language}"><code class="language-${language}">${escapedContent}</code></pre>
+</div>
+${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</div>`;
 });
 
 n2m.setCustomTransformer("quote", async (block: any) => {
@@ -424,16 +348,63 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
       return noContent;
     }
 
+    console.log("=== MARKDOWN STRING (first 500 chars) ===");
+    console.log(mdString.substring(0, 500));
+
     // Convert markdown to HTML
     const htmlContent = await unified()
       .use(remarkParse)
       .use(remarkGfm)
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeRaw)
-      .use(rehypeStringify)
+      .use(rehypeStringify, { allowDangerousHtml: true })
       .process(mdString);
 
-    const result = String(htmlContent);
+    let result = String(htmlContent);
+
+    console.log("=== HTML OUTPUT (first 500 chars) ===");
+    console.log(result.substring(0, 500));
+
+    // Some code blocks were ending up with our Shiki-generated HTML escaped
+    // (for example: &lt;div class="shiki-wrap" ... &gt;). This typically happens
+    // when the HTML returned from the custom transformer is interpreted as
+    // literal text later in the markdown -> HTML pipeline. To fix that, look
+    // for <pre><code> blocks whose decoded content contains our marker
+    // ("<div class=\"shiki-wrap\"") and replace the entire <pre><code>
+    // node with the decoded HTML so the Shiki markup remains live.
+    const decodeHtmlEntities = (str: string) =>
+      str
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&amp;/g, "&")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+
+    result = result.replace(/<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/gi, (match, attrs, inner) => {
+      const decoded = decodeHtmlEntities(inner);
+      // If decoded contains our shiki wrapper, assume it was escaped and
+      // replace the whole pre/code block with the decoded HTML (which
+      // already contains the <pre class="shiki">...</pre> fragments).
+      if (decoded.includes('<div class="shiki-wrap"') || decoded.includes("<pre class=\"shiki")) {
+        return decoded;
+      }
+      return match;
+    });
+
+    // Replace any Shiki placeholders produced by our custom transformer.
+    // Placeholders look like: <div data-shiki-b64="..."></div>
+    result = result.replace(/<div data-shiki-b64="([A-Za-z0-9+/=]+)"><\/div>/g, (m, b64) => {
+      try {
+        const decoded = Buffer.from(b64, 'base64').toString('utf8');
+        // decoded contains lightHTML \n<!--SHIKI-SPLIT-->\n darkHTML
+        const [lightHtml, darkHtml] = decoded.split('<!--SHIKI-SPLIT-->');
+        const light = (lightHtml || '').trim();
+        const dark = (darkHtml || '').trim();
+        return `\n<div class="shiki-wrap" data-theme="light">${light}</div>\n<div class="shiki-wrap" data-theme="dark">${dark}</div>\n`;
+      } catch (e) {
+        return m;
+      }
+    });
 
     // Sanitize HTML output before caching and returning
     const sanitized = sanitize(result);

@@ -120,7 +120,7 @@ test("sanitize: removes script and dangerous HTML from Notion content", async ()
   expect(sanitized).not.toContain("javascript:");
   expect(sanitized).not.toContain('<iframe src="https://evil.com"></iframe>');
   expect(sanitized).toContain(
-    '<iframe src="https://youtube.com/embed/abc"></iframe>'
+    '<iframe src="https://youtube.com/embed/abc" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe>'
   );
   expect(sanitized).not.toContain("<object");
   expect(sanitized).not.toContain("<embed");

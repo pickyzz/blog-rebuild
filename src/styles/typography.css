@@ -276,10 +276,6 @@
     margin-top: 1.7142857em;
     margin-bottom: 1.7142857em;
     border-radius: 0.375rem;
-    padding-top: 0.8571429em;
-    padding-right: 1.1428571em;
-    padding-bottom: 0.8571429em;
-    padding-left: 1.1428571em;
   }
 
   .prose
@@ -382,10 +378,10 @@
   /* Apply Dark Theme (if multi-theme specified) */
   html[data-theme="dark"] pre:has(code),
   html[data-theme="dark"] pre:has(code) span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
   }
 }
