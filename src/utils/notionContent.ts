@@ -302,9 +302,43 @@ ${caption ? `<figcaption>${caption}</figcaption>` : ""}
 </div>`;
 });
 
+// Helper: escape HTML entities for safe text content
+function escapeHtml(str: string): string {
+  return (str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function escapeAttr(str: string): string {
+  return escapeHtml(str).replace(/`/g, "&#96;");
+}
+
+// Render Notion rich_text array preserving inline annotations (code, bold, italic, underline, strike, link)
+function renderRichText(rich: any[] | undefined): string {
+  if (!rich || !Array.isArray(rich) || rich.length === 0) return "";
+  return rich
+    .map((rt) => {
+      const raw = rt?.plain_text ?? rt?.text?.content ?? "";
+      let html = escapeHtml(raw);
+      const ann = rt?.annotations || {};
+      if (ann.code) html = `<code>${html}</code>`;
+      if (ann.bold) html = `<strong>${html}</strong>`;
+      if (ann.italic) html = `<em>${html}</em>`;
+      if (ann.underline) html = `<u>${html}</u>`;
+      if (ann.strikethrough) html = `<s>${html}</s>`;
+      const href = rt?.href || rt?.text?.link?.url;
+      if (href) html = `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
+      return html;
+    })
+    .join("");
+}
+
 n2m.setCustomTransformer("quote", async (block: any) => {
   const { quote } = block;
-  const content = quote?.rich_text?.[0]?.plain_text || "";
+  const content = renderRichText(quote?.rich_text) || "";
 
   return `<blockquote class="notion-quote">
   <p>${content}</p>
@@ -313,7 +347,7 @@ n2m.setCustomTransformer("quote", async (block: any) => {
 
 n2m.setCustomTransformer("callout", async (block: any) => {
   const { callout } = block;
-  const content = callout?.rich_text?.[0]?.plain_text || "";
+  const content = renderRichText(callout?.rich_text) || "";
   const emoji = callout?.icon?.emoji || "💡";
 
   return `<div class="notion-callout">
