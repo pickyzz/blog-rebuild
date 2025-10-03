@@ -12,7 +12,7 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
-    "zod": "^3.21.4",
+    "zod": "^4.0.0",
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
