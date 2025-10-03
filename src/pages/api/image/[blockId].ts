@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { Client } from "@notionhq/client";
+import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
@@ -30,7 +31,7 @@ function setCachedImageUrl(blockId: string, url: string): void {
   imageUrlCache.set(blockId, { url, timestamp: Date.now() });
 }
 
-export const GET: APIRoute = async ({ params }) => {
+export const GET: APIRoute = withRateLimit(async ({ params }) => {
   const blockId = params.blockId;
 
   if (!blockId) {
@@ -70,4 +71,4 @@ export const GET: APIRoute = async ({ params }) => {
     console.error("Error fetching image from Notion:", error);
     return new Response("Failed to fetch image", { status: 500 });
   }
-};
+}, RATE_LIMITS.MODERATE); // Moderate rate limiting for image requests
