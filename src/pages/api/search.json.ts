@@ -2,6 +2,8 @@ import type { APIRoute } from "astro";
 import { getNotionPosts } from "../../utils/getNotionPosts";
 import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
 import { BlogSearch, SearchCache } from "@/utils/searchUtils";
+import formatSearchResult from "./search.formatters.js";
+import { SearchResponseSchema } from "./search.schema.js";
 
 // Global search cache (in production, consider Redis)
 const searchCache = new SearchCache(10 * 60 * 1000); // 10 minutes TTL
@@ -87,20 +89,8 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
       minScore: 0.05, // Minimum relevance score
     });
 
-    // Format results for API response
-    const formattedResults = searchResult.results.map(result => ({
-      id: result.post.id,
-      slug: result.post.slug,
-      title: result.post.data.title,
-      description: result.post.data.description,
-      pubDatetime: result.post.data.pubDatetime.toISOString(),
-      modDatetime: result.post.data.modDatetime?.toISOString(),
-      featured: result.post.data.featured,
-      tags: result.post.data.tags,
-      readingTime: result.post.data.readingTime,
-      score: result.score,
-      matches: result.matches,
-    }));
+    // Format results for API response using centralized formatter
+    const formattedResults = searchResult.results.map(result => formatSearchResult(result));
 
     const response = {
       posts: formattedResults,
@@ -115,6 +105,17 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
       },
       ...(includeSuggestions && { suggestions: search.getSuggestions() }),
     };
+
+    // Validate the response shape before returning
+    const parseResult = SearchResponseSchema.safeParse(response);
+    if (!parseResult.success) {
+      // validation failed - do not expose internal details
+      console.error("Search response validation failed");
+      return new Response(
+        JSON.stringify({ error: "Search response shape invalid" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
     // Cache the result
     searchCache.set(cacheKey, response);

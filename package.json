@@ -12,6 +12,7 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
+    "zod": "^3.21.4",
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
@@ -79,6 +80,6 @@
     "build": "astro build"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "22.x"
   }
 }

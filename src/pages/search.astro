@@ -6,10 +6,9 @@ import Hr from "../components/Hr.astro";
 
 export const prerender = false; // Enable SSR for dynamic search
 ---
-
 <Layout title="Search" description="Search blog posts">
   <Header />
-  <main class="container mx-auto max-w-4xl px-4 py-8">
+  <main class="container max-w-4xl px-4 py-8 mx-auto">
     <div class="mb-8">
       <h1 class="mb-4 text-3xl font-bold">Search Posts</h1>
       <form id="searchForm" class="mb-6">
@@ -18,23 +17,24 @@ export const prerender = false; // Enable SSR for dynamic search
             type="text"
             id="searchInput"
             placeholder="Search by title, description, or tags..."
-            class="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             required
           />
           <button
             type="submit"
-            class="rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            class="px-6 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Search
           </button>
         </div>
       </form>
-      <div id="loading" class="mb-4 hidden text-gray-600 dark:text-gray-400">
+      <div id="loading" class="hidden mb-4 text-gray-600 dark:text-gray-400">
         Searching...
       </div>
-      <div id="error" class="mb-4 hidden text-red-600 dark:text-red-400"></div>
+      <div id="error" class="hidden mb-4 text-red-600 dark:text-red-400"></div>
+  <!-- debug UI removed -->
       <div id="results" class="hidden">
-        <div class="mb-4 flex items-center justify-between">
+        <div class="flex items-center justify-between mb-4">
           <h2 id="resultsTitle" class="text-xl font-semibold"></h2>
           <button
             id="clearBtn"
@@ -53,131 +53,4 @@ export const prerender = false; // Enable SSR for dynamic search
   <Footer />
 </Layout>
 
-<script>
-  interface Post {
-    id: string;
-    slug: string;
-    data: {
-      title: string;
-      description: string;
-      pubDatetime: string;
-      tags: string[];
-      author: string;
-    };
-  }
-
-  interface SearchResponse {
-    posts: Post[];
-    total: number;
-    query: string;
-  }
-
-  const searchForm = document.getElementById("searchForm") as HTMLFormElement;
-  const searchInput = document.getElementById(
-    "searchInput"
-  ) as HTMLInputElement;
-  const loading = document.getElementById("loading")!;
-  const error = document.getElementById("error")!;
-  const results = document.getElementById("results")!;
-  const resultsTitle = document.getElementById("resultsTitle")!;
-  const postsList = document.getElementById("postsList")!;
-  const noResults = document.getElementById("noResults")!;
-  const clearBtn = document.getElementById("clearBtn")!;
-
-  function showLoading() {
-    loading.classList.remove("hidden");
-    error.classList.add("hidden");
-    results.classList.add("hidden");
-    noResults.classList.add("hidden");
-  }
-
-  function showError(message: string) {
-    loading.classList.add("hidden");
-    error.classList.remove("hidden");
-    error.textContent = message;
-    results.classList.add("hidden");
-    noResults.classList.add("hidden");
-  }
-
-  function showResults(data: SearchResponse) {
-    loading.classList.add("hidden");
-    error.classList.add("hidden");
-
-    if (data.posts.length === 0) {
-      noResults.classList.remove("hidden");
-      results.classList.add("hidden");
-      return;
-    }
-
-    resultsTitle.textContent = `${data.total} result${data.total !== 1 ? "s" : ""} for "${data.query}"`;
-    postsList.innerHTML = "";
-
-    data.posts.forEach(post => {
-      const postElement = document.createElement("article");
-      postElement.className =
-        "border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow";
-
-      const pubDate = new Date(post.data.pubDatetime).toLocaleDateString();
-
-      postElement.innerHTML = `
-        <h3 class="text-lg font-semibold mb-2">
-          <a href="/blog/${post.slug}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-            ${post.data.title}
-          </a>
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-2">${post.data.description}</p>
-        <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-          <span>${post.data.author} • ${pubDate}</span>
-          <div class="flex gap-1">
-            ${post.data.tags.map(tag => `<span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${tag}</span>`).join("")}
-          </div>
-        </div>
-      `;
-
-      postsList.appendChild(postElement);
-    });
-
-    results.classList.remove("hidden");
-    noResults.classList.add("hidden");
-  }
-
-  function clearResults() {
-    searchInput.value = "";
-    loading.classList.add("hidden");
-    error.classList.add("hidden");
-    results.classList.add("hidden");
-    noResults.classList.add("hidden");
-    searchInput.focus();
-  }
-
-  async function performSearch(query: string) {
-    try {
-      showLoading();
-
-      const response = await fetch(
-        `/api/search.json?q=${encodeURIComponent(query)}`
-      );
-      if (!response.ok) {
-        throw new Error(`Search failed: ${response.status}`);
-      }
-
-      const data: SearchResponse = await response.json();
-      showResults(data);
-    } catch (err) {
-      showError(err instanceof Error ? err.message : "An error occurred");
-    }
-  }
-
-  searchForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const query = searchInput.value.trim();
-    if (query) {
-      performSearch(query);
-    }
-  });
-
-  clearBtn.addEventListener("click", clearResults);
-
-  // Focus search input on page load
-  searchInput.focus();
-</script>
+<script src="/js/search.client.js" defer></script>

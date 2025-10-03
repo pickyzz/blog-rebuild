@@ -86,8 +86,9 @@ export class BlogSearch {
     };
 
     // Title matching (highest weight)
+    const title = post.data?.title || "";
     const titleScore = this.calculateFieldScore(
-      post.data.title,
+      title,
       queryLower,
       queryWords,
       3.0
@@ -98,7 +99,7 @@ export class BlogSearch {
     }
 
     // Description matching (medium weight)
-    const description = post.data.description || "";
+    const description = post.data?.description || "";
     const descScore = this.calculateFieldScore(
       description,
       queryLower,
@@ -111,7 +112,8 @@ export class BlogSearch {
     }
 
     // Tags matching (high weight)
-    const tagsText = post.data.tags.join(" ").toLowerCase();
+    const tags = post.data?.tags || [];
+    const tagsText = tags.join(" ").toLowerCase();
     const tagsScore = this.calculateFieldScore(
       tagsText,
       queryLower,
@@ -125,7 +127,7 @@ export class BlogSearch {
 
     // Content snippet matching (lower weight)
     // Use first 1000 characters for performance
-    const contentSnippet = post.body.substring(0, 1000).toLowerCase();
+    const contentSnippet = (post.body || "").substring(0, 1000).toLowerCase();
     const contentScore = this.calculateFieldScore(
       contentSnippet,
       queryLower,
@@ -138,13 +140,16 @@ export class BlogSearch {
     }
 
     // Boost recent posts slightly
-    const daysSincePublished =
-      (Date.now() - post.data.pubDatetime.getTime()) / (1000 * 60 * 60 * 24);
-    const recencyBoost = Math.max(0, 1 - daysSincePublished / 365); // Boost posts from last year
-    totalScore *= 1 + recencyBoost * 0.1;
+    const pubDatetime = post.data?.pubDatetime;
+    if (pubDatetime && pubDatetime instanceof Date) {
+      const daysSincePublished =
+        (Date.now() - pubDatetime.getTime()) / (1000 * 60 * 60 * 24);
+      const recencyBoost = Math.max(0, 1 - daysSincePublished / 365); // Boost posts from last year
+      totalScore *= 1 + recencyBoost * 0.1;
+    }
 
     // Boost featured posts
-    if (post.data.featured) {
+    if (post.data?.featured) {
       totalScore *= 1.2;
     }
 
@@ -221,8 +226,11 @@ export class BlogSearch {
 
     // Count tag frequency
     this.posts.forEach(post => {
-      post.data.tags.forEach(tag => {
-        tagFrequency.set(tag, (tagFrequency.get(tag) || 0) + 1);
+      const tags = post.data?.tags || [];
+      tags.forEach(tag => {
+        if (tag && typeof tag === "string") {
+          tagFrequency.set(tag, (tagFrequency.get(tag) || 0) + 1);
+        }
       });
     });
 
