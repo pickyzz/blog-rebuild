@@ -43,7 +43,7 @@
     "@astrojs/rss": "4.0.12",
     "@astrojs/sitemap": "3.6.0",
     "@astrojs/tailwind": "6.0.2",
-    "@playwright/test": "1.55.1",
+    "@playwright/test": "1.56.0",
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@types/prismjs": "1.26.5",
