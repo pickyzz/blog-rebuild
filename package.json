@@ -15,7 +15,7 @@
     "zod": "^3.21.4",
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
-    "@notionhq/client": "4.0.2",
+    "@notionhq/client": "5.1.0",
     "@resvg/resvg-js": "2.6.2",
     "@vite-pwa/astro": "^1.1.0",
     "notion-to-md": "3.1.9",
