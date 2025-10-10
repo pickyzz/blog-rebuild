@@ -132,3 +132,8 @@ Run these commands from the root of the project:
 | `npm test`                | Run E2E tests with Playwright                 |
 | `npm run test:unit`       | Run unit tests with Vitest                    |
 | `npm run test:unit:watch` | Run unit tests in watch mode                  |
+
+## Cache invalidation (Cloudflare)
+
+- A small server-side utility is available at `src/utils/cloudflarePurge.ts` which you can call from server-side code to purge specific URLs from Cloudflare. It expects environment variables `CF_ZONE_ID` and `CF_API_TOKEN` when executed (or you can pass `zoneId`/`apiToken` directly to the function for ad-hoc usage).
+- For manual or scripted purge use, see `scripts/cloudflare-purge.mjs`. It supports a `--dry-run` mode so you can preview the payload before executing.

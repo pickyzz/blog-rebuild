@@ -1,6 +1,10 @@
 import type { BlogPost } from "@/types";
 import postOgImage from "@/utils/og-templates/post";
 import siteOgImage from "@/utils/og-templates/site";
+import { purgeCloudflare } from '@/utils/cloudflarePurge';
+import { SITE } from '@/config';
+import crypto from 'crypto';
+import { addPurgeUrl } from '@/utils/purgeList';
 
 /**
  * Takes an SVG string and returns the PNG or WebP buffer.
@@ -32,10 +36,69 @@ export async function generateOgImageForPost(
   format: "png" | "webp" = "png"
 ) {
   const svg = await postOgImage(post);
-  return svgBufferToImageBuffer(svg, format);
+  const buffer = await svgBufferToImageBuffer(svg, format);
+  // Compare generated OG with deployed URL; purge Cloudflare only if different
+  try {
+    const ogPath = new URL(`/blog/${post.slug}/index.png`, SITE.website).href;
+  const localBytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer as any);
+  const localHash = crypto.createHash('sha256').update(localBytes).digest('hex');
+    let remoteHash = null;
+    try {
+      const res = await fetch(ogPath);
+      if (res.ok && res.body) {
+        const arr = await res.arrayBuffer();
+  const remoteBytes = arr instanceof Uint8Array ? arr : new Uint8Array(arr as any);
+  remoteHash = crypto.createHash('sha256').update(remoteBytes).digest('hex');
+      }
+    } catch (e) {
+      // treat fetch failure as different so purge will run
+      remoteHash = null;
+    }
+    const differs = !remoteHash || remoteHash !== localHash;
+    if (differs) {
+      // Add to build-time purge list (used by vercel post-deploy) and also attempt live purge
+      addPurgeUrl(ogPath);
+      const dryRun = !(process.env.CF_ZONE_ID && process.env.CF_API_TOKEN);
+      purgeCloudflare([ogPath], { dryRun }).catch(e => console.warn('[OG PURGE] failed', String(e)));
+    } else {
+      console.info('[OG PURGE] no change detected for', ogPath);
+    }
+  } catch (e) {
+    console.warn('[OG PURGE] compare check failed', String(e));
+  }
+  return buffer;
 }
 
 export async function generateOgImageForSite(format: "png" | "webp" = "png") {
   const svg = await siteOgImage();
-  return svgBufferToImageBuffer(svg, format);
+  const buffer = await svgBufferToImageBuffer(svg, format);
+  // Compare generated site OG with deployed /og.png; purge only if different
+  try {
+    const ogPath = new URL('/og.png', SITE.website).href;
+  const localBytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer as any);
+  const localHash = crypto.createHash('sha256').update(localBytes).digest('hex');
+    let remoteHash = null;
+    try {
+      const res = await fetch(ogPath);
+      if (res.ok && res.body) {
+        const arr = await res.arrayBuffer();
+  const remoteBytes = arr instanceof Uint8Array ? arr : new Uint8Array(arr as any);
+  remoteHash = crypto.createHash('sha256').update(remoteBytes).digest('hex');
+      }
+    } catch (e) {
+      remoteHash = null;
+    }
+    const differs = !remoteHash || remoteHash !== localHash;
+    if (differs) {
+      addPurgeUrl(ogPath);
+      const dryRun = !(process.env.CF_ZONE_ID && process.env.CF_API_TOKEN);
+      purgeCloudflare([ogPath], { dryRun }).catch(e => console.warn('[OG PURGE] failed', String(e)));
+    } else {
+      console.info('[OG PURGE] no change detected for', ogPath);
+    }
+  } catch (e) {
+    console.warn('[OG PURGE] compare check failed', String(e));
+  }
+  return buffer;
 }
+

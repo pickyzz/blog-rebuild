@@ -132,7 +132,12 @@ const ogUrl = new URL(
 let proxyOgUrl = ogUrl;
 try {
   if (isAllowedUrl(ogUrl)) {
-    proxyOgUrl = `/api/image/proxy?url=${encodeURIComponent(ogUrl)}`;
+    const enc = Buffer.from(encodeURIComponent(ogUrl), 'utf8')
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    proxyOgUrl = `/api/image/p/${enc}`;
   }
 } catch (e) {
   // If ogUrl is not a valid URL, fall back to original value.
@@ -343,7 +348,12 @@ if (tags && tags.length > 0 && posts) {
                             let rsrc = relatedPost.ogImage?.src || "/pickyzz-og.png";
                             try {
                               if (isAllowedUrl(rsrc)) {
-                                rsrc = `/api/image/proxy?url=${encodeURIComponent(rsrc)}`;
+                                const enc = Buffer.from(encodeURIComponent(rsrc), 'utf8')
+                                  .toString('base64')
+                                  .replace(/\+/g, '-')
+                                  .replace(/\//g, '_')
+                                  .replace(/=+$/, '');
+                                rsrc = `/api/image/p/${enc}`;
                               }
                             } catch (e) {}
                             return (

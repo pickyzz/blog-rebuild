@@ -73,11 +73,12 @@
     "preview:dev": "NODE_ENV=development astro build && NODE_ENV=development astro preview",
     "astro": "astro",
     "clean": "rimraf dist",
+    "purge:cloudflare": "node ./scripts/cloudflare-purge.mjs",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "test": "playwright test",
     "lint": "eslint .",
-    "build": "astro build"
+    "build": "astro build && node ./scripts/vercel-postdeploy-purge.mjs"
   },
   "engines": {
     "node": "22.x"

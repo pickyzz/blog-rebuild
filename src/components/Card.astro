@@ -18,7 +18,13 @@ import { isAllowedUrl } from "@/config";
 let cardImgSrc = ogImage?.src || "/pickyzz-og.png";
 try {
   if (isAllowedUrl(cardImgSrc)) {
-    cardImgSrc = `/api/image/proxy?url=${encodeURIComponent(cardImgSrc)}`;
+    // base64url encode the encodedURIComponent to make a path-safe token
+    const encoded = Buffer.from(encodeURIComponent(cardImgSrc), 'utf8')
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    cardImgSrc = `/api/image/p/${encoded}`;
   }
 } catch (e) {}
 
