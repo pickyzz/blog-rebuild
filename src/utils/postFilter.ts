@@ -1,5 +1,6 @@
 import { SITE } from "@/config";
 import type { BlogPost } from "@/types";
+import type { CollectionEntry } from "astro:content";
 
 /**
  * Filter for Astro's content collection.
@@ -13,8 +14,7 @@ import type { BlogPost } from "@/types";
  */
 const postFilter = ({ data }: CollectionEntry<"blog">) => {
   const isPublishTimePassed =
-    Date.now() >
-    new Date(data.pubDatetime).getTime() - SITE.scheduledPostMargin;
+    Date.now() > data.pubDatetime.getTime() - SITE.scheduledPostMargin;
   return !data.draft && (import.meta.env.DEV || isPublishTimePassed);
 };
 

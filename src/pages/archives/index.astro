@@ -65,8 +65,8 @@ const months = [
             )
               .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
               .map(([month, monthGroup]) => (
-                <div class="text-skin-base/80 ml-4 flex flex-col sm:flex-row">
-                  <div class="mr-10 mt-6 min-w-36 text-lg sm:my-6">
+                <div class="flex flex-col ml-4 text-skin-base/80 sm:flex-row">
+                  <div class="mt-6 mr-10 text-lg min-w-36 sm:my-6">
                     <span class="font-bold">{months[Number(month) - 1]}</span>
                     <sup class="text-xs">{monthGroup.length}</sup>
                   </div>
@@ -74,17 +74,13 @@ const months = [
                     {monthGroup
                       .sort(
                         (a, b) =>
-                          Math.floor(
-                            new Date(b.data.pubDatetime).getTime() / 1000
-                          ) -
-                          Math.floor(
-                            new Date(a.data.pubDatetime).getTime() / 1000
-                          )
+                          Math.floor(b.data.pubDatetime.getTime() / 1000) -
+                          Math.floor(a.data.pubDatetime.getTime() / 1000)
                       )
-                      .map(({ data }) => (
+                      .map(post => (
                         <CardArchives
-                          href={`/blog/${data.slug}`}
-                          frontmatter={data}
+                          href={`/blog/${post.slug}`}
+                          frontmatter={post.data}
                         />
                       ))}
                   </ul>

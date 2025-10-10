@@ -13,6 +13,14 @@ export interface Props {
 const { href, frontmatter, secHeading = true, priority = "low" } = Astro.props;
 
 const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
+import { isAllowedUrl } from "@/config";
+
+let cardImgSrc = ogImage?.src || "/pickyzz-og.png";
+try {
+  if (isAllowedUrl(cardImgSrc)) {
+    cardImgSrc = `/api/image/proxy?url=${encodeURIComponent(cardImgSrc)}`;
+  }
+} catch (e) {}
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -30,9 +38,9 @@ const headerProps = {
     <div
       class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
     >
-      <img
+        <img
         class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
-        src={ogImage?.src || "/pickyzz-og.png"}
+        src={cardImgSrc}
         data-large={ogImage?.src || "/pickyzz-og.png"}
         loading="lazy"
         decoding="async"

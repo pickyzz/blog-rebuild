@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeRaw from "rehype-raw";
+import { throttleNotion } from "./notionRateLimiter";
 
 // Shiki will be dynamically imported when needed to avoid load-time errors in environments
 // where it may not be installed. We will lazy-initialize a highlighter with a small set of
@@ -458,18 +459,42 @@ export async function getNotionPageBlocks(pageId: string) {
   }
 
   try {
-    const response = await notion.blocks.children.list({
-      block_id: pageId,
-    });
+    // Helper to fetch all children for a block (handles pagination)
+    async function fetchAllChildren(blockId: string) {
+      const params: any = { block_id: blockId, page_size: 100 };
+      let results: any[] = [];
+      while (true) {
+        await throttleNotion();
+        const res = await notion.blocks.children.list(params as any);
+        results = results.concat(res.results || []);
+        if (!res.has_more) break;
+        params.start_cursor = res.next_cursor;
+      }
+      return results;
+    }
+
+    // Fetch top-level blocks (paginated)
+    const topLevel = await fetchAllChildren(pageId);
+
+    // For any block that has children, recursively fetch their children and attach
+    // This mirrors otoyo's approach to fully expand nested content
+    async function expandNested(blocks: any[]) {
+      for (const block of blocks) {
+        if (block.has_children) {
+          const children = await fetchAllChildren(block.id);
+          // Attach expanded children for convenience
+          block.children = children;
+          // Recursively expand deeper levels
+          await expandNested(children);
+        }
+      }
+    }
+
+    await expandNested(topLevel);
 
     // Cache the result
-    setCacheData(
-      blocksCache,
-      cacheKey,
-      response.results,
-      CACHE_CONFIG.PAGE_BLOCKS
-    );
-    return response.results;
+    setCacheData(blocksCache, cacheKey, topLevel, CACHE_CONFIG.PAGE_BLOCKS);
+    return topLevel;
   } catch (error) {
     // Cache empty array for errors to avoid repeated failed requests
     setCacheData(blocksCache, cacheKey, [], CACHE_CONFIG.ERROR_BLOCKS);

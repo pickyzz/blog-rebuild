@@ -1,5 +1,8 @@
 import { Client } from "@notionhq/client";
 import type { BlogPost } from "@/types";
+import type { CollectionEntry } from "astro:content";
+import { ensureDate } from "./ensureDate";
+import { throttleNotion } from "./notionRateLimiter";
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 const DATABASE_ID = import.meta.env.DATABASE_ID;
@@ -104,6 +107,12 @@ async function fetchWithRetry<T>(
   let attempt = 0;
   while (true) {
     try {
+      // Ensure we respect Notion's rate limit
+      try {
+        await throttleNotion();
+      } catch (e) {
+        // swallow throttler errors and proceed
+      }
       return await fn();
     } catch (error: any) {
       const status = error?.status || error?.code || error?.response?.status;
@@ -162,27 +171,29 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
   }
 
   try {
-    const response = await fetchWithRetry(() =>
-      notion.databases.query({
-        database_id: DATABASE_ID,
-        filter: {
-          property: "status",
-          select: {
-            equals: "published",
-          },
-        },
-        sorts: [
-          {
-            property: "publish_date",
-            direction: "descending",
-          },
-        ],
-      })
-    );
+    // Fetch all pages using pagination (Notion returns a page at a time)
+    const params: any = {
+      database_id: DATABASE_ID,
+      filter: {
+        property: "status",
+        select: { equals: "published" },
+      },
+      sorts: [
+        { property: "publish_date", direction: "descending" },
+      ],
+      page_size: 100,
+    };
 
-    const posts: CollectionEntry<"blog">[] = response.results.map(
-      (page: any) => {
-        const properties = page.properties;
+    let allResults: any[] = [];
+    while (true) {
+      const res = await fetchWithRetry(() => notion.databases.query(params));
+      allResults = allResults.concat(res.results || []);
+      if (!res.has_more) break;
+      params.start_cursor = res.next_cursor;
+    }
+
+    const posts: CollectionEntry<"blog">[] = allResults.map((page: any) => {
+      const properties = page.properties;
 
         // Extract data from Notion page properties
         const title = properties.title?.title?.[0]?.plain_text || "Untitled";
@@ -191,9 +202,8 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
           title.toLowerCase().replace(/\s+/g, "-");
         const description =
           properties.description?.rich_text?.[0]?.plain_text || "";
-        const pubDatetime =
-          properties.publish_date?.date?.start || new Date().toISOString();
-        const modDatetime = properties.modified_date?.date?.start;
+        const pubDatetimeRaw = properties.publish_date?.date?.start || new Date().toISOString();
+        const modDatetimeRaw = properties.modified_date?.date?.start;
         const featured =
           properties.featured?.select?.name === "featured" || false;
         const draft = properties.status?.select?.name !== "published";
@@ -267,8 +277,8 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
             title,
             slug,
             description,
-            pubDatetime: new Date(pubDatetime),
-            modDatetime: modDatetime ? new Date(modDatetime) : undefined,
+            pubDatetime: ensureDate(pubDatetimeRaw) ?? new Date(),
+            modDatetime: ensureDate(modDatetimeRaw),
             featured,
             draft,
             tags,
@@ -279,7 +289,7 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
           },
           body: "", // Notion content will be fetched separately if needed
           collection: "blog",
-          render: () => ({ Content: () => null }), // Placeholder render function
+          render: async () => ({ Content: () => null }), // Placeholder render function
         };
       }
     );
@@ -306,13 +316,101 @@ export async function getNotionPostBySlug(
   console.info(`[CACHE MISS] postBySlug: ${slug}`);
 
   try {
-    const posts = await getNotionPosts();
-    const post = posts.find(post => post.data.slug === slug) || null;
+    // Query Notion directly for the specific slug to avoid fetching all posts
+    const params: any = {
+      database_id: DATABASE_ID,
+      filter: {
+        and: [
+          { property: "slug", rich_text: { equals: slug } },
+          { property: "status", select: { equals: "published" } },
+        ],
+      },
+      page_size: 1,
+    };
 
-    // Smart TTL
+  const res = await fetchWithRetry(() => notion.databases.query(params));
+  const page = (res.results && res.results[0]) as any;
+    const post = page
+      ? {
+          id: page.id,
+          slug,
+          data: {
+            title:
+              page.properties.title?.title?.[0]?.plain_text || "Untitled",
+            slug,
+            description:
+              page.properties.description?.rich_text?.[0]?.plain_text || "",
+            pubDatetime:
+              ensureDate(page.properties.publish_date?.date?.start) ?? new Date(),
+            modDatetime: ensureDate(page.properties.modified_date?.date?.start),
+            featured:
+              page.properties.featured?.select?.name === "featured" || false,
+            draft: page.properties.status?.select?.name !== "published",
+            tags:
+              page.properties.tags?.multi_select?.map((t: any) => t.name) || [],
+            author: "Pickyzz",
+            readingTime: page.properties.readingTime?.rich_text?.[0]?.plain_text,
+            canonicalURL: page.properties.canonicalURL?.url,
+            // Determine ogImage from multiple possible Notion sources (property files, page cover, icon)
+            ogImage: (() => {
+              try {
+                let og = undefined;
+                const properties = page.properties || {};
+                const possibleImageProps = [
+                  "ogImage",
+                  "og_image",
+                  "cover",
+                  "image",
+                  "header_image",
+                  "thumbnail",
+                ];
+                for (const propName of possibleImageProps) {
+                  if (properties[propName]?.files?.[0]) {
+                    const file = properties[propName].files[0];
+                    const imageUrl =
+                      file.type === "external" ? file.external.url : file.file.url;
+                    og = {
+                      src: imageUrl,
+                      width: 1200,
+                      height: 630,
+                      format: "png" as const,
+                    };
+                    break;
+                  }
+                }
+
+                if (!og && page.cover) {
+                  let coverUrl = "";
+                  if (page.cover.type === "external") {
+                    coverUrl = page.cover.external.url;
+                  } else if (page.cover.type === "file") {
+                    coverUrl = page.cover.file.url;
+                  }
+                  if (coverUrl) {
+                    og = { src: coverUrl, width: 1200, height: 630, format: "png" as const };
+                  }
+                }
+
+                if (!og && page.icon && page.icon.type === "external") {
+                  const iconUrl = page.icon.external.url;
+                  og = { src: iconUrl, width: 400, height: 400, format: "png" as const };
+                }
+                return og;
+              } catch (e) {
+                return undefined;
+              }
+            })(),
+          },
+          body: "",
+          collection: "blog",
+          render: async () => ({ Content: () => null }),
+        }
+      : null;
+
+    // Smart TTL: use shorter cache for recent posts
     let ttl = CACHE_CONFIG.POST_BY_SLUG_OLD;
     if (post && post.data && post.data.pubDatetime) {
-      const pubDate = new Date(post.data.pubDatetime);
+      const pubDate = post.data.pubDatetime; // Already a Date instance
       const now = new Date();
       const diffMinutes = (now.getTime() - pubDate.getTime()) / (1000 * 60);
       if (diffMinutes < 60 * 24) {

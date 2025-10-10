@@ -3,6 +3,7 @@ import { getNotionPosts } from "@/utils/getNotionPosts";
 import { getNotionPageContent } from "@/utils/notionContent";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
+import { ensureDate } from "@/utils/ensureDate";
 
 // Generate RSS feed using @astrojs/rss, include full sanitized HTML in item.content
 export async function GET() {
@@ -20,7 +21,8 @@ export async function GET() {
       items.push({
         title: post.data?.title ?? "",
         link: new URL(`blog/${post.data?.slug}`, SITE.website).toString(),
-        pubDate: new Date(post.data?.modDatetime ?? post.data?.pubDatetime),
+        pubDate:
+          ensureDate(post.data?.modDatetime) ?? ensureDate(post.data?.pubDatetime) ?? new Date(),
         description: post.data?.description ?? "",
         content: String(html ?? ""),
       });

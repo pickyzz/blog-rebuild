@@ -36,3 +36,4 @@ pnpm-debug.log*
 
 # CRUSH
 CRUSH.md
+.github/copilot-instructions.md

@@ -28,10 +28,10 @@ const attrs = generateResponsiveImageAttrs({
 
 <picture>
   {
-    formats.map(format => (
+    formats.map((format: string) => (
       <source
         srcset={widths
-          .map(w => `/assets/images/blog/${src}-${w}.${format} ${w}w`)
+          .map((w: number) => `/assets/images/blog/${src}-${w}.${format} ${w}w`)
           .join(", ")}
         type={`image/${format}`}
         sizes={sizes}
