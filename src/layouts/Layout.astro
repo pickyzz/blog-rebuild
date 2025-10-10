@@ -433,14 +433,45 @@ const structuredData = {
               applyFallback();
             }, 8000);
 
+            // Set decoding early (best-effort)
+            try { big.decoding = 'async'; } catch (e) {}
+
+            // Assign src first; then try to decode before swapping to avoid flicker
             big.src = img.dataset.large;
-            big.decoding = 'async';
-            big.onload = () => {
+
+            const finishSwap = () => {
               if (timedOut) return;
               clearTimeout(timeout);
-              img.src = big.src;
-              applyLoaded();
+              // Only replace src if it's different to avoid unnecessary reflows
+              if (img.src !== big.src) {
+                try {
+                  // Prefer using decode() when available so the browser has the image
+                  // decoded before we assign into the visible <img>
+                  if (typeof big.decode === 'function') {
+                    big.decode().then(() => {
+                      img.src = big.src;
+                      applyLoaded();
+                    }).catch(() => {
+                      // If decode fails, fallback to onload behaviour
+                      img.src = big.src;
+                      applyLoaded();
+                    });
+                  } else {
+                    // Older browsers: swap on load event
+                    img.src = big.src;
+                    applyLoaded();
+                  }
+                } catch (e) {
+                  img.src = big.src;
+                  applyLoaded();
+                }
+              } else {
+                applyLoaded();
+              }
             };
+
+            // If decode isn't available, rely on load event
+            big.onload = finishSwap;
             big.onerror = () => {
               clearTimeout(timeout);
               console.warn('blurry-load: failed to load', img.dataset.large);

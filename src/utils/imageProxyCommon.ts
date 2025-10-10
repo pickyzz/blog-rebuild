@@ -34,7 +34,7 @@ export async function streamWithLimit(upstream: Response): Promise<ReadableStrea
   });
 }
 
-async function fetchWithBackoff(url: string, maxRetries = 3) {
+export async function fetchWithBackoff(url: string, maxRetries = 3) {
   let attempt = 0;
   let lastErr: any = null;
   while (attempt <= maxRetries) {
@@ -73,7 +73,7 @@ const MAX_CONCURRENT_FETCHES = parseInt(process.env.IMAGE_PROXY_MAX_CONCURRENT |
 let currentFetches = 0;
 const queue: Array<() => void> = [];
 
-function acquireSlot(): Promise<() => void> {
+export function acquireSlot(): Promise<() => void> {
   return new Promise(resolve => {
     const tryAcquire = () => {
       if (currentFetches < MAX_CONCURRENT_FETCHES) {
@@ -94,7 +94,7 @@ function acquireSlot(): Promise<() => void> {
 const HOST_COOLDOWN_MS = parseInt(process.env.IMAGE_PROXY_HOST_COOLDOWN_MS || "350");
 const hostLastRequest = new Map<string, number>();
 
-async function waitForHostCooldown(url: string) {
+export async function waitForHostCooldown(url: string) {
   try {
     const u = new URL(url);
     const host = u.hostname;

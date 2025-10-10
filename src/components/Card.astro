@@ -5,7 +5,7 @@ import type { CollectionEntry } from "astro:content";
 
 export interface Props {
   href?: string;
-  frontmatter: CollectionEntry<"blog">["data"];
+  frontmatter: any;
   secHeading?: boolean;
   priority?: "high" | "low";
 }
@@ -15,16 +15,20 @@ const { href, frontmatter, secHeading = true, priority = "low" } = Astro.props;
 const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
 import { isAllowedUrl } from "@/config";
 
-let cardImgSrc = ogImage?.src || "/pickyzz-og.png";
+let proxyUrl = ogImage?.src || "/pickyzz-og.png";
+let placeholderSrc: string | undefined = undefined;
 try {
-  if (isAllowedUrl(cardImgSrc)) {
+  if ((ogImage as any)?.placeholder) {
+    placeholderSrc = (ogImage as any).placeholder as string;
+  }
+  if (isAllowedUrl(proxyUrl)) {
     // base64url encode the encodedURIComponent to make a path-safe token
-    const encoded = Buffer.from(encodeURIComponent(cardImgSrc), 'utf8')
+    const encoded = Buffer.from(encodeURIComponent(proxyUrl), 'utf8')
       .toString('base64')
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=+$/, '');
-    cardImgSrc = `/api/image/p/${encoded}`;
+    proxyUrl = `/api/image/p/${encoded}`;
   }
 } catch (e) {}
 
@@ -45,9 +49,9 @@ const headerProps = {
       class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
     >
         <img
-        class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
-        src={cardImgSrc}
-        data-large={ogImage?.src || "/pickyzz-og.png"}
+  class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
+        src={placeholderSrc || proxyUrl}
+        data-large={proxyUrl}
         loading="lazy"
         decoding="async"
         fetchpriority={priority}

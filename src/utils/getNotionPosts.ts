@@ -162,7 +162,7 @@ export interface NotionPost {
   canonicalURL?: string;
 }
 
-export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
+export async function getNotionPosts(): Promise<any[]> {
   // Check cache first
   const cacheKey = "all_posts";
   const cachedPosts = getCachedData(postsCache, cacheKey);
@@ -192,7 +192,7 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       params.start_cursor = res.next_cursor;
     }
 
-    const posts: CollectionEntry<"blog">[] = allResults.map((page: any) => {
+  const posts: any[] = allResults.map((page: any) => {
       const properties = page.properties;
 
         // Extract data from Notion page properties
@@ -294,6 +294,58 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
       }
     );
 
+    // Attempt to generate build-time placeholders for posts with ogImage.
+    // This is best-effort and should not fail the build.
+    (async () => {
+      try {
+        const { generatePlaceholder } = await import('./generatePlaceholder');
+        const placeholders: Record<string, string> = {};
+        for (const p of posts as any[]) {
+          try {
+            const og = (p.data as any)?.ogImage as any;
+            if (og && og.src) {
+              try {
+                const placeholder = await generatePlaceholder(og.src);
+                if (placeholder) {
+                  (p.data as any).ogImage = { ...og, placeholder };
+                  // store mapping from proxy path token to data-uri
+                  try {
+                    const enc = Buffer.from(encodeURIComponent(og.src), 'utf8')
+                      .toString('base64')
+                      .replace(/\+/g, '-')
+                      .replace(/\//g, '_')
+                      .replace(/=+$/, '');
+                    const proxyPath = `/api/image/p/${enc}`;
+                    placeholders[proxyPath] = placeholder;
+                  } catch (e) {
+                    // ignore encoding errors
+                  }
+                }
+              } catch (e) {
+                // ignore per-post placeholder failures
+              }
+            }
+          } catch (e) {}
+        }
+
+        // Write placeholders to dist/placeholders.json atomically (best-effort)
+        try {
+          const fs = await import('fs');
+          const path = await import('path');
+          const outDir = path.resolve(process.cwd(), 'dist');
+          const tmpFile = path.resolve(outDir, '.placeholders.tmp.json');
+          const outFile = path.resolve(outDir, 'placeholders.json');
+          if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+          fs.writeFileSync(tmpFile, JSON.stringify(placeholders, null, 2), 'utf8');
+          try { fs.renameSync(tmpFile, outFile); } catch (e) { fs.writeFileSync(outFile, JSON.stringify(placeholders, null, 2), 'utf8'); }
+        } catch (e) {
+          // ignore write failures - best-effort
+        }
+      } catch (e) {
+        // If import fails or sharp not available in environment, ignore.
+      }
+    })();
+
     // Cache the result
     setCacheData(postsCache, cacheKey, posts, CACHE_CONFIG.POSTS);
     return posts;
@@ -305,7 +357,7 @@ export async function getNotionPosts(): Promise<CollectionEntry<"blog">[]> {
 
 export async function getNotionPostBySlug(
   slug: string
-): Promise<CollectionEntry<"blog"> | null> {
+): Promise<any | null> {
   // Check cache first
   const cacheKey = `post_${slug}`;
   const cachedPost = getCachedData(postBySlugCache, cacheKey);
@@ -434,7 +486,7 @@ export async function getNotionPostBySlug(
 
 export async function getNotionPostsByTag(
   tagName: string
-): Promise<CollectionEntry<"blog">[]> {
+): Promise<any[]> {
   // Check cache first
   const cacheKey = `posts_tag_${tagName}`;
   const cachedPosts = getCachedData(postsByTagCache, cacheKey);

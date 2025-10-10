@@ -130,6 +130,7 @@ const ogUrl = new URL(
 // our serverless image proxy so edge caching can be applied and signed
 // URLs won't expire for clients.
 let proxyOgUrl = ogUrl;
+let placeholderOg: string | undefined = undefined;
 try {
   if (isAllowedUrl(ogUrl)) {
     const enc = Buffer.from(encodeURIComponent(ogUrl), 'utf8')
@@ -142,6 +143,12 @@ try {
 } catch (e) {
   // If ogUrl is not a valid URL, fall back to original value.
 }
+
+try {
+  if (ogImage && (ogImage as any).placeholder) {
+    placeholderOg = (ogImage as any).placeholder as string;
+  }
+} catch (e) {}
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -203,7 +210,7 @@ if (tags && tags.length > 0 && posts) {
   const firstTag = tags[0];
   // Cast incoming posts to the expected CollectionEntry type to satisfy TypeScript
   const postsWithSameTag = getPostsByTag(
-    posts as unknown as import("astro:content").CollectionEntry<"blog">[],
+  posts as any[],
     firstTag
   )
     .filter(
@@ -259,8 +266,8 @@ if (tags && tags.length > 0 && posts) {
     <article id="article" class="max-w-4xl mx-auto mt-8 prose">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center img-loading blurry-load"
-        src={proxyOgUrl}
-        data-large={ogUrl}
+        src={placeholderOg || proxyOgUrl}
+        data-large={proxyOgUrl}
         alt={title
           ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}`
           : "Blog post cover image"}
