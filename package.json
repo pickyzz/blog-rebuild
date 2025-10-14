@@ -47,7 +47,7 @@
     "@types/github-slugger": "2.0.0",
     "@types/lodash.kebabcase": "4.1.9",
     "@types/prismjs": "1.26.5",
-    "@typescript-eslint/parser": "8.46.0",
+    "@typescript-eslint/parser": "8.46.1",
     "astro": "5.14.4",
     "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.3",
@@ -62,7 +62,7 @@
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.46.0"
+    "typescript-eslint": "8.46.1"
   },
   "scripts": {
     "dev": "astro dev",
