@@ -6,7 +6,7 @@
       "dependencies": {
         "@astrojs/node": "^9.4.3",
         "@astrojs/vercel": "^8.2.7",
-        "@notionhq/client": "4.0.2",
+        "@notionhq/client": "5.3.0",
         "@resvg/resvg-js": "2.6.2",
         "@vite-pwa/astro": "^1.1.0",
         "notion-to-md": "3.1.9",
@@ -445,7 +445,7 @@
 
     "@nodelib/fs.walk": ["@nodelib/fs.walk@1.2.8", "", { "dependencies": { "@nodelib/fs.scandir": "2.1.5", "fastq": "^1.6.0" } }, "sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg=="],
 
-    "@notionhq/client": ["@notionhq/client@4.0.2", "", {}, "sha512-4pk3dm4umhjsRI0umCnJ8lCZh0TMiaMdkY0rz6FV4OqVuTsmYFV3pk+YTR5S8792ZY2Rm4lJHlLj05HQVKDuIg=="],
+    "@notionhq/client": ["@notionhq/client@5.3.0", "", {}, "sha512-pISuJLrP6XwxnmMZ79jT2XkMHFtbQvslfs6Rqdd29ge0KAmJOuhtWZxE1WXO7h03cj/gVAL2PiAjpFuIWrWJ3w=="],
 
     "@oslojs/encoding": ["@oslojs/encoding@1.1.0", "", {}, "sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ=="],
 
