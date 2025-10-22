@@ -40,7 +40,8 @@ export async function fetchWithBackoff(url: string, maxRetries = 3) {
   while (attempt <= maxRetries) {
     try {
       const controller = new AbortController();
-      const timeoutMs = 8000;
+      // Increase client-side fetch timeout to be more tolerant of slow upstreams
+      const timeoutMs = parseInt(process.env.IMAGE_PROXY_FETCH_TIMEOUT_MS || '12000'); // 12s default
       const timer = setTimeout(() => controller.abort(), timeoutMs);
       const res = await fetch(url, { signal: controller.signal });
       clearTimeout(timer);
@@ -69,7 +70,8 @@ export async function fetchWithBackoff(url: string, maxRetries = 3) {
 }
 
 // concurrency limiter & per-host cooldown
-const MAX_CONCURRENT_FETCHES = parseInt(process.env.IMAGE_PROXY_MAX_CONCURRENT || "6");
+// Increase default client concurrency to better utilize available proxy throughput while remaining configurable
+const MAX_CONCURRENT_FETCHES = parseInt(process.env.IMAGE_PROXY_MAX_CONCURRENT || "10");
 let currentFetches = 0;
 const queue: Array<() => void> = [];
 
@@ -91,7 +93,8 @@ export function acquireSlot(): Promise<() => void> {
   });
 }
 
-const HOST_COOLDOWN_MS = parseInt(process.env.IMAGE_PROXY_HOST_COOLDOWN_MS || "350");
+// Reduce default per-host cooldown slightly to allow more frequent requests to the same host where safe
+const HOST_COOLDOWN_MS = parseInt(process.env.IMAGE_PROXY_HOST_COOLDOWN_MS || "200");
 const hostLastRequest = new Map<string, number>();
 
 export async function waitForHostCooldown(url: string) {
@@ -114,10 +117,22 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
 
   let upstream: Response | undefined;
   let release: (() => void) | null = null;
+  const startTime = Date.now();
   try {
     release = await acquireSlot();
     await waitForHostCooldown(decoded);
     upstream = await fetchWithBackoff(decoded, 3);
+    // Log successful upstream fetch (async best-effort)
+    (async () => {
+      try {
+        const dur = Date.now() - startTime;
+        const entry = `${new Date().toISOString()} | URL: ${decoded} | status: ${upstream?.status || 'unknown'} | duration_ms: ${dur}\n`;
+        const fs = await import('fs');
+        try { fs.appendFileSync('.image-proxy-debug.log', entry); } catch (e) { /* ignore */ }
+      } catch (e) {
+        // ignore logging errors
+      }
+    })();
   } catch (err: any) {
     console.error(`[IMAGE PROXY] upstream fetch failed for ${decoded}:`, err);
     const status = err?.status || 502;
