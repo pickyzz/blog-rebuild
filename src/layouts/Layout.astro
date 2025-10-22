@@ -403,6 +403,36 @@ const structuredData = {
         }
 
         const lazyImages = document.querySelectorAll("img.img-loading");
+
+        // Simple client-side concurrency queue to avoid N simultaneous Image() loads
+        const MAX_CLIENT_CONCURRENT = 5;
+        let clientActive = 0;
+        const clientQueue = [];
+
+        function scheduleLoad(fn) {
+          return new Promise((resolve) => {
+            clientQueue.push(async () => {
+              try {
+                clientActive++;
+                await fn();
+              } finally {
+                clientActive = Math.max(0, clientActive - 1);
+                resolve();
+                // kick next
+                if (clientQueue.length > 0 && clientActive < MAX_CLIENT_CONCURRENT) {
+                  const next = clientQueue.shift();
+                  if (next) next();
+                }
+              }
+            });
+            // start if slots free
+            if (clientActive < MAX_CLIENT_CONCURRENT) {
+              const next = clientQueue.shift();
+              if (next) next();
+            }
+          });
+        }
+
         lazyImages.forEach(img => {
           // Skip if already processed
           if (img.dataset.blurProcessed) return;
@@ -420,18 +450,44 @@ const structuredData = {
           };
 
           const applyFallback = () => {
+            try {
+              // As a last-resort, attempt to set the large src directly (with cache-bust)
+              if (img.dataset.large && img.src !== img.dataset.large) {
+                try {
+                  const cb = `cb=${Date.now()}`;
+                  const sep = img.dataset.large.includes('?') ? '&' : '?';
+                  img.src = `${img.dataset.large}${sep}${cb}`;
+                  console.warn('blurry-load: fallback swapped src directly to', img.dataset.large);
+                } catch (e) {
+                  console.warn('blurry-load: fallback direct swap failed', e);
+                }
+              }
+            } catch (e) {}
             // remove blur visually by adding loaded class; optionally set placeholder
             applyLoaded();
           };
 
+          const MAX_RETRIES = 2;
           const loadImage = () => {
             const big = new Image();
             let timedOut = false;
+            const timeoutMs = 12000; // extend client-side timeout to 12s
             const timeout = setTimeout(() => {
               timedOut = true;
-              console.warn('blurry-load: image load timeout for', img.dataset.large);
+              const attempts = parseInt(img.dataset.blurAttempts || '0');
+              console.warn('blurry-load: image load TIMEOUT for', img.dataset.large, 'attempts=', attempts + 1);
+              if (attempts < MAX_RETRIES) {
+                img.dataset.blurAttempts = String(attempts + 1);
+                const backoff = 1000 * Math.pow(2, attempts);
+                console.log('blurry-load: retrying after backoff', backoff, 'ms', 'for', img.dataset.large);
+                setTimeout(() => {
+                  loadImage();
+                }, backoff);
+                return;
+              }
+              console.warn('blurry-load: final timeout fallback for', img.dataset.large);
               applyFallback();
-            }, 8000);
+            }, timeoutMs);
 
             // Set decoding early (best-effort)
             try { big.decoding = 'async'; } catch (e) {}
@@ -449,19 +505,23 @@ const structuredData = {
                   // decoded before we assign into the visible <img>
                   if (typeof big.decode === 'function') {
                     big.decode().then(() => {
+                      console.log('blurry-load: decoded, swapping src for', img.dataset.large);
                       img.src = big.src;
                       applyLoaded();
                     }).catch(() => {
                       // If decode fails, fallback to onload behaviour
+                      console.warn('blurry-load: decode failed, swapping via onload fallback for', img.dataset.large);
                       img.src = big.src;
                       applyLoaded();
                     });
                   } else {
                     // Older browsers: swap on load event
+                    console.log('blurry-load: swapping src via load fallback for', img.dataset.large);
                     img.src = big.src;
                     applyLoaded();
                   }
                 } catch (e) {
+                  console.error('blurry-load: unexpected error during swap', e, img.dataset.large);
                   img.src = big.src;
                   applyLoaded();
                 }
@@ -474,7 +534,18 @@ const structuredData = {
             big.onload = finishSwap;
             big.onerror = () => {
               clearTimeout(timeout);
-              console.warn('blurry-load: failed to load', img.dataset.large);
+              const attempts = parseInt(img.dataset.blurAttempts || '0');
+              console.warn('blurry-load: image error for', img.dataset.large, 'attempts=', attempts + 1);
+              if (attempts < MAX_RETRIES) {
+                img.dataset.blurAttempts = String(attempts + 1);
+                const backoff = 1000 * Math.pow(2, attempts);
+                console.log('blurry-load: retrying after error backoff', backoff, 'ms', 'for', img.dataset.large);
+                setTimeout(() => {
+                  loadImage();
+                }, backoff);
+                return;
+              }
+              console.warn('blurry-load: final error fallback for', img.dataset.large);
               applyFallback();
             };
           };
@@ -482,25 +553,23 @@ const structuredData = {
           // Check if image is already in viewport
           const isInViewport = (element) => {
             const rect = element.getBoundingClientRect();
-            return (
-              rect.top >= 0 &&
-              rect.left >= 0 &&
-              rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-              rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
+            // Consider element in viewport if any part is visible (more permissive)
+            const vh = window.innerHeight || document.documentElement.clientHeight;
+            const vw = window.innerWidth || document.documentElement.clientWidth;
+            return rect.bottom >= 0 && rect.top <= vh && rect.right >= 0 && rect.left <= vw;
           };
 
-          if ('IntersectionObserver' in window) {
-            // If already in viewport, load immediately
+            if ('IntersectionObserver' in window) {
+            // If already in viewport, schedule immediate load
             if (isInViewport(img)) {
-              loadImage();
+              scheduleLoad(() => loadImage());
               return;
             }
 
             const io = new IntersectionObserver((entries, observer) => {
               entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                  loadImage();
+                  scheduleLoad(() => loadImage());
                   observer.unobserve(entry.target);
                 }
               });
@@ -512,7 +581,7 @@ const structuredData = {
             if (!window.blurLoadingObservers) window.blurLoadingObservers = [];
             window.blurLoadingObservers.push(io);
           } else {
-            loadImage();
+            scheduleLoad(() => loadImage());
           }
         });
       };

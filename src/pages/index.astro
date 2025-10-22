@@ -12,20 +12,33 @@ import { SOCIALS } from "@/constants";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { getNotionPosts } from "@/utils/getNotionPosts";
 
-const posts = await getNotionPosts();
-
-/* Set cache-control header for SSR response */
+/* Set enhanced cache-control header for SSR response */
 if (Astro.response && Astro.response.headers) {
   Astro.response.headers.set(
     "cache-control",
-    "public, max-age=30, stale-while-revalidate=60"
+    "public, max-age=1800, stale-while-revalidate=3600"
+  );
+  // Add CDN cache headers for better performance
+  Astro.response.headers.set(
+    "CDN-Cache-Control",
+    "public, max-age=1800, stale-while-revalidate=3600"
   );
 }
 
+/* SSR mode with enhanced caching */
+export const prerender = false;
+
+const { getNotionPosts } = await import("@/utils/getNotionPosts");
+const posts = await getNotionPosts();
+console.log(`[HOMEPAGE SSR] Fetched ${posts.length} posts from Notion`);
+console.log(`[HOMEPAGE] Props posts length: ${posts.length}`);
+const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
 const sortedPosts = getSortedPosts(posts);
+console.log(`[HOMEPAGE] Sorted posts length: ${sortedPosts.length}`);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+console.log(`[HOMEPAGE] Featured posts length: ${featuredPosts.length}`);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-export const prerender = false; // Use SSR so index always reflects Notion content
+console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
 ---
 
 <Layout

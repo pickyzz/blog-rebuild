@@ -1,39 +1,33 @@
 ---
 import PostDetails from "@/layouts/PostDetails.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
-import { getNotionPosts, getNotionPostBySlug } from "@/utils/getNotionPosts";
+import { getNotionPosts } from "@/utils/getNotionPosts";
+import { getPostPaths, ISR_CONFIG } from "@/utils/astro-isr/getStaticPaths";
 
 export interface Props {
   post: any;
 }
 
-/* SSR mode: enable server-side rendering and set cache headers below */
-export const ssr = true;
-
-const slug = Astro.params.slug;
-if (typeof slug !== "string" || !slug) {
-  return Astro.redirect("/404");
+/* ISR mode: generate static paths with revalidation */
+export const prerender = true;
+export async function getStaticPaths() {
+  return await getPostPaths();
 }
-const slugStr: string = slug;
-const post = (await getNotionPostBySlug(slugStr)) as any;
 
-if (!post) {
+const post = Astro.props.post;
+
+if (!post || !post.data) {
   return Astro.redirect("/404");
 }
 
 const posts = await getNotionPosts();
 const sortedPosts = getSortedPosts(posts);
 
-// Add safety check for post data
-if (!post.data) {
-  return Astro.redirect("/404");
-}
-
-/* Set cache-control header for SSR response (Vercel Edge: fresh 5 minutes) */
+/* Set cache-control header for ISR response */
 if (Astro.response && Astro.response.headers) {
   Astro.response.headers.set(
     "cache-control",
-    "public, max-age=300, stale-while-revalidate=600"
+    `public, max-age=${ISR_CONFIG.POST}, stale-while-revalidate=${ISR_CONFIG.POST * 2}`
   );
 }
 ---
