@@ -3,6 +3,7 @@ import type { BlogPost } from "@/types";
 import type { CollectionEntry } from "astro:content";
 import { ensureDate } from "./ensureDate";
 import { throttleNotion } from "./notionRateLimiter";
+import { getHybridCachedData, CacheKeys } from "./cache/kv-cache";
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 const DATABASE_ID = import.meta.env.DATABASE_ID;
@@ -163,13 +164,38 @@ export interface NotionPost {
 }
 
 export async function getNotionPosts(): Promise<any[]> {
-  // Check cache first
-  const cacheKey = "all_posts";
-  const cachedPosts = getCachedData(postsCache, cacheKey);
-  if (cachedPosts) {
-    return cachedPosts;
+  // Try Redis cache first with memory fallback
+  try {
+    const cachedPosts = await getHybridCachedData(
+      CacheKeys.allPosts(),
+      async () => await fetchNotionPosts(),
+      1800 // 30 minutes
+    );
+    const result = cachedPosts || [];
+    console.log(
+      `[getNotionPosts] Returning ${result.length} posts from cache/fetch`
+    );
+    return result;
+  } catch (error) {
+    console.error("Cache failed, falling back to memory cache:", error);
+    // Fallback to memory cache
+    const cacheKey = "all_posts";
+    const cachedPosts = getCachedData(postsCache, cacheKey);
+    if (cachedPosts) {
+      console.log(
+        `[getNotionPosts] Returning ${cachedPosts.length} posts from memory cache`
+      );
+      return cachedPosts;
+    }
+    const freshPosts = await fetchNotionPosts();
+    console.log(
+      `[getNotionPosts] Returning ${freshPosts.length} posts from fresh fetch`
+    );
+    return freshPosts;
   }
+}
 
+async function fetchNotionPosts(): Promise<any[]> {
   try {
     // Fetch all pages using pagination (Notion returns a page at a time)
     const params: any = {
@@ -178,9 +204,7 @@ export async function getNotionPosts(): Promise<any[]> {
         property: "status",
         select: { equals: "published" },
       },
-      sorts: [
-        { property: "publish_date", direction: "descending" },
-      ],
+      sorts: [{ property: "publish_date", direction: "descending" }],
       page_size: 100,
     };
 
@@ -192,113 +216,116 @@ export async function getNotionPosts(): Promise<any[]> {
       params.start_cursor = res.next_cursor;
     }
 
-  const posts: any[] = allResults.map((page: any) => {
+    console.log(
+      `[fetchNotionPosts] Processing ${allResults.length} pages from Notion`
+    );
+    const posts: any[] = allResults.map((page: any) => {
       const properties = page.properties;
 
-        // Extract data from Notion page properties
-        const title = properties.title?.title?.[0]?.plain_text || "Untitled";
-        const slug =
-          properties.slug?.rich_text?.[0]?.plain_text ||
-          title.toLowerCase().replace(/\s+/g, "-");
-        const description =
-          properties.description?.rich_text?.[0]?.plain_text || "";
-        const pubDatetimeRaw = properties.publish_date?.date?.start || new Date().toISOString();
-        const modDatetimeRaw = properties.modified_date?.date?.start;
-        const featured =
-          properties.featured?.select?.name === "featured" || false;
-        const draft = properties.status?.select?.name !== "published";
-        const tags =
-          properties.tags?.multi_select?.map((tag: any) => tag.name) || [];
-        const author = "Pickyzz"; // Default author
-        const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
-        const canonicalURL = properties.canonicalURL?.url;
+      // Extract data from Notion page properties
+      const title = properties.title?.title?.[0]?.plain_text || "Untitled";
+      const slug =
+        properties.slug?.rich_text?.[0]?.plain_text ||
+        title.toLowerCase().replace(/\s+/g, "-");
+      const description =
+        properties.description?.rich_text?.[0]?.plain_text || "";
+      const pubDatetimeRaw =
+        properties.publish_date?.date?.start || new Date().toISOString();
+      const modDatetimeRaw = properties.modified_date?.date?.start;
+      const featured =
+        properties.featured?.select?.name === "featured" || false;
+      const draft = properties.status?.select?.name !== "published";
+      const tags =
+        properties.tags?.multi_select?.map((tag: any) => tag.name) || [];
+      const author = "Pickyzz"; // Default author
+      const readingTime = properties.readingTime?.rich_text?.[0]?.plain_text;
+      const canonicalURL = properties.canonicalURL?.url;
 
-        // Extract ogImage from Notion - try multiple sources
-        let ogImage = undefined;
+      // Extract ogImage from Notion - try multiple sources
+      let ogImage = undefined;
 
-        // 1. Try custom ogImage property
-        const possibleImageProps = [
-          "ogImage",
-          "og_image",
-          "cover",
-          "image",
-          "header_image",
-          "thumbnail",
-        ];
-        for (const propName of possibleImageProps) {
-          if (properties[propName]?.files?.[0]) {
-            const file = properties[propName].files[0];
-            const imageUrl =
-              file.type === "external" ? file.external.url : file.file.url;
-            ogImage = {
-              src: imageUrl,
-              width: 1200,
-              height: 630,
-              format: "png" as const,
-            };
-            break;
-          }
-        }
-
-        // 2. Try page cover image if no custom ogImage found
-        if (!ogImage && page.cover) {
-          let coverUrl = "";
-          if (page.cover.type === "external") {
-            coverUrl = page.cover.external.url;
-          } else if (page.cover.type === "file") {
-            coverUrl = page.cover.file.url;
-          }
-
-          if (coverUrl) {
-            ogImage = {
-              src: coverUrl,
-              width: 1200,
-              height: 630,
-              format: "png" as const,
-            };
-          }
-        }
-
-        // 3. Try page icon as last resort
-        if (!ogImage && page.icon && page.icon.type === "external") {
-          const iconUrl = page.icon.external.url;
+      // 1. Try custom ogImage property
+      const possibleImageProps = [
+        "ogImage",
+        "og_image",
+        "cover",
+        "image",
+        "header_image",
+        "thumbnail",
+      ];
+      for (const propName of possibleImageProps) {
+        if (properties[propName]?.files?.[0]) {
+          const file = properties[propName].files[0];
+          const imageUrl =
+            file.type === "external" ? file.external.url : file.file.url;
           ogImage = {
-            src: iconUrl,
-            width: 400,
-            height: 400,
+            src: imageUrl,
+            width: 1200,
+            height: 630,
+            format: "png" as const,
+          };
+          break;
+        }
+      }
+
+      // 2. Try page cover image if no custom ogImage found
+      if (!ogImage && page.cover) {
+        let coverUrl = "";
+        if (page.cover.type === "external") {
+          coverUrl = page.cover.external.url;
+        } else if (page.cover.type === "file") {
+          coverUrl = page.cover.file.url;
+        }
+
+        if (coverUrl) {
+          ogImage = {
+            src: coverUrl,
+            width: 1200,
+            height: 630,
             format: "png" as const,
           };
         }
+      }
 
-        return {
-          id: page.id,
-          slug,
-          data: {
-            title,
-            slug,
-            description,
-            pubDatetime: ensureDate(pubDatetimeRaw) ?? new Date(),
-            modDatetime: ensureDate(modDatetimeRaw),
-            featured,
-            draft,
-            tags,
-            author,
-            readingTime,
-            canonicalURL,
-            ogImage,
-          },
-          body: "", // Notion content will be fetched separately if needed
-          collection: "blog",
-          render: async () => ({ Content: () => null }), // Placeholder render function
+      // 3. Try page icon as last resort
+      if (!ogImage && page.icon && page.icon.type === "external") {
+        const iconUrl = page.icon.external.url;
+        ogImage = {
+          src: iconUrl,
+          width: 400,
+          height: 400,
+          format: "png" as const,
         };
       }
-    );
+
+      return {
+        id: page.id,
+        slug,
+        data: {
+          title,
+          slug,
+          description,
+          pubDatetime: ensureDate(pubDatetimeRaw) ?? new Date(),
+          modDatetime: ensureDate(modDatetimeRaw),
+          featured,
+          draft,
+          tags,
+          author,
+          readingTime,
+          canonicalURL,
+          ogImage,
+        },
+        body: "", // Notion content will be fetched separately if needed
+        collection: "blog",
+        render: async () => ({ Content: () => null }), // Placeholder render function
+      };
+    });
 
     // Attempt to generate build-time placeholders for posts with ogImage.
     // This is best-effort and should not fail the build.
     (async () => {
       try {
-        const { generatePlaceholder } = await import('./generatePlaceholder');
+        const { generatePlaceholder } = await import("./generatePlaceholder");
         const placeholders: Record<string, string> = {};
         for (const p of posts as any[]) {
           try {
@@ -310,11 +337,11 @@ export async function getNotionPosts(): Promise<any[]> {
                   (p.data as any).ogImage = { ...og, placeholder };
                   // store mapping from proxy path token to data-uri
                   try {
-                    const enc = Buffer.from(encodeURIComponent(og.src), 'utf8')
-                      .toString('base64')
-                      .replace(/\+/g, '-')
-                      .replace(/\//g, '_')
-                      .replace(/=+$/, '');
+                    const enc = Buffer.from(encodeURIComponent(og.src), "utf8")
+                      .toString("base64")
+                      .replace(/\+/g, "-")
+                      .replace(/\//g, "_")
+                      .replace(/=+$/, "");
                     const proxyPath = `/api/image/p/${enc}`;
                     placeholders[proxyPath] = placeholder;
                   } catch (e) {
@@ -330,14 +357,26 @@ export async function getNotionPosts(): Promise<any[]> {
 
         // Write placeholders to dist/placeholders.json atomically (best-effort)
         try {
-          const fs = await import('fs');
-          const path = await import('path');
-          const outDir = path.resolve(process.cwd(), 'dist');
-          const tmpFile = path.resolve(outDir, '.placeholders.tmp.json');
-          const outFile = path.resolve(outDir, 'placeholders.json');
+          const fs = await import("fs");
+          const path = await import("path");
+          const outDir = path.resolve(process.cwd(), "dist");
+          const tmpFile = path.resolve(outDir, ".placeholders.tmp.json");
+          const outFile = path.resolve(outDir, "placeholders.json");
           if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
-          fs.writeFileSync(tmpFile, JSON.stringify(placeholders, null, 2), 'utf8');
-          try { fs.renameSync(tmpFile, outFile); } catch (e) { fs.writeFileSync(outFile, JSON.stringify(placeholders, null, 2), 'utf8'); }
+          fs.writeFileSync(
+            tmpFile,
+            JSON.stringify(placeholders, null, 2),
+            "utf8"
+          );
+          try {
+            fs.renameSync(tmpFile, outFile);
+          } catch (e) {
+            fs.writeFileSync(
+              outFile,
+              JSON.stringify(placeholders, null, 2),
+              "utf8"
+            );
+          }
         } catch (e) {
           // ignore write failures - best-effort
         }
@@ -347,7 +386,11 @@ export async function getNotionPosts(): Promise<any[]> {
     })();
 
     // Cache the result
+    const cacheKey = "all_posts";
     setCacheData(postsCache, cacheKey, posts, CACHE_CONFIG.POSTS);
+    console.log(
+      `[fetchNotionPosts] Returning ${posts.length} posts from Notion API`
+    );
     return posts;
   } catch (error) {
     console.error("Error fetching posts from Notion:", error);
@@ -355,17 +398,34 @@ export async function getNotionPosts(): Promise<any[]> {
   }
 }
 
-export async function getNotionPostBySlug(
-  slug: string
-): Promise<any | null> {
-  // Check cache first
-  const cacheKey = `post_${slug}`;
-  const cachedPost = getCachedData(postBySlugCache, cacheKey);
-  if (cachedPost !== null) {
-    console.info(`[CACHE HIT] postBySlug: ${slug}`);
+export async function getNotionPostBySlug(slug: string): Promise<any | null> {
+  // Try Redis cache first with memory fallback
+  try {
+    const cachedPost = await getHybridCachedData(
+      CacheKeys.postBySlug(slug),
+      async () => await fetchNotionPostBySlug(slug),
+      1800 // 30 minutes
+    );
     return cachedPost;
+  } catch (error) {
+    console.error(
+      "Cache failed for post by slug, falling back to memory cache:",
+      error
+    );
+    // Fallback to memory cache
+    const cacheKey = `post_${slug}`;
+    const cachedPost = getCachedData(postBySlugCache, cacheKey);
+    if (cachedPost !== null) {
+      console.info(`[CACHE HIT] postBySlug: ${slug}`);
+      return cachedPost;
+    }
+    console.info(`[CACHE MISS] postBySlug: ${slug}`);
+    return await fetchNotionPostBySlug(slug);
   }
-  console.info(`[CACHE MISS] postBySlug: ${slug}`);
+}
+
+async function fetchNotionPostBySlug(slug: string): Promise<any | null> {
+  const cacheKey = `post_${slug}`;
 
   try {
     // Query Notion directly for the specific slug to avoid fetching all posts
@@ -380,20 +440,20 @@ export async function getNotionPostBySlug(
       page_size: 1,
     };
 
-  const res = await fetchWithRetry(() => notion.databases.query(params));
-  const page = (res.results && res.results[0]) as any;
+    const res = await fetchWithRetry(() => notion.databases.query(params));
+    const page = (res.results && res.results[0]) as any;
     const post = page
       ? {
           id: page.id,
           slug,
           data: {
-            title:
-              page.properties.title?.title?.[0]?.plain_text || "Untitled",
+            title: page.properties.title?.title?.[0]?.plain_text || "Untitled",
             slug,
             description:
               page.properties.description?.rich_text?.[0]?.plain_text || "",
             pubDatetime:
-              ensureDate(page.properties.publish_date?.date?.start) ?? new Date(),
+              ensureDate(page.properties.publish_date?.date?.start) ??
+              new Date(),
             modDatetime: ensureDate(page.properties.modified_date?.date?.start),
             featured:
               page.properties.featured?.select?.name === "featured" || false,
@@ -401,7 +461,8 @@ export async function getNotionPostBySlug(
             tags:
               page.properties.tags?.multi_select?.map((t: any) => t.name) || [],
             author: "Pickyzz",
-            readingTime: page.properties.readingTime?.rich_text?.[0]?.plain_text,
+            readingTime:
+              page.properties.readingTime?.rich_text?.[0]?.plain_text,
             canonicalURL: page.properties.canonicalURL?.url,
             // Determine ogImage from multiple possible Notion sources (property files, page cover, icon)
             ogImage: (() => {
@@ -420,7 +481,9 @@ export async function getNotionPostBySlug(
                   if (properties[propName]?.files?.[0]) {
                     const file = properties[propName].files[0];
                     const imageUrl =
-                      file.type === "external" ? file.external.url : file.file.url;
+                      file.type === "external"
+                        ? file.external.url
+                        : file.file.url;
                     og = {
                       src: imageUrl,
                       width: 1200,
@@ -439,13 +502,23 @@ export async function getNotionPostBySlug(
                     coverUrl = page.cover.file.url;
                   }
                   if (coverUrl) {
-                    og = { src: coverUrl, width: 1200, height: 630, format: "png" as const };
+                    og = {
+                      src: coverUrl,
+                      width: 1200,
+                      height: 630,
+                      format: "png" as const,
+                    };
                   }
                 }
 
                 if (!og && page.icon && page.icon.type === "external") {
                   const iconUrl = page.icon.external.url;
-                  og = { src: iconUrl, width: 400, height: 400, format: "png" as const };
+                  og = {
+                    src: iconUrl,
+                    width: 400,
+                    height: 400,
+                    format: "png" as const,
+                  };
                 }
                 return og;
               } catch (e) {
@@ -484,15 +557,32 @@ export async function getNotionPostBySlug(
   }
 }
 
-export async function getNotionPostsByTag(
-  tagName: string
-): Promise<any[]> {
-  // Check cache first
-  const cacheKey = `posts_tag_${tagName}`;
-  const cachedPosts = getCachedData(postsByTagCache, cacheKey);
-  if (cachedPosts) {
-    return cachedPosts;
+export async function getNotionPostsByTag(tag: string): Promise<BlogPost[]> {
+  // Try Redis cache first with memory fallback
+  try {
+    const cachedPosts = await getHybridCachedData(
+      CacheKeys.postsByTag(tag),
+      async () => await fetchNotionPostsByTag(tag),
+      1800 // 30 minutes
+    );
+    return cachedPosts || [];
+  } catch (error) {
+    console.error(
+      "Cache failed for posts by tag, falling back to memory cache:",
+      error
+    );
+    // Fallback to memory cache
+    const cacheKey = `posts_by_tag_${tag}`;
+    const cachedPosts = getCachedData(postsByTagCache, cacheKey);
+    if (cachedPosts) {
+      return cachedPosts;
+    }
+    return await fetchNotionPostsByTag(tag);
   }
+}
+
+async function fetchNotionPostsByTag(tag: string): Promise<BlogPost[]> {
+  const cacheKey = `posts_by_tag_${tag}`;
 
   try {
     const posts = await getNotionPosts();
@@ -500,7 +590,7 @@ export async function getNotionPostsByTag(
       post.data.tags.some(
         (postTag: string) =>
           postTag.toLowerCase().replace(/\s+/g, "-") ===
-          tagName.toLowerCase().replace(/\s+/g, "-")
+          tag.toLowerCase().replace(/\s+/g, "-")
       )
     );
 
@@ -523,12 +613,33 @@ export async function getNotionPostsByTag(
 export async function getNotionUniqueTags(): Promise<
   { tag: string; tagName: string }[]
 > {
-  // Check cache first
-  const cacheKey = "unique_tags";
-  const cachedTags = getCachedData(tagsCache, cacheKey);
-  if (cachedTags) {
-    return cachedTags;
+  // Try Redis cache first with memory fallback
+  try {
+    const cachedTags = await getHybridCachedData(
+      CacheKeys.allTags(),
+      async () => await fetchNotionUniqueTags(),
+      3600 // 1 hour
+    );
+    return cachedTags || [];
+  } catch (error) {
+    console.error(
+      "Cache failed for tags, falling back to memory cache:",
+      error
+    );
+    // Fallback to memory cache
+    const cacheKey = "all_tags";
+    const cachedTags = getCachedData(tagsCache, cacheKey);
+    if (cachedTags) {
+      return cachedTags;
+    }
+    return await fetchNotionUniqueTags();
   }
+}
+
+async function fetchNotionUniqueTags(): Promise<
+  { tag: string; tagName: string }[]
+> {
+  const cacheKey = "all_tags";
 
   try {
     const posts = await getNotionPosts();

@@ -13,8 +13,14 @@ import type { CollectionEntry } from "astro:content";
  * @returns Whether to include the post in the collection.
  */
 const postFilter = ({ data }: CollectionEntry<"blog">) => {
+  // Handle pubDatetime which might be string or Date object
+  const pubDate =
+    data.pubDatetime instanceof Date
+      ? data.pubDatetime
+      : new Date(data.pubDatetime);
+
   const isPublishTimePassed =
-    Date.now() > data.pubDatetime.getTime() - SITE.scheduledPostMargin;
+    Date.now() > pubDate.getTime() - SITE.scheduledPostMargin;
   return !data.draft && (import.meta.env.DEV || isPublishTimePassed);
 };
 
