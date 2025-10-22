@@ -1,0 +1,69 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Main from "@/layouts/Main.astro";
+import Card from "@/components/Card.astro";
+import Pagination from "@/components/Pagination.astro";
+
+/* SSR mode with enhanced caching */
+export const prerender = false;
+
+const { SITE } = await import("@/config");
+const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
+const { getNotionPosts } = await import("@/utils/getNotionPosts");
+const posts = await getNotionPosts();
+const publishedPosts = posts.filter(post => !post.data.draft);
+const sortedPosts = getSortedPosts(publishedPosts);
+
+const pageSize = SITE.postPerPage || 10;
+const page = {
+  posts: sortedPosts.slice(0, pageSize),
+  currentPage: 1,
+  totalPages: Math.max(1, Math.ceil(sortedPosts.length / pageSize)),
+  start: 1,
+  end: Math.min(pageSize, sortedPosts.length),
+  total: sortedPosts.length,
+  size: pageSize,
+  url: "/blog",
+  prev: undefined,
+  next: sortedPosts.length > pageSize ? "/blog/page/2" : undefined,
+};
+
+console.log(`[BLOG INDEX SSR] Fetched ${posts.length} posts from Notion`);
+console.log(`[BLOG INDEX SSR] Displaying ${page.posts.length} posts`);
+
+/* Set enhanced cache-control header for SSR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set(
+    "cache-control",
+    "public, max-age=1800, stale-while-revalidate=3600"
+  );
+  // Add CDN cache headers for better performance
+  Astro.response.headers.set(
+    "CDN-Cache-Control",
+    "public, max-age=1800, stale-while-revalidate=3600"
+  );
+}
+---
+
+<Layout title="Posts" canonicalURL="/blog">
+  <Header />
+  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+    {
+      page.posts && page.posts.length > 0 ? (
+        <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
+          {page.posts.map(({ data, id }) => (
+            <Card href={`/blog/${data.slug}`} frontmatter={data} />
+          ))}
+        </ul>
+      ) : (
+        <p class="text-center">No posts available.</p>
+      )
+    }
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.totalPages > 1} />
+</Layout>

@@ -1,0 +1,64 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Main from "@/layouts/Main.astro";
+import Card from "@/components/Card.astro";
+import Pagination from "@/components/Pagination.astro";
+import { ISR_CONFIG } from "@/utils/astro-isr/getStaticPaths";
+
+// Define the page props interface
+interface PageProps {
+  totalPages: number;
+  posts: any[];
+  currentPage: number;
+  start: number;
+  end: number;
+  total: number;
+  size: number;
+  url: string;
+  prev?: string;
+  next?: string;
+}
+
+/* ISR mode: generate static paths with revalidation */
+export const prerender = true;
+export async function getStaticPaths() {
+  const { getBlogPaths } = await import("@/utils/astro-isr/getStaticPaths");
+  const allPaths = await getBlogPaths();
+
+  // Return all paginated pages (getBlogPaths now only returns pages 2+)
+  return allPaths;
+}
+
+const page = Astro.props as PageProps;
+
+/* Set cache-control header for ISR response */
+if (Astro.response && Astro.response.headers) {
+  Astro.response.headers.set(
+    "cache-control",
+    `public, max-age=${ISR_CONFIG.BLOG}, stale-while-revalidate=${ISR_CONFIG.BLOG * 2}`
+  );
+}
+---
+
+<Layout title={`Posts | Page ${page.currentPage}`} canonicalURL={page.url}>
+  <Header />
+  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+    {
+      page.posts && page.posts.length > 0 ? (
+        <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
+          {page.posts.map(({ data, id }) => (
+            <Card href={`/blog/${data.slug}`} frontmatter={data} />
+          ))}
+        </ul>
+      ) : (
+        <p class="text-center">No posts available.</p>
+      )
+    }
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.totalPages > 1} />
+</Layout>

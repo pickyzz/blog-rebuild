@@ -46,9 +46,12 @@ const months = [
   <Main pageTitle="Archives" pageDesc="All the articles I've archived.">
     {
       Object.entries(
-        getPostsByGroupCondition(posts, post =>
-          post.data.pubDatetime.getFullYear()
-        )
+        getPostsByGroupCondition(posts, post => {
+          const date = new Date(post.data.pubDatetime);
+          return isNaN(date.getTime())
+            ? new Date().getFullYear()
+            : date.getFullYear();
+        })
       )
         .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
         .map(([year, yearGroup]) => (
@@ -58,15 +61,17 @@ const months = [
               <sup class="text-[19px]">{yearGroup.length}</sup>
             </div>
             {Object.entries(
-              getPostsByGroupCondition(
-                yearGroup,
-                post => post.data.pubDatetime.getMonth() + 1
-              )
+              getPostsByGroupCondition(yearGroup, post => {
+                const date = new Date(post.data.pubDatetime);
+                return isNaN(date.getTime())
+                  ? new Date().getMonth() + 1
+                  : date.getMonth() + 1;
+              })
             )
               .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
               .map(([month, monthGroup]) => (
-                <div class="flex flex-col ml-4 text-skin-base/80 sm:flex-row">
-                  <div class="mt-6 mr-10 text-lg min-w-36 sm:my-6">
+                <div class="text-skin-base/80 ml-4 flex flex-col sm:flex-row">
+                  <div class="mr-10 mt-6 min-w-36 text-lg sm:my-6">
                     <span class="font-bold">{months[Number(month) - 1]}</span>
                     <sup class="text-xs">{monthGroup.length}</sup>
                   </div>
@@ -74,8 +79,12 @@ const months = [
                     {monthGroup
                       .sort(
                         (a, b) =>
-                          Math.floor(b.data.pubDatetime.getTime() / 1000) -
-                          Math.floor(a.data.pubDatetime.getTime() / 1000)
+                          Math.floor(
+                            new Date(b.data.pubDatetime).getTime() / 1000
+                          ) -
+                          Math.floor(
+                            new Date(a.data.pubDatetime).getTime() / 1000
+                          )
                       )
                       .map(post => (
                         <CardArchives

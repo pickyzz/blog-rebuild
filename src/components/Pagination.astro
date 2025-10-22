@@ -7,7 +7,7 @@ const { page } = Astro.props;
 ---
 
 {
-  page && page.lastPage > 1 && (
+  page && page.totalPages > 1 && (
     <nav class="mb-8 mt-auto flex justify-center" aria-label="Pagination">
       <LinkButton
         disabled={!page?.prev}
@@ -18,7 +18,7 @@ const { page } = Astro.props;
         <IconArrowLeft class="inline-block" />
         Prev
       </LinkButton>
-      {page?.currentPage} / {page?.lastPage}
+      {page?.currentPage} / {page?.totalPages}
       <LinkButton
         disabled={!page?.next}
         href={page?.next as string}
