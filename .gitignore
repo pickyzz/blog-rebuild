@@ -13,6 +13,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# debug logs
+*.debug.log
+.image-proxy-debug.log
+
 
 # environment variables
 .env
@@ -30,7 +34,7 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 
-# pagefind 
+# pagefind
 /public/pagefind/
 .vercel
 
