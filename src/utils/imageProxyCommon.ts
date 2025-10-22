@@ -20,20 +20,6 @@ function debugLog(url: string, status: number, duration: number) {
   }
 }
 
-// Debug logging - only enabled in development or with DEBUG_IMAGE_PROXY=true
-const DEBUG_IMAGE_PROXY =
-  process.env.DEBUG_IMAGE_PROXY === "true" ||
-  process.env.NODE_ENV === "development";
-
-function debugLog(url: string, status: number, duration: number) {
-  if (DEBUG_IMAGE_PROXY) {
-    const timestamp = new Date().toISOString();
-    console.log(
-      `[IMAGE-PROXY] ${timestamp} | ${url} | status: ${status} | duration_ms: ${duration}`
-    );
-  }
-}
-
 export async function streamWithLimit(
   upstream: Response
 ): Promise<ReadableStream<Uint8Array>> {
