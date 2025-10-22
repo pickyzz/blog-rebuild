@@ -53,7 +53,7 @@ export default defineConfig({
   adapter:
     env.NODE_ENV !== "production"
       ? node({ mode: "standalone" })
-      : vercel({ edge: false }), // Changed to false for better compatibility
+      : vercel({ edge: true }), // Changed to true for better performance
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
