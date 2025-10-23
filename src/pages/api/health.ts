@@ -26,16 +26,15 @@ export const GET: APIRoute = async () => {
 
   // Cache settings
   const cacheSettings = {
-    cacheSettings: {
-      posts: parseInt(process.env.POSTS_CACHE_TTL || "900000"),
-      tags: parseInt(process.env.TAGS_CACHE_TTL || "1800000"),
-      imageError: parseInt(process.env.IMAGE_ERROR_S_MAXAGE || "30")
-    },
-    // Test image proxy health
-    imageTest: {
-      status: 'unknown',
-      message: 'Test not performed'
-    }
+    posts: parseInt(process.env.POSTS_CACHE_TTL || "900000"),
+    tags: parseInt(process.env.TAGS_CACHE_TTL || "1800000"),
+    imageError: parseInt(process.env.IMAGE_ERROR_S_MAXAGE || "30")
+  };
+
+  // Test image proxy health
+  let imageTest = {
+    status: 'unknown',
+    message: 'Test not performed'
   };
 
   // Test image proxy with a reliable source
