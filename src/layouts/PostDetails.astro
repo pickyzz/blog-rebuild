@@ -789,3 +789,13 @@ if (tags && tags.length > 0 && posts) {
     setTimeout(initTocHighlighting, 100);
   });
 </script>
+
+<!-- Image Error Boundary for better image loading reliability -->
+<script>
+  import('@/components/ImageErrorBoundary');
+</script>
+
+<!-- Image Monitoring for Free Plan optimization -->
+<script>
+  import('@/scripts/imageMonitor.js');
+</script>

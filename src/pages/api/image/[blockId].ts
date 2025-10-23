@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { Client } from "@notionhq/client";
-import { throttleNotion } from "@/utils/notionRateLimiter";
+import { throttleNotion, notionRetryWrapper } from "@/utils/notionRateLimiter";
 import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
 import { handleProxyUrl } from "@/utils/imageProxyCommon";
 import { optimizeImageUrl } from "@/config";
@@ -21,11 +21,12 @@ export const GET: APIRoute = withRateLimit(async ({ params }) => {
   }
 
   try {
-    // Rate limit Notion API calls
-    await throttleNotion();
+    // Use retry wrapper for Notion API calls
+    const block = await notionRetryWrapper(
+      () => notion.blocks.retrieve({ block_id: blockId }),
+      `Block retrieve ${blockId}`
+    );
 
-    // Get Notion block to obtain image URL
-    const block = await notion.blocks.retrieve({ block_id: blockId });
     const blockAny: any = block;
 
     if (blockAny.type !== "image") {

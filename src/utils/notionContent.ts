@@ -132,14 +132,73 @@ n2m.setCustomTransformer("image", async (block: any) => {
   const proxyUrl = `/api/image/${block.id}`;
   const dataLargeUrl = imageUrl || proxyUrl;
 
+  // Enhanced fallback strategy with multiple fallbacks
+  const fallbackUrl = imageUrl || '';
+  const encodedUrl = imageUrl ? encodeURIComponent(imageUrl) : '';
+  const directProxyUrl = encodedUrl ? `/api/image/p/${Buffer.from(encodedUrl).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')}` : '';
+
   if (caption) {
     return `<figure class="notion-image">
-  <img src="${proxyUrl}" data-large="${dataLargeUrl}" alt="${caption}" loading="lazy" class="img-loading blurry-load" />
-  <figcaption>${caption}</figcaption>
-</figure>`;
+  <img src="${proxyUrl}"
+       data-fallback1="${fallbackUrl}"
+       data-fallback2="${directProxyUrl}"
+       data-large="${dataLargeUrl}"
+       alt="${caption}"
+       loading="lazy"
+       class="img-loading blurry-load"
+       onerror="
+         if (this.dataset.attempted === 'true') {
+           if (this.src !== this.dataset.fallback2 && this.dataset.fallback2) {
+             this.src = this.dataset.fallback2;
+             this.dataset.attempted = 'fallback2';
+           } else if (this.src !== this.dataset.fallback1 && this.dataset.fallback1) {
+             this.src = this.dataset.fallback1;
+             this.dataset.attempted = 'fallback1';
+           } else {
+             this.style.display = 'none';
+             const placeholder = document.createElement('div');
+             placeholder.className = 'image-error-placeholder';
+             placeholder.innerHTML = '📷 Image unavailable';
+             placeholder.style.cssText = 'padding: 2rem; text-align: center; color: #666; background: #f5f5f5; border-radius: 8px;';
+             this.parentNode.insertBefore(placeholder, this);
+           }
+         } else {
+           this.dataset.attempted = 'true';
+         }
+         this.classList.remove('img-loading');
+       " />
+   <figcaption>${caption}</figcaption>
+ </figure>`;
   }
 
-  return `<img src="${proxyUrl}" data-large="${dataLargeUrl}" alt="Image from blog post" loading="lazy" class="notion-image img-loading blurry-load" />`;
+  return `<img src="${proxyUrl}"
+           data-fallback1="${fallbackUrl}"
+           data-fallback2="${directProxyUrl}"
+           data-large="${dataLargeUrl}"
+           alt="Image from blog post"
+           loading="lazy"
+           class="notion-image img-loading blurry-load"
+           onerror="
+             if (this.dataset.attempted === 'true') {
+               if (this.src !== this.dataset.fallback2 && this.dataset.fallback2) {
+                 this.src = this.dataset.fallback2;
+                 this.dataset.attempted = 'fallback2';
+               } else if (this.src !== this.dataset.fallback1 && this.dataset.fallback1) {
+                 this.src = this.dataset.fallback1;
+                 this.dataset.attempted = 'fallback1';
+               } else {
+                 this.style.display = 'none';
+                 const placeholder = document.createElement('div');
+                 placeholder.className = 'image-error-placeholder';
+                 placeholder.innerHTML = '📷 Image unavailable';
+                 placeholder.style.cssText = 'padding: 2rem; text-align: center; color: #666; background: #f5f5f5; border-radius: 8px;';
+                 this.parentNode.insertBefore(placeholder, this);
+               }
+             } else {
+               this.dataset.attempted = 'true';
+             }
+             this.classList.remove('img-loading');
+           " />`;
 });
 
 n2m.setCustomTransformer("video", async (block: any) => {

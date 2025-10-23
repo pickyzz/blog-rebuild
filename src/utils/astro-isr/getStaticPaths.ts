@@ -110,17 +110,17 @@ export async function getStaticProps<T>(
 }
 
 /**
- * ISR configuration for different page types
+ * ISR configuration for different page types (Free Plan optimized)
  */
 export const ISR_CONFIG = {
-  // 30 minutes for blog posts
-  POST: 1800,
-  // 1 hour for blog listings
-  BLOG: 3600,
-  // 2 hours for tags
-  TAG: 7200,
-  // 30 minutes for homepage
-  HOME: 1800,
+  // 15 minutes for blog posts (reduced from 30 for better reliability)
+  POST: 900,
+  // 45 minutes for blog listings (reduced from 1 hour)
+  BLOG: 2700,
+  // 1 hour for tags (reduced from 2 hours)
+  TAG: 3600,
+  // 15 minutes for homepage (reduced from 30)
+  HOME: 900,
 } as const;
 
 /**

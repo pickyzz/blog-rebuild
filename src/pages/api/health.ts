@@ -26,16 +26,36 @@ export const GET: APIRoute = async () => {
 
   // Cache settings
   const cacheSettings = {
-    posts: parseInt(process.env.POSTS_CACHE_TTL || "900000"),
-    tags: parseInt(process.env.TAGS_CACHE_TTL || "1800000"),
-    imageError: parseInt(process.env.IMAGE_ERROR_S_MAXAGE || "30")
+    cacheSettings: {
+      posts: parseInt(process.env.POSTS_CACHE_TTL || "900000"),
+      tags: parseInt(process.env.TAGS_CACHE_TTL || "1800000"),
+      imageError: parseInt(process.env.IMAGE_ERROR_S_MAXAGE || "30")
+    },
+    // Test image proxy health
+    imageTest: {
+      status: 'unknown',
+      message: 'Test not performed'
+    }
   };
 
+  // Test image proxy with a reliable source
+  try {
+    const testImageUrl = 'https://images.unsplash.com/photo-1593642632822-18fbae7fe93b?w=400&q=75&auto=compress';
+    const testResponse = await fetch(testImageUrl, { method: 'HEAD' });
+
+    imageTest.status = testResponse.ok ? 'healthy' : 'unhealthy';
+    imageTest.message = testResponse.ok ? 'Image sources accessible' : `HTTP ${testResponse.status}`;
+  } catch (error) {
+    imageTest.status = 'error';
+    imageTest.message = error instanceof Error ? error.message : 'Unknown error';
+  }
+
   const healthData = {
-    status: 'ok',
+    status: imageTest.status === 'healthy' ? 'ok' : 'degraded',
     ...systemInfo,
     imageProxy: imageProxyStats,
     cache: cacheSettings,
+    imageTest,
     limits: {
       functionTimeout: '10s (Vercel Free)',
       redisRequests: '10,000/day (Upstash Free)',
@@ -44,7 +64,7 @@ export const GET: APIRoute = async () => {
   };
 
   return new Response(JSON.stringify(healthData, null, 2), {
-    status: 200,
+    status: imageTest.status === 'healthy' ? 200 : 503,
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
