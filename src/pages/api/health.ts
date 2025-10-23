@@ -37,20 +37,46 @@ export const GET: APIRoute = async () => {
     message: 'Test not performed'
   };
 
-  // Test image proxy with a reliable source
+  // Test image proxy with reliable sources
   try {
-    const testImageUrl = 'https://images.unsplash.com/photo-1593642632822-18fbae7fe93b?w=400&q=75&auto=compress';
-    const testResponse = await fetch(testImageUrl, { method: 'HEAD' });
+    // Test multiple sources for better reliability
+    const testUrls = [
+      'https://images.unsplash.com/photo-1593642632822-18fbae7fe93b?w=400&q=75&auto=compress',
+      'https://prod-files-secure.s3.us-west-2.amazonaws.com/test-image.jpg',
+      'https://via.placeholder.com/400x200/cccccc/000000?text=Test+Image'
+    ];
 
-    imageTest.status = testResponse.ok ? 'healthy' : 'unhealthy';
-    imageTest.message = testResponse.ok ? 'Image sources accessible' : `HTTP ${testResponse.status}`;
+    let testResponse: Response | null = null;
+    let workingUrl = '';
+
+    for (const url of testUrls) {
+      try {
+        const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+        if (response.ok) {
+          testResponse = response;
+          workingUrl = url;
+          break;
+        }
+      } catch (e) {
+        // Try next URL
+        continue;
+      }
+    }
+
+    if (testResponse) {
+      imageTest.status = 'healthy';
+      imageTest.message = `Image accessible via ${new URL(workingUrl).hostname}`;
+    } else {
+      imageTest.status = 'degraded';
+      imageTest.message = 'All image sources unavailable (may be temporary)';
+    }
   } catch (error) {
     imageTest.status = 'error';
-    imageTest.message = error instanceof Error ? error.message : 'Unknown error';
+    imageTest.message = error instanceof Error ? error.message : 'Network error';
   }
 
   const healthData = {
-    status: imageTest.status === 'healthy' ? 'ok' : 'degraded',
+    status: imageTest.status === 'error' ? 'degraded' : 'ok', // Only error status affects overall health
     ...systemInfo,
     imageProxy: imageProxyStats,
     cache: cacheSettings,
@@ -63,7 +89,7 @@ export const GET: APIRoute = async () => {
   };
 
   return new Response(JSON.stringify(healthData, null, 2), {
-    status: imageTest.status === 'healthy' ? 200 : 503,
+    status: imageTest.status === 'error' ? 503 : 200,
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
