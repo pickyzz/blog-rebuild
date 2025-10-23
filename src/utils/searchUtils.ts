@@ -91,7 +91,7 @@ export class BlogSearch {
       title,
       queryLower,
       queryWords,
-      3.0
+      4.0 // Increased weight for title matches
     );
     if (titleScore > 0) {
       matches.title = true;
@@ -118,7 +118,7 @@ export class BlogSearch {
       tagsText,
       queryLower,
       queryWords,
-      2.5
+      3.0 // Increased weight for tag matches
     );
     if (tagsScore > 0) {
       matches.tags = true;
@@ -126,17 +126,26 @@ export class BlogSearch {
     }
 
     // Content snippet matching (lower weight)
-    // Use first 1000 characters for performance
-    const contentSnippet = (post.body || "").substring(0, 1000).toLowerCase();
+    // Use first 500 characters for performance and relevance
+    const contentSnippet = (post.body || "").substring(0, 500).toLowerCase();
     const contentScore = this.calculateFieldScore(
       contentSnippet,
       queryLower,
       queryWords,
-      1.0
+      0.5 // Reduced weight for content matches
     );
     if (contentScore > 0) {
       matches.content = true;
       totalScore += contentScore;
+    }
+
+    // Require at least one meaningful match (not just content)
+    if (!matches.title && !matches.description && !matches.tags) {
+      return {
+        post,
+        score: 0,
+        matches,
+      };
     }
 
     // Boost recent posts slightly
@@ -187,20 +196,23 @@ export class BlogSearch {
       }
     }
 
-    // Score based on word match ratio
+    // Score based on word match ratio (more strict)
     if (queryWords.length > 0) {
       const wordMatchRatio = wordMatches / queryWords.length;
-      score += wordMatchRatio * 0.8;
+      // Only add score if at least 50% of words match
+      if (wordMatchRatio >= 0.5) {
+        score += wordMatchRatio * 0.8;
+      }
     }
 
-    // Fuzzy matching for partial matches
-    score += this.fuzzyMatchScore(fieldLower, queryLower) * 0.3;
+    // Fuzzy matching for partial matches (reduced weight)
+    score += this.fuzzyMatchScore(fieldLower, queryLower) * 0.1;
 
     return score * weight;
   }
 
   /**
-   * Simple fuzzy matching score
+   * Simple fuzzy matching score (more strict)
    */
   private fuzzyMatchScore(text: string, query: string): number {
     if (query.length < 3) return 0; // Skip fuzzy for short queries
@@ -215,7 +227,10 @@ export class BlogSearch {
       }
     }
 
-    return queryIndex / query.length; // Ratio of matched characters
+    const matchRatio = queryIndex / query.length;
+
+    // Only return score if at least 70% of characters match
+    return matchRatio >= 0.7 ? matchRatio : 0;
   }
 
   /**

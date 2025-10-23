@@ -86,7 +86,7 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
       query,
       limit,
       offset,
-      minScore: 0.05, // Minimum relevance score
+      minScore: 0.3, // Minimum relevance score - increased to filter irrelevant results
     });
 
     // Format results for API response using centralized formatter
