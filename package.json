@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
-    "@notionhq/client": "4.0.2",
+    "@notionhq/client": "5.3.0",
     "@resvg/resvg-js": "2.6.2",
     "@upstash/redis": "^1.35.6",
     "@vite-pwa/astro": "^1.1.0",
