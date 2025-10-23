@@ -62,7 +62,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="th" class={`${scrollSmooth && "scroll-smooth"}`}>
+<html lang="th" class={scrollSmooth ? "scroll-smooth" : ""} data-theme="light">
   <head>
     {/* Prev/Next links for articles (set by page via layout props) */}
     {
