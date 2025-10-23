@@ -7,12 +7,73 @@
       ]
     },
     {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=7200, must-revalidate" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=7200" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=7200" }
+      ]
+    },
+    {
+      "source": "/blog",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300, stale-while-revalidate=600, must-revalidate" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "public, max-age=300, stale-while-revalidate=600" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=300, stale-while-revalidate=600" }
+      ]
+    },
+    {
+      "source": "/blog/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=1800, stale-while-revalidate=3600, must-revalidate" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "public, max-age=1800, stale-while-revalidate=3600" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=1800, stale-while-revalidate=3600" }
+      ]
+    },
+    {
+      "source": "/tags/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=900, stale-while-revalidate=1800, must-revalidate" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "public, max-age=900, stale-while-revalidate=1800" },
+        { "key": "CDN-Cache-Control", "value": "public, max-age=900, stale-while-revalidate=1800" }
+      ]
+    },
+    {
+      "source": "/about",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=172800" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=172800" }
+      ]
+    },
+    {
       "source": "/:all*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=30, stale-while-revalidate=60" },
+        { "key": "Cache-Control", "value": "public, max-age=60, stale-while-revalidate=120" },
         { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-DNS-Prefetch-Control", "value": "on" }
       ]
     }
-  ]
+  ],
+  "crons": [
+    {
+      "path": "/api/scheduled/revalidate",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/scheduled/revalidate",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/scheduled/revalidate",
+      "schedule": "0 */6 * * *"
+    }
+  ],
+  "functions": {
+    "src/pages/api/scheduled/revalidate/index.ts": {
+      "maxDuration": 30
+    }
+  },
+  "regions": ["sin1"],
+  "framework": "astro"
 }

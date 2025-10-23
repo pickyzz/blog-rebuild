@@ -6,8 +6,13 @@ import Main from "@/layouts/Main.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 
-/* SSR mode with enhanced caching */
-export const prerender = false;
+/* ISR mode with 5-minute revalidation */
+export const prerender = true;
+export const isr = {
+  revalidate: 300, // 5 minutes
+  ttl: 300,
+  background: true,
+};
 
 const { SITE } = await import("@/config");
 const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
@@ -30,21 +35,36 @@ const page = {
   next: sortedPosts.length > pageSize ? "/blog/page/2" : undefined,
 };
 
-console.log(`[BLOG INDEX SSR] Fetched ${posts.length} posts from Notion`);
-console.log(`[BLOG INDEX SSR] Displaying ${page.posts.length} posts`);
+console.log(`[BLOG INDEX ISR] Fetched ${posts.length} posts from Notion/Cached`);
+console.log(`[BLOG INDEX ISR] Displaying ${page.posts.length} posts`);
 
-/* Set enhanced cache-control header for SSR response */
+/* Set enhanced cache-control header for ISR response */
 if (Astro.response && Astro.response.headers) {
   Astro.response.headers.set(
     "cache-control",
-    "public, max-age=1800, stale-while-revalidate=3600"
+    "public, max-age=300, stale-while-revalidate=600, must-revalidate"
   );
   // Add CDN cache headers for better performance
   Astro.response.headers.set(
     "CDN-Cache-Control",
-    "public, max-age=1800, stale-while-revalidate=3600"
+    "public, max-age=300, stale-while-revalidate=600"
+  );
+  // Add Vercel-specific headers
+  Astro.response.headers.set(
+    "Vercel-CDN-Cache-Control",
+    "public, max-age=300, stale-while-revalidate=600"
   );
 }
+
+// Add ISR metadata for debugging
+Astro.locals = {
+  ...Astro.locals,
+  isr: {
+    timestamp: new Date().toISOString(),
+    revalidateTime: 300,
+    source: 'notion-cache'
+  }
+};
 ---
 
 <Layout title="Posts" canonicalURL="/blog">

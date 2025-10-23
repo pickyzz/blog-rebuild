@@ -35,15 +35,18 @@ export default defineConfig({
       cssMinify: true,
       minify: "esbuild",
       sourcemap: false,
-      // Split chunks for better caching
+      // Enhanced chunk splitting for ISR caching
       rollupOptions: {
         output: {
           manualChunks: {
             vendor: ["astro", "astro/components"],
             ui: ["@astrojs/tailwind", "tailwindcss"],
+            utils: ["@notionhq/client", "notion-to-md"],
+            cache: ["@upstash/redis"],
           },
         },
       },
+      target: "esnext", // Better performance for edge runtime
     },
     // Optimize CSS processing
     css: {
@@ -53,7 +56,10 @@ export default defineConfig({
   adapter:
     env.NODE_ENV !== "production"
       ? node({ mode: "standalone" })
-      : vercel({ edge: true }), // Changed to true for better performance
+      : vercel({
+          edge: true, // Keep edge for better performance
+          maxDuration: 30, // Increased for cache operations
+        }),
   trailingSlash: "never",
   image: {
     service: passthroughImageService(),
@@ -188,15 +194,9 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: "viewport",
   },
-  // Add resource hints for better performance
   output: "server",
-  server: {
-    headers: {
-      Link: "</favicon.ico>; rel=preload; as=image, </apple-touch-icon.png>; rel=preload; as=image",
-    },
-  },
-  experimental: {
-    clientPrerender: true,
+  build: {
+    inlineStylesheets: "auto",
   },
   headers: {
     "/*": [

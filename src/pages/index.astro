@@ -12,33 +12,57 @@ import { SOCIALS } from "@/constants";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { getNotionPosts } from "@/utils/getNotionPosts";
 
-/* Set enhanced cache-control header for SSR response */
+/* ISR mode with 60-minute revalidation */
+export const prerender = true;
+export const isr = {
+  // Revalidate every 60 minutes
+  revalidate: 3600,
+  // Use stale-while-revalidate strategy
+  ttl: 3600,
+  // Enable background revalidation
+  background: true,
+};
+
+/* Set enhanced cache-control header for ISR response */
 if (Astro.response && Astro.response.headers) {
   Astro.response.headers.set(
     "cache-control",
-    "public, max-age=1800, stale-while-revalidate=3600"
+    "public, max-age=3600, stale-while-revalidate=7200, must-revalidate"
   );
   // Add CDN cache headers for better performance
   Astro.response.headers.set(
     "CDN-Cache-Control",
-    "public, max-age=1800, stale-while-revalidate=3600"
+    "public, max-age=3600, stale-while-revalidate=7200"
+  );
+  // Add Vercel-specific headers
+  Astro.response.headers.set(
+    "Vercel-CDN-Cache-Control",
+    "public, max-age=3600, stale-while-revalidate=7200"
   );
 }
-
-/* SSR mode with enhanced caching */
-export const prerender = false;
+/* ISR mode - fetch posts with caching */
+console.log(`[HOMEPAGE ISR] Building homepage with ISR - revalidate every 60 minutes`);
 
 const { getNotionPosts } = await import("@/utils/getNotionPosts");
 const posts = await getNotionPosts();
-console.log(`[HOMEPAGE SSR] Fetched ${posts.length} posts from Notion`);
-console.log(`[HOMEPAGE] Props posts length: ${posts.length}`);
+console.log(`[HOMEPAGE ISR] Fetched ${posts.length} posts from Notion/Cached`);
 const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
 const sortedPosts = getSortedPosts(posts);
-console.log(`[HOMEPAGE] Sorted posts length: ${sortedPosts.length}`);
+console.log(`[HOMEPAGE ISR] Sorted posts length: ${sortedPosts.length}`);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-console.log(`[HOMEPAGE] Featured posts length: ${featuredPosts.length}`);
+console.log(`[HOMEPAGE ISR] Featured posts length: ${featuredPosts.length}`);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
-console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
+console.log(`[HOMEPAGE ISR] Recent posts length: ${recentPosts.length}`);
+
+// Add ISR metadata for debugging
+Astro.locals = {
+  ...Astro.locals,
+  isr: {
+    timestamp: new Date().toISOString(),
+    revalidateTime: 3600,
+    source: 'notion-cache'
+  }
+};
 ---
 
 <Layout
