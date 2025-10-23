@@ -190,7 +190,7 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   let upstream: Response | undefined;
   let release: (() => void) | null = null;
   const startTime = Date.now();
-  const isS3Url = isS3Url(decoded);
+  const isS3 = isS3Url(decoded);
 
   try {
     release = await acquireSlot();
@@ -208,7 +208,7 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     })();
 
     // Clear refresh attempts on success for S3 URLs
-    if (isS3Url && upstream?.ok) {
+    if (isS3 && upstream?.ok) {
       s3RefreshAttempts.delete(decoded);
     }
   } catch (err: any) {
@@ -219,14 +219,14 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     headers.set("Content-Type", "text/plain; charset=utf-8");
 
     // For S3 URLs with network errors, use shorter cache to allow retry
-    const errorTTL = (isS3Url && shouldRetryS3Url(decoded)) ? 30 : ERROR_S_MAXAGE;
+    const errorTTL = (isS3 && shouldRetryS3Url(decoded)) ? 30 : ERROR_S_MAXAGE;
     headers.set(
       "Cache-Control",
       `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=60`
     );
 
     // Record attempt for S3 URLs
-    if (isS3Url) {
+    if (isS3) {
       recordS3Attempt(decoded);
     }
 
@@ -248,7 +248,7 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     upstream.headers.forEach((v, k) => headers.set(k, v));
 
     // Special handling for S3 signed URL expiration (403 errors)
-    const isLikelyExpired = upstream.status === 403 && isS3Url;
+    const isLikelyExpired = upstream.status === 403 && isS3;
 
     // Override cache control for non-OK upstream responses
     // For S3 403 errors, use even shorter TTL to force refresh
@@ -289,8 +289,8 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   if (upstreamLengthHeader) headers.set("Content-Length", upstreamLengthHeader);
   // For S3 URLs, use shorter cache time to avoid serving expired signed URLs
   // Shorter cache times for Free Plan
-  const maxAge = isS3Url ? 900 : 1800; // 15 minutes for S3, 30 minutes for others
-  const sMaxAge = isS3Url ? Math.min(EDGE_MAX_AGE, 3600) : Math.min(EDGE_MAX_AGE, 7200); // Max 1 hour for S3, 2 hours for others
+  const maxAge = isS3 ? 900 : 1800; // 15 minutes for S3, 30 minutes for others
+  const sMaxAge = isS3 ? Math.min(EDGE_MAX_AGE, 3600) : Math.min(EDGE_MAX_AGE, 7200); // Max 1 hour for S3, 2 hours for others
 
   headers.set(
     "Cache-Control",
