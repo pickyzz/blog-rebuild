@@ -1,4 +1,10 @@
-import { isAllowedUrl } from "@/config";
+import { isAllowedUrl, isS3Url } from "@/config";
+
+// Lightweight in-memory cache for S3 URL refresh (Free Plan optimized)
+const s3RefreshAttempts = new Map<string, { count: number; lastAttempt: number }>();
+const S3_REFRESH_WINDOW_MS = 3 * 60 * 1000; // 3 minutes (shorter for free plan)
+const MAX_S3_REFRESH_ATTEMPTS = 2; // Reduced retries for free plan
+const MAX_CACHE_SIZE = 100; // Limit memory usage
 
 const IMAGE_MAX_BYTES = parseInt(process.env.IMAGE_MAX_BYTES || "5242880"); // 5MB default
 const EDGE_MAX_AGE = parseInt(
@@ -56,16 +62,16 @@ export async function streamWithLimit(
   });
 }
 
-export async function fetchWithBackoff(url: string, maxRetries = 3) {
+export async function fetchWithBackoff(url: string, maxRetries = 2) {
   let attempt = 0;
   let lastErr: any = null;
   while (attempt <= maxRetries) {
     try {
       const controller = new AbortController();
-      // Increase client-side fetch timeout to be more tolerant of slow upstreams
+      // Shorter timeout for Free Plan (10s limit)
       const timeoutMs = parseInt(
-        process.env.IMAGE_PROXY_FETCH_TIMEOUT_MS || "12000"
-      ); // 12s default
+        process.env.IMAGE_PROXY_FETCH_TIMEOUT_MS || "8000"
+      ); // 8s default (under 10s limit)
       const timer = setTimeout(() => controller.abort(), timeoutMs);
       const res = await fetch(url, { signal: controller.signal });
       clearTimeout(timer);
@@ -79,9 +85,10 @@ export async function fetchWithBackoff(url: string, maxRetries = 3) {
       lastErr = err;
       attempt++;
       if (attempt > maxRetries) break;
+      // Shorter delays for Free Plan
       const delay =
-        Math.min(2000 * Math.pow(2, attempt - 1), 10000) +
-        Math.floor(Math.random() * 300);
+        Math.min(1000 * Math.pow(2, attempt - 1), 5000) +
+        Math.floor(Math.random() * 200);
       console.warn(
         `[IMAGE PROXY] fetch attempt ${attempt} for ${url} failed: ${err?.message || err}. retrying in ${delay}ms`
       );
@@ -96,9 +103,9 @@ export async function fetchWithBackoff(url: string, maxRetries = 3) {
 }
 
 // concurrency limiter & per-host cooldown
-// Increase default client concurrency to better utilize available proxy throughput while remaining configurable
+// Lower concurrency for Free Plan to avoid timeouts
 const MAX_CONCURRENT_FETCHES = parseInt(
-  process.env.IMAGE_PROXY_MAX_CONCURRENT || "10"
+  process.env.IMAGE_PROXY_MAX_CONCURRENT || "4"
 );
 let currentFetches = 0;
 const queue: Array<() => void> = [];
@@ -121,9 +128,9 @@ export function acquireSlot(): Promise<() => void> {
   });
 }
 
-// Reduce default per-host cooldown slightly to allow more frequent requests to the same host where safe
+// Longer cooldown for Free Plan to avoid rate limiting
 const HOST_COOLDOWN_MS = parseInt(
-  process.env.IMAGE_PROXY_HOST_COOLDOWN_MS || "200"
+  process.env.IMAGE_PROXY_HOST_COOLDOWN_MS || "500"
 );
 const hostLastRequest = new Map<string, number>();
 
@@ -141,6 +148,40 @@ export async function waitForHostCooldown(url: string) {
   } catch (e) {}
 }
 
+function shouldRetryS3Url(url: string): boolean {
+  const now = Date.now();
+  const attempt = s3RefreshAttempts.get(url);
+
+  // Clear old attempts outside the window
+  if (attempt && now - attempt.lastAttempt > S3_REFRESH_WINDOW_MS) {
+    s3RefreshAttempts.delete(url);
+    return true;
+  }
+
+  // Check if we've exceeded max attempts
+  if (!attempt) return true;
+  return attempt.count < MAX_S3_REFRESH_ATTEMPTS;
+}
+
+function recordS3Attempt(url: string): void {
+  const now = Date.now();
+  const existing = s3RefreshAttempts.get(url);
+
+  if (existing) {
+    existing.count++;
+    existing.lastAttempt = now;
+  } else {
+    s3RefreshAttempts.set(url, { count: 1, lastAttempt: now });
+  }
+
+  // Prevent memory leak - clean old entries
+  if (s3RefreshAttempts.size > MAX_CACHE_SIZE) {
+    const oldest = Array.from(s3RefreshAttempts.entries())
+      .reduce((a, b) => a[1].lastAttempt < b[1].lastAttempt ? a : b);
+    s3RefreshAttempts.delete(oldest[0]);
+  }
+}
+
 export async function handleProxyUrl(decoded: string): Promise<Response> {
   if (!decoded) return new Response("url required", { status: 400 });
   if (!isAllowedUrl(decoded))
@@ -149,10 +190,13 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   let upstream: Response | undefined;
   let release: (() => void) | null = null;
   const startTime = Date.now();
+  const isS3Url = isS3Url(decoded);
+
   try {
     release = await acquireSlot();
     await waitForHostCooldown(decoded);
     upstream = await fetchWithBackoff(decoded, 3);
+
     // Log successful upstream fetch (async best-effort)
     (async () => {
       try {
@@ -162,16 +206,30 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
         // ignore logging errors
       }
     })();
+
+    // Clear refresh attempts on success for S3 URLs
+    if (isS3Url && upstream?.ok) {
+      s3RefreshAttempts.delete(decoded);
+    }
   } catch (err: any) {
     console.error(`[IMAGE PROXY] upstream fetch failed for ${decoded}:`, err);
     const status = err?.status || 502;
     const msg = err?.message || String(err);
     const headers = new Headers();
     headers.set("Content-Type", "text/plain; charset=utf-8");
+
+    // For S3 URLs with network errors, use shorter cache to allow retry
+    const errorTTL = (isS3Url && shouldRetryS3Url(decoded)) ? 30 : ERROR_S_MAXAGE;
     headers.set(
       "Cache-Control",
-      `public, max-age=0, s-maxage=${ERROR_S_MAXAGE}, stale-while-revalidate=60`
+      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=60`
     );
+
+    // Record attempt for S3 URLs
+    if (isS3Url) {
+      recordS3Attempt(decoded);
+    }
+
     return new Response(
       `failed to fetch upstream image (status: ${status}) - ${msg}`,
       { status: 502, headers }
@@ -188,13 +246,29 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     // doesn't cache a 404/403 for a long time. Preserve content-type and body.
     const headers = new Headers();
     upstream.headers.forEach((v, k) => headers.set(k, v));
+
+    // Special handling for S3 signed URL expiration (403 errors)
+    const isLikelyExpired = upstream.status === 403 && isS3Url;
+
     // Override cache control for non-OK upstream responses
+    // For S3 403 errors, use even shorter TTL to force refresh
+    // Only allow retry if we haven't exceeded max attempts
+    const canRetry = isLikelyExpired && shouldRetryS3Url(decoded);
+    // Very short TTL for Free Plan to avoid stale cache
+    const errorTTL = canRetry ? 15 : Math.min(ERROR_S_MAXAGE, 30);
+
     headers.set(
       "Cache-Control",
-      `public, max-age=0, s-maxage=${ERROR_S_MAXAGE}, stale-while-revalidate=60`
+      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=15`
     );
+
+    // Record attempt for expired S3 URLs
+    if (isLikelyExpired) {
+      recordS3Attempt(decoded);
+    }
+
     console.warn(
-      `[IMAGE PROXY] passing through upstream status ${upstream.status} for ${decoded} (short TTL applied)`
+      `[IMAGE PROXY] passing through upstream status ${upstream.status} for ${decoded} (short TTL applied${isLikelyExpired ? ` - likely expired S3 URL${canRetry ? ' - retry allowed' : ' - max retries exceeded'}` : ''})`
     );
     const body = await upstream.arrayBuffer();
     return new Response(body, { status: upstream.status, headers });
@@ -213,9 +287,14 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   const headers = new Headers();
   headers.set("Content-Type", contentType);
   if (upstreamLengthHeader) headers.set("Content-Length", upstreamLengthHeader);
+  // For S3 URLs, use shorter cache time to avoid serving expired signed URLs
+  // Shorter cache times for Free Plan
+  const maxAge = isS3Url ? 900 : 1800; // 15 minutes for S3, 30 minutes for others
+  const sMaxAge = isS3Url ? Math.min(EDGE_MAX_AGE, 3600) : Math.min(EDGE_MAX_AGE, 7200); // Max 1 hour for S3, 2 hours for others
+
   headers.set(
     "Cache-Control",
-    `public, max-age=3600, s-maxage=${EDGE_MAX_AGE}, stale-while-revalidate=86400`
+    `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=3600`
   );
   const etag = upstream.headers.get("etag");
   if (etag) headers.set("ETag", etag);
