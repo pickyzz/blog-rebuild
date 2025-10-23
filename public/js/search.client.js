@@ -16,6 +16,10 @@
   const noResults = document.getElementById("noResults");
   const clearBtn = document.getElementById("clearBtn");
 
+  // Debounce timer for real-time search
+  let debounceTimer = null;
+  const DEBOUNCE_DELAY = 300; // 300ms delay
+
   function showLoading() {
     if (loading) loading.classList.remove("hidden");
     if (error) error.classList.add("hidden");
@@ -75,6 +79,24 @@
     if (searchInput) searchInput.focus();
   }
 
+  function debounceSearch(query) {
+    // Clear existing timer
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+
+    // Don't search for empty queries
+    if (!query.trim()) {
+      clearResults();
+      return;
+    }
+
+    // Set new timer
+    debounceTimer = setTimeout(() => {
+      performSearch(query);
+    }, DEBOUNCE_DELAY);
+  }
+
   async function performSearch(query) {
     try {
       showLoading();
@@ -95,15 +117,16 @@
     }
   }
 
-  if (searchForm) {
-    searchForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const query = searchInput ? searchInput.value.trim() : "";
-      if (query) performSearch(query);
+  // Real-time search on input with debounce
+  if (searchInput) {
+    searchInput.addEventListener("input", function (e) {
+      const query = e.target.value;
+      debounceSearch(query);
     });
+
+    // Focus input on load
+    searchInput.focus();
   }
 
   if (clearBtn) clearBtn.addEventListener("click", clearResults);
-
-  if (searchInput) searchInput.focus();
 })();
