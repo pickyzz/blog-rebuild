@@ -2,10 +2,10 @@ import type { APIRoute } from "astro";
 import { invalidateAllCaches } from "@/utils/getNotionPosts";
 import { invalidateAllContentCaches } from "@/utils/notionContent";
 import { withAuth } from "@/utils/apiAuth";
-import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
+import { withUpstashRateLimit } from "@/utils/ratelimit/upstashRatelimit";
 
 // POST /api/refresh-cache with authentication and rate limiting
-export const POST: APIRoute = withRateLimit(
+export const POST: APIRoute = withUpstashRateLimit(
   withAuth(async context => {
     try {
       // Invalidate all caches
@@ -47,7 +47,7 @@ export const POST: APIRoute = withRateLimit(
       );
     }
   }),
-  RATE_LIMITS.SENSITIVE // Strict rate limiting for cache operations
+  "SENSITIVE" // Strict rate limiting for cache operations
 );
 
 // GET method not allowed for cache refresh operations

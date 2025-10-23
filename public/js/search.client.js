@@ -97,15 +97,35 @@
     }, DEBOUNCE_DELAY);
   }
 
-  async function performSearch(query) {
+  async function performSearch(query, retryCount = 0) {
     try {
       showLoading();
   // production: no debug logging
       const response = await fetch(`/api/search.json?q=${encodeURIComponent(query)}`);
   // no debug logging
       if (!response.ok) {
+        // Handle rate limiting with exponential backoff
+        if (response.status === 429 && retryCount < 3) {
+          const data = await response.json();
+          const retryAfter = data.retryAfter || 1;
+          const delay = Math.min(1000 * Math.pow(2, retryCount), retryAfter * 1000);
+
+          // Wait and retry
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return performSearch(query, retryCount + 1);
+        }
+
   // do not surface response body to UI
-        throw new Error(`Search failed: ${response.status}`);
+        // Provide better error messages for different status codes
+        let errorMessage = "Search failed";
+        if (response.status === 429) {
+          errorMessage = "Too many requests. Please try again in a moment.";
+        } else if (response.status === 500) {
+          errorMessage = "Server error. Please try again later.";
+        } else if (response.status >= 400 && response.status < 500) {
+          errorMessage = "Invalid request. Please check your search terms.";
+        }
+        throw new Error(`${errorMessage} (${response.status})`);
       }
 
       const data = await response.json();

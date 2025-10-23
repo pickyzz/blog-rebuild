@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getNotionPosts } from "../../utils/getNotionPosts";
-import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
+import { withUpstashRateLimit } from "../../utils/ratelimit/upstashRatelimit";
 import { BlogSearch, SearchCache } from "@/utils/searchUtils";
 import formatSearchResult from "./search.formatters.js";
 import { SearchResponseSchema } from "./search.schema.js";
@@ -24,7 +24,7 @@ async function getCachedPosts() {
   return cachedPosts;
 }
 
-export const GET: APIRoute = withRateLimit(async ({ request }) => {
+export const GET: APIRoute = withUpstashRateLimit(async ({ request }) => {
   try {
     const url = new URL(request.url);
     const query = url.searchParams.get("q")?.trim();
@@ -137,4 +137,4 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
       }
     );
   }
-}, RATE_LIMITS.MODERATE); // Moderate rate limiting for search
+}, "MODERATE"); // Moderate rate limiting for search using Upstash

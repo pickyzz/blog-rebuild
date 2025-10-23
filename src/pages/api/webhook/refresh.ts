@@ -1,10 +1,11 @@
 import type { APIRoute } from "astro";
 import { invalidateAllCaches } from "@/utils/getNotionPosts";
 import { invalidateAllContentCaches } from "@/utils/notionContent";
+import { withUpstashRateLimit } from "@/utils/ratelimit/upstashRatelimit";
 
 // Webhook endpoint for Notion (or other external services)
 // POST /api/webhook/refresh
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = withUpstashRateLimit(async ({ request }) => {
   try {
     // Optional: Add webhook verification/authentication
     const authHeader = request.headers.get("authorization");
@@ -69,7 +70,7 @@ export const POST: APIRoute = async ({ request }) => {
       }
     );
   }
-};
+}, "SENSITIVE"); // Strict rate limiting for webhook operations
 
 // GET not allowed for webhooks
 export const GET: APIRoute = async () => {

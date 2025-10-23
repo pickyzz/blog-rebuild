@@ -16,6 +16,7 @@
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
     "@resvg/resvg-js": "2.6.2",
+    "@upstash/ratelimit": "^2.0.6",
     "@upstash/redis": "^1.35.6",
     "@vite-pwa/astro": "^1.1.0",
     "notion-to-md": "3.1.9",
@@ -78,7 +79,9 @@
     "cache:warm:isr": "node ./scripts/isr/warm-cache.mjs",
     "cache:stats": "node ./scripts/cache/stats.js",
     "cache:clear": "node ./scripts/cache/clear.js",
-    "cache:health": "node ./scripts/cache/health.js"
+    "cache:health": "node ./scripts/cache/health.js",
+    "ratelimit:monitor": "node ./scripts/ratelimit/monitor.js",
+    "ratelimit:cleanup": "node ./scripts/ratelimit/monitor.js --cleanup"
   },
   "engines": {
     "node": "22.x"
