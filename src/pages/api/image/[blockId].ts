@@ -3,6 +3,7 @@ import { Client } from "@notionhq/client";
 import { throttleNotion } from "@/utils/notionRateLimiter";
 import { withRateLimit, RATE_LIMITS } from "@/utils/apiSecurity";
 import { handleProxyUrl } from "@/utils/imageProxyCommon";
+import { optimizeImageUrl } from "@/config";
 
 const NOTION_KEY = import.meta.env.NOTION_KEY;
 
@@ -42,8 +43,14 @@ export const GET: APIRoute = withRateLimit(async ({ params }) => {
 
     console.log(`[IMAGE BLOCK] Retrieved image URL for block ${blockId}: ${imageUrl.substring(0, 100)}...`);
 
+    // Optimize URLs for Free Plan before proxying
+    const optimizedUrl = optimizeImageUrl(imageUrl);
+    if (optimizedUrl !== imageUrl) {
+      console.log(`[IMAGE BLOCK] Optimized Unsplash URL for block ${blockId}`);
+    }
+
     // Use shared proxy handler for consistency and Free Plan optimizations
-    return await handleProxyUrl(imageUrl);
+    return await handleProxyUrl(optimizedUrl);
 
   } catch (err: any) {
     console.error(`[IMAGE BLOCK] Error processing block ${blockId}:`, {

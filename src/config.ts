@@ -55,3 +55,26 @@ export function isAllowedUrl(u: string) {
 export function isS3Url(url: string): boolean {
   return url.includes('s3.amazonaws.com') || url.includes('prod-files-secure');
 }
+
+// Free Plan: Optimize Unsplash URLs to reduce file size
+export function optimizeImageUrl(url: string): string {
+  if (!url.includes('images.unsplash.com')) {
+    return url;
+  }
+
+  try {
+    const urlObj = new URL(url);
+
+    // Force smaller image size for Free Plan
+    urlObj.searchParams.set('w', '1200'); // Max width 1200px
+    urlObj.searchParams.set('q', '75');   // Quality 75%
+    urlObj.searchParams.set('auto', 'compress'); // Auto compress
+
+    // Remove crop parameter to avoid re-cropping
+    urlObj.searchParams.delete('crop');
+
+    return urlObj.toString();
+  } catch (e) {
+    return url; // Return original if URL parsing fails
+  }
+}

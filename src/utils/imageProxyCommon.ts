@@ -1,4 +1,4 @@
-import { isAllowedUrl, isS3Url } from "@/config";
+import { isAllowedUrl, isS3Url, optimizeImageUrl } from "@/config";
 
 // Lightweight in-memory cache for S3 URL refresh (Free Plan optimized)
 const s3RefreshAttempts = new Map<string, { count: number; lastAttempt: number }>();
@@ -192,10 +192,13 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   const startTime = Date.now();
   const isS3 = isS3Url(decoded);
 
+  // Optimize URLs for Free Plan (especially Unsplash)
+  const optimizedUrl = optimizeImageUrl(decoded);
+
   try {
     release = await acquireSlot();
-    await waitForHostCooldown(decoded);
-    upstream = await fetchWithBackoff(decoded, 3);
+    await waitForHostCooldown(optimizedUrl);
+    upstream = await fetchWithBackoff(optimizedUrl, 3);
 
     // Log successful upstream fetch (async best-effort)
     (async () => {
@@ -210,6 +213,11 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     // Clear refresh attempts on success for S3 URLs
     if (isS3 && upstream?.ok) {
       s3RefreshAttempts.delete(decoded);
+    }
+
+    // Log optimization for debugging
+    if (optimizedUrl !== decoded) {
+      console.log(`[IMAGE PROXY] Optimized URL: ${new URL(decoded).hostname} -> size reduced`);
     }
   } catch (err: any) {
     console.error(`[IMAGE PROXY] upstream fetch failed for ${decoded}:`, err);
