@@ -60,13 +60,14 @@ registerRoute(
 // Cache Notion images with specific strategy
 registerRoute(
   ({ url }) =>
-    url.origin === "https://prod-files-secure.s3.us-west-2.amazonaws.com",
+    url.hostname.includes("s3.amazonaws.com") ||
+    url.hostname.includes("prod-files-secure"),
   new CacheFirst({
     cacheName: "notion-images",
     plugins: [
       new ExpirationPlugin({
         maxEntries: 100,
-        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+        maxAgeSeconds: 60 * 10, // 10 minutes - shorter than S3 URL expiration
       }),
     ],
   })

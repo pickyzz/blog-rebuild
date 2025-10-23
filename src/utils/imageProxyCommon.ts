@@ -2,8 +2,8 @@ import { isAllowedUrl, isS3Url, optimizeImageUrl } from "@/config";
 
 // Lightweight in-memory cache for S3 URL refresh (Free Plan optimized)
 const s3RefreshAttempts = new Map<string, { count: number; lastAttempt: number }>();
-const S3_REFRESH_WINDOW_MS = 3 * 60 * 1000; // 3 minutes (shorter for free plan)
-const MAX_S3_REFRESH_ATTEMPTS = 2; // Reduced retries for free plan
+const S3_REFRESH_WINDOW_MS = 2 * 60 * 1000; // 2 minutes (shorter for free plan)
+const MAX_S3_REFRESH_ATTEMPTS = 3; // Allow more retries for expired URLs
 const MAX_CACHE_SIZE = 100; // Limit memory usage
 
 const IMAGE_MAX_BYTES = parseInt(process.env.IMAGE_MAX_BYTES || "5242880"); // 5MB default
@@ -227,10 +227,10 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     headers.set("Content-Type", "text/plain; charset=utf-8");
 
     // For S3 URLs with network errors, use shorter cache to allow retry
-    const errorTTL = (isS3 && shouldRetryS3Url(decoded)) ? 30 : ERROR_S_MAXAGE;
+    const errorTTL = (isS3 && shouldRetryS3Url(decoded)) ? 15 : ERROR_S_MAXAGE;
     headers.set(
       "Cache-Control",
-      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=60`
+      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=30`
     );
 
     // Record attempt for S3 URLs
@@ -263,11 +263,11 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
     // Only allow retry if we haven't exceeded max attempts
     const canRetry = isLikelyExpired && shouldRetryS3Url(decoded);
     // Very short TTL for Free Plan to avoid stale cache
-    const errorTTL = canRetry ? 15 : Math.min(ERROR_S_MAXAGE, 30);
+    const errorTTL = canRetry ? 10 : Math.min(ERROR_S_MAXAGE, 20);
 
     headers.set(
       "Cache-Control",
-      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=15`
+      `public, max-age=0, s-maxage=${errorTTL}, stale-while-revalidate=10`
     );
 
     // Record attempt for expired S3 URLs
@@ -295,14 +295,14 @@ export async function handleProxyUrl(decoded: string): Promise<Response> {
   const headers = new Headers();
   headers.set("Content-Type", contentType);
   if (upstreamLengthHeader) headers.set("Content-Length", upstreamLengthHeader);
-  // For S3 URLs, use shorter cache time to avoid serving expired signed URLs
-  // Shorter cache times for Free Plan
-  const maxAge = isS3 ? 900 : 1800; // 15 minutes for S3, 30 minutes for others
-  const sMaxAge = isS3 ? Math.min(EDGE_MAX_AGE, 3600) : Math.min(EDGE_MAX_AGE, 7200); // Max 1 hour for S3, 2 hours for others
+  // For S3 URLs, use much shorter cache time to avoid serving expired signed URLs
+  // Notion S3 URLs expire in 1 hour, so cache must be shorter
+  const maxAge = isS3 ? 300 : 1800; // 5 minutes for S3, 30 minutes for others
+  const sMaxAge = isS3 ? 600 : Math.min(EDGE_MAX_AGE, 7200); // 10 minutes for S3, 2 hours for others
 
   headers.set(
     "Cache-Control",
-    `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=3600`
+    `public, max-age=${maxAge}, s-maxage=${sMaxAge}, stale-while-revalidate=300`
   );
   const etag = upstream.headers.get("etag");
   if (etag) headers.set("ETag", etag);
