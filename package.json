@@ -76,9 +76,9 @@
     "lint": "eslint .",
     "test": "playwright test",
     "cache:warm:isr": "node ./scripts/isr/warm-cache.mjs",
-    "cache:stats": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.getCacheStats().then(console.log))\"",
-    "cache:clear": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.invalidateCache('notion:*').then(() => console.log('All cache cleared')))\"",
-    "cache:health": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.isRedisHealthy().then(healthy => console.log('Redis healthy:', healthy)))\""
+    "cache:stats": "node ./scripts/cache/stats.js",
+    "cache:clear": "node ./scripts/cache/clear.js",
+    "cache:health": "node ./scripts/cache/health.js"
   },
   "engines": {
     "node": "22.x"
