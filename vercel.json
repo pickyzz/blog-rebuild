@@ -65,11 +65,7 @@
       "schedule": "0 12 * * *"
     }
   ],
-  "functions": {
-    "src/pages/api/scheduled/revalidate/index.ts": {
-      "maxDuration": 30
-    }
-  },
+
   "regions": ["sin1"],
   "framework": "astro"
 }
