@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@astrojs/node": "^9.4.3",
-    "@astrojs/vercel": "^8.2.7",
+    "@astrojs/vercel": "^9.0.0",
     "@notionhq/client": "4.0.2",
     "@resvg/resvg-js": "2.6.2",
     "@upstash/ratelimit": "^2.0.6",
