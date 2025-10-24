@@ -2,7 +2,6 @@ import { fetchWithBackoff, acquireSlot, waitForHostCooldown } from '@/utils/imag
 import { isAllowedUrl } from '@/config';
 import { generatePlaceholder } from '@/utils/generatePlaceholder';
 import { addPurgeUrl } from '@/utils/purgeList';
-import { enqueuePurge } from '@/utils/cloudflarePurgeQueue';
 
 export async function GET({ params }: any) {
   const encoded = params.encoded;
@@ -35,9 +34,6 @@ export async function GET({ params }: any) {
       const encToken = encoded;
       const proxyUrl = new URL(`/api/image/p/${encToken}`, process.env.SITE_ORIGIN || 'https://pickyzz.dev').href;
       try { addPurgeUrl(proxyUrl); } catch (e) { /* ignore */ }
-
-      // Enqueue purge (will batch + retry). Also wrote to purge list above.
-      try { enqueuePurge(proxyUrl); } catch (e) { try { console.warn('[LQIP] enqueue purge failed', String(e)); } catch(_){} }
     } catch (e) {}
 
     const headers = new Headers();

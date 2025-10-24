@@ -126,13 +126,13 @@ export class BlogSearch {
     }
 
     // Content snippet matching (lower weight)
-    // Use first 1000 characters for performance
-    const contentSnippet = (post.body || "").substring(0, 1000).toLowerCase();
+    // Use first 500 characters to reduce noise and improve relevance
+    const contentSnippet = (post.body || "").substring(0, 500).toLowerCase();
     const contentScore = this.calculateFieldScore(
       contentSnippet,
       queryLower,
       queryWords,
-      1.0
+      0.5 // Reduced weight to prioritize title/description/tags
     );
     if (contentScore > 0) {
       matches.content = true;
@@ -174,48 +174,71 @@ export class BlogSearch {
     const fieldLower = fieldText.toLowerCase();
     let score = 0;
 
-    // Exact phrase match (highest score)
+    // Exact phrase match (highest score with bonus)
     if (fieldLower.includes(queryLower)) {
-      score += 1.0;
+      score += 2.0; // Increased exact match bonus
     }
 
-    // Individual word matches
-    let wordMatches = 0;
+    // Individual word matches with better logic
+    let exactWordMatches = 0;
+    let partialWordMatches = 0;
+
     for (const word of queryWords) {
-      if (fieldLower.includes(word)) {
-        wordMatches++;
+      if (word.length < 2) continue; // Skip very short words
+
+      // Check for exact word boundaries
+      const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
+      if (wordRegex.test(fieldLower)) {
+        exactWordMatches++;
+      } else if (fieldLower.includes(word)) {
+        partialWordMatches++;
       }
     }
 
-    // Score based on word match ratio
+    // Score based on word match quality
     if (queryWords.length > 0) {
-      const wordMatchRatio = wordMatches / queryWords.length;
-      score += wordMatchRatio * 0.8;
+      const exactWordRatio = exactWordMatches / queryWords.length;
+      const partialWordRatio = partialWordMatches / queryWords.length;
+
+      // Give more weight to exact word matches
+      score += exactWordRatio * 1.2; // Increased exact word bonus
+      score += partialWordRatio * 0.4; // Reduced partial word bonus
     }
 
-    // Fuzzy matching for partial matches
-    score += this.fuzzyMatchScore(fieldLower, queryLower) * 0.3;
+    // Stricter fuzzy matching for partial matches
+    score += this.fuzzyMatchScore(fieldLower, queryLower) * 0.15; // Reduced fuzzy influence
 
     return score * weight;
   }
 
   /**
-   * Simple fuzzy matching score
+   * Stricter fuzzy matching score
    */
   private fuzzyMatchScore(text: string, query: string): number {
-    if (query.length < 3) return 0; // Skip fuzzy for short queries
+    if (query.length < 4) return 0; // Skip fuzzy for very short queries
 
-    let matches = 0;
+    let consecutiveMatches = 0;
+    let maxConsecutiveMatches = 0;
     let queryIndex = 0;
 
     for (let i = 0; i < text.length && queryIndex < query.length; i++) {
       if (text[i] === query[queryIndex]) {
-        matches++;
+        consecutiveMatches++;
         queryIndex++;
+        maxConsecutiveMatches = Math.max(maxConsecutiveMatches, consecutiveMatches);
+      } else {
+        consecutiveMatches = 0;
       }
     }
 
-    return queryIndex / query.length; // Ratio of matched characters
+    // Require higher match ratio and consecutive matches for fuzzy score
+    const matchRatio = queryIndex / query.length;
+    const consecutiveRatio = maxConsecutiveMatches / query.length;
+
+    // Only count fuzzy matches if we have good consecutive matching
+    if (consecutiveRatio < 0.5) return 0;
+
+    return matchRatio * consecutiveRatio; // Combined ratio for stricter matching
   }
 
   /**
@@ -239,6 +262,36 @@ export class BlogSearch {
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([tag]) => tag);
+  }
+
+  /**
+   * Get popular terms from titles and descriptions
+   */
+  getPopularTerms(): string[] {
+    const termFrequency = new Map<string, number>();
+
+    this.posts.forEach(post => {
+      const title = post.data?.title || "";
+      const description = post.data?.description || "";
+
+      // Extract words from title and description
+      const text = `${title} ${description}`.toLowerCase();
+      const words = text.match(/\b[a-z]{3,}\b/g) || []; // Only words with 3+ characters
+
+      words.forEach(word => {
+        // Skip common words
+        const commonWords = ['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'its', 'may', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'has', 'let', 'put', 'say', 'she', 'too', 'use'];
+        if (!commonWords.includes(word)) {
+          termFrequency.set(word, (termFrequency.get(word) || 0) + 1);
+        }
+      });
+    });
+
+    // Return top 20 most frequent terms
+    return Array.from(termFrequency.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([term]) => term);
   }
 }
 

@@ -1,7 +1,6 @@
 import type { BlogPost } from "@/types";
 import postOgImage from "@/utils/og-templates/post";
 import siteOgImage from "@/utils/og-templates/site";
-import { purgeCloudflare } from '@/utils/cloudflarePurge';
 import { SITE } from '@/config';
 import crypto from 'crypto';
 import { addPurgeUrl } from '@/utils/purgeList';
@@ -37,7 +36,7 @@ export async function generateOgImageForPost(
 ) {
   const svg = await postOgImage(post);
   const buffer = await svgBufferToImageBuffer(svg, format);
-  // Compare generated OG with deployed URL; purge Cloudflare only if different
+  // Compare generated OG with deployed URL; add to purge list only if different
   try {
     const ogPath = new URL(`/blog/${post.slug}/index.png`, SITE.website).href;
   const localBytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer as any);
@@ -56,10 +55,9 @@ export async function generateOgImageForPost(
     }
     const differs = !remoteHash || remoteHash !== localHash;
     if (differs) {
-      // Add to build-time purge list (used by vercel post-deploy) and also attempt live purge
+      // Add to build-time purge list (used by manual purging)
       addPurgeUrl(ogPath);
-      const dryRun = !(process.env.CF_ZONE_ID && process.env.CF_API_TOKEN);
-      purgeCloudflare([ogPath], { dryRun }).catch(e => console.warn('[OG PURGE] failed', String(e)));
+      console.info('[OG PURGE] added to purge list:', ogPath);
     } else {
       console.info('[OG PURGE] no change detected for', ogPath);
     }
@@ -91,8 +89,7 @@ export async function generateOgImageForSite(format: "png" | "webp" = "png") {
     const differs = !remoteHash || remoteHash !== localHash;
     if (differs) {
       addPurgeUrl(ogPath);
-      const dryRun = !(process.env.CF_ZONE_ID && process.env.CF_API_TOKEN);
-      purgeCloudflare([ogPath], { dryRun }).catch(e => console.warn('[OG PURGE] failed', String(e)));
+      console.info('[OG PURGE] added to purge list:', ogPath);
     } else {
       console.info('[OG PURGE] no change detected for', ogPath);
     }
@@ -101,4 +98,3 @@ export async function generateOgImageForSite(format: "png" | "webp" = "png") {
   }
   return buffer;
 }
-

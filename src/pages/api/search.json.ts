@@ -86,7 +86,7 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
       query,
       limit,
       offset,
-      minScore: 0.05, // Minimum relevance score
+      minScore: 0.2, // Increased minimum relevance score to reduce irrelevant results
     });
 
     // Format results for API response using centralized formatter
@@ -103,7 +103,10 @@ export const GET: APIRoute = withRateLimit(async ({ request }) => {
         currentPage: Math.floor(offset / limit) + 1,
         totalPages: Math.ceil(searchResult.total / limit),
       },
-      ...(includeSuggestions && { suggestions: search.getSuggestions() }),
+      ...(includeSuggestions && {
+        suggestions: search.getSuggestions(),
+        popularTerms: search.getPopularTerms()
+      }),
     };
 
     // Validate the response shape before returning
