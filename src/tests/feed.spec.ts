@@ -9,13 +9,13 @@ describe("RSS feed generation", () => {
     {
       id: "1",
       data: {
-        title: "Post One",
-        slug: "post-one",
-        description: "Desc one",
-        pubDatetime: new Date("2024-01-01T00:00:00Z"),
-        modDatetime: undefined,
-        draft: false,
+          title: "Post One",
+          description: "Desc one",
+          pubDatetime: new Date("2024-01-01T00:00:00Z"),
+          modDatetime: undefined,
+          draft: false,
       },
+      slug: "post-one",
       body: "",
       collection: "blog",
       render: () => ({ Content: () => null }),
@@ -23,13 +23,13 @@ describe("RSS feed generation", () => {
     {
       id: "2",
       data: {
-        title: "Post Two",
-        slug: "post-two",
-        description: "Desc two",
-        pubDatetime: new Date("2024-02-01T00:00:00Z"),
-        modDatetime: undefined,
-        draft: false,
+          title: "Post Two",
+          description: "Desc two",
+          pubDatetime: new Date("2024-02-01T00:00:00Z"),
+          modDatetime: undefined,
+          draft: false,
       },
+      slug: "post-two",
       body: "",
       collection: "blog",
       render: () => ({ Content: () => null }),
@@ -58,7 +58,7 @@ describe("RSS feed generation", () => {
     expect(text).toContain("<item");
     // Check link and content for one post
     expect(text).toContain(
-      new URL(`blog/${fakePosts[0].data.slug}`, SITE.website).toString()
+      new URL(`blog/${fakePosts[0].slug}`, SITE.website).toString()
     );
     // content may be HTML-escaped in feed generator
     expect(text).toContain("Content for 1");

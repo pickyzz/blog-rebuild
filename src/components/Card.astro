@@ -50,7 +50,7 @@ const headerProps = {
       class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
     >
         <img
-          class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
+          class="card-animate h-[13rem] w-[100vw] scale-115 object-cover object-center img-loading blurry-load"
           src={placeholderSrc}
           data-large={imageSrc}
           loading="eager"
@@ -59,7 +59,7 @@ const headerProps = {
           alt={title
             ? `Cover image for blog post: ${title}`
             : "Blog post cover image"}
-          style={`filter: blur(0px); transition: filter 0.3s ease;`}
+          style={`filter: blur(0px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);`}
           onload={`this.style.filter = 'none';`}
         />
       <div
@@ -97,5 +97,18 @@ const headerProps = {
     to {
       opacity: 1;
     }
+  }
+
+  .card-animate {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-animate:hover {
+    transform: scale(1.08);
+  }
+
+  /* Add smooth transition for parent container */
+  li a:hover .card-animate {
+    transform: scale(1.08);
   }
 </style>

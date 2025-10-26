@@ -14,7 +14,7 @@ export async function GET() {
 
   const items = limited.map((post) => ({
     title: post.data.title,
-    link: new URL(`blog/${post.data.slug}`, SITE.website).toString(),
+    link: new URL(`blog/${post.slug}`, SITE.website).toString(),
     pubDate: post.data.pubDatetime,
     description: post.data.description,
     content: post.body,

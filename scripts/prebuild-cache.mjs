@@ -81,15 +81,15 @@ async function warmCache() {
     console.log('📄 Warming recent post caches...');
     const recentPosts = posts.slice(0, 10);
     for (const post of recentPosts) {
-      if (post.data?.slug) {
+      if (post.slug) {
         try {
-          const postDetail = await getNotionPostBySlug(post.data.slug);
+          const postDetail = await getNotionPostBySlug(post.slug);
           if (postDetail) {
-            await setCachedData(CacheKeys.postBySlug(post.data.slug), postDetail, 1800);
-            console.log(`✅ Cached post: ${post.data.slug}`);
+            await setCachedData(CacheKeys.postBySlug(post.slug), postDetail, 1800);
+            console.log(`✅ Cached post: ${post.slug}`);
           }
         } catch (error) {
-          console.warn(`⚠️  Failed to cache post ${post.data.slug}:`, error.message);
+          console.warn(`⚠️  Failed to cache post ${post.slug}:`, error.message);
         }
       }
     }

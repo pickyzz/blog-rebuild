@@ -161,12 +161,12 @@ const breadcrumbStructuredData = {
 };
 
 /* ========== Prev/Next Posts ========== */
-const allPosts = (posts || []).map(({ data }: any) => ({
-  slug: data?.slug,
+const allPosts = (posts || []).map(({ data, slug }: any) => ({
+  slug: slug,
   title: data?.title,
 }));
 const currentPostIndex = allPosts.findIndex(
-  a => a.slug === (post?.data?.slug ?? null)
+  a => a.slug === (post?.slug ?? null)
 );
 const prevPost =
   currentPostIndex < allPosts.length - 1
@@ -189,14 +189,14 @@ if (tags && tags.length > 0 && posts) {
   )
     .filter(
       p =>
-        p.data.slug !== post.data.slug &&
-        p.data.slug !== (prevPost?.slug ?? null) &&
-        p.data.slug !== (nextPost?.slug ?? null)
+        p.slug !== post.slug &&
+        p.slug !== (prevPost?.slug ?? null) &&
+        p.slug !== (nextPost?.slug ?? null)
     )
     .slice(0, 2); // Limit to 2 related posts
 
-  relatedPosts = postsWithSameTag.map(({ data }) => ({
-    slug: data.slug,
+  relatedPosts = postsWithSameTag.map(({ data, slug }) => ({
+    slug: slug,
     title: data.title,
     ogImage: data.ogImage,
   }));
@@ -325,11 +325,11 @@ if (tags && tags.length > 0 && posts) {
               >
                 <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
                         <img
-                          class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
+                          class="card-animate h-[13rem] w-full max-w-full scale-105 object-cover object-center img-loading blurry-load"
                           src={relatedPost.ogImage ? relatedPost.ogImage.replace(/\.[^.]+$/, '.placeholder.jpg') : "/pickyzz-og.png"}
                           data-large={relatedPost.ogImage}
                           loading="eager"
-                          style={`filter: blur(0px); transition: filter 0.3s ease;`}
+                          style={`filter: blur(0px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);`}
                           onload={`this.style.filter = 'none';`}
                           alt={relatedPost.title}
                           decoding="async"
@@ -749,3 +749,18 @@ if (tags && tags.length > 0 && posts) {
     setTimeout(initTocHighlighting, 100);
   });
 </script>
+
+<style>
+  .card-animate {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .card-animate:hover {
+    transform: scale(1.08) !important;
+  }
+
+  /* Ensure smooth transition for related post cards */
+  .grid a:hover .card-animate {
+    transform: scale(1.08) !important;
+  }
+</style>

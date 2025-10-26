@@ -17,7 +17,22 @@
 .blurry-load img {
   filter: blur(5px);
   transform: scale(1.05);
-  transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced hover effect for card images */
+.card-animate {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-animate:hover {
+  transform: scale(1.08) !important;
+}
+
+/* Smooth hover for related post images */
+.post-card img:hover {
+  transform: scale(1.08) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .blurry-load .img-loaded {
