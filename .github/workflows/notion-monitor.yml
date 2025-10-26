@@ -31,7 +31,7 @@ jobs:
           NOTION_KEY: ${{ secrets.NOTION_KEY }}
           DATABASE_ID: ${{ secrets.DATABASE_ID }}
         run: |
-          node scripts/checkNotionUpdates.js
+          node scripts/checkNotionUpdates.cjs
           echo "✅ Notion update check completed"
 
       - name: Trigger Vercel Deploy Hook
@@ -41,4 +41,4 @@ jobs:
           VERCEL_DEPLOYMENT_HOOK: ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
         run: |
           echo "🚀 Triggering Vercel rebuild..."
-          node scripts/triggerVercelDeploy.js
+          node scripts/triggerVercelDeploy.cjs
