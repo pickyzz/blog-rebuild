@@ -1,0 +1,51 @@
+name: Monitor Notion Posts and Trigger Rebuild
+
+on:
+  schedule:
+    # Run every 15 minutes to check for Notion updates
+    - cron: "*/15 * * * *"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  monitor-notion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+
+      - name: Install dependencies for scripts
+        run: npm install
+
+      - name: Create Environment File (.env)
+        run: |
+          echo "NOTION_KEY=${{ secrets.NOTION_KEY }}" >> .env
+          echo "DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
+          echo "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" >> .env
+          echo "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" >> .env
+          echo "VERCEL_DEPLOYMENT_HOOK=${{ secrets.VERCEL_DEPLOYMENT_HOOK }}" >> .env
+          echo "✅ .env file created"
+          cat .env
+
+      - name: Check for Notion updates and determine deploy status
+        id: check-notion
+        # สคริปต์จะใช้ ENV variables เหล่านี้โดยตรง และตั้งค่า Output 'should_deploy'
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+        run: |
+          node scripts/checkNotionUpdates.cjs
+          echo "✅ Notion update check completed"
+
+      - name: Trigger Vercel Deploy Hook
+        # ทำงานเมื่อ Output 'should_deploy' เป็น 'true'
+        if: steps.check-notion.outputs.should_deploy == 'true'
+        env:
+          VERCEL_DEPLOYMENT_HOOK: ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
+        run: |
+          echo "🚀 Triggering Vercel rebuild..."
+          node scripts/triggerVercelDeploy.cjs
