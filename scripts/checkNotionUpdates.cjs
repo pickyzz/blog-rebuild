@@ -1,5 +1,6 @@
 const { Client } = require('@notionhq/client');
-const fetch = require('node-fetch'); // ต้องติดตั้งแพ็กเกจ node-fetch หรือ axios
+const fetch = require('node-fetch');
+const fs = require('fs');
 
 // Initialize Notion client
 const notion = new Client({
@@ -9,7 +10,7 @@ const notion = new Client({
 // Environment Variables for Redis
 const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-const REDIS_KEY = 'notion:last_checked_time'; // กำหนด Key ที่ใช้เก็บข้อมูลใน Redis
+const REDIS_KEY = 'notion:last_checked_time'; // Key ที่ใช้เก็บข้อมูลใน Redis
 
 const databaseId = process.env.DATABASE_ID;
 
