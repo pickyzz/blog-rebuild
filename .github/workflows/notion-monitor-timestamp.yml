@@ -1,0 +1,115 @@
+# name: Notion Monitor with Timestamp Check
+
+# on:
+#   schedule:
+#     # Run every 15 minutes to check for Notion updates
+#     - cron: "*/15 * * * *"
+#   workflow_dispatch: # Allow manual triggering
+
+# jobs:
+#   monitor-and-rebuild:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "18"
+
+#       - name: Install Notion client
+#         run: npm install @notionhq/client
+
+#       - name: Check for Notion updates
+#         env:
+#           NOTION_KEY: ${{ secrets.NOTION_KEY }}
+#           DATABASE_ID: ${{ secrets.DATABASE_ID }}
+#         run: |
+#           # Create script to check Notion database updates
+#           cat > check-notion.js << 'EOF'
+#           const { Client } = require('@notionhq/client');
+#           const fs = require('fs');
+#           const path = require('path');
+
+#           const notion = new Client({
+#             auth: process.env.NOTION_KEY,
+#           });
+
+#           const databaseId = process.env.DATABASE_ID;
+#           const timestampFile = '.last-notion-check';
+
+#           async function getDatabaseLastEdited() {
+#             try {
+#               const response = await notion.databases.retrieve({
+#                 database_id: databaseId,
+#               });
+#               return response.last_edited_time;
+#             } catch (error) {
+#               console.error('Error fetching database info:', error);
+#               throw error;
+#             }
+#           }
+
+#           function getLastCheckedTime() {
+#             try {
+#               if (fs.existsSync(timestampFile)) {
+#                 const content = fs.readFileSync(timestampFile, 'utf8');
+#                 return content.trim();
+#               }
+#               return null;
+#             } catch (error) {
+#               console.log('No previous check found');
+#               return null;
+#             }
+#           }
+
+#           function setLastCheckedTime(timestamp) {
+#             try {
+#               fs.writeFileSync(timestampFile, timestamp, 'utf8');
+#             } catch (error) {
+#               console.error('Error setting last checked time:', error);
+#               throw error;
+#             }
+#           }
+
+#           async function main() {
+#             try {
+#               const lastEdited = await getDatabaseLastEdited();
+#               const lastChecked = getLastCheckedTime();
+
+#               console.log('Database last edited:', lastEdited);
+#               console.log('Last checked:', lastChecked);
+
+#               if (!lastChecked || new Date(lastEdited) > new Date(lastChecked)) {
+#                 console.log('Updates detected! Triggering rebuild...');
+#                 setLastCheckedTime(new Date().toISOString());
+#                 process.exit(1); // Exit with error to trigger rebuild
+#               } else {
+#                 console.log('No updates detected.');
+#                 process.exit(0);
+#               }
+#             } catch (error) {
+#               console.error('Error checking for updates:', error);
+#               process.exit(1); // Trigger rebuild on error to be safe
+#             }
+#           }
+
+#           main();
+#           EOF
+
+#           node check-notion.js
+
+#       - name: Commit timestamp file if updated
+#         if: failure()
+#         run: |
+#           git config --local user.email "action@github.com"
+#           git config --local user.name "GitHub Action"
+#           git add .last-notion-check
+#           git commit -m "Update last notion check timestamp" || exit 0
+#           git push
+
+#       - name: Trigger Vercel Deploy Hook
+#         if: failure() # Only run if updates were detected
+#         run: |
+#           curl -X POST "${{ secrets.VERCEL_DEPLOYMENT_HOOK }}"

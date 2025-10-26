@@ -1,0 +1,115 @@
+name: Monitor Notion Posts and Trigger Rebuild
+
+on:
+  schedule:
+    # Run every 10 minutes to check for Notion updates
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  monitor-notion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for Notion updates
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: |
+          # Create a script to check for updates
+          cat > check-notion-updates.js << 'EOF'
+          const { Client } = require('@notionhq/client');
+          const fetch = require('node-fetch');
+
+          const notion = new Client({
+            auth: process.env.NOTION_KEY,
+          });
+
+          const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
+          const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+          const databaseId = process.env.DATABASE_ID;
+
+          async function getDatabaseLastEdited() {
+            try {
+              const response = await notion.databases.retrieve({
+                database_id: databaseId,
+              });
+              return response.last_edited_time;
+            } catch (error) {
+              console.error('Error fetching database info:', error);
+              throw error;
+            }
+          }
+
+          async function getLastCheckedTime() {
+            try {
+              const response = await fetch(`${redisUrl}/get/lastChecked`, {
+                headers: {
+                  Authorization: `Bearer ${redisToken}`,
+                },
+              });
+              const data = await response.json();
+              return data.result;
+            } catch (error) {
+              console.log('No previous check found');
+              return null;
+            }
+          }
+
+          async function setLastCheckedTime(timestamp) {
+            try {
+              await fetch(`${redisUrl}/set/lastChecked/${timestamp}`, {
+                headers: {
+                  Authorization: `Bearer ${redisToken}`,
+                },
+              });
+            } catch (error) {
+              console.error('Error setting last checked time:', error);
+              throw error;
+            }
+          }
+
+          async function main() {
+            try {
+              const lastEdited = await getDatabaseLastEdited();
+              const lastChecked = await getLastCheckedTime();
+
+              console.log('Database last edited:', lastEdited);
+              console.log('Last checked:', lastChecked);
+
+              if (!lastChecked || new Date(lastEdited) > new Date(lastChecked)) {
+                console.log('Updates detected! Triggering rebuild...');
+                await setLastCheckedTime(new Date().toISOString());
+                process.exit(1); // Exit with error to trigger next step
+              } else {
+                console.log('No updates detected.');
+                process.exit(0);
+              }
+            } catch (error) {
+              console.error('Error checking for updates:', error);
+              process.exit(1); // Trigger rebuild on error to be safe
+            }
+          }
+
+          main();
+          EOF
+
+          node check-notion-updates.js
+
+      - name: Trigger Vercel Deploy Hook
+        if: failure() # Only run if the previous step detected updates or failed
+        run: |
+          curl -X POST "${{ secrets.VERCEL_DEPLOYMENT_HOOK }}"
