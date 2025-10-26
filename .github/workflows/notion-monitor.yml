@@ -9,15 +9,12 @@ on:
 jobs:
   monitor-notion:
     runs-on: ubuntu-latest
-    # เพิ่มสิทธิ์ในการเขียน (write) เพื่อให้ git push สามารถอัปเดตไฟล์ timestamp ได้
-    permissions:
-      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@latest
+        uses: actions/setup-node@v4
         with:
           cache: "npm"
 
