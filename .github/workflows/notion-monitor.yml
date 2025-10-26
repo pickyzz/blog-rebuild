@@ -21,6 +21,16 @@ jobs:
       - name: Install dependencies for scripts
         run: npm install
 
+      - name: Create Environment File (.env)
+        run: |
+          echo "NOTION_KEY=${{ secrets.NOTION_KEY }}" >> .env
+          echo "DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
+          echo "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" >> .env
+          echo "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" >> .env
+          echo "VERCEL_DEPLOYMENT_HOOK=${{ secrets.VERCEL_DEPLOYMENT_HOOK }}" >> .env
+          echo "✅ .env file created"
+          cat .env
+
       - name: Check for Notion updates and determine deploy status
         id: check-notion
         # สคริปต์จะใช้ ENV variables เหล่านี้โดยตรง และตั้งค่า Output 'should_deploy'
