@@ -4,7 +4,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Hr from "../components/Hr.astro";
 
-export const prerender = false; // Enable SSR for dynamic search
+export const prerender = true; // SSG mode with client-side search
 ---
 <Layout title="Search" description="Search blog posts">
   <Header />
@@ -55,4 +55,4 @@ export const prerender = false; // Enable SSR for dynamic search
   <Footer />
 </Layout>
 
-<script src="/js/search.client.js" defer></script>
+<script src="/js/static-search.js" defer></script>

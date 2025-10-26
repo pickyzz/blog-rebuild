@@ -48,13 +48,19 @@
      ```
    - Configure your environment variables (see [Environment Variables](#environment-variables) section)
 
+4. **Sync posts from Notion** (SSG Workflow)
+   ```bash
+   npm run sync:posts
+   ```
+   This will fetch all published posts from your Notion database and convert them to static markdown files in `src/content/blog/`.
+
 4. **Set up Notion database**
    - Duplicate [this Notion template](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4)
    - Do not edit the table's name or structure
 
 5. **Sync content and start development**
    ```bash
-   npm run sync:published
+   npm run sync:posts
    npm run dev
    ```
 
@@ -77,18 +83,24 @@ DATABASE_ID='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ## Working with Notion as CMS
 
 - **Setup**: Duplicate the [Notion template](https://pickyzz.notion.site/b60241fb283943c29acd6bc6c91acc77?v=f688e711757a47339b30e33f1fbf8d7e&pvs=4) and configure your environment variables
-- **Development sync**: Use `npm run sync` (all posts) or `npm run sync:published` (published posts only)
-- **Production build**: Use `npm run generate` to sync published posts and build for production
+- **Development sync**: Use `npm run sync:posts` to fetch all published posts from Notion to static files
+- **Production build**: Use `npm run build` to sync posts and build the static site
 
 ## Development
 
 Start the development server with live reload:
 
 ```bash
+# First sync posts from Notion
+npm run sync:posts
+
+# Then start development server
 npm run dev
 ```
 
 Open [http://localhost:4321](http://localhost:4321) in your browser to see your project.
+
+**Note**: When you make changes to posts in Notion, run `npm run sync:posts` again to update the local content.
 
 ## Production Build
 
@@ -97,6 +109,7 @@ Open [http://localhost:4321](http://localhost:4321) in your browser to see your 
 Create an optimized production build:
 
 ```bash
+# This command will sync posts from Notion and build the static site
 npm run build
 ```
 
@@ -123,7 +136,10 @@ Run these commands from the root of the project:
 | :------------------------ | :-------------------------------------------- |
 | `npm install`             | Installs dependencies                         |
 | `npm run dev`             | Starts local dev server at `localhost:4321`   |
-| `npm run build`           | Build your production site to `./dist/`       |
+| `npm run sync:posts`      | Sync posts from Notion to local content files |
+| `npm run sync:posts:dev`  | Sync posts using development environment      |
+| `npm run build`           | Sync posts and build production site to `./dist/` |
+| `npm run rebuild`         | Clean, sync posts, and build from scratch     |
 | `npm run preview`         | Preview your build locally, before deploying  |
 | `npm run clean`           | Remove `./dist` folder                        |
 | `npm run format`          | Run Prettier and format code                  |

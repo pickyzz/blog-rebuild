@@ -1,0 +1,395 @@
+[
+  {
+    "id": "27e136db-7027-804b-8295-c2470c0cfca1",
+    "slug": "uptime-32-years-mr",
+    "title": "Uptime 32 years of me.",
+    "description": "32 ปีแล้วก็ยังโสดอยู่ โสดมาจะครบ 10 ปีแล้ว แม่ถามทุกครั้งว่าให้หาแฟนได้แล้ว",
+    "pubDatetime": "2025-09-30T13:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "16d136db-7027-8028-a197-d37c554b9b5d",
+    "slug": "2024-and-me",
+    "title": "2024 and me",
+    "description": "สำหรับชีวิตของผมในปี 2024 นี้ เกิดหลายอย่างขึ้นพอสมควร",
+    "pubDatetime": "2024-12-31T10:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "114136db-7027-8095-8626-ce858080482a",
+    "slug": "home-network-down-detector-with-uptime-kuma",
+    "title": "ทำ Down Detector แจ้งเตือนเน็ตล่ม",
+    "description": "ในกรณีที่เกิดปัญหากับเน็ตเวิร์คที่บ้าน อุปกรณ์ในวง Network ที่เป็นตัวส่ง Ping จะไม่สามารถส่งข้อมูลออกไปได้ เมื่อ Healthchecks ไม่ได้รับ Ping ภายในระยะเวลาที่กำหนด จะส่งแจ้งเตือนผ่านไปยัง service ต่างๆที่เรากำหนดไว้",
+    "pubDatetime": "2024-10-03T09:30:00.000Z",
+    "tags": [
+      "review",
+      "network",
+      "cron"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "111136db-7027-8075-ac03-d830bdd6aaed",
+    "slug": "uptime-31-years",
+    "title": "Uptime 31 years.",
+    "description": "มีเพื่อนๆ พี่ๆ น้องๆ เขียนอวยพรมาพอสมควร อาจจะไม่เยอะมาก แต่ผมก็รู้สึกประทับใจเสมอ ขอบคุณที่ยังนึกถึงกัน",
+    "pubDatetime": "2024-09-30T10:28:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "8080a0e9-4e3c-4d4e-b334-f731aff6fd3c",
+    "slug": "web-stack-update-2024",
+    "title": "รื้อ Stack หลังบ้าน ver.2024`",
+    "description": "วันเวลาผ่านไปหนึ่งปี กอปรกับเป็นคนขี้เบื่อ จึงเริ่มคิดถึงการใช้ระบบจัดการเนื้อหา เพราะสะดวกกับการเขียนมากกว่าการมานั่งเขียนไฟล์ markdown เอง ทำให้คิดถึงการใช้ Notion ขึ้นมา",
+    "pubDatetime": "2024-04-07T06:20:00.000Z",
+    "tags": [
+      "webdev",
+      "notion"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "ac5b729c-727d-44e1-9397-eb745db2f777",
+    "slug": "aldente-pro-mac-app-review",
+    "title": "(รีวิว) จำกัดการชาร์จบน Macbook ด้วย Aldente",
+    "description": "ในตอนนั้นคิดว่า เมื่อเขามีมาให้แล้ว ทำไมเราต้องมาเสียเงินซื้่อโปรแกรมที่ลักษณะการทำงานเหมือนๆกันอีก",
+    "pubDatetime": "2024-02-07T07:38:00.000Z",
+    "tags": [
+      "review",
+      "mac",
+      "battery"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "48b5f371-7b41-429d-9f32-41863d4227ba",
+    "slug": "palworld-dedicated-server-issue",
+    "title": "ปัญหาของเซิร์ฟเวอร์ Palworld (Dedicated)",
+    "description": "ปัจจุบันปัญหาใหญ่ตรงนี้ก็ยังไม่ได้รับการแก้ไข จนกระทั้งมีข่าวล่าสุดว่า Official Server นั้นค่าใช้จ่ายพุ่งสูงมากถึง 70 ล้านเยน",
+    "pubDatetime": "2024-02-03T06:39:00.000Z",
+    "tags": [
+      "game",
+      "palworld",
+      "server"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "63175824-1bf2-4bbb-9a11-2adc0c98e09f",
+    "slug": "2023-review",
+    "title": "2023 in review",
+    "description": "บล็อกก็ไม่ค่อยได้เขียน รีวิวชีวิตในปีนี้หน่อยก็ยังดี",
+    "pubDatetime": "2023-12-31T05:52:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "36c81040-3e2c-46bf-9172-64d6b53b564d",
+    "slug": "fix-sharp-issue-with-bun",
+    "title": "ปัญหาระหว่าง Bun กับ Sharp",
+    "description": "อัพเดทล่าสุด bun v1.0.6 เหมือนว่าจะแก้ไขปัญหานี้แล้ว แต่มีข้อแม้นิดหน่อย",
+    "pubDatetime": "2023-10-13T23:50:00.000Z",
+    "tags": [
+      "bun",
+      "webdev",
+      "astro"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "dd1f5d23-2680-4747-aa3d-0ff47e74f8bf",
+    "slug": "up-time-30-years",
+    "title": "uptime 30 years of me",
+    "description": "ผ่านไปแล้วอีก 1 ปี ใช้ชีวิตก้าวเข้าสู่เลข 3 ครั้งแรก รู้สึกแปลกๆใจนิดหน่อย",
+    "pubDatetime": "2023-09-30T10:14:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "ff31f8b8-6c66-4e52-bef6-c34e5036fd5c",
+    "slug": "bun-and-sharp-issue",
+    "title": "ปัญหาที่เจอเมื่อใช้ Bun ทำงาน",
+    "description": "ผมขอข้ามเรื่องเชิงเทคนิคของ Bun เพราะน่าจะมีหลายๆท่านที่เชี่ยวชาญกว่าผมได้เขียนถึงเยอะแล้ว",
+    "pubDatetime": "2023-09-28T06:46:00.000Z",
+    "tags": [
+      "bun",
+      "webdev",
+      "astro"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "8d023fc9-a329-49b0-82a6-6f5a26eaea13",
+    "slug": "ai-in-my-opinion",
+    "title": "AI ในทัศนะของข้าพเจ้า",
+    "description": "ในมุมของของผม ai มีความจำเป็น แต่หาใช่การนำมาแทนมนุษย์ทั้งหมด",
+    "pubDatetime": "2023-08-04T12:52:00.000Z",
+    "tags": [
+      "ai",
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "f2421c6c-c157-4286-a743-f5b595e76d52",
+    "slug": "deploy-with-modules",
+    "title": "แยก Repositoroy เก็บ Content",
+    "description": "อยากแยกส่วนเนื้อหาออกไปไว้ที่ private repository แต่ก็อยากให้ action ทำงานตอน push เนื้อหา ทำยังไงดี ?",
+    "pubDatetime": "2023-02-27T22:00:00.000Z",
+    "tags": [
+      "github",
+      "deploy",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "ef49dabb-8bf0-4a42-b786-8ad678b91479",
+    "slug": "remote_desktop_via_moonlight",
+    "title": "Remote Desktop ด้วย Moonlight&Sunshine",
+    "description": "เรื่องนี้เกิดจากปัญหาการจัดห้องที่ไม่ลงตัวของผมเองและด้วยพื้นที่ในห้องนอนที่แบ่งไว้นั่งทำงานด้วยส่วนหนึ่งจึงเป็นพื้นที่จำกัดสักหน่อย",
+    "pubDatetime": "2023-01-18T16:50:00.000Z",
+    "tags": [
+      "moonlight",
+      "sunshine",
+      "remote"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "aa20ba18-6ef1-4aef-8ca1-88b5bf67235a",
+    "slug": "2022-in-review",
+    "title": "2022 in review",
+    "description": "เป็นปีที่ไม่ค่อยมี Productivity เท่าไร รวมถึงไม่ค่อยมีงานเป็นชิ้นเป็นอันเช่นกัน ส่วนใหญ่จะใช้เวลาไปกับการเรียนรู้สิ่งแปลกใหม่ พัฒนาสิ่งเก่าที่มีอยู่ในตัวเองเพิ่มขึ้นเสียมากกว่า",
+    "pubDatetime": "2022-12-31T23:45:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "f0deb41d-59dc-40c0-bce2-7f415afcb11e",
+    "slug": "uptime-29-years-since-1993",
+    "title": "Uptime 29 years of me",
+    "description": "สิ่งที่ฉันกำลังทำในวัย 29 ปี บันทึกไว้เผื่อในอนาคตกลับมาอ่านแล้วจะได้ทบทวนได้ว่าทำอะไรสำเร็จ หรือล้มเลิกอะไรไปแล้วบ้าง เผื่อว่านึกย้อนกลับมาอ่านแล้วจะมีหลายๆความรู้สึกเกิดขึ้นกับตัวเองในอนาคตได้บ้าง",
+    "pubDatetime": "2022-09-30T06:37:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "a2033845-0bf7-402d-85ef-cdae8b033b3f",
+    "slug": "email-routing-gmail-cloudflare",
+    "title": "ทำ email routing ฟรีด้วย cloudflare",
+    "description": "ช่วงหลังผมเปลี่ยนมาใช้ dns ของ cloudflare แทน เพื่อที่จะให้บริการ caching กับเรื่องการรักษาความปลอดภัยของเจ้านี้ แล้วก็เห็นว่าทาง Cloudflare เองมีบริการ email routing ให้ใช้ฟรีด้วย มีหรือเราจะพลาด",
+    "pubDatetime": "2022-09-21T17:06:00.000Z",
+    "tags": [
+      "cloudflare",
+      "email"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "8a36360c-0a83-4a15-a451-c9880113722b",
+    "slug": "kbdfans-67lite-r2-after-years-use",
+    "title": "รีวิว KBDFans 67lite R2 หลังใช้มาแล้ว 1 ปี",
+    "description": "จะพูดว่าเป็น gasket ก็พูดได้ไม่เต็มปากครับ มันจะเป็นลักษณะแผ่นซิลิโคนทั้งแผ่นทำหน้าที่เป็นทั้ง gasket และเป็นทั้งแผ่นคั่นกลางระหว่าง plate และ pcb ไปพร้อมกัน",
+    "pubDatetime": "2022-09-11T12:42:00.000Z",
+    "tags": [
+      "review",
+      "keyboard"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "d3228c34-4691-4c9b-b60a-e079d59c2b5b",
+    "slug": "cronjob-delete-unused-images-ghost-cms",
+    "title": "ทำ cronjob ล้างไฟล์รูปบน ghost cms",
+    "description": "ทุกๆครั้งที่มีการลากรูปลงส่วน text editor ผมสังเกตว่าไฟล์จะถูกอัพโหลดขึ้นไปที่ server ทันที และ เมื่อเราไม่ใช้รูปนั้น แล้วลบออก ไฟล์รูปที่ถูกอัพโหลดขึ้นไป ก็อยู่แบบนั้นอยู่ดี",
+    "pubDatetime": "2022-08-26T00:00:00.000Z",
+    "tags": [
+      "ghost",
+      "cron",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "ebec28bb-bc92-4857-8f60-25f29252c748",
+    "slug": "move-to-ghost-cms",
+    "title": "ย้าย Blog ไป Ghost",
+    "description": "ช่วงประมาณ 3-4 เดือนให้หลังนี้ Core Dependencies ที่ใช้งานอยู่นั้นเริ่มมีความงุนงงในการพัฒนา บางตัวอยู่ดีๆก็เปลี่ยนแบบหน้ามือเป็นหลังมือ bump version ทีนึงก็ style พังทีนึง",
+    "pubDatetime": "2022-08-23T00:00:00.000Z",
+    "tags": [
+      "ghost",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "d929345f-828a-468f-a302-42e3090a9425",
+    "slug": "midjourney-review-2022",
+    "title": "ลองใช้ Midjourney สร้างภาพ",
+    "description": "วันนี้ไม่ได้จะมาหาคำตอบว่า AI มีความเข้าใจในงานศิลปะดีแค่ไหน แต่จะมาแนะนำโปรเจ็กต์ที่มีนำปัญญาประดิษฐ์มาเป็นผู้ออกแบบงานศิลป์ให้คุณ เพียงแค่คุณบอกไอเดียของคุณผ่านตัวอักษร",
+    "pubDatetime": "2022-08-05T00:00:00.000Z",
+    "tags": [
+      "Midjourney",
+      "review"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "505668d1-14b3-4628-8465-3f7bf65bb10f",
+    "slug": "sleep-can-help",
+    "title": "นอนพักสักนิด เดี๋ยวก็คิดออก",
+    "description": "ถ้าวันไหนคิดงานไม่ออกหรือเขียนโค้ดแล้วพัง ก็ให้นอนมันเสีย เอาไว้ค่อยตื่นมาคิดใหม่อาจจะคิดออก",
+    "pubDatetime": "2022-04-26T00:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "704ea29b-2d35-4f6c-8e33-5dbc502e86b4",
+    "slug": "discord-github-commit-notification",
+    "title": "แจ้งเตือน Github commit ผ่าน Discord",
+    "description": "มีคนบอกว่าเราสามารถเราสามารถเอา webhook ที่ได้จาก discord ไปใส่ที่ setting ของ Repository ฝั่ง github ได้เลย",
+    "pubDatetime": "2022-04-08T00:00:00.000Z",
+    "tags": [
+      "discord",
+      "github"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "826f70ad-4211-4909-8675-397249cd7226",
+    "slug": "vaccinated-diary-2022",
+    "title": "บันทึกฉีดวัคซีนป้องกันโควิด 2 เข็ม",
+    "description": "ด้วยความที่อยู่ต่างจังหวัด ในช่วงแรกที่วัคซีนมีไม่เพียงพอนั้น การเปิดฉีดแต่ละรอบก็จะอยู่ตามหัวเมืองเป็นส่วนใหญ่ก็เลยตัดสินใจว่ายังไม่ฉีดดีกว่า",
+    "pubDatetime": "2022-01-19T00:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "38c0a195-9a25-46e5-8a1c-79c46ae9c09e",
+    "slug": "2021-in-review",
+    "title": "2021 in review",
+    "description": "มีเรื่องราวต่างๆที่ผ่านเข้ามามากมายทั้งเรื่องดีและเรื่องแย่ เรื่องดีๆที่พอจะสรุปออกมาได้เท่าที่คิดออกในขณะที่เขียนอยู่ก็จะประมาณนี้",
+    "pubDatetime": "2021-12-31T16:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "be92482f-4763-4f35-8fa8-684400d48ba5",
+    "slug": "fivem-developer",
+    "title": "บันทึก Fivem Developer ตัวน้อยๆ",
+    "description": "พอนึกย้อนกลับไป เราก็มาไกลเหมือนกันนะ จากคนที่เคยมีไฟด้านเทคโนโลยี เคยเป็นตัวแทนประกวดเขียนเว็บฯ ช่วง ม. ต้น อยากเรียนด้านนี้แต่สอบไม่ติด จนไม่ได้เรียนสายนี้",
+    "pubDatetime": "2021-12-25T00:00:00.000Z",
+    "tags": [
+      "life"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "8f35429d-805f-466e-8ad8-9d1c1b409e72",
+    "slug": "auto-merge-github-repository",
+    "title": "ทำ Auto merge บน github repository",
+    "description": "ถ้าเรามีโปรเจ็กต์อยู่เยอะแยะเต็มมือไปหมด แล้วเราต้องคอยไปดูทีละ repository มีอะไรอัพเดท แล้วคอยกด merge ทีละอัน มันต้องใช้เวลามหาศาลเลยทีเดียว",
+    "pubDatetime": "2021-12-22T00:00:00.000Z",
+    "tags": [
+      "github",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "05df2c97-9ece-4d58-9066-952e01d0d17a",
+    "slug": "vercel-limit-deploy",
+    "title": "ผมโดน Vercel Limit Deploy",
+    "description": "ด้วยความมือใหม่ก็เลย push แบบไม่สนไม่แคร์ สรุปว่าติดลิมิทซะอย่างนั้น",
+    "pubDatetime": "2021-12-20T00:00:00.000Z",
+    "tags": [
+      "vercel",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "ca215b54-a510-4c3b-a184-e5f859b8f5a3",
+    "slug": "og-image-vercel",
+    "title": "เพิ่มฟ้อนต์ไทยให้ og-image ของ vercel",
+    "description": "Open Graph Image as a Service ซึ่งเป็นบริการที่เราสามารถเขียน API เพื่อให้ทางเว็บ auto generate รูป Open Graph และ Twitter card ให้ ซึ่งเป็นเรื่องที่ดีครับ แต่สิ่งหนึ่งที่ไม่ดีเลยก็คือ pim thai mai dai",
+    "pubDatetime": "2021-12-13T00:00:00.000Z",
+    "tags": [
+      "vercel",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "d9355a50-952e-422b-932c-f1da8f78d565",
+    "slug": "game-bar-windows11",
+    "title": "ปิด Game Bar ใน Windows11",
+    "description": "บางทีมันก็มีปัญหากับเกมบางเกม และส่วนตัวแล้วใช้โปรแกรมอัดจอแยกต่างหากอยู่แล้วด้วยก็เลยไม่จำเป็นที่จะต้องเปิดมัน แต่พอเป็น Windows 11 ไอ้เจ้า setting ที่ให้เปิดปิดมันดันหายไปซะอย่างนั้น",
+    "pubDatetime": "2021-10-29T00:00:00.000Z",
+    "tags": [
+      "windows"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "6c6313e9-573b-4228-a599-0baca7cfb10e",
+    "slug": "review-leopold-fc750r-prebuilt",
+    "title": "(Review) Leopold FC750R",
+    "description": "ผมตัดสินใจเลือกเป็นรุ่น FC750R ซึ่งเป็น Layout แบบ Ten-Keyless (TKL) คือตัดส่วนของ Num pad ออกไป เพื่อประหยัดพื้นที่การใช้งาน แค่ความสบายในการวางมือบนโต๊ะขณะทำงาน",
+    "pubDatetime": "2021-04-12T10:00:00.000Z",
+    "tags": [
+      "review",
+      "keyboard"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "685df0ee-2fc0-4bb0-bc4f-6a7344e93c31",
+    "slug": "review-loga-asura-pro-v.2020-flaretech-optical-keyboard",
+    "title": "(Review) Loga Asura Pro Optical Keyboard",
+    "description": "เขียนๆบล็อกอยู่นั้น ปุ่ม Backspace เจ้ากรรมก็ดันลาโลกไปดื้อๆ ทำให้พิมพ์ก็เบิ้ล แถมลบไม่ได้อีก เลยคิดว่าแบบนี้มันไม่ได้แล้ว งานเขียนไม่ไหลลื่นแน่ๆ",
+    "pubDatetime": "2020-05-15T22:00:00.000Z",
+    "tags": [
+      "review",
+      "keyboard"
+    ],
+    "author": "Pickyzz"
+  },
+  {
+    "id": "f66d147b-36ff-4c3d-b6d3-4c865293ee5d",
+    "slug": "auto-deploy-hugo-github-page",
+    "title": "ทำ Auto deploy Hugo บน Github page",
+    "description": "เมื่อเราทำการ push อัพเดทไปยัง repo ที่ใช้เก็บไฟล์ hugo ที่ยังไม่ได้ compile หน้าเว็บ ทันทีที่พบ new commit, ตัว script จะรันคำสั่ง hugo ไปยัง repo ที่ใส่ public key ไว้ทันที สามารถตรวจสอบผลได้ที่ Action ของ repo เก็บ hugo ได้เลย",
+    "pubDatetime": "2020-05-05T02:00:00.000Z",
+    "tags": [
+      "github",
+      "hugo",
+      "webdev"
+    ],
+    "author": "Pickyzz"
+  }
+]

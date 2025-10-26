@@ -1,35 +1,25 @@
 import rss from "@astrojs/rss";
-import { getNotionPosts } from "@/utils/getNotionPosts";
-import { getNotionPageContent } from "@/utils/notionContent";
-import getSortedPosts from "@/utils/getSortedPosts";
+import { getCollection } from "astro:content";
 import { SITE } from "@/config";
-import { ensureDate } from "@/utils/ensureDate";
 
-// Generate RSS feed using @astrojs/rss, include full sanitized HTML in item.content
+// Generate RSS feed using @astrojs/rss, include full HTML in item.content
 export async function GET() {
   const MAX_ITEMS = 20;
 
-  const posts = await getNotionPosts();
-  const published = (posts as any[]).filter((p: any) => !p?.data?.draft);
-  const sorted = getSortedPosts(published as any) as any[];
-  const limited = (sorted || []).slice(0, MAX_ITEMS);
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const sorted = posts.sort(
+    (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+  );
+  const limited = sorted.slice(0, MAX_ITEMS);
 
-  const items: any[] = [];
-  for (const post of limited) {
-    try {
-      const html = await getNotionPageContent(post.id);
-      items.push({
-        title: post.data?.title ?? "",
-        link: new URL(`blog/${post.data?.slug}`, SITE.website).toString(),
-        pubDate:
-          ensureDate(post.data?.modDatetime) ?? ensureDate(post.data?.pubDatetime) ?? new Date(),
-        description: post.data?.description ?? "",
-        content: String(html ?? ""),
-      });
-    } catch (err) {
-      console.error("[RSS] Failed to fetch content for post:", post?.id, err);
-    }
-  }
+  const items = limited.map((post) => ({
+    title: post.data.title,
+    link: new URL(`blog/${post.data.slug}`, SITE.website).toString(),
+    pubDate: post.data.pubDatetime,
+    description: post.data.description,
+    content: post.body,
+  }));
+
 
   const responsePromise = rss({
     title: SITE.title,

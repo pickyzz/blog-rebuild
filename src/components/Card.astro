@@ -13,24 +13,25 @@ export interface Props {
 const { href, frontmatter, secHeading = true, priority = "low" } = Astro.props;
 
 const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
-import { isAllowedUrl } from "@/config";
 
-let proxyUrl = ogImage?.src || "/pickyzz-og.png";
-let placeholderSrc: string | undefined = undefined;
-try {
-  if ((ogImage as any)?.placeholder) {
-    placeholderSrc = (ogImage as any).placeholder as string;
+// Use local image path or fallback to default
+const imageSrc = ogImage || "/pickyzz-og.png";
+
+// Generate placeholder path by replacing extension with .placeholder.jpg
+const generatePlaceholder = (imageUrl: string) => {
+  if (!imageUrl || imageUrl === "/pickyzz-og.png") {
+    return "/pickyzz-og.png";
   }
-  if (isAllowedUrl(proxyUrl)) {
-    // base64url encode the encodedURIComponent to make a path-safe token
-    const encoded = Buffer.from(encodeURIComponent(proxyUrl), 'utf8')
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-    proxyUrl = `/api/image/p/${encoded}`;
-  }
-} catch (e) {}
+
+  // Convert filename.ext to filename.placeholder.jpg
+  const urlParts = imageUrl.split('/');
+  const filename = urlParts[urlParts.length - 1];
+  const nameWithoutExt = filename.split('.').slice(0, -1).join('.');
+  urlParts[urlParts.length - 1] = `${nameWithoutExt}.placeholder.jpg`;
+  return urlParts.join('/');
+};
+
+const placeholderSrc = generatePlaceholder(imageSrc);
 
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
@@ -49,16 +50,18 @@ const headerProps = {
       class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
     >
         <img
-  class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
-        src={placeholderSrc || proxyUrl}
-        data-large={proxyUrl}
-        loading="lazy"
-        decoding="async"
-        fetchpriority={priority}
-        alt={title
-          ? `Cover image for blog post: ${title}`
-          : "Blog post cover image"}
-      />
+          class="card-animate h-[13rem] w-[100vw] scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
+          src={placeholderSrc}
+          data-large={imageSrc}
+          loading="eager"
+          decoding="async"
+          fetchpriority={priority}
+          alt={title
+            ? `Cover image for blog post: ${title}`
+            : "Blog post cover image"}
+          style={`filter: blur(0px); transition: filter 0.3s ease;`}
+          onload={`this.style.filter = 'none';`}
+        />
       <div
         class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2"
       >
@@ -81,3 +84,18 @@ const headerProps = {
     class="justify-center"
   />
 </li>
+
+<style>
+  .blurry-load {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0.8;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

@@ -128,18 +128,18 @@ n2m.setCustomTransformer("image", async (block: any) => {
   const imageUrl = image?.file?.url || image?.external?.url;
   const caption = image?.caption?.[0]?.plain_text || "";
 
-  // Use proxy URL to serve image; prefer original URL for data-large if available
-  const proxyUrl = `/api/image/${block.id}`;
-  const dataLargeUrl = imageUrl || proxyUrl;
+  // In SSG mode, images should already be processed and stored locally
+  // If the image is still an external URL, fallback to it (but it should be local after sync)
+  const localUrl = imageUrl;
 
   if (caption) {
     return `<figure class="notion-image">
-  <img src="${proxyUrl}" data-large="${dataLargeUrl}" alt="${caption}" loading="lazy" class="img-loading blurry-load" />
+  <img src="${localUrl}" data-large="${localUrl}" alt="${caption}" loading="lazy" class="img-loading blurry-load" />
   <figcaption>${caption}</figcaption>
 </figure>`;
   }
 
-  return `<img src="${proxyUrl}" data-large="${dataLargeUrl}" alt="Image from blog post" loading="lazy" class="notion-image img-loading blurry-load" />`;
+  return `<img src="${localUrl}" data-large="${localUrl}" alt="${caption}" loading="lazy" class="img-loading blurry-load" />`;
 });
 
 n2m.setCustomTransformer("video", async (block: any) => {

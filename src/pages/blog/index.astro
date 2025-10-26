@@ -6,15 +6,17 @@ import Main from "@/layouts/Main.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 
-/* SSR mode with enhanced caching */
-export const prerender = false;
+/* SSG mode - fetch from content collections */
+export const prerender = true;
 
 const { SITE } = await import("@/config");
-const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
-const { getNotionPosts } = await import("@/utils/getNotionPosts");
-const posts = await getNotionPosts();
-const publishedPosts = posts.filter(post => !post.data.draft);
-const sortedPosts = getSortedPosts(publishedPosts);
+const { getCollection } = await import("astro:content");
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+// Sort posts by publication date (newest first)
+const sortedPosts = posts.sort(
+  (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+);
 
 const pageSize = SITE.postPerPage || 10;
 const page = {
@@ -30,21 +32,8 @@ const page = {
   next: sortedPosts.length > pageSize ? "/blog/page/2" : undefined,
 };
 
-console.log(`[BLOG INDEX SSR] Fetched ${posts.length} posts from Notion`);
-console.log(`[BLOG INDEX SSR] Displaying ${page.posts.length} posts`);
-
-/* Set enhanced cache-control header for SSR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    "public, max-age=1800, stale-while-revalidate=3600"
-  );
-  // Add CDN cache headers for better performance
-  Astro.response.headers.set(
-    "CDN-Cache-Control",
-    "public, max-age=1800, stale-while-revalidate=3600"
-  );
-}
+console.log(`[BLOG INDEX SSG] Loaded ${posts.length} posts from content collections`);
+console.log(`[BLOG INDEX SSG] Displaying ${page.posts.length} posts`);
 ---
 
 <Layout title="Posts" canonicalURL="/blog">
@@ -53,8 +42,8 @@ if (Astro.response && Astro.response.headers) {
     {
       page.posts && page.posts.length > 0 ? (
         <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
-          {page.posts.map(({ data, id }) => (
-            <Card href={`/blog/${data.slug}`} frontmatter={data} />
+          {page.posts.map((post) => (
+            <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
           ))}
         </ul>
       ) : (

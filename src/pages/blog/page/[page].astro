@@ -5,7 +5,7 @@ import Footer from "@/components/Footer.astro";
 import Main from "@/layouts/Main.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
-import { ISR_CONFIG } from "@/utils/astro-isr/getStaticPaths";
+import { getCollection } from "astro:content";
 
 // Define the page props interface
 interface PageProps {
@@ -21,25 +21,46 @@ interface PageProps {
   next?: string;
 }
 
-/* ISR mode: generate static paths with revalidation */
+/* SSG mode: generate static paths */
 export const prerender = true;
 export async function getStaticPaths() {
-  const { getBlogPaths } = await import("@/utils/astro-isr/getStaticPaths");
-  const allPaths = await getBlogPaths();
+  const { SITE } = await import("@/config");
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const sortedPosts = posts.sort(
+    (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+  );
 
-  // Return all paginated pages (getBlogPaths now only returns pages 2+)
-  return allPaths;
+  const pageSize = SITE.postPerPage || 10;
+  const totalPages = Math.max(1, Math.ceil(sortedPosts.length / pageSize));
+
+  // Generate paths for pages 2+
+  const paths = [];
+  for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+    const startIndex = (pageNum - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const pagePosts = sortedPosts.slice(startIndex, endIndex);
+
+    paths.push({
+      params: { page: pageNum.toString() },
+      props: {
+        posts: pagePosts,
+        currentPage: pageNum,
+        totalPages,
+        start: startIndex + 1,
+        end: Math.min(endIndex, sortedPosts.length),
+        total: sortedPosts.length,
+        size: pageSize,
+        url: `/blog/page/${pageNum}`,
+        prev: pageNum > 2 ? `/blog/page/${pageNum - 1}` : "/blog",
+        next: pageNum < totalPages ? `/blog/page/${pageNum + 1}` : undefined,
+      },
+    });
+  }
+
+  return paths;
 }
 
 const page = Astro.props as PageProps;
-
-/* Set cache-control header for ISR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    `public, max-age=${ISR_CONFIG.BLOG}, stale-while-revalidate=${ISR_CONFIG.BLOG * 2}`
-  );
-}
 ---
 
 <Layout title={`Posts | Page ${page.currentPage}`} canonicalURL={page.url}>
@@ -48,8 +69,8 @@ if (Astro.response && Astro.response.headers) {
     {
       page.posts && page.posts.length > 0 ? (
         <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
-          {page.posts.map(({ data, id }) => (
-            <Card href={`/blog/${data.slug}`} frontmatter={data} />
+          {page.posts.map((post) => (
+            <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
           ))}
         </ul>
       ) : (

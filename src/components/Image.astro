@@ -1,11 +1,6 @@
 ---
-import { generateResponsiveImageAttrs } from "../helpers/images.mjs";
-
 const {
-  src, // base filename without extension, e.g. "cover"
-  formats = ["avif", "webp", "jpeg"],
-  widths = [400, 800, 1200, 1400],
-  sizes = "100vw",
+  src, // image URL (from public/images)
   imageClass = "w-fit h-auto bg-gray-100 rounded-xl",
   alt = "Blog Image",
   loading = "lazy",
@@ -13,44 +8,23 @@ const {
   fetchpriority = "auto",
 } = Astro.props;
 
-const attrs = generateResponsiveImageAttrs({
+// All images are now from public/images (downloaded from Notion)
+const attrs = {
   src,
-  formats,
-  widths,
-  sizes,
   alt,
+  class: `${imageClass} img-loading`,
   loading,
   decoding,
   fetchpriority,
-  className: imageClass,
-});
+  style: "max-width:100%;height:auto;",
+};
 ---
 
-<picture>
-  {
-    formats.map((format: string) => (
-      <source
-        srcset={widths
-          .map((w: number) => `/assets/images/blog/${src}-${w}.${format} ${w}w`)
-          .join(", ")}
-        type={`image/${format}`}
-        sizes={sizes}
-      />
-    ))
-  }
-  <img
-    src={`/assets/images/blog/${src}-${widths[widths.length - 1]}.${formats[formats.length - 1]}`}
-    alt={alt}
-    class={`${imageClass} img-loading`}
-    loading={loading}
-    decoding={decoding}
-    fetchpriority={fetchpriority}
-    width={widths[widths.length - 1]}
-    style="max-width:100%;height:auto;"
-  />
-</picture>
-
-<style>
+<img
+  {...attrs}
+/>
++)}
+</style>
   .blurry-load {
     position: relative;
     overflow: hidden;

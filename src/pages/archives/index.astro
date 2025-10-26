@@ -6,24 +6,17 @@ import { SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import getPostsByGroupCondition from "@/utils/getPostsByGroupCondition";
-import { getNotionPosts } from "@/utils/getNotionPosts";
+import { getCollection } from "astro:content";
 
-export const prerender = false; // Use SSR so archives reflect Notion updates
+export const prerender = true; // SSG mode
 
 // Redirect to 404 page if `showArchives` config is false
 if (!SITE.showArchives) {
   return Astro.redirect("/404");
 }
 
-const allPosts = await getNotionPosts();
-/* Set cache-control header for SSR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    "public, max-age=30, stale-while-revalidate=60"
-  );
-}
-const posts = allPosts.filter(({ data }) => !data.draft);
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const posts = allPosts;
 
 const months = [
   "January",

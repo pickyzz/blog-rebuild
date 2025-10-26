@@ -41,3 +41,21 @@ pnpm-debug.log*
 # other
 .github/copilot-instructions.md
 .agents/memory.instruction.md
+
+# Ignore blog images (synced from Notion) but preserve folder structure
+/public/images/blog/*
+!/public/images/blog/.gitkeep
+
+# Also ignore placeholder images
+/public/images/blog/*.placeholder.*
+
+# Ignore blog content (synced from Notion) but preserve folder structure
+/src/content/blog/*
+!/src/content/blog/.gitkeep
+
+# Legacy/unused folders
+blog-nextjs/
+blog-rebuild/blog-rebuild/
+middleware/
+src/assets/images/
+```

@@ -1,9 +1,9 @@
 /**
- * ISR (Incremental Static Regeneration) utilities for Astro
- * Provides getStaticPaths for dynamic routes with Notion data
+ * Static path generation for SSG mode using content collections
+ * Replaces ISR utilities for static generation
  */
 
-import { getNotionPosts, getNotionUniqueTags } from "../getNotionPosts";
+import { getCollection } from "astro:content";
 
 /**
  * Generate static paths for blog posts
@@ -11,11 +11,10 @@ import { getNotionPosts, getNotionUniqueTags } from "../getNotionPosts";
  */
 export async function getPostPaths() {
   try {
-    const posts = await getNotionPosts();
-    const publishedPosts = posts.filter(post => !post.data.draft);
+    const posts = await getCollection("blog", ({ data }) => !data.draft);
 
-    return publishedPosts.map(post => ({
-      params: { slug: post.data.slug },
+    return posts.map(post => ({
+      params: { slug: post.slug }, // Use post.slug from content collections
       props: { post },
     }));
   } catch (error) {
@@ -30,33 +29,32 @@ export async function getPostPaths() {
  */
 export async function getBlogPaths() {
   try {
-    const posts = await getNotionPosts();
-    const publishedPosts = posts.filter(post => !post.data.draft);
+    const posts = await getCollection("blog", ({ data }) => !data.draft);
     const { SITE } = await import("@/config");
 
     const pageSize = SITE.postPerPage || 10;
-    const totalPages = Math.max(1, Math.ceil(publishedPosts.length / pageSize));
+    const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
 
     const paths = [];
 
-    // Generate paths for each page (starting from page 2 since page 1 is handled by /blog/index.astro)
+    // Generate paths for pages 2+ (page 1 is handled by /blog/index.astro)
     for (let page = 2; page <= totalPages; page++) {
-      const start = (page - 1) * pageSize;
-      const end = Math.min(start + pageSize, publishedPosts.length);
-      const pageData = publishedPosts.slice(start, end);
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const pagePosts = posts.slice(startIndex, endIndex);
 
       paths.push({
         params: { page: page.toString() },
         props: {
-          totalPages,
-          posts: pageData,
+          posts: pagePosts,
           currentPage: page,
-          start: start + 1,
-          end: end,
-          total: publishedPosts.length,
+          totalPages,
+          start: startIndex + 1,
+          end: Math.min(endIndex, posts.length),
+          total: posts.length,
           size: pageSize,
           url: `/blog/page/${page}`,
-          prev: page === 2 ? "/blog" : `/blog/page/${page - 1}`,
+          prev: page > 2 ? `/blog/page/${page - 1}` : "/blog",
           next: page < totalPages ? `/blog/page/${page + 1}` : undefined,
         },
       });
@@ -65,78 +63,88 @@ export async function getBlogPaths() {
     return paths;
   } catch (error) {
     console.error("Error generating blog paths:", error);
-    // Return empty array if error occurs
     return [];
   }
 }
 
 /**
  * Generate static paths for tag pages
- * Used by src/pages/tags/[tag]/index.astro if needed
+ * Used by src/pages/tags/[tag]/[...page].astro
  */
 export async function getTagPaths() {
   try {
-    const tags = await getNotionUniqueTags();
+    const posts = await getCollection("blog", ({ data }) => !data.draft);
+    const { SITE } = await import("@/config");
 
-    return tags.map(tag => ({
-      params: { tag: tag.tag },
-      props: { tag: tag },
-    }));
+    const pageSize = SITE.postPerPage || 10;
+
+    // Get all unique tags
+    const tagMap = new Map<string, any[]>();
+
+    posts.forEach(post => {
+      post.data.tags.forEach((tag: string) => {
+        if (!tagMap.has(tag)) {
+          tagMap.set(tag, []);
+        }
+        tagMap.get(tag)!.push(post);
+      });
+    });
+
+    const paths = [];
+
+    for (const [tag, tagPosts] of tagMap.entries()) {
+      const sortedPosts = tagPosts.sort(
+        (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+      );
+      const totalPages = Math.max(1, Math.ceil(sortedPosts.length / pageSize));
+
+      // Generate all pages for this tag
+      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+        const startIndex = (pageNum - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const pagePosts = sortedPosts.slice(startIndex, endIndex);
+
+        if (pageNum === 1) {
+          // First page uses /tags/[tag] path
+          paths.push({
+            params: { tag },
+            props: {
+              posts: pagePosts,
+              currentPage: pageNum,
+              totalPages,
+              start: startIndex + 1,
+              end: Math.min(endIndex, sortedPosts.length),
+              total: sortedPosts.length,
+              size: pageSize,
+              url: `/tags/${tag}`,
+              prev: undefined,
+              next: totalPages > 1 ? `/tags/${tag}/2` : undefined,
+            },
+          });
+        } else {
+          // Additional pages use /tags/[tag]/[page] path
+          paths.push({
+            params: { tag, page: pageNum.toString() },
+            props: {
+              posts: pagePosts,
+              currentPage: pageNum,
+              totalPages,
+              start: startIndex + 1,
+              end: Math.min(endIndex, sortedPosts.length),
+              total: sortedPosts.length,
+              size: pageSize,
+              url: `/tags/${tag}/${pageNum}`,
+              prev: pageNum > 2 ? `/tags/${tag}/${pageNum - 1}` : `/tags/${tag}`,
+              next: pageNum < totalPages ? `/tags/${tag}/${pageNum + 1}` : undefined,
+            },
+          });
+        }
+      }
+    }
+
+    return paths;
   } catch (error) {
     console.error("Error generating tag paths:", error);
     return [];
   }
-}
-
-/**
- * Helper function to get static props for ISR
- * Combines data fetching with caching
- */
-export async function getStaticProps<T>(
-  key: string,
-  fetcher: () => Promise<T>,
-  revalidate: number = 1800
-): Promise<{ props: T; revalidate: number }> {
-  try {
-    const data = await fetcher();
-    return {
-      props: data,
-      revalidate,
-    };
-  } catch (error) {
-    console.error(`Error fetching static props for ${key}:`, error);
-    throw error;
-  }
-}
-
-/**
- * ISR configuration for different page types
- */
-export const ISR_CONFIG = {
-  // 30 minutes for blog posts
-  POST: 1800,
-  // 1 hour for blog listings
-  BLOG: 3600,
-  // 2 hours for tags
-  TAG: 7200,
-  // 30 minutes for homepage
-  HOME: 1800,
-} as const;
-
-/**
- * Validate that required environment variables are set for ISR
- */
-export function validateISREnvironment(): {
-  valid: boolean;
-  missing: string[];
-} {
-  const required = ["NOTION_KEY", "DATABASE_ID"];
-  const missing = required.filter(
-    key => !import.meta.env[key] || import.meta.env[key].trim() === ""
-  );
-
-  return {
-    valid: missing.length === 0,
-    missing,
-  };
 }

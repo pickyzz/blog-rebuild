@@ -8,58 +8,98 @@ import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
 import { SITE } from "@/config";
-import {
-  getNotionPostsByTag,
-  getNotionUniqueTags,
-} from "@/utils/getNotionPosts";
+import { getCollection } from "astro:content";
 
-/* SSR pagination: dynamic, real-time */
-import { URL } from "url";
-
-/* SSR mode: cache-control header for real-time Notion content */
-const { tag } = Astro.params;
-const url = new URL(Astro.request.url);
-const pageParam = url.searchParams.get("page");
-const currentPage = Math.max(1, parseInt(pageParam || "1", 10));
-
-const tagName = typeof tag === "string" ? tag : "";
-const posts = await getNotionPostsByTag(tagName);
-const pageSize = SITE.postPerPage;
-const lastPage = Math.max(1, Math.ceil(posts.length / pageSize));
-const start = (currentPage - 1) * pageSize;
-const end = start + pageSize;
-const pageData = posts.slice(start, end);
-
-const page = {
-  data: pageData,
-  currentPage,
-  lastPage,
-  url: `/tags/${tagName}`,
-  prev:
-    currentPage > 2
-      ? `/tags/${tagName}?page=${currentPage - 1}`
-      : currentPage === 2
-        ? `/tags/${tagName}`
-        : undefined,
-  next:
-    currentPage < lastPage
-      ? currentPage + 1 === 1
-        ? `/tags/${tagName}`
-        : `/tags/${tagName}?page=${currentPage + 1}`
-      : undefined,
-  start: start + 1,
-  end: Math.min(end, posts.length),
-  total: posts.length,
-  size: pageSize,
-};
-
-/* Set cache-control header for SSR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    "public, max-age=30, stale-while-revalidate=60"
-  );
+// Define the page props interface
+interface PageProps {
+  posts: CollectionEntry<"blog">[];
+  currentPage: number;
+  totalPages: number;
+  start: number;
+  end: number;
+  total: number;
+  size: number;
+  url: string;
+  prev?: string;
+  next?: string;
 }
+
+/* SSG mode: generate static paths */
+export const prerender = true;
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const pageSize = SITE.postPerPage || 10;
+
+  // Get all unique tags
+  const tagMap = new Map<string, CollectionEntry<"blog">[]>();
+
+  posts.forEach(post => {
+    post.data.tags.forEach(tag => {
+      if (!tagMap.has(tag)) {
+        tagMap.set(tag, []);
+      }
+      tagMap.get(tag)!.push(post);
+    });
+  });
+
+  const paths = [];
+
+  for (const [tag, tagPosts] of tagMap.entries()) {
+    const sortedPosts = tagPosts.sort(
+      (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+    );
+    const totalPages = Math.max(1, Math.ceil(sortedPosts.length / pageSize));
+
+    // Generate all pages for this tag
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      const startIndex = (pageNum - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const pagePosts = sortedPosts.slice(startIndex, endIndex);
+
+      if (pageNum === 1) {
+        // First page uses /tags/[tag] path
+        paths.push({
+          params: { tag },
+          props: {
+            posts: pagePosts,
+            currentPage: pageNum,
+            totalPages,
+            start: startIndex + 1,
+            end: Math.min(endIndex, sortedPosts.length),
+            total: sortedPosts.length,
+            size: pageSize,
+            url: `/tags/${tag}`,
+            prev: undefined,
+            next: totalPages > 1 ? `/tags/${tag}/2` : undefined,
+          },
+        });
+      } else {
+        // Additional pages use /tags/[tag]/[page] path
+        paths.push({
+          params: { tag, page: pageNum.toString() },
+          props: {
+            posts: pagePosts,
+            currentPage: pageNum,
+            totalPages,
+            start: startIndex + 1,
+            end: Math.min(endIndex, sortedPosts.length),
+            total: sortedPosts.length,
+            size: pageSize,
+            url: `/tags/${tag}/${pageNum}`,
+            prev: pageNum > 2 ? `/tags/${tag}/${pageNum - 1}` : `/tags/${tag}`,
+            next: pageNum < totalPages ? `/tags/${tag}/${pageNum + 1}` : undefined,
+          },
+        });
+      }
+    }
+  }
+
+  return paths;
+}
+
+const page = Astro.props as PageProps;
+const { tag } = Astro.params;
+const tagName = typeof tag === "string" ? tag : "";
 ---
 
 <Layout title={`Tag: ${tagName} | ${SITE.title}`}>
@@ -73,8 +113,8 @@ if (Astro.response && Astro.response.headers) {
       class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2"
     >
       {
-        page?.data?.map(({ data, id }: any) => (
-          <Card href={`/blog/${data.slug}`} frontmatter={data} />
+        page?.posts?.map((post) => (
+          <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
         ))
       }
     </ul>
@@ -82,5 +122,5 @@ if (Astro.response && Astro.response.headers) {
 
   <Pagination {page} />
 
-  <Footer noMarginTop={page?.lastPage > 1} />
+  <Footer noMarginTop={page?.totalPages > 1} />
 </Layout>

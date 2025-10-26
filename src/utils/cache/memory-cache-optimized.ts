@@ -261,33 +261,14 @@ export async function getCachedDataWithRetry<T>(
   return null;
 }
 
-// Preload common data
+// Preload common data - disabled in SSG mode
+// Preload common data - disabled in SSG mode
 export async function preloadCache(): Promise<void> {
-  console.log('[CACHE PRELOAD] Starting preload...');
+  console.log('[CACHE PRELOAD] Skipping preload in SSG mode');
 
-  try {
-    // Import dynamically to avoid circular dependencies
-    const { getNotionPosts } = await import('../getNotionPosts');
-    const { getNotionUniqueTags } = await import('../getNotionPosts');
-
-    // Preload posts
-    await getCachedData(
-      CacheKeys.allPosts(),
-      () => getNotionPosts(),
-      CACHE_CONFIG.postsTTL
-    );
-
-    // Preload tags
-    await getCachedData(
-      CacheKeys.allTags(),
-      () => getNotionUniqueTags(),
-      CACHE_CONFIG.tagsTTL
-    );
-
-    console.log('[CACHE PRELOAD] Completed successfully');
-  } catch (error) {
-    console.error('[CACHE PRELOAD] Failed:', error);
-  }
+  // In SSG mode, we don't need to preload cache
+  // All content is available via content collections
+  return;
 }
 
 // Export cache instance for advanced usage

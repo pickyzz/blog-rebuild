@@ -5,6 +5,8 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/config";
 
+export const prerender = true;
+
 ---
 
 <Layout title={`About | ${SITE.title}`}>
@@ -15,7 +17,7 @@ import { SITE } from "@/config";
       <div class="grid items-center grid-cols-1 gap-4 my-12 md:grid-cols-2">
         <img
           class="w-3/5 mx-auto rounded-full shadow-lg"
-          src="/images/profile.jpg"
+          src="/images/static/profile.jpg"
           alt="Avatar image"
           loading="eager"
         />
@@ -90,21 +92,21 @@ import { SITE } from "@/config";
         <div class="relative max-h-[450px] w-[90%] overflow-hidden md:w-[60%]">
           <div id="cert1" class="w-full">
             <img
-              src="/images/fcc-cert-1.png"
+              src="/images/static/fcc-cert-1.png"
               class="h-[440px] w-full border-none object-contain"
               alt="FreeCodeCamp Certificate 1"
             />
           </div>
           <div id="cert2" class="w-full">
             <img
-              src="/images/fcc-cert-2.png"
+              src="/images/static/fcc-cert-2.png"
               class="h-[440px] w-full border-none object-contain"
               alt="FreeCodeCamp Certificate 2"
             />
           </div>
           <div id="cert3" class="w-full">
             <img
-              src="/images/fcc-cert-3.png"
+              src="/images/static/fcc-cert-3.png"
               class="h-[440px] w-full border-none object-contain"
               alt="FreeCodeCamp Certificate 3"
             />

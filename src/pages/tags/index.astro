@@ -5,16 +5,24 @@ import Layout from "@/layouts/Layout.astro";
 import Main from "@/layouts/Main.astro";
 import Tag from "@/components/Tag.astro";
 import { SITE } from "@/config";
-import { getNotionUniqueTags } from "@/utils/getNotionPosts";
+import { getCollection } from "astro:content";
 
-const tags = await getNotionUniqueTags();
-/* Set cache-control header for SSR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    "public, max-age=30, stale-while-revalidate=60"
-  );
-}
+// Get all posts and extract unique tags
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+const tagMap = new Map<string, string>();
+
+posts.forEach(post => {
+  post.data.tags.forEach(tag => {
+    if (!tagMap.has(tag)) {
+      tagMap.set(tag, tag);
+    }
+  });
+});
+
+const tags = Array.from(tagMap.entries()).map(([tag, tagName]) => ({
+  tag,
+  tagName
+}));
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>

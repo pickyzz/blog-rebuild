@@ -12,14 +12,9 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
-    "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@notionhq/client": "4.0.2",
-    "@resvg/resvg-js": "2.6.2",
-    "@upstash/redis": "^1.35.6",
-    "@vite-pwa/astro": "^1.1.0",
     "notion-to-md": "3.1.9",
-    "prismjs": "^1.30.0",
     "reading-time": "1.5.0",
     "rehype-external-links": "3.0.0",
     "sanitize-html": "^2.17.0",
@@ -30,12 +25,6 @@
     "tailwindcss": "^3.4.17",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
-    "workbox-core": "^7.3.0",
-    "workbox-expiration": "^7.3.0",
-    "workbox-precaching": "^7.3.0",
-    "workbox-routing": "^7.3.0",
-    "workbox-strategies": "^7.3.0",
-    "workbox-window": "^7.3.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -78,13 +67,11 @@
     "format": "prettier --write .",
     "test": "playwright test",
     "lint": "eslint .",
-    "build": "node ./scripts/prebuild-cache.mjs && astro build",
-    "cache:warm": "node ./scripts/prebuild-cache.mjs",
-    "cache:stats": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.getCacheStats().then(console.log))\"",
-    "cache:clear": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.invalidateCache('notion:*').then(() => console.log('All cache cleared')))\"",
-    "cache:invalidate:all": "curl -X POST -H 'Authorization: Bearer $API_SECRET_KEY' https://your-domain.vercel.app/api/revalidate/all",
-    "cache:invalidate:posts": "curl -X POST -H 'Authorization: Bearer $API_SECRET_KEY' https://your-domain.vercel.app/api/revalidate/posts",
-    "cache:health": "node -e \"import('./src/utils/cache/kv-cache.js').then(m => m.isRedisHealthy().then(healthy => console.log('Redis healthy:', healthy)))\""
+    "build": "npm run sync:posts && astro build",
+    "sync:posts": "node --env-file=.env ./scripts/notion-sync/syncFromNotion.ts",
+    "cleanup:images": "node ./scripts/cleanup/cleanDuplicateImages.ts",
+    "cleanup:unused": "node ./scripts/cleanup/cleanUnusedCode.mjs",
+    "rebuild": "npm run clean && npm run sync:posts && npm run build"
   },
   "engines": {
     "node": "22.x"

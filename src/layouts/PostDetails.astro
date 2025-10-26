@@ -12,7 +12,7 @@ import BackButton from "@/components/BackButton.astro";
 import IconChevronLeft from "@/assets/icons/IconChevronLeft.svg";
 import IconChevronRight from "@/assets/icons/IconChevronRight.svg";
 import { SITE } from "@/config";
-import { isAllowedUrl } from "@/config";
+// Image proxy removed - we use local images in SSG mode
 import { generateToc } from "@/utils/generateToc";
 import TOC from "@/components/TOC.astro";
 import readingTimeLib from "reading-time";
@@ -39,8 +39,8 @@ let headings: any[] = [];
 let notionContent: string = "";
 
 try {
-  // Fetch content from Notion using the page ID
-  notionContent = await getNotionPageContent(post.id);
+  // Fetch content from Notion using the page ID from frontmatter
+  notionContent = await getNotionPageContent(post.data.notionId);
 
   // Create a simple content component that renders the HTML
   Content = () => null; // We'll render the HTML directly instead
@@ -120,35 +120,9 @@ if (!readingTime) {
 
 const toc = generateToc(headings);
 
-const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
-const ogUrl = new URL(
-  ogImageUrl ?? `/blog/${slugifyStr(title)}/index.png`,
-  Astro.url.origin
-).href;
-
-// If the ogUrl points to an allowlisted external host, route it through
-// our serverless image proxy so edge caching can be applied and signed
-// URLs won't expire for clients.
-let proxyOgUrl = ogUrl;
-let placeholderOg: string | undefined = undefined;
-try {
-  if (isAllowedUrl(ogUrl)) {
-    const enc = Buffer.from(encodeURIComponent(ogUrl), 'utf8')
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-    proxyOgUrl = `/api/image/p/${enc}`;
-  }
-} catch (e) {
-  // If ogUrl is not a valid URL, fall back to original value.
-}
-
-try {
-  if (ogImage && (ogImage as any).placeholder) {
-    placeholderOg = (ogImage as any).placeholder as string;
-  }
-} catch (e) {}
+// In SSG mode, we use local images only
+const ogImageUrl = ogImage || "/pickyzz-og.png";
+const ogUrl = new URL(ogImageUrl, Astro.url.origin).href;
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -266,8 +240,8 @@ if (tags && tags.length > 0 && posts) {
     <article id="article" class="max-w-4xl mx-auto mt-8 prose">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center img-loading blurry-load"
-        src={placeholderOg || proxyOgUrl}
-        data-large={proxyOgUrl}
+        src={ogImageUrl}
+        data-large={ogImageUrl}
         alt={title
           ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}`
           : "Blog post cover image"}
@@ -350,31 +324,17 @@ if (tags && tags.length > 0 && posts) {
                 class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
               >
                 <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
-                        {
-                          (() => {
-                            let rsrc = relatedPost.ogImage?.src || "/pickyzz-og.png";
-                            try {
-                              if (isAllowedUrl(rsrc)) {
-                                const enc = Buffer.from(encodeURIComponent(rsrc), 'utf8')
-                                  .toString('base64')
-                                  .replace(/\+/g, '-')
-                                  .replace(/\//g, '_')
-                                  .replace(/=+$/, '');
-                                rsrc = `/api/image/p/${enc}`;
-                              }
-                            } catch (e) {}
-                            return (
-                              <img
-                                class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
-                                src={rsrc}
-                                data-large={relatedPost.ogImage?.src || "/pickyzz-og.png"}
-                                alt={relatedPost.title}
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            );
-                          })()
-                        }
+                        <img
+                          class="card-animate h-[13rem] w-full max-w-full scale-125 object-cover object-center duration-500 hover:scale-110 md:scale-100 img-loading blurry-load"
+                          src={relatedPost.ogImage ? relatedPost.ogImage.replace(/\.[^.]+$/, '.placeholder.jpg') : "/pickyzz-og.png"}
+                          data-large={relatedPost.ogImage}
+                          loading="eager"
+                          style={`filter: blur(0px); transition: filter 0.3s ease;`}
+                          onload={`this.style.filter = 'none';`}
+                          alt={relatedPost.title}
+                          decoding="async"
+                        />
+
                   <div class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2">
                     <h2 class="text-center text-[1.1rem] text-lg font-light text-white decoration-dashed">
                       {relatedPost.title}

@@ -6,37 +6,26 @@ import LinkButton from "@/components/LinkButton.astro";
 import Hr from "@/components/Hr.astro";
 import Card from "@/components/Card.astro";
 import Socials from "@/components/Socials.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
 import { SOCIALS } from "@/constants";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { getNotionPosts } from "@/utils/getNotionPosts";
+import { getCollection } from "astro:content";
 
-/* Set enhanced cache-control header for SSR response */
-if (Astro.response && Astro.response.headers) {
-  Astro.response.headers.set(
-    "cache-control",
-    "public, max-age=1800, stale-while-revalidate=3600"
-  );
-  // Add CDN cache headers for better performance
-  Astro.response.headers.set(
-    "CDN-Cache-Control",
-    "public, max-age=1800, stale-while-revalidate=3600"
-  );
-}
+// SSG mode - fetch posts from content collections
+export const prerender = true;
 
-/* SSR mode with enhanced caching */
-export const prerender = false;
+const posts = await getCollection("blog", ({ data }) => !data.draft);
+console.log(`[HOMEPAGE SSG] Loaded ${posts.length} posts from content collections`);
 
-const { getNotionPosts } = await import("@/utils/getNotionPosts");
-const posts = await getNotionPosts();
-console.log(`[HOMEPAGE SSR] Fetched ${posts.length} posts from Notion`);
-console.log(`[HOMEPAGE] Props posts length: ${posts.length}`);
-const getSortedPosts = (await import("@/utils/getSortedPosts")).default;
-const sortedPosts = getSortedPosts(posts);
+// Sort posts by publication date (newest first)
+const sortedPosts = posts.sort(
+  (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+);
 console.log(`[HOMEPAGE] Sorted posts length: ${sortedPosts.length}`);
+
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 console.log(`[HOMEPAGE] Featured posts length: ${featuredPosts.length}`);
+
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
 ---
@@ -73,11 +62,11 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
             </h2>
             <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
               {featuredPosts.map(
-                ({ data }, index) =>
+                (post, index) =>
                   index < 2 && (
                     <Card
-                      href={`/blog/${data.slug}`}
-                      frontmatter={data}
+                      href={`/blog/${post.slug}`}
+                      frontmatter={post.data}
                       secHeading={false}
                       priority="high"
                     />
@@ -98,13 +87,13 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
           </h2>
           <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
             {sortedPosts
-              .filter(({ data }) => !data.featured)
+              .filter((post) => !post.data.featured)
               .map(
-                ({ data }, index) =>
+                (post, index) =>
                   index < SITE.postOnIndex && (
                     <Card
-                      href={`/blog/${data.slug}`}
-                      frontmatter={data}
+                      href={`/blog/${post.slug}`}
+                      frontmatter={post.data}
                       secHeading={false}
                       priority="low"
                     />
