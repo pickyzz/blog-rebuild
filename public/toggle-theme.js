@@ -68,9 +68,9 @@ function reflectPreference() {
     autoIcon.style.opacity = "0";
 
     if (themeValue === "light") {
-      moonIcon.style.opacity = "1";
-    } else if (themeValue === "dark") {
       sunIcon.style.opacity = "1";
+    } else if (themeValue === "dark") {
+      moonIcon.style.opacity = "1";
     } else if (themeValue === "auto") {
       autoIcon.style.opacity = "1";
     }
