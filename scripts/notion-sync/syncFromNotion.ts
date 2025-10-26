@@ -5,6 +5,9 @@ const { NotionToMarkdown } = pkg;
 import fs from "fs/promises";
 import path from "path";
 import sharp from "sharp";
+import dotenv from "dotenv";
+
+// dotenv.config() will be called in main() with better error handling
 
 // Helper function to ensure valid date
 function ensureDate(dateString: any): Date | null {
@@ -529,6 +532,27 @@ ${frontmatterStr}
 
 // Main execution
 async function main() {
+  // Auto-load environment variables with fallback to different .env locations
+  const envPaths = [
+    path.resolve(process.cwd(), ".env"),
+    path.resolve(process.cwd(), ".env.local"),
+    path.resolve(process.cwd(), ".env.development"),
+  ];
+
+  let envLoaded = false;
+  for (const envPath of envPaths) {
+    try {
+      const result = dotenv.config({ path: envPath });
+      if (result.parsed) {
+        console.log(`📄 Loaded environment from: ${path.basename(envPath)}`);
+        envLoaded = true;
+        break;
+      }
+    } catch (error: any) {
+      // Continue trying other env files
+    }
+  }
+
   const config: SyncConfig = {
     notionToken: process.env.NOTION_KEY || "",
     databaseId: process.env.DATABASE_ID || "",
@@ -537,9 +561,22 @@ async function main() {
   };
 
   if (!config.notionToken || !config.databaseId) {
-    console.error("❌ Missing NOTION_KEY or DATABASE_ID environment variables");
+    console.error("\n❌ Missing required environment variables:");
+    if (!config.notionToken) console.log("   - NOTION_KEY");
+    if (!config.databaseId) console.log("   - DATABASE_ID");
+
+    if (!envLoaded) {
+      console.log("\n📝 Environment files checked (not found):");
+      envPaths.forEach(p => console.log(`   - ${p}`));
+      console.log("\n💡 Solution:");
+      console.log("   1. Copy .example.env to .env");
+      console.log("   2. Add your Notion credentials to .env");
+      console.log("   3. Run the script again");
+    }
     process.exit(1);
   }
+
+  console.log("✅ Environment variables loaded successfully");
 
   const sync = new NotionSync(config);
   await sync.sync();

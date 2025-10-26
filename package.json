@@ -59,8 +59,6 @@
     "dev:prod": "astro dev",
     "start": "astro dev",
     "preview": "NODE_ENV=development astro preview",
-    "preview:bun": "bun --env-file=.env run astro preview",
-    "preview:dev": "NODE_ENV=development astro build && NODE_ENV=development astro preview",
     "astro": "astro",
     "clean": "rimraf dist",
     "format:check": "prettier --check .",
@@ -68,7 +66,7 @@
     "test": "playwright test",
     "lint": "eslint .",
     "build": "npm run sync:posts && astro build",
-    "sync:posts": "node --env-file=.env ./scripts/notion-sync/syncFromNotion.ts",
+    "sync:posts": "node ./scripts/notion-sync/syncFromNotion.ts",
     "cleanup:images": "node ./scripts/cleanup/cleanDuplicateImages.ts",
     "cleanup:unused": "node ./scripts/cleanup/cleanUnusedCode.mjs",
     "rebuild": "npm run clean && npm run sync:posts && npm run build"
