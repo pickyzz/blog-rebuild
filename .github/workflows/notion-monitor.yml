@@ -1,51 +1,70 @@
-name: Monitor Notion Posts and Trigger Rebuild
+name: Check Notion Update with Upstash Redis
 
 on:
   schedule:
-    # Run every 15 minutes to check for Notion updates
-    - cron: "*/15 * * * *"
-  workflow_dispatch: # Allow manual triggering
+    - cron: "0 * * * *"
+  workflow_dispatch:
 
 jobs:
-  monitor-notion:
+  check-and-deploy:
     runs-on: ubuntu-latest
+
+    # 1. ตั้งค่า Environment Variables ให้กับ Job เพื่อให้ Node.js Script เข้าถึงได้
+    env:
+      UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+      NOTION_KEY: ${{ secrets.NOTION_KEY }}
+      DATABASE_ID: ${{ secrets.DATABASE_ID }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          cache: "npm"
+          bun-version: latest
 
-      - name: Install dependencies for scripts
-        run: npm install
+      # 2. ติดตั้ง Dependencies ที่จำเป็น
+      - name: Install dependencies 📦
+        run: bun install
 
-      - name: Create Environment File (.env)
+      - name: Fetch and Compare Update Time 🔍
+        id: deploy_trigger
+        # 3. เรียกใช้ Node.js Script เพื่อจัดการ Logic ทั้งหมด
+        run: bun run scripts/checkNotionUpdates.cjs
+        # **Script จะ set output 'should_deploy' และ update Redis เอง**
+
+      - name: Trigger Vercel Deploy Hook 🚀
+        # 4. ใช้ Output ที่ตั้งค่าโดย Node.js Script
+        if: steps.deploy_trigger.outputs.should_deploy == 'true'
         run: |
-          echo "NOTION_KEY=${{ secrets.NOTION_KEY }}" >> .env
-          echo "DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
-          echo "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" >> .env
-          echo "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" >> .env
-          echo "VERCEL_DEPLOYMENT_HOOK=${{ secrets.VERCEL_DEPLOYMENT_HOOK }}" >> .env
-          echo "✅ .env file created"
-          cat .env
+          echo "Triggering Vercel deployment..."
+          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
 
-      - name: Check for Notion updates and determine deploy status
-        id: check-notion
-        # สคริปต์จะใช้ ENV variables เหล่านี้โดยตรง และตั้งค่า Output 'should_deploy'
-        env:
-          NOTION_KEY: ${{ secrets.NOTION_KEY }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
+      - name: Deployment Summary 📝
         run: |
-          node scripts/checkNotionUpdates.cjs
-          echo "✅ Notion update check completed"
+          SHOULD_DEPLOY="${{ steps.deploy_trigger.outputs.should_deploy }}"
+          CURRENT_TIME=$(date "+%Y-%m-%d %H:%M:%S %Z")
 
-      - name: Trigger Vercel Deploy Hook
-        # ทำงานเมื่อ Output 'should_deploy' เป็น 'true'
-        if: steps.check-notion.outputs.should_deploy == 'true'
-        env:
-          VERCEL_DEPLOYMENT_HOOK: ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
-        run: |
-          echo "🚀 Triggering Vercel rebuild..."
-          node scripts/triggerVercelDeploy.cjs
+          SUMMARY_FILE=$GITHUB_STEP_SUMMARY
+
+          echo "### 📄 Notion Update & Vercel Deploy Summary" >> $SUMMARY_FILE
+          echo "" >> $SUMMARY_FILE
+          if [ "$SHOULD_DEPLOY" = "true" ]; then
+
+            echo "**Status:** ✅ **REDEPLOY Triggered**" >> $SUMMARY_FILE
+            echo "- **Reason:** Found Notion content update" >> $SUMMARY_FILE
+
+            if [ -n "${{ env.NEW_UPDATE_TIME }}" ]; then
+              echo "- **Notion Update Time:** \`${{ env.NEW_UPDATE_TIME }}\`" >> $SUMMARY_FILE
+            fi
+
+            echo "- **Time:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "✅ Vercel Deploy Hook was successfully triggered at $CURRENT_TIME"
+          else
+            echo "**Status:** ⏸️ **Deploy Skipped**" >> $SUMMARY_FILE
+            echo "- **Reason:** Not found Notion update since last time" >> $SUMMARY_FILE
+            echo "- **Time:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "⏸️ Skipping Vercel deploy. No Notion updates detected."
+          fi
