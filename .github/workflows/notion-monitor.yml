@@ -20,19 +20,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: "20"
+          bun-version: latest
 
       # 2. ติดตั้ง Dependencies ที่จำเป็น
       - name: Install dependencies 📦
-        run: npm install @notionhq/client node-fetch
+        run: npm install
 
       - name: Fetch and Compare Update Time 🔍
         id: deploy_trigger
         # 3. เรียกใช้ Node.js Script เพื่อจัดการ Logic ทั้งหมด
-        run: node scripts/checkNotionUpdates.cjs
+        run: bun run scripts/checkNotionUpdates.cjs
         # **Script จะ set output 'should_deploy' และ update Redis เอง**
 
       - name: Trigger Vercel Deploy Hook 🚀

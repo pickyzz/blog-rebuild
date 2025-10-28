@@ -124,7 +124,7 @@ async function main() {
       setOutput('should_deploy', 'true');
 
       // 2. อัปเดตเวลาล่าสุดลงใน Redis (สำคัญ: ต้องทำก่อน Exit)
-      await setRedisValue(new Date().toISOString());
+      await setRedisValue(lastEdited);
 
       // 3. ออกจาก Process ด้วยรหัส 0 (สำเร็จ)
       process.exit(0);
