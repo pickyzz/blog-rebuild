@@ -53,18 +53,18 @@ jobs:
           echo "" >> $SUMMARY_FILE
           if [ "$SHOULD_DEPLOY" = "true" ]; then
 
-            echo "**สถานะ:** ✅ **REDEPLOY ถูกสั่งงานสำเร็จ**" >> $SUMMARY_FILE
-            echo "- **เหตุผล:** ตรวจพบเนื้อหา Notion มีการอัพเดท" >> $SUMMARY_FILE
+            echo "**Status:** ✅ **REDEPLOY Triggered**" >> $SUMMARY_FILE
+            echo "- **Reason:** Found Notion content update" >> $SUMMARY_FILE
 
             if [ -n "${{ env.NEW_UPDATE_TIME }}" ]; then
               echo "- **Notion Update Time:** \`${{ env.NEW_UPDATE_TIME }}\`" >> $SUMMARY_FILE
             fi
 
-            echo "- **เวลาสั่งงาน Hook:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "- **Time:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
             echo "✅ Vercel Deploy Hook was successfully triggered at $CURRENT_TIME"
           else
-            echo "**สถานะ:** ⏸️ **ข้ามการ Deploy**" >> $SUMMARY_FILE
-            echo "- **เหตุผล:** ไม่พบการอัพเดทเนื้อหา Notion ตั้งแต่การตรวจสอบครั้งล่าสุด" >> $SUMMARY_FILE
-            echo "- **เวลาตรวจสอบ:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "**Status:** ⏸️ **Deploy Skipped**" >> $SUMMARY_FILE
+            echo "- **Reason:** Not found Notion update since last time" >> $SUMMARY_FILE
+            echo "- **Time:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
             echo "⏸️ Skipping Vercel deploy. No Notion updates detected."
           fi
