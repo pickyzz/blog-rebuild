@@ -27,7 +27,7 @@ jobs:
 
       # 2. ติดตั้ง Dependencies ที่จำเป็น
       - name: Install dependencies 📦
-        run: npm install
+        run: bun install
 
       - name: Fetch and Compare Update Time 🔍
         id: deploy_trigger
