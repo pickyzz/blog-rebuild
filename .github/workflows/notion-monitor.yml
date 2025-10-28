@@ -1,51 +1,62 @@
-name: Monitor Notion Posts and Trigger Rebuild
+name: Check Notion Update with Upstash Redis
 
 on:
   schedule:
-    # Run every 15 minutes to check for Notion updates
-    - cron: "*/15 * * * *"
-  workflow_dispatch: # Allow manual triggering
+    - cron: "0 * * * *" # ทำงานทุกชั่วโมง
+  workflow_dispatch:
 
 jobs:
-  monitor-notion:
+  check-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
+    steps:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          cache: "npm"
+          node-version: "20"
 
-      - name: Install dependencies for scripts
-        run: npm install
-
-      - name: Create Environment File (.env)
+      - name: Fetch and Compare Update Time
+        id: deploy_trigger
         run: |
-          echo "NOTION_KEY=${{ secrets.NOTION_KEY }}" >> .env
-          echo "DATABASE_ID=${{ secrets.DATABASE_ID }}" >> .env
-          echo "UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}" >> .env
-          echo "UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" >> .env
-          echo "VERCEL_DEPLOYMENT_HOOK=${{ secrets.VERCEL_DEPLOYMENT_HOOK }}" >> .env
-          echo "✅ .env file created"
-          cat .env
+          REDIS_URL="${{ secrets.UPSTASH_REDIS_REST_URL }}"
+          REDIS_TOKEN="${{ secrets.UPSTASH_REDIS_REST_TOKEN }}"
+          NOTION_PAGE_ID="${{ secrets.DATABASE_ID}}"
+          KEY_NAME="notion:last_checked_time"
 
-      - name: Check for Notion updates and determine deploy status
-        id: check-notion
-        # สคริปต์จะใช้ ENV variables เหล่านี้โดยตรง และตั้งค่า Output 'should_deploy'
-        env:
-          NOTION_KEY: ${{ secrets.NOTION_KEY }}
-          DATABASE_ID: ${{ secrets.DATABASE_ID }}
-        run: |
-          node scripts/checkNotionUpdates.cjs
-          echo "✅ Notion update check completed"
+          NOTION_LAST_UPDATE=$(curl -s -X GET "https://api.notion.com/v1/pages/$NOTION_PAGE_ID" \
+            -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
+            -H "Notion-Version: 2022-06-28" | jq -r '.last_edited_time')
+
+          REDIS_LAST_UPDATE=$(curl -s -X POST "$REDIS_URL" \
+            -H "Authorization: Bearer $REDIS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"command": ["GET", "'"$KEY_NAME"'"]}' | jq -r '.result')
+
+          echo "Notion Last Update: $NOTION_LAST_UPDATE"
+          echo "Redis Last Update: $REDIS_LAST_UPDATE"
+
+          if [ "$NOTION_LAST_UPDATE" != "$REDIS_LAST_UPDATE" ]; then
+            echo "::notice title=Deployment Triggered::Notion content updated! Triggering Vercel deployment and updating Redis."
+
+            echo "UPDATED=true" >> $GITHUB_ENV
+
+            echo "NEW_UPDATE_TIME=$NOTION_LAST_UPDATE" >> $GITHUB_ENV
+          else
+            echo "::notice::No changes detected in Notion content. Skipping deployment."
+          fi
 
       - name: Trigger Vercel Deploy Hook
-        # ทำงานเมื่อ Output 'should_deploy' เป็น 'true'
-        if: steps.check-notion.outputs.should_deploy == 'true'
-        env:
-          VERCEL_DEPLOYMENT_HOOK: ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
+        if: env.UPDATED == 'true'
         run: |
-          echo "🚀 Triggering Vercel rebuild..."
-          node scripts/triggerVercelDeploy.cjs
+          echo "Triggering Vercel deployment..."
+          curl -X POST ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
+
+      - name: Update Upstash Redis
+        if: env.UPDATED == 'true'
+        run: |
+          curl -s -X POST ${{ secrets.UPSTASH_REDIS_REST_URL }} \
+            -H "Authorization: Bearer ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"command": ["SET", "notion:last-update-time", "'"${{ env.NEW_UPDATE_TIME }}"'"]}'
+
+          echo "Upstash Redis updated to ${{ env.NEW_UPDATE_TIME }}"
