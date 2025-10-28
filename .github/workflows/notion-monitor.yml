@@ -2,7 +2,7 @@ name: Check Notion Update with Upstash Redis
 
 on:
   schedule:
-    - cron: "0 * * * *" # ทำงานทุกชั่วโมง
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -41,3 +41,30 @@ jobs:
         run: |
           echo "Triggering Vercel deployment..."
           curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+
+      - name: Deployment Summary 📝
+        run: |
+          SHOULD_DEPLOY="${{ steps.deploy_trigger.outputs.should_deploy }}"
+          CURRENT_TIME=$(date "+%Y-%m-%d %H:%M:%S %Z")
+
+          SUMMARY_FILE=$GITHUB_STEP_SUMMARY
+
+          echo "### 📄 Notion Update & Vercel Deploy Summary" >> $SUMMARY_FILE
+          echo "" >> $SUMMARY_FILE
+          if [ "$SHOULD_DEPLOY" = "true" ]; then
+
+            echo "**สถานะ:** ✅ **REDEPLOY ถูกสั่งงานสำเร็จ**" >> $SUMMARY_FILE
+            echo "- **เหตุผล:** ตรวจพบเนื้อหา Notion มีการอัพเดท" >> $SUMMARY_FILE
+
+            if [ -n "${{ env.NEW_UPDATE_TIME }}" ]; then
+              echo "- **Notion Update Time:** \`${{ env.NEW_UPDATE_TIME }}\`" >> $SUMMARY_FILE
+            fi
+
+            echo "- **เวลาสั่งงาน Hook:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "✅ Vercel Deploy Hook was successfully triggered at $CURRENT_TIME"
+          else
+            echo "**สถานะ:** ⏸️ **ข้ามการ Deploy**" >> $SUMMARY_FILE
+            echo "- **เหตุผล:** ไม่พบการอัพเดทเนื้อหา Notion ตั้งแต่การตรวจสอบครั้งล่าสุด" >> $SUMMARY_FILE
+            echo "- **เวลาตรวจสอบ:** \`${CURRENT_TIME}\`" >> $SUMMARY_FILE
+            echo "⏸️ Skipping Vercel deploy. No Notion updates detected."
+          fi
