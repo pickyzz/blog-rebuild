@@ -9,54 +9,35 @@ jobs:
   check-and-deploy:
     runs-on: ubuntu-latest
 
+    # 1. ตั้งค่า Environment Variables ให้กับ Job เพื่อให้ Node.js Script เข้าถึงได้
+    env:
+      UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+      UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+      NOTION_KEY: ${{ secrets.NOTION_KEY }}
+      DATABASE_ID: ${{ secrets.DATABASE_ID }}
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Fetch and Compare Update Time
+      # 2. ติดตั้ง Dependencies ที่จำเป็น
+      - name: Install dependencies 📦
+        run: npm install @notionhq/client node-fetch
+
+      - name: Fetch and Compare Update Time 🔍
         id: deploy_trigger
-        run: |
-          REDIS_URL="${{ secrets.UPSTASH_REDIS_REST_URL }}"
-          REDIS_TOKEN="${{ secrets.UPSTASH_REDIS_REST_TOKEN }}"
-          NOTION_PAGE_ID="${{ secrets.DATABASE_ID}}"
-          KEY_NAME="notion:last_checked_time"
+        # 3. เรียกใช้ Node.js Script เพื่อจัดการ Logic ทั้งหมด
+        run: node scripts/checkNotionUpdates.cjs
+        # **Script จะ set output 'should_deploy' และ update Redis เอง**
 
-          NOTION_LAST_UPDATE=$(curl -s -X GET "https://api.notion.com/v1/pages/$NOTION_PAGE_ID" \
-            -H "Authorization: Bearer ${{ secrets.NOTION_KEY }}" \
-            -H "Notion-Version: 2022-06-28" | jq -r '.last_edited_time')
-
-          REDIS_LAST_UPDATE=$(curl -s -X POST "$REDIS_URL" \
-            -H "Authorization: Bearer $REDIS_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"command": ["GET", "'"$KEY_NAME"'"]}' | jq -r '.result')
-
-          echo "Notion Last Update: $NOTION_LAST_UPDATE"
-          echo "Redis Last Update: $REDIS_LAST_UPDATE"
-
-          if [ "$NOTION_LAST_UPDATE" != "$REDIS_LAST_UPDATE" ]; then
-            echo "::notice title=Deployment Triggered::Notion content updated! Triggering Vercel deployment and updating Redis."
-
-            echo "UPDATED=true" >> $GITHUB_ENV
-
-            echo "NEW_UPDATE_TIME=$NOTION_LAST_UPDATE" >> $GITHUB_ENV
-          else
-            echo "::notice::No changes detected in Notion content. Skipping deployment."
-          fi
-
-      - name: Trigger Vercel Deploy Hook
-        if: env.UPDATED == 'true'
+      - name: Trigger Vercel Deploy Hook 🚀
+        # 4. ใช้ Output ที่ตั้งค่าโดย Node.js Script
+        if: steps.deploy_trigger.outputs.should_deploy == 'true'
         run: |
           echo "Triggering Vercel deployment..."
-          curl -X POST ${{ secrets.VERCEL_DEPLOYMENT_HOOK }}
-
-      - name: Update Upstash Redis
-        if: env.UPDATED == 'true'
-        run: |
-          curl -s -X POST ${{ secrets.UPSTASH_REDIS_REST_URL }} \
-            -H "Authorization: Bearer ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d '{"command": ["SET", "notion:last-update-time", "'"${{ env.NEW_UPDATE_TIME }}"'"]}'
-
-          echo "Upstash Redis updated to ${{ env.NEW_UPDATE_TIME }}"
+          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
