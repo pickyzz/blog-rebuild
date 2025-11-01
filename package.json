@@ -41,7 +41,7 @@
     "astro": "5.15.3",
     "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.3",
-    "eslint": "9.38.0",
+    "eslint": "9.39.0",
     "eslint-plugin-astro": "1.4.0",
     "globals": "16.4.0",
     "husky": "9.1.7",
