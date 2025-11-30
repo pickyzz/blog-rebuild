@@ -199,6 +199,16 @@ class NotionSync {
   async downloadImage(url: string, filename: string): Promise<string> {
     try {
       const imagePath = path.join(this.config.publicDir, "images", "blog", filename);
+      
+      // Check if image already exists
+      try {
+        await fs.access(imagePath);
+        // console.log(`⏭️  Skipping existing image: ${filename}`);
+        return `/images/blog/${filename}`;
+      } catch {
+        // File doesn't exist, proceed with download
+      }
+
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Failed to fetch image: ${response.statusText}`);
@@ -380,75 +390,18 @@ ${frontmatterStr}
     }
   }
 
-  async fullRebuild(): Promise<void> {
+  async ensureDirectories(): Promise<void> {
     try {
-      // Delete and recreate content directory
-      const contentPath = this.config.contentDir;
-      await fs.rm(contentPath, { recursive: true, force: true });
-      await fs.mkdir(contentPath, { recursive: true });
-      console.log("🧹 Rebuilt content directory");
-
-      // Backup static images before clearing
-      const staticImages = [
-        'static/profile.jpg',
-        'static/fcc-cert-1.png',
-        'static/fcc-cert-2.png',
-        'static/fcc-cert-3.png'
-      ];
-      const tempDir = path.join(this.config.publicDir, "images", "..", "temp_static");
-
-      try {
-        await fs.mkdir(tempDir, { recursive: true });
-
-        // Backup static images
-        for (const img of staticImages) {
-          const srcPath = path.join(this.config.publicDir, "images", img);
-          const destPath = path.join(tempDir, path.basename(img));
-          try {
-            await fs.copyFile(srcPath, destPath);
-            console.log(`📦 Backed up ${img}`);
-          } catch (error) {
-            console.log(`⚠️  ${img} not found, skipping backup`);
-          }
-        }
-
-        // Delete and recreate blog images directory only
-        const blogImagesPath = path.join(this.config.publicDir, "images", "blog");
-        await fs.rm(blogImagesPath, { recursive: true, force: true });
-        await fs.mkdir(blogImagesPath, { recursive: true });
-        console.log("🧹 Rebuilt blog images directory");
-
-        // Ensure static directory exists before restoring
-        const staticDir = path.join(this.config.publicDir, "images", "static");
-        await fs.mkdir(staticDir, { recursive: true });
-
-        // Restore static images
-        for (const img of staticImages) {
-          const srcPath = path.join(tempDir, path.basename(img));
-          const destPath = path.join(this.config.publicDir, "images", img);
-          try {
-            await fs.copyFile(srcPath, destPath);
-            console.log(`📦 Restored ${img}`);
-          } catch (error) {
-            console.log(`⚠️  Failed to restore ${img}`);
-          }
-        }
-
-        // Clean up temp directory
-        await fs.rm(tempDir, { recursive: true, force: true });
-        console.log("📦 Cleaned up temporary files");
-
-      } catch (error) {
-        console.warn("Error during static image backup/restore:", error);
-        // Ensure temp directory is cleaned up even if errors occur
-        try {
-          await fs.rm(tempDir, { recursive: true, force: true });
-        } catch (cleanupError) {
-          // Ignore cleanup errors
-        }
-      }
+      // Ensure content directory exists
+      await fs.mkdir(this.config.contentDir, { recursive: true });
+      
+      // Ensure blog images directory exists
+      const blogImagesPath = path.join(this.config.publicDir, "images", "blog");
+      await fs.mkdir(blogImagesPath, { recursive: true });
+      
+      console.log("📁 Verified directories exist");
     } catch (error) {
-      console.warn("Failed to perform full rebuild:", error);
+      console.warn("Failed to ensure directories:", error);
     }
   }
 
@@ -500,8 +453,8 @@ ${frontmatterStr}
     console.log("🚀 Starting Notion sync (Full Rebuild)...");
 
     try {
-      // Full rebuild - delete and recreate directories
-      await this.fullRebuild();
+      // Ensure directories exist without deleting them
+      await this.ensureDirectories();
 
       // Fetch all published posts
       console.log("📥 Fetching posts from Notion...");
