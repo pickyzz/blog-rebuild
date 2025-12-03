@@ -72,6 +72,6 @@
     "rebuild": "npm run clean && npm run sync:posts && npm run build"
   },
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   }
 }
