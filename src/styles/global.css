@@ -329,8 +329,8 @@ html[data-theme="dark"] {
     background-color: var(--background);
     color: var(--foreground);
     font-family:
-      ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono",
-      Menlo, monospace;
+      "IBM Plex Sans Thai", ui-monospace, SFMono-Regular, "SF Mono", Consolas,
+      "Liberation Mono", Menlo, monospace;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
