@@ -5,7 +5,7 @@ import Footer from "@/components/Footer.astro";
 import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
 import Waline from "@/components/Waline.astro";
-import { getNotionPageContent } from "@/utils/notionContent";
+// import { getNotionPageContent } from "@/utils/notionContent";
 import { slugifyStr } from "@/utils/slugify";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackButton from "@/components/BackButton.astro";
@@ -32,88 +32,11 @@ if (!post || !post.data) {
 
 const { title, author, description, ogImage, pubDatetime, modDatetime, tags } =
   post.data;
+const { Content, headings, remarkPluginFrontmatter } = await post.render();
+
 let readingTime = post.data.readingTime;
-
-let Content: any = null;
-let headings: any[] = [];
-let notionContent: string = "";
-
-try {
-  // Fetch content from Notion using the page ID from frontmatter
-  notionContent = await getNotionPageContent(post.data.notionId);
-
-  // Create a simple content component that renders the HTML
-  Content = () => null; // We'll render the HTML directly instead
-
-  // Extract headings from Notion content for TOC and add id attributes
-  const headingRegex = /<h([1-6])([^>]*)>(.*?)<\/h[1-6]>/gi;
-  const extractedHeadings: any[] = [];
-  let processedContent = notionContent;
-  let match;
-  let headingIndex = 0;
-
-  // Store heading mappings for adding IDs
-  const headingMappings: Array<{ original: string; new: string }> = [];
-
-  while ((match = headingRegex.exec(notionContent)) !== null) {
-    const [, level, existingAttrs, content] = match;
-    const depth = parseInt(level);
-
-    // Better text extraction - handle nested HTML elements using regex
-    // Remove all HTML tags to get clean text
-    const text = content
-      .replace(/<[^>]*>/g, "") // Remove HTML tags
-      .replace(/&nbsp;/g, " ") // Replace non-breaking spaces
-      .replace(/&[a-zA-Z0-9#]+;/g, "") // Remove HTML entities
-      .trim();
-
-    if (text && depth >= 2 && depth <= 4) {
-      // Only include h2-h4 for TOC
-      const slug = slugifyStr(text);
-
-      extractedHeadings.push({
-        depth,
-        text,
-        slug,
-      });
-
-      // Store mapping for ID replacement if needed
-      if (!existingAttrs.includes("id=")) {
-        const fullMatch = match[0];
-        const newHeading = `<h${level}${existingAttrs} id="${slug}">${content}</h${level}>`;
-        headingMappings.push({ original: fullMatch, new: newHeading });
-      }
-    }
-    headingIndex++;
-  }
-
-  // Apply heading ID replacements
-  headingMappings.forEach(({ original, new: newHeading }) => {
-    processedContent = processedContent.replace(original, newHeading);
-  });
-
-  notionContent = processedContent;
-  headings = extractedHeadings;
-} catch (error) {
-  notionContent = `<div class="error-message">
-    <p>Unable to load content from Notion.</p>
-    <p>Please try again later.</p>
-  </div>`;
-  headings = [];
-}
-
-// Ensure readingTime exists: compute from fetched Notion HTML if missing
-if (!readingTime) {
-  try {
-    const textOnly = notionContent
-      .replace(/<[^>]*>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    const rt = readingTimeLib(textOnly);
-    readingTime = rt?.text ?? null;
-  } catch (err) {
-    // Reading time computation failed - silently continue
-  }
+if (!readingTime && remarkPluginFrontmatter?.readingTime) {
+  readingTime = remarkPluginFrontmatter.readingTime;
 }
 
 // Reading time logged for debugging (removed for production)
@@ -239,20 +162,18 @@ if (tags && tags.length > 0 && posts) {
     </p>
     <article id="article" class="max-w-4xl mx-auto mt-8 prose">
       <img
-        class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center img-loading blurry-load"
+        class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={ogImageUrl}
-        data-large={ogImageUrl}
         alt={title
           ? `Cover image for blog post "${title}"${author ? ` by ${author}` : ""}`
           : "Blog post cover image"}
         loading="eager"
       />
 
-      <!-- Render Notion content as HTML -->
-      <div
-        class="max-w-4xl mx-auto prose prose-lg notion-content"
-        set:html={notionContent}
-      />
+      <!-- Render Local Markdown Content -->
+      <div class="max-w-4xl mx-auto prose prose-lg notion-content">
+        <Content />
+      </div>
     </article>
 
     <ul class="flex flex-row items-center justify-center my-8 md:justify-end">
@@ -325,12 +246,9 @@ if (tags && tags.length > 0 && posts) {
               >
                 <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
                         <img
-                          class="card-animate h-[13rem] w-full max-w-full scale-105 object-cover object-center img-loading blurry-load"
-                          src={relatedPost.ogImage ? relatedPost.ogImage.replace(/\.[^.]+$/, '.placeholder.jpg') : "/pickyzz-og.png"}
-                          data-large={relatedPost.ogImage}
-                          loading="eager"
-                          style={`filter: blur(0px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);`}
-                          onload={`this.style.filter = 'none';`}
+                          class="card-animate h-[13rem] w-full max-w-full scale-105 object-cover object-center"
+                          src={relatedPost.ogImage || "/pickyzz-og.png"}
+                          loading="lazy"
                           alt={relatedPost.title}
                           decoding="async"
                         />
