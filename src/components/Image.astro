@@ -20,11 +20,8 @@ const attrs = {
 };
 ---
 
-<img
-  {...attrs}
-/>
-+)}
-</style>
+<img {...attrs} />
+<style>
   .blurry-load {
     position: relative;
     overflow: hidden;
@@ -34,7 +31,9 @@ const attrs = {
     display: block;
     width: 100%;
     height: auto;
-    transition: filter 600ms ease, opacity 400ms ease;
+    transition:
+      filter 600ms ease,
+      opacity 400ms ease;
     filter: blur(20px) scale(1.02);
   }
   .blurry-load img.img-loaded {
@@ -48,7 +47,11 @@ const attrs = {
     min-height: 1px;
   }
   @keyframes shimmer {
-    0% { background-position: 100% 0 }
-    100% { background-position: -100% 0 }
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
   }
 </style>

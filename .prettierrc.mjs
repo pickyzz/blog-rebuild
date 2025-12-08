@@ -10,7 +10,7 @@ export default {
   bracketSpacing: true,
   endOfLine: "lf",
   plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
-  tailwindStylesheet: "./src/styles/base.css",
+
   overrides: [
     {
       files: "*.astro",

@@ -105,15 +105,34 @@ let shikiHighlighter: any = null;
 async function ensureShiki() {
   if (shikiHighlighter) return shikiHighlighter;
   try {
-    const shiki = await import('shiki');
-  const shikiAny = shiki as any;
-  const createHighlighter = shikiAny.createHighlighter || shikiAny.getHighlighter || shikiAny.getSingletonHighlighter;
+    const shiki = await import("shiki");
+    const shikiAny = shiki as any;
+    const createHighlighter =
+      shikiAny.createHighlighter ||
+      shikiAny.getHighlighter ||
+      shikiAny.getSingletonHighlighter;
     // Load a compact set of common languages to keep startup reasonable. Shiki will
     // still work for other langs if bundledLanguages are available, but this covers
     // typical blog languages.
-    const langs = ['javascript','typescript','tsx','jsx','python','bash','json','html','css','yaml','go','rust'];
+    const langs = [
+      "javascript",
+      "typescript",
+      "tsx",
+      "jsx",
+      "python",
+      "bash",
+      "json",
+      "html",
+      "css",
+      "yaml",
+      "go",
+      "rust",
+    ];
     // Preload both GitHub light/dark Shiki themes so we can render both variants
-    shikiHighlighter = await createHighlighter({ themes: ['github-light', 'github-dark-dimmed'], langs });
+    shikiHighlighter = await createHighlighter({
+      themes: ["github-light", "github-dark-dimmed"],
+      langs,
+    });
     return shikiHighlighter;
   } catch (err) {
     // Shiki initialization failed; proceed without highlighter
@@ -229,7 +248,8 @@ n2m.setCustomTransformer("code", async (block: any) => {
     // For unknown languages, keep lowercase as Notion often shows lowercase identifiers
     return key || "text";
   };
-  const content = code?.rich_text?.map((rt: any) => rt.plain_text).join("") || "";
+  const content =
+    code?.rich_text?.map((rt: any) => rt.plain_text).join("") || "";
   const caption = code?.caption?.[0]?.plain_text || "";
 
   // Try to highlight with Shiki; fall back to escaped pre/code. To avoid the
@@ -242,11 +262,17 @@ n2m.setCustomTransformer("code", async (block: any) => {
   try {
     const highlighter = await ensureShiki();
     if (highlighter) {
-      const lightHtml = highlighter.codeToHtml(content, { lang: language, theme: 'github-light' });
-      const darkHtml = highlighter.codeToHtml(content, { lang: language, theme: 'github-dark-dimmed' });
+      const lightHtml = highlighter.codeToHtml(content, {
+        lang: language,
+        theme: "github-light",
+      });
+      const darkHtml = highlighter.codeToHtml(content, {
+        lang: language,
+        theme: "github-dark-dimmed",
+      });
       const combined = `${lightHtml}\n<!--SHIKI-SPLIT-->\n${darkHtml}`;
       // base64 so we can safely carry it through the pipeline in an attribute
-      const b64 = Buffer.from(combined, 'utf8').toString('base64');
+      const b64 = Buffer.from(combined, "utf8").toString("base64");
       placeholderHtml = `<div data-shiki-b64="${b64}"></div>`;
       // placeholder generated successfully
     } else {
@@ -314,7 +340,7 @@ function escapeAttr(str: string): string {
 function renderRichText(rich: any[] | undefined): string {
   if (!rich || !Array.isArray(rich) || rich.length === 0) return "";
   return rich
-    .map((rt) => {
+    .map(rt => {
       const raw = rt?.plain_text ?? rt?.text?.content ?? "";
       let html = escapeHtml(raw);
       const ann = rt?.annotations || {};
@@ -324,7 +350,8 @@ function renderRichText(rich: any[] | undefined): string {
       if (ann.underline) html = `<u>${html}</u>`;
       if (ann.strikethrough) html = `<s>${html}</s>`;
       const href = rt?.href || rt?.text?.link?.url;
-      if (href) html = `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
+      if (href)
+        html = `<a href="${escapeAttr(href)}" target="_blank" rel="noopener noreferrer">${html}</a>`;
       return html;
     })
     .join("");
@@ -402,31 +429,40 @@ export async function getNotionPageContent(pageId: string): Promise<string> {
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'");
 
-    result = result.replace(/<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/gi, (match, attrs, inner) => {
-      const decoded = decodeHtmlEntities(inner);
-      // If decoded contains our shiki wrapper, assume it was escaped and
-      // replace the whole pre/code block with the decoded HTML (which
-      // already contains the <pre class="shiki">...</pre> fragments).
-      if (decoded.includes('<div class="shiki-wrap"') || decoded.includes("<pre class=\"shiki")) {
-        return decoded;
+    result = result.replace(
+      /<pre><code([^>]*)>([\s\S]*?)<\/code><\/pre>/gi,
+      (match, attrs, inner) => {
+        const decoded = decodeHtmlEntities(inner);
+        // If decoded contains our shiki wrapper, assume it was escaped and
+        // replace the whole pre/code block with the decoded HTML (which
+        // already contains the <pre class="shiki">...</pre> fragments).
+        if (
+          decoded.includes('<div class="shiki-wrap"') ||
+          decoded.includes('<pre class="shiki')
+        ) {
+          return decoded;
+        }
+        return match;
       }
-      return match;
-    });
+    );
 
     // Replace any Shiki placeholders produced by our custom transformer.
     // Placeholders look like: <div data-shiki-b64="..."></div>
-    result = result.replace(/<div data-shiki-b64="([A-Za-z0-9+/=]+)"><\/div>/g, (m, b64) => {
-      try {
-        const decoded = Buffer.from(b64, 'base64').toString('utf8');
-        // decoded contains lightHTML \n<!--SHIKI-SPLIT-->\n darkHTML
-        const [lightHtml, darkHtml] = decoded.split('<!--SHIKI-SPLIT-->');
-        const light = (lightHtml || '').trim();
-        const dark = (darkHtml || '').trim();
-        return `\n<div class="shiki-wrap" data-theme="light">${light}</div>\n<div class="shiki-wrap" data-theme="dark">${dark}</div>\n`;
-      } catch (e) {
-        return m;
+    result = result.replace(
+      /<div data-shiki-b64="([A-Za-z0-9+/=]+)"><\/div>/g,
+      (m, b64) => {
+        try {
+          const decoded = Buffer.from(b64, "base64").toString("utf8");
+          // decoded contains lightHTML \n<!--SHIKI-SPLIT-->\n darkHTML
+          const [lightHtml, darkHtml] = decoded.split("<!--SHIKI-SPLIT-->");
+          const light = (lightHtml || "").trim();
+          const dark = (darkHtml || "").trim();
+          return `\n<div class="shiki-wrap" data-theme="light">${light}</div>\n<div class="shiki-wrap" data-theme="dark">${dark}</div>\n`;
+        } catch (e) {
+          return m;
+        }
       }
-    });
+    );
 
     // Sanitize HTML output before caching and returning
     const sanitized = sanitize(result);

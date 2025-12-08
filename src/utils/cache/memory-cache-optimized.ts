@@ -4,8 +4,8 @@
 // Cache configuration with different TTLs
 const CACHE_CONFIG = {
   defaultTTL: 1800, // 30 minutes in seconds
-  postsTTL: 1800,   // 30 minutes for posts
-  tagsTTL: 3600,    // 1 hour for tags
+  postsTTL: 1800, // 30 minutes for posts
+  tagsTTL: 3600, // 1 hour for tags
   imagesTTL: 86400, // 24 hours for images
 } as const;
 
@@ -240,7 +240,10 @@ export async function getCachedDataWithRetry<T>(
     try {
       return await getCachedData(key, fetcher, ttl);
     } catch (error) {
-      console.error(`[CACHE RETRY] Attempt ${attempt + 1} failed for ${key}:`, error);
+      console.error(
+        `[CACHE RETRY] Attempt ${attempt + 1} failed for ${key}:`,
+        error
+      );
 
       if (attempt === maxRetries) {
         // Last attempt failed, clear cache and try once more
@@ -248,13 +251,18 @@ export async function getCachedDataWithRetry<T>(
         try {
           return await fetcher();
         } catch (finalError) {
-          console.error(`[CACHE FAILED] All attempts failed for ${key}:`, finalError);
+          console.error(
+            `[CACHE FAILED] All attempts failed for ${key}:`,
+            finalError
+          );
           return null;
         }
       }
 
       // Wait before retry (exponential backoff)
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      await new Promise(resolve =>
+        setTimeout(resolve, Math.pow(2, attempt) * 1000)
+      );
     }
   }
 
@@ -264,7 +272,7 @@ export async function getCachedDataWithRetry<T>(
 // Preload common data - disabled in SSG mode
 // Preload common data - disabled in SSG mode
 export async function preloadCache(): Promise<void> {
-  console.log('[CACHE PRELOAD] Skipping preload in SSG mode');
+  console.log("[CACHE PRELOAD] Skipping preload in SSG mode");
 
   // In SSG mode, we don't need to preload cache
   // All content is available via content collections

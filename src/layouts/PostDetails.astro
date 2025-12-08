@@ -106,10 +106,7 @@ if (tags && tags.length > 0 && posts) {
   // Get posts with the same first tag, excluding current post and prev/next posts
   const firstTag = tags[0];
   // Cast incoming posts to the expected CollectionEntry type to satisfy TypeScript
-  const postsWithSameTag = getPostsByTag(
-  posts as any[],
-    firstTag
-  )
+  const postsWithSameTag = getPostsByTag(posts as any[], firstTag)
     .filter(
       p =>
         p.slug !== post.slug &&
@@ -145,7 +142,7 @@ if (tags && tags.length > 0 && posts) {
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="inline-block my-2 text-2xl font-bold text-accent sm:text-3xl"
+      class="my-2 inline-block text-2xl font-bold text-accent sm:text-3xl"
     >
       {title}
     </h1>
@@ -160,7 +157,7 @@ if (tags && tags.length > 0 && posts) {
     <p class="ml-1.5 text-xs font-light">
       By : {author}{readingTime ? ` | ${readingTime}` : ""}
     </p>
-    <article id="article" class="max-w-4xl mx-auto mt-8 prose">
+    <article id="article" class="prose mx-auto mt-8 max-w-4xl">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={ogImageUrl}
@@ -171,12 +168,12 @@ if (tags && tags.length > 0 && posts) {
       />
 
       <!-- Render Local Markdown Content -->
-      <div class="max-w-4xl mx-auto prose prose-lg notion-content">
+      <div class="prose prose-lg notion-content mx-auto max-w-4xl">
         <Content />
       </div>
     </article>
 
-    <ul class="flex flex-row items-center justify-center my-8 md:justify-end">
+    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
       {
         (tags || []).map((tag: string) => (
           <Tag tag={slugifyStr(tag)} tagName={tag} />
@@ -190,7 +187,7 @@ if (tags && tags.length > 0 && posts) {
 
       <button
         id="back-to-top"
-        class="hidden py-1 transition duration-200 focus-outline whitespace-nowrap hover:-translate-y-1 hover:opacity-75 md:block"
+        class="focus-outline hidden whitespace-nowrap py-1 transition duration-200 hover:-translate-y-1 hover:opacity-75 md:block"
       >
         <IconChevronLeft class="inline-block rotate-90" />
         <span>Go Top</span>
@@ -207,10 +204,10 @@ if (tags && tags.length > 0 && posts) {
             href={`/blog/${prevPost.slug}`}
             class="flex w-full gap-1 hover:opacity-75"
           >
-            <IconChevronLeft class="flex-none inline-block" />
+            <IconChevronLeft class="inline-block flex-none" />
             <div>
               <span>Older Post</span>
-              <div class="pt-2 text-sm text-accent/85">{prevPost.title}</div>
+              <div class="text-accent/85 pt-2 text-sm">{prevPost.title}</div>
             </div>
           </a>
         )
@@ -219,13 +216,13 @@ if (tags && tags.length > 0 && posts) {
         nextPost && (
           <a
             href={`/blog/${nextPost.slug}`}
-            class="flex justify-end w-full gap-1 text-right hover:opacity-75 sm:col-start-2"
+            class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
           >
             <div>
               <span>Later Post</span>
-              <div class="pt-2 text-sm text-accent/85">{nextPost.title}</div>
+              <div class="text-accent/85 pt-2 text-sm">{nextPost.title}</div>
             </div>
-            <IconChevronRight class="flex-none inline-block" />
+            <IconChevronRight class="inline-block flex-none" />
           </a>
         )
       }
@@ -235,7 +232,7 @@ if (tags && tags.length > 0 && posts) {
     {
       relatedPosts && relatedPosts.length > 0 && (
         <section class="mt-12">
-          <h2 class="mb-6 text-2xl font-bold text-center text-accent">
+          <h2 class="mb-6 text-center text-2xl font-bold text-accent">
             โพสต์ที่เกี่ยวข้อง
           </h2>
           <div class="grid gap-6 sm:grid-cols-2">
@@ -244,14 +241,14 @@ if (tags && tags.length > 0 && posts) {
                 href={`/blog/${relatedPost.slug}`}
                 class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
               >
-                <div class="relative flex-shrink-0 object-cover mb-4 overflow-hidden rounded-lg">
-                        <img
-                          class="card-animate h-[13rem] w-full max-w-full scale-105 object-cover object-center"
-                          src={relatedPost.ogImage || "/pickyzz-og.png"}
-                          loading="lazy"
-                          alt={relatedPost.title}
-                          decoding="async"
-                        />
+                <div class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover">
+                  <img
+                    class="card-animate h-[13rem] w-full max-w-full scale-105 object-cover object-center"
+                    src={relatedPost.ogImage || "/pickyzz-og.png"}
+                    loading="lazy"
+                    alt={relatedPost.title}
+                    decoding="async"
+                  />
 
                   <div class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2">
                     <h2 class="text-center text-[1.1rem] text-lg font-light text-white decoration-dashed">
@@ -330,30 +327,31 @@ if (tags && tags.length > 0 && posts) {
     try {
       await navigator.clipboard.writeText(text);
       // Mirror client-side behavior: temporarily change visible label to 'copied'
-      const labelSpan = button.querySelector && button.querySelector('.icon-label');
+      const labelSpan =
+        button.querySelector && button.querySelector(".icon-label");
       const origLabel = labelSpan ? labelSpan.textContent : null;
-      if (labelSpan) labelSpan.textContent = 'copied';
+      if (labelSpan) labelSpan.textContent = "copied";
       // Use class-based transient state
       button.classList.add("copied");
       button.disabled = true;
-      button.setAttribute('data-copied','true');
+      button.setAttribute("data-copied", "true");
       setTimeout(() => {
         if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
         button.classList.remove("copied");
         button.disabled = false;
-        button.removeAttribute('data-copied');
+        button.removeAttribute("data-copied");
       }, 1600);
     } catch (err) {
       // Fallback for insecure contexts where Clipboard API isn't available.
       // We avoid deprecated document.execCommand and instead select the text
       // and prompt the user to press Cmd/Ctrl+C to copy manually.
-      const tempTA = document.createElement('textarea');
+      const tempTA = document.createElement("textarea");
       tempTA.value = text;
-      tempTA.setAttribute('readonly', '');
+      tempTA.setAttribute("readonly", "");
       // Keep it visually hidden but selectable
-      tempTA.style.position = 'fixed';
-      tempTA.style.top = '-1000px';
-      tempTA.style.opacity = '0';
+      tempTA.style.position = "fixed";
+      tempTA.style.top = "-1000px";
+      tempTA.style.opacity = "0";
       document.body.appendChild(tempTA);
       try {
         tempTA.focus();
@@ -362,40 +360,55 @@ if (tags && tags.length > 0 && posts) {
         // ignore selection failures
       }
 
-      const labelSpan = button.querySelector && button.querySelector('.icon-label');
+      const labelSpan =
+        button.querySelector && button.querySelector(".icon-label");
       const origLabel = labelSpan ? labelSpan.textContent : null;
-  const isTouch = (('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0);
-  const isMac = navigator.platform ? /Mac|iPhone|iPod|iPad/.test(navigator.platform) : false;
-  const promptText = isTouch ? 'long-press to copy' : (isMac ? 'press ⌘+C' : 'press Ctrl+C');
+      const isTouch =
+        "ontouchstart" in window || (navigator.maxTouchPoints || 0) > 0;
+      const isMac = navigator.platform
+        ? /Mac|iPhone|iPod|iPad/.test(navigator.platform)
+        : false;
+      const promptText = isTouch
+        ? "long-press to copy"
+        : isMac
+          ? "press ⌘+C"
+          : "press Ctrl+C";
 
       // Inform user to press copy keys
       if (labelSpan) labelSpan.textContent = promptText;
-      button.classList.add('copy-manual');
-      button.setAttribute('aria-live', 'polite');
+      button.classList.add("copy-manual");
+      button.setAttribute("aria-live", "polite");
 
       // Listen briefly for the copy key combo to provide success UI
       let handled = false;
-      const keyHandler = (e) => {
-        const isCopyCombo = (isMac && e.metaKey && e.key.toLowerCase() === 'c') || (!isMac && e.ctrlKey && e.key.toLowerCase() === 'c');
+      const keyHandler = e => {
+        const isCopyCombo =
+          (isMac && e.metaKey && e.key.toLowerCase() === "c") ||
+          (!isMac && e.ctrlKey && e.key.toLowerCase() === "c");
         if (isCopyCombo) {
           handled = true;
-          button.classList.remove('copy-manual');
-          button.classList.add('copied');
-          if (labelSpan) labelSpan.textContent = 'copied';
+          button.classList.remove("copy-manual");
+          button.classList.add("copied");
+          if (labelSpan) labelSpan.textContent = "copied";
           setTimeout(() => {
-            if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
-            button.classList.remove('copied');
+            if (labelSpan && origLabel != null)
+              labelSpan.textContent = origLabel;
+            button.classList.remove("copied");
           }, 1200);
         }
       };
-      window.addEventListener('keydown', keyHandler, { once: true });
+      window.addEventListener("keydown", keyHandler, { once: true });
 
       // Cleanup hidden textarea and restore label after a short delay
       setTimeout(() => {
-        try { tempTA.remove(); } catch (_) { /* noop */ }
+        try {
+          tempTA.remove();
+        } catch (_) {
+          /* noop */
+        }
         if (!handled) {
           if (labelSpan && origLabel != null) labelSpan.textContent = origLabel;
-          button.classList.remove('copy-manual');
+          button.classList.remove("copy-manual");
         }
       }, 3000);
     }
@@ -408,7 +421,9 @@ if (tags && tags.length > 0 && posts) {
   function initPrism() {
     if (window.Prism) {
       // Re-run Prism on all code blocks that are not already highlighted by Shiki
-      const codeBlocks = document.querySelectorAll('.notion-code-block pre[class*="language-"]:not(.shiki)');
+      const codeBlocks = document.querySelectorAll(
+        '.notion-code-block pre[class*="language-"]:not(.shiki)'
+      );
       codeBlocks.forEach(block => {
         window.Prism.highlightElement(block);
       });
@@ -541,89 +556,11 @@ if (tags && tags.length > 0 && posts) {
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
 
-  /** TOC Scroll Highlighting Logic */
+  /** TOC Scroll Highlighting Logic - highlight removed by user request */
   function initTocHighlighting() {
     const tocLinks = document.querySelectorAll(".toc-link");
-    const headings = document.querySelectorAll(
-      "h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]"
-    );
 
-    if (tocLinks.length === 0 || headings.length === 0) return;
-
-    let currentActiveLink = null;
-    let ticking = false;
-    let lastScrollY = window.scrollY;
-
-    // Function to find the heading that's currently in view
-    function findActiveHeading() {
-      const scrollY = window.pageYOffset;
-      const windowHeight = window.innerHeight;
-      const scrollCenter = scrollY + windowHeight / 2;
-
-      // Find the heading closest to the center of the viewport
-      let activeHeading = null;
-      let minDistance = Infinity;
-
-      headings.forEach(heading => {
-        const rect = heading.getBoundingClientRect();
-        const headingTop = rect.top + scrollY;
-        const headingCenter = headingTop + rect.height / 2;
-        const distance = Math.abs(scrollCenter - headingCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          activeHeading = heading;
-        }
-      });
-
-      return activeHeading;
-    }
-
-    // Function to update active TOC link immediately
-    function updateActiveTocLinkImmediate() {
-      const activeHeading = findActiveHeading();
-      if (!activeHeading) return;
-
-      const activeId = activeHeading.id;
-      const activeTocLink = document.querySelector(
-        `.toc-link[data-slug="${activeId}"]`
-      );
-
-      if (activeTocLink && activeTocLink !== currentActiveLink) {
-        // Remove previous active state
-        if (currentActiveLink) {
-          currentActiveLink.classList.remove("active");
-        }
-
-        // Add new active state
-        activeTocLink.classList.add("active");
-        currentActiveLink = activeTocLink;
-      }
-    }
-
-    // Throttled update with shorter delay
-    function updateActiveTocLinkThrottled() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveTocLinkImmediate();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
-
-    // Immediate update for fast response
-    function handleScrollImmediate() {
-      const currentScrollY = window.scrollY;
-
-      // Only update if scrolled significantly (reduce unnecessary updates)
-      if (Math.abs(currentScrollY - lastScrollY) > 10) {
-        updateActiveTocLinkImmediate();
-        lastScrollY = currentScrollY;
-      }
-    }
-
-    // Smooth scroll for TOC links with faster animation
+    // Smooth scroll for TOC links (kept for better UX)
     tocLinks.forEach(link => {
       link.addEventListener("click", e => {
         e.preventDefault();
@@ -638,32 +575,19 @@ if (tags && tags.length > 0 && posts) {
             top: targetPosition,
             behavior: "smooth",
           });
+
+          // Update URL hash without jumping
+          history.pushState(null, null, "#" + targetId);
         }
       });
     });
-
-    // Initialize active state
-    updateActiveTocLinkImmediate();
-
-    // Use immediate updates for faster response, with fallback to throttled updates
-    window.addEventListener("scroll", handleScrollImmediate, { passive: true });
-
-    // Fallback throttled update for heavy scroll operations
-    let throttledTimer;
-    window.addEventListener(
-      "scroll",
-      () => {
-        clearTimeout(throttledTimer);
-        throttledTimer = setTimeout(updateActiveTocLinkThrottled, 16); // ~60fps
-      },
-      { passive: true }
-    );
   }
 
-  // Initialize TOC highlighting when DOM is ready
+  // Initialize TOC interactions when DOM is ready
   document.addEventListener("DOMContentLoaded", initTocHighlighting);
   // Re-initialize after Astro page transitions
   document.addEventListener("astro:after-swap", () => {
+    // Small delay to ensure content is ready
     setTimeout(initTocHighlighting, 100);
   });
 </script>

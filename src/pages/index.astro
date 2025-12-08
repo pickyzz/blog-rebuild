@@ -15,11 +15,15 @@ import { getCollection } from "astro:content";
 export const prerender = true;
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
-console.log(`[HOMEPAGE SSG] Loaded ${posts.length} posts from content collections`);
+console.log(
+  `[HOMEPAGE SSG] Loaded ${posts.length} posts from content collections`
+);
 
 // Sort posts by publication date (newest first)
 const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+  (a, b) =>
+    new Date(b.data.pubDatetime).valueOf() -
+    new Date(a.data.pubDatetime).valueOf()
 );
 console.log(`[HOMEPAGE] Sorted posts length: ${sortedPosts.length}`);
 
@@ -87,7 +91,7 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
           </h2>
           <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
             {sortedPosts
-              .filter((post) => !post.data.featured)
+              .filter(post => !post.data.featured)
               .map(
                 (post, index) =>
                   index < SITE.postOnIndex && (

@@ -8,7 +8,8 @@ const segments = currentUrlPath.split("/").slice(1);
 const crumbs = [];
 // Prefer page from query param when available: e.g., /blog?page=2 or /tags/slug?page=3
 const pageParam = Astro.url.searchParams.get("page");
-const pageFromQuery = pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : null;
+const pageFromQuery =
+  pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : null;
 
 if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
   // root only — no crumbs
@@ -17,7 +18,11 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
   let page = 1;
   if (pageFromQuery !== null) {
     page = pageFromQuery;
-  } else if (segments[1] === "page" && segments.length >= 3 && !isNaN(Number(segments[2]))) {
+  } else if (
+    segments[1] === "page" &&
+    segments.length >= 3 &&
+    !isNaN(Number(segments[2]))
+  ) {
     page = Number(segments[2]);
   } else if (segments[1] && !isNaN(Number(segments[1]))) {
     page = Number(segments[1]);
@@ -28,33 +33,35 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
 
   // If not page 1, add Page N as current
   if (page > 1) crumbs.push({ label: `Page ${page}` });
-
 } else if (segments[0] === "tags") {
   // handle /tags, /tags/slug, /tags/slug/2, /tags/slug/page/3
   crumbs.push({ label: "Tags", href: "/tags" });
 
   const slug = segments[1];
-    if (slug) {
-      crumbs.push({ label: slug, href: `/tags/${slug}` });
+  if (slug) {
+    crumbs.push({ label: slug, href: `/tags/${slug}` });
 
-      // Prefer query param page when present
-      if (pageFromQuery !== null) {
-        if (pageFromQuery > 1) crumbs.push({ label: `Page ${pageFromQuery}` });
-      } else {
-        // check for /tags/slug/2
-        if (segments[2] && !isNaN(Number(segments[2]))) {
-          const page = Number(segments[2]);
-          if (page > 1) crumbs.push({ label: `Page ${page}` });
-        }
+    // Prefer query param page when present
+    if (pageFromQuery !== null) {
+      if (pageFromQuery > 1) crumbs.push({ label: `Page ${pageFromQuery}` });
+    } else {
+      // check for /tags/slug/2
+      if (segments[2] && !isNaN(Number(segments[2]))) {
+        const page = Number(segments[2]);
+        if (page > 1) crumbs.push({ label: `Page ${page}` });
+      }
 
-        // check for /tags/slug/page/3
-        if (segments[2] === "page" && segments.length >= 4 && !isNaN(Number(segments[3]))) {
-          const page = Number(segments[3]);
-          if (page > 1) crumbs.push({ label: `Page ${page}` });
-        }
+      // check for /tags/slug/page/3
+      if (
+        segments[2] === "page" &&
+        segments.length >= 4 &&
+        !isNaN(Number(segments[3]))
+      ) {
+        const page = Number(segments[3]);
+        if (page > 1) crumbs.push({ label: `Page ${page}` });
       }
     }
-
+  }
 } else {
   // Generic breadcrumb: accumulate path pieces and build hrefs
   let acc = "";
@@ -67,7 +74,7 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
 // We'll render `crumbs` in the template below
 ---
 
-<nav class="w-full max-w-4xl px-4 mx-auto mt-8 mb-1" aria-label="breadcrumb">
+<nav class="mx-auto mb-1 mt-8 w-full max-w-4xl px-4" aria-label="breadcrumb">
   <ul
     class="font-light [&>li:not(:last-child)>a]:hover:opacity-100 [&>li]:inline"
   >
@@ -76,7 +83,7 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
       <span aria-hidden="true" class="opacity-80">&raquo;</span>
     </li>
     {
-      crumbs.map((crumb, index) => (
+      crumbs.map((crumb, index) =>
         index + 1 === crumbs.length ? (
           <li>
             <span
@@ -94,7 +101,7 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
             <span aria-hidden="true">&raquo;</span>
           </li>
         )
-      ))
+      )
     }
   </ul>
 </nav>

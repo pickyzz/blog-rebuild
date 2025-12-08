@@ -1,265 +1,346 @@
 .notion-code-block {
-	font-family: Inter, ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", "Noto Mono", monospace;
- 	/* container is visual-neutral; the visible background and border live on the inner <pre> */
-	background: transparent;
-	color: var(--code-fg, #e6edf3);
-	border-radius: 8px;
-	overflow: hidden; /* clip header/pre radius neatly */
-	margin: 1em 0;
+  font-family:
+    Inter, ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Segoe UI Mono", "Noto Mono", monospace;
+  /* container is visual-neutral; the visible background and border live on the inner <pre> */
+  background: transparent;
+  color: var(--code-fg, #e6edf3);
+  border-radius: 8px;
+  overflow: hidden; /* clip header/pre radius neatly */
+  margin: 1em 0;
 }
-.notion-code-block .code-header{
-	display:flex;
-	justify-content:space-between;
-	align-items:center;
-	/* Match Notion blockquote background */
-	padding: 0.5rem 1rem;
-	background: var(--muted);
-	border: 0;
-	border-radius: 8px 8px 0 0;
+.notion-code-block .code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Match Notion blockquote background */
+  padding: 0.5rem 1rem;
+  background: var(--muted);
+  border: 0;
+  border-radius: 8px 8px 0 0;
 }
 
 /* Dark theme: make header/background more prominent than page background */
-html[data-theme="dark"] .notion-code-block .code-header{
-	background: rgba(255,255,255,0.06);
-	border-bottom: 1px solid rgba(255,255,255,0.10);
+html[data-theme="dark"] .notion-code-block .code-header {
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-html.dark .notion-code-block .code-header{
-	background: rgba(255,255,255,0.06);
-	border-bottom: 1px solid rgba(255,255,255,0.10);
+html.dark .notion-code-block .code-header {
+  background: rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.notion-code-block .language-label{
-	font-size:10px;
-	color:var(--copy-btn-fg);
-	opacity:0.8;
-	padding:0; /* Notion uses plain text, not a pill */
-	border-radius:0;
-	background:transparent;
-	font-weight:500;
+.notion-code-block .language-label {
+  font-size: 10px;
+  color: var(--copy-btn-fg);
+  opacity: 0.8;
+  padding: 0; /* Notion uses plain text, not a pill */
+  border-radius: 0;
+  background: transparent;
+  font-weight: 500;
 }
-.notion-code-block .copy-button{
- 	background: transparent;
- 	border: 1px solid transparent;
- 	color: var(--copy-btn-fg, var(--muted, #9aa4b2));
- 	cursor: pointer;
- 	padding:4px 8px;
- 	font-size:12px;
- 	border-radius:6px;
+.notion-code-block .copy-button {
+  background: rgba(255, 255, 255, 0.403);
+  border: 1px solid transparent;
+  /* Force light color for visibility on dark code blocks */
+  color: #e6edf3;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
 }
 .notion-code-block .copy-button:hover,
 .code-block .copy-btn:hover {
-	background: var(--copy-btn-hover);
-	transform: none; /* keep position stable so borders don't look clipped */
+  /* Force light semi-transparent hover */
+  background: rgba(255, 255, 255, 0.35);
+  transform: none; /* keep position stable so borders don't look clipped */
 }
 /* Code content container inside notion code block */
-.notion-code-block .code-content{padding:0;overflow:auto;background:transparent}
+.notion-code-block .code-content {
+  padding: 0;
+  overflow: auto;
+  background: transparent;
+}
 /* Ensure the inner pre gets the visible surface and spacing */
-.notion-code-block .code-content pre{
-	margin:0;
-	white-space:pre-wrap !important;
-	tab-size:4;
-	word-wrap:break-word;
-	word-break:break-word;
-	overflow-wrap:anywhere;
-	/* visible code surface (uses variables; now forced to black via global.css) */
-	background: var(--code-bg);
-	color: var(--code-fg);
-	padding: 1.125rem 1.25rem;
-	border-radius: 0 0 var(--code-radius, 10px) var(--code-radius, 10px);
-	/* inner pre: no extra border to avoid double-frame */
-	border: none;
-	box-shadow: none;
-	font-size: 1rem;
-	line-height: 1.6;
+.notion-code-block .code-content pre {
+  margin: 0;
+  white-space: pre-wrap !important;
+  tab-size: 4;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  /* visible code surface (uses variables; now forced to black via global.css) */
+  background: var(--code-bg);
+  color: var(--code-fg);
+  padding: 1.125rem 1.25rem;
+  border-radius: 0 0 var(--code-radius, 10px) var(--code-radius, 10px);
+  /* inner pre: no extra border to avoid double-frame */
+  border: none;
+  box-shadow: none;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* Dark theme: give the code surface a subtle border so the black box stands out clearly */
-html[data-theme="dark"] .notion-code-block .code-content pre { border: 1px solid rgba(255,255,255,0.10); border-top: 0; }
-html.dark .notion-code-block .code-content pre { border: 1px solid rgba(255,255,255,0.10); border-top: 0; }
+html[data-theme="dark"] .notion-code-block .code-content pre {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 0;
+}
+html.dark .notion-code-block .code-content pre {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 0;
+}
 /* Emergency overrides removed — token colors are mapped permanently in global.css */
-.notion-code-block .code-content pre > code{white-space:pre-wrap !important;word-wrap:break-word;word-break:break-word;overflow-wrap:anywhere}
-.notion-code-block code{font-family:inherit;font-size:13px;line-height:1.6;}
+.notion-code-block .code-content pre > code {
+  white-space: pre-wrap !important;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.notion-code-block code {
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+}
 /* Ensure Shiki highlighted code preserves whitespace */
-.shiki { white-space: pre-wrap !important; }
+.shiki {
+  white-space: pre-wrap !important;
+}
 /* Theme variables are defined in global.css (moved there) */
 
 /* SVG icon sizing for copy buttons */
 .notion-code-block .copy-button svg,
 .code-block .copy-btn svg {
-	width: 14px;
-	height: 14px;
-	display: block;
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 
 /* small spacing if icon + label exist */
 .notion-code-block .copy-button .icon-label,
 .code-block .copy-btn .icon-label {
-	margin-left: 8px;
-	font-size: 0.85em;
+  margin-left: 8px;
+  font-size: 0.85em;
 }
 
 /* Support both Notion-style blocks and the generic .code-block wrapper */
-.notion-code-block, .code-block { border-radius: var(--code-radius); }
-
+.notion-code-block,
+.code-block {
+  border-radius: var(--code-radius);
+}
 
 .notion-code-block .copy-button,
 .code-block .copy-btn {
-	/* Slightly smaller, less prominent copy button */
-	height: 34px;
-	min-width: 34px;
-	padding: 4px 6px;
-	border-radius: 8px;
-	border: 1px solid var(--code-inner-border, rgba(255,255,255,0.06));
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	background: transparent;
-	color: var(--copy-btn-fg);
-	cursor: pointer;
-	font-size: 0.85rem;
-	transition: background var(--copy-transition), color var(--copy-transition);
+  /* Slightly smaller, less prominent copy button */
+  height: 34px;
+  min-width: 34px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--code-inner-border, rgba(255, 255, 255, 0.06));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  /* Force light color */
+  color: #e6edf3;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition:
+    background var(--copy-transition),
+    color var(--copy-transition);
 }
 
 /* Notion header copy button is smaller (chip-like) */
-.notion-code-block .copy-button { height: 28px; min-width: 28px; font-size: 12px; padding: 2px 8px; }
+.notion-code-block .copy-button {
+  height: 28px;
+  min-width: 28px;
+  font-size: 12px;
+  padding: 2px 8px;
+}
 
 /* duplicate hover rule removed; handled above with transform: none */
 
 /* Tooltip for both */
 .notion-code-block .copy-button::after,
-.code-block .copy-btn::after{
-	/* tooltip removed: visual tooltip on hover/copy intentionally disabled for a cleaner minimal look */
-	content: none;
+.code-block .copy-btn::after {
+  /* tooltip removed: visual tooltip on hover/copy intentionally disabled for a cleaner minimal look */
+  content: none;
 }
 
 /* icon styling */
-.icon-svg { width: 18px; height: 18px; display: block; }
-.copy-button .icon-label, .copy-btn .icon-label { margin-left: 6px; }
+.icon-svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+.copy-button .icon-label,
+.copy-btn .icon-label {
+  margin-left: 6px;
+}
 
 .copy-button.copied,
 .code-block .copy-btn.copied {
-	/* Do not change background or text color on successful copy.
+  /* Do not change background or text color on successful copy.
 		 Keep visual feedback minimal (icon scale/transform only). */
-	background: transparent !important;
-	color: inherit !important;
+  background: transparent !important;
+  color: inherit !important;
 }
-.copy-button.copy-error, .copy-btn.copy-error { background: rgba(220,38,38,0.12); color: #dc2626; }
+.copy-button.copy-error,
+.copy-btn.copy-error {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
 
 /* Subtle transient state when copied: make icon tint change but do not change text */
 .notion-code-block .copy-button.copied svg,
 .code-block .copy-btn.copied svg {
-	/* Keep icon color consistent; do not apply color-inverting filters. */
-	filter: none !important;
+  /* Keep icon color consistent; do not apply color-inverting filters. */
+  filter: none !important;
 }
 
 /* Smooth transition for icon and label when toggling state */
-.copy-button svg, .copy-btn svg,
-.copy-button .icon-label, .copy-btn .icon-label {
-	transition: transform 160ms cubic-bezier(.2,.9,.3,1), opacity 160ms ease, fill 180ms ease, color 180ms ease;
-	transform-origin: center center;
+.copy-button svg,
+.copy-btn svg,
+.copy-button .icon-label,
+.copy-btn .icon-label {
+  transition:
+    transform 160ms cubic-bezier(0.2, 0.9, 0.3, 1),
+    opacity 160ms ease,
+    fill 180ms ease,
+    color 180ms ease;
+  transform-origin: center center;
 }
 
 /* Slight scale up and subtle color shift when copied */
-.copy-button.copied svg, .copy-btn.copied svg {
-	transform: scale(1.06) translateY(-1px);
-	opacity: 0.98;
+.copy-button.copied svg,
+.copy-btn.copied svg {
+  transform: scale(1.06) translateY(-1px);
+  opacity: 0.98;
 }
 
 /* Error state: slight shake + red tint */
-.copy-btn.copy-error svg, .copy-button.copy-error svg {
-	transform: translateX(0);
-	filter: none;
-	color: #dc2626;
+.copy-btn.copy-error svg,
+.copy-button.copy-error svg {
+  transform: translateX(0);
+  filter: none;
+  color: #dc2626;
 }
-.copy-btn.copy-error, .copy-button.copy-error {
-	animation: copy-error-shake 320ms ease;
+.copy-btn.copy-error,
+.copy-button.copy-error {
+  animation: copy-error-shake 320ms ease;
 }
 
 @keyframes copy-error-shake {
-	10% { transform: translateX(-2px); }
-	30% { transform: translateX(2px); }
-	50% { transform: translateX(-1px); }
-	70% { transform: translateX(1px); }
-	100% { transform: translateX(0); }
+  10% {
+    transform: translateX(-2px);
+  }
+  30% {
+    transform: translateX(2px);
+  }
+  50% {
+    transform: translateX(-1px);
+  }
+  70% {
+    transform: translateX(1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* Generic .code-block wrapper rules (merged from styles/code-block.css) */
 .code-block {
-	position: relative;
-	margin: 1rem 0;
-	border-radius: var(--code-radius);
-	overflow: visible;
-	background: transparent;
-	box-shadow: none;
-	border: none;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-	font-size: 1rem;
+  position: relative;
+  margin: 1rem 0;
+  border-radius: var(--code-radius);
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New",
+    monospace;
+  font-size: 1rem;
 }
 
 .code-block pre {
-	margin: 0;
-	padding: 1.125rem 1.25rem;
-	background: var(--code-bg);
-	color: var(--code-fg);
-	border: 1px solid var(--code-inner-border, rgba(255,255,255,0.08));
-	border-radius: var(--code-radius);
-	overflow: auto;
-	line-height: 1.6;
-	box-shadow: none;
+  margin: 0;
+  padding: 1.125rem 1.25rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-inner-border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--code-radius);
+  overflow: auto;
+  line-height: 1.6;
+  box-shadow: none;
 }
 
 code:not(pre code) {
-	background: var(--code-inline-bg);
-	padding: 0.12rem 0.4rem;
-	border-radius: 6px;
-	font-size: 0.95em;
+  background: var(--code-inline-bg);
+  padding: 0.12rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.95em;
 }
 
 pre code {
-	background: transparent;
-	padding: 0;
-	display: block;
-	white-space: pre;
+  background: transparent;
+  padding: 0;
+  display: block;
+  white-space: pre;
 }
 
-.copy-btn{
-	position: absolute;
-	top: 8px;
-	right: 8px;
-	height: 30px;
-	min-width: 30px;
-	padding: 4px 6px;
-	border-radius: 8px;
-	border: none;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	background: var(--copy-btn-bg);
-	color: var(--copy-btn-fg);
-	cursor: pointer;
-	font-size: 0.85rem;
-	transition: background var(--copy-transition), transform var(--copy-transition);
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 30px;
+  min-width: 30px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--copy-btn-bg);
+  color: var(--copy-btn-fg);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition:
+    background var(--copy-transition),
+    transform var(--copy-transition);
 }
 
 .copy-btn:hover,
 .copy-btn:focus {
-	background: var(--copy-btn-hover);
-	transform: none; /* no lift */
-	outline: none;
-	box-shadow: none;
+  background: var(--copy-btn-hover);
+  transform: none; /* no lift */
+  outline: none;
+  box-shadow: none;
 }
 
-.copy-btn .icon { font-size: 0.9rem; line-height: 1; }
-
-.copy-btn::after{
-	/* tooltip removed to prevent hover/copied text from showing */
-	content: none;
+.copy-btn .icon {
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
-@media (max-width:640px){
-	.code-block pre { padding: 0.6rem 0.75rem; font-size: 0.9rem; }
-	.copy-btn { top:6px; right:6px; height:28px; min-width:28px; padding:4px; }
+.copy-btn::after {
+  /* tooltip removed to prevent hover/copied text from showing */
+  content: none;
+}
+
+@media (max-width: 640px) {
+  .code-block pre {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  .copy-btn {
+    top: 6px;
+    right: 6px;
+    height: 28px;
+    min-width: 28px;
+    padding: 4px;
+  }
 }
 
 /* Subtle outer wrapper for code blocks (Option B)
@@ -267,32 +348,41 @@ pre code {
 	 - inner <pre> is the visible code surface (no double bold frame)
 */
 .notion-content .notion-code-block {
-	position: relative;
-	margin: 1rem 0;
-	padding: 0; /* Let the header and pre manage spacing */
-	background: transparent;
-	border: 0;
-	box-shadow: none;
+  position: relative;
+  margin: 1rem 0;
+  padding: 0; /* Let the header and pre manage spacing */
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 /* position copy button relative to the outer wrapper, neatly on top-right */
 .notion-content .notion-code-block .code-content pre {
-	position: relative;
+  position: relative;
 }
 /* Show only the shiki variant that matches the page theme */
-.shiki-wrap { display: none; }
+.shiki-wrap {
+  display: none;
+}
 /* Always prefer dark variant regardless of page theme */
-.shiki-wrap[data-theme="dark"] { display: block; }
+.shiki-wrap[data-theme="dark"] {
+  display: block;
+}
 /* In Notion-style blocks, the copy button lives inside the header (no absolute positioning) */
-.notion-content .notion-code-block .copy-button { position: static; top: auto; right: auto; z-index: auto; }
+.notion-content .notion-code-block .copy-button {
+  position: static;
+  top: auto;
+  right: auto;
+  z-index: auto;
+}
 
 /* Remove focus-visible ring entirely for copy buttons (as requested) */
 .notion-content .notion-code-block .copy-button:focus-visible,
 .notion-content .notion-code-block .code-block .copy-btn:focus-visible,
 .code-block .copy-btn:focus-visible,
 .notion-code-block .copy-button:focus-visible {
-	outline: none;
-	box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
 
 /* Remove focus styles for mouse clicks (keep keyboard :focus-visible intact) */
@@ -300,14 +390,14 @@ pre code {
 .notion-content .notion-code-block .code-block .copy-btn:focus,
 .code-block .copy-btn:focus,
 .notion-code-block .copy-button:focus {
-	outline: none;
-	box-shadow: none;
+  outline: none;
+  box-shadow: none;
 }
 
 /* make copy button slightly lighter */
 .notion-content .notion-code-block .copy-button:hover,
 .notion-content .notion-code-block .code-block .copy-btn:hover {
-	background: var(--copy-btn-hover, rgba(255,255,255,0.02));
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Override Tailwind Typography .prose pre padding when a code block is inside .prose.
@@ -317,6 +407,5 @@ pre code {
 */
 .prose .notion-code-block pre,
 .prose .notion-code-block .code-content pre {
-	padding: 1.125rem 1.25rem;
+  padding: 1.125rem 1.25rem;
 }
-

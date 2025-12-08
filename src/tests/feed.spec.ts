@@ -9,11 +9,11 @@ describe("RSS feed generation", () => {
     {
       id: "1",
       data: {
-          title: "Post One",
-          description: "Desc one",
-          pubDatetime: new Date("2024-01-01T00:00:00Z"),
-          modDatetime: undefined,
-          draft: false,
+        title: "Post One",
+        description: "Desc one",
+        pubDatetime: new Date("2024-01-01T00:00:00Z"),
+        modDatetime: undefined,
+        draft: false,
       },
       slug: "post-one",
       body: "",
@@ -23,11 +23,11 @@ describe("RSS feed generation", () => {
     {
       id: "2",
       data: {
-          title: "Post Two",
-          description: "Desc two",
-          pubDatetime: new Date("2024-02-01T00:00:00Z"),
-          modDatetime: undefined,
-          draft: false,
+        title: "Post Two",
+        description: "Desc two",
+        pubDatetime: new Date("2024-02-01T00:00:00Z"),
+        modDatetime: undefined,
+        draft: false,
       },
       slug: "post-two",
       body: "",

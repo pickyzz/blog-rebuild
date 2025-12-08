@@ -187,7 +187,7 @@ export class BlogSearch {
       if (word.length < 2) continue; // Skip very short words
 
       // Check for exact word boundaries
-      const wordRegex = new RegExp(`\\b${word}\\b`, 'i');
+      const wordRegex = new RegExp(`\\b${word}\\b`, "i");
       if (wordRegex.test(fieldLower)) {
         exactWordMatches++;
       } else if (fieldLower.includes(word)) {
@@ -225,7 +225,10 @@ export class BlogSearch {
       if (text[i] === query[queryIndex]) {
         consecutiveMatches++;
         queryIndex++;
-        maxConsecutiveMatches = Math.max(maxConsecutiveMatches, consecutiveMatches);
+        maxConsecutiveMatches = Math.max(
+          maxConsecutiveMatches,
+          consecutiveMatches
+        );
       } else {
         consecutiveMatches = 0;
       }
@@ -280,7 +283,47 @@ export class BlogSearch {
 
       words.forEach(word => {
         // Skip common words
-        const commonWords = ['the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'its', 'may', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'has', 'let', 'put', 'say', 'she', 'too', 'use'];
+        const commonWords = [
+          "the",
+          "and",
+          "for",
+          "are",
+          "but",
+          "not",
+          "you",
+          "all",
+          "can",
+          "had",
+          "her",
+          "was",
+          "one",
+          "our",
+          "out",
+          "day",
+          "get",
+          "has",
+          "him",
+          "his",
+          "how",
+          "its",
+          "may",
+          "new",
+          "now",
+          "old",
+          "see",
+          "two",
+          "way",
+          "who",
+          "boy",
+          "did",
+          "has",
+          "let",
+          "put",
+          "say",
+          "she",
+          "too",
+          "use",
+        ];
         if (!commonWords.includes(word)) {
           termFrequency.set(word, (termFrequency.get(word) || 0) + 1);
         }

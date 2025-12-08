@@ -10,7 +10,7 @@ export interface Props {
 export const prerender = true;
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  return posts.map(post => ({
     params: { slug: post.slug }, // Astro automatically generates slug from filename
     props: { post },
   }));
@@ -24,7 +24,9 @@ if (!post || !post.data) {
 
 const posts = await getCollection("blog", ({ data }) => !data.draft);
 const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+  (a, b) =>
+    new Date(b.data.pubDatetime).valueOf() -
+    new Date(a.data.pubDatetime).valueOf()
 );
 ---
 

@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-test("blur to sharp effect works on blog posts with navigation", async ({ page }) => {
+test("blur to sharp effect works on blog posts with navigation", async ({
+  page,
+}) => {
   // Go to blog page to see available posts
   await page.goto("/blog");
 
@@ -74,7 +76,9 @@ test("blur to sharp effect works on blog posts with navigation", async ({ page }
     const secondCount = await secondBlurryImages.count();
 
     if (secondCount > 0) {
-      console.log(`Found ${secondCount} images with blur effect on second post`);
+      console.log(
+        `Found ${secondCount} images with blur effect on second post`
+      );
 
       // Wait for images to load (navigation should trigger re-init)
       await page.waitForTimeout(3000);
@@ -82,7 +86,9 @@ test("blur to sharp effect works on blog posts with navigation", async ({ page }
       const secondLoadedImages = page.locator("img.img-loaded");
       const secondLoadedCount = await secondLoadedImages.count();
 
-      console.log(`Second post: ${secondLoadedCount}/${secondCount} images loaded`);
+      console.log(
+        `Second post: ${secondLoadedCount}/${secondCount} images loaded`
+      );
 
       // Verify blur→sharp works on navigated page
       expect(secondLoadedCount).toBeGreaterThan(0);
@@ -107,7 +113,7 @@ test("card hover zoom effect works on index page", async ({ page }) => {
   const firstCardImg = page.locator("ul li img.card-animate").first();
 
   // Check initial transform
-  const initialTransform = await firstCardImg.evaluate((img) => {
+  const initialTransform = await firstCardImg.evaluate(img => {
     const computedStyle = window.getComputedStyle(img);
     return computedStyle.transform;
   });
@@ -121,7 +127,7 @@ test("card hover zoom effect works on index page", async ({ page }) => {
   await page.waitForTimeout(600);
 
   // Check transform after hover
-  const hoverTransform = await firstCardImg.evaluate((img) => {
+  const hoverTransform = await firstCardImg.evaluate(img => {
     const computedStyle = window.getComputedStyle(img);
     return computedStyle.transform;
   });
@@ -149,7 +155,7 @@ test("card hover zoom effect works on index page", async ({ page }) => {
   await page.mouse.move(0, 0);
   await page.waitForTimeout(600);
 
-  const finalTransform = await firstCardImg.evaluate((img) => {
+  const finalTransform = await firstCardImg.evaluate(img => {
     const computedStyle = window.getComputedStyle(img);
     return computedStyle.transform;
   });
@@ -173,7 +179,7 @@ test("video embed has consistent border radius", async ({ page }) => {
   const youtubeIframe = page.locator('iframe[src*="youtube.com"]');
 
   // Check if video exists
-  const videoExists = await youtubeIframe.count() > 0;
+  const videoExists = (await youtubeIframe.count()) > 0;
   if (!videoExists) {
     console.log("No YouTube video found in this post");
     return;
@@ -182,7 +188,7 @@ test("video embed has consistent border radius", async ({ page }) => {
   console.log("Found YouTube video embed, checking border radius");
 
   // Check border radius of iframe
-  const borderRadius = await youtubeIframe.evaluate((iframe) => {
+  const borderRadius = await youtubeIframe.evaluate(iframe => {
     const computedStyle = window.getComputedStyle(iframe);
     return computedStyle.borderRadius;
   });
@@ -195,8 +201,8 @@ test("video embed has consistent border radius", async ({ page }) => {
   // Also check that it's consistent with other elements
   // Compare with an image in the same post
   const postImage = page.locator("article img").first();
-  if (await postImage.count() > 0) {
-    const imageBorderRadius = await postImage.evaluate((img) => {
+  if ((await postImage.count()) > 0) {
+    const imageBorderRadius = await postImage.evaluate(img => {
       const computedStyle = window.getComputedStyle(img);
       return computedStyle.borderRadius;
     });

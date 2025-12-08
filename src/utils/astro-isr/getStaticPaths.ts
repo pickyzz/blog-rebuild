@@ -94,7 +94,9 @@ export async function getTagPaths() {
 
     for (const [tag, tagPosts] of tagMap.entries()) {
       const sortedPosts = tagPosts.sort(
-        (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+        (a, b) =>
+          new Date(b.data.pubDatetime).valueOf() -
+          new Date(a.data.pubDatetime).valueOf()
       );
       const totalPages = Math.max(1, Math.ceil(sortedPosts.length / pageSize));
 
@@ -134,8 +136,12 @@ export async function getTagPaths() {
               total: sortedPosts.length,
               size: pageSize,
               url: `/tags/${tag}/${pageNum}`,
-              prev: pageNum > 2 ? `/tags/${tag}/${pageNum - 1}` : `/tags/${tag}`,
-              next: pageNum < totalPages ? `/tags/${tag}/${pageNum + 1}` : undefined,
+              prev:
+                pageNum > 2 ? `/tags/${tag}/${pageNum - 1}` : `/tags/${tag}`,
+              next:
+                pageNum < totalPages
+                  ? `/tags/${tag}/${pageNum + 1}`
+                  : undefined,
             },
           });
         }

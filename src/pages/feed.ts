@@ -8,18 +8,19 @@ export async function GET() {
 
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   const sorted = posts.sort(
-    (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+    (a, b) =>
+      new Date(b.data.pubDatetime).valueOf() -
+      new Date(a.data.pubDatetime).valueOf()
   );
   const limited = sorted.slice(0, MAX_ITEMS);
 
-  const items = limited.map((post) => ({
+  const items = limited.map(post => ({
     title: post.data.title,
     link: new URL(`blog/${post.slug}`, SITE.website).toString(),
     pubDate: post.data.pubDatetime,
     description: post.data.description,
     content: post.body,
   }));
-
 
   const responsePromise = rss({
     title: SITE.title,

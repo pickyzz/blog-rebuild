@@ -27,7 +27,9 @@ export async function getStaticPaths() {
   const { SITE } = await import("@/config");
   const posts = await getCollection("blog", ({ data }) => !data.draft);
   const sortedPosts = posts.sort(
-    (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+    (a, b) =>
+      new Date(b.data.pubDatetime).valueOf() -
+      new Date(a.data.pubDatetime).valueOf()
   );
 
   const pageSize = SITE.postPerPage || 10;
@@ -69,7 +71,7 @@ const page = Astro.props as PageProps;
     {
       page.posts && page.posts.length > 0 ? (
         <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
-          {page.posts.map((post) => (
+          {page.posts.map(post => (
             <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
           ))}
         </ul>

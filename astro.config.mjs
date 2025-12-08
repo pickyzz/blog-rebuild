@@ -66,77 +66,6 @@ export default defineConfig({
       smartypants: true,
       gfm: true,
     }),
-    // pwa({
-    //   registerType: "autoUpdate",
-    //   manifest: false, // Use external manifest file
-    //   strategies: "injectManifest",
-    //   srcDir: "src",
-    //   filename: "sw.ts",
-    //   injectManifest: {
-    //     globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
-    //   },
-    //   workbox: {
-    //     runtimeCaching: [
-    //       {
-    //         urlPattern: ({ request }) =>
-    //           request.destination === "style" ||
-    //           request.destination === "script" ||
-    //           request.destination === "image" ||
-    //           request.destination === "font",
-    //         handler: "CacheFirst",
-    //         options: {
-    //           cacheName: "static-assets",
-    //           expiration: {
-    //             maxEntries: 100,
-    //             maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-    //           },
-    //         },
-    //       },
-    //       {
-    //         urlPattern: ({ request }) => request.destination === "document",
-    //         handler: "NetworkFirst",
-    //         options: {
-    //           cacheName: "pages",
-    //           expiration: {
-    //             maxEntries: 50,
-    //             maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
-    //           },
-    //           networkTimeoutSeconds: 3,
-    //         },
-    //       },
-    //       {
-    //         urlPattern: ({ url }) =>
-    //           url.origin ===
-    //           "https://prod-files-secure.s3.us-west-2.amazonaws.com",
-    //         handler: "CacheFirst",
-    //         options: {
-    //           cacheName: "notion-images",
-    //           expiration: {
-    //             maxEntries: 100,
-    //             maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
-    //           },
-    //         },
-    //       },
-    //       {
-    //         urlPattern: ({ url }) =>
-    //           url.origin === "https://fonts.googleapis.com" ||
-    //           url.origin === "https://fonts.gstatic.com",
-    //         handler: "StaleWhileRevalidate",
-    //         options: {
-    //           cacheName: "google-fonts",
-    //           expiration: {
-    //             maxEntries: 20,
-    //             maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-    //           },
-    //         },
-    //       },
-    //     ],
-    //     // Optimize service worker
-    //     skipWaiting: true,
-    //     clientsClaim: true,
-    //     cleanupOutdatedCaches: true,
-    //   },
-    // }),
   ],
   markdown: {
     remarkPlugins: [remarkReadingTime],
@@ -144,8 +73,7 @@ export default defineConfig({
       [rehypeExternalLinks, { target: "_blank", rel: ["nofollow"] }],
     ],
     shikiConfig: {
-      // theme: "catppuccin-macchiato",
-      themes: { light: "github-light", dark: "dark-plus" },
+      theme: "dark-plus",
       wrap: true,
     },
     extendDefaultPlugins: true,

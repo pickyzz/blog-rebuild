@@ -37,16 +37,16 @@ const headerProps = {
     <div
       class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
     >
-        <img
-          class="card-animate h-[13rem] w-[100vw] scale-115 object-cover object-center"
-          src={imageSrc}
-          loading="lazy"
-          decoding="async"
-          fetchpriority={priority}
-          alt={title
-            ? `Cover image for blog post: ${title}`
-            : "Blog post cover image"}
-        />
+      <img
+        class="card-animate scale-115 h-[13rem] w-[100vw] object-cover object-center"
+        src={imageSrc}
+        loading="lazy"
+        decoding="async"
+        fetchpriority={priority}
+        alt={title
+          ? `Cover image for blog post: ${title}`
+          : "Blog post cover image"}
+      />
       <div
         class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2"
       >

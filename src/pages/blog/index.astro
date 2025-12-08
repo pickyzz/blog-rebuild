@@ -15,7 +15,9 @@ const posts = await getCollection("blog", ({ data }) => !data.draft);
 
 // Sort posts by publication date (newest first)
 const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.pubDatetime).valueOf() - new Date(a.data.pubDatetime).valueOf()
+  (a, b) =>
+    new Date(b.data.pubDatetime).valueOf() -
+    new Date(a.data.pubDatetime).valueOf()
 );
 
 const pageSize = SITE.postPerPage || 10;
@@ -32,7 +34,9 @@ const page = {
   next: sortedPosts.length > pageSize ? "/blog/page/2" : undefined,
 };
 
-console.log(`[BLOG INDEX SSG] Loaded ${posts.length} posts from content collections`);
+console.log(
+  `[BLOG INDEX SSG] Loaded ${posts.length} posts from content collections`
+);
 console.log(`[BLOG INDEX SSG] Displaying ${page.posts.length} posts`);
 ---
 
@@ -42,7 +46,7 @@ console.log(`[BLOG INDEX SSG] Displaying ${page.posts.length} posts`);
     {
       page.posts && page.posts.length > 0 ? (
         <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
-          {page.posts.map((post) => (
+          {page.posts.map(post => (
             <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
           ))}
         </ul>

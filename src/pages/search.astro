@@ -6,9 +6,10 @@ import Hr from "../components/Hr.astro";
 
 export const prerender = true; // SSG mode with client-side search
 ---
+
 <Layout title="Search" description="Search blog posts">
   <Header />
-  <main class="container max-w-4xl px-4 py-8 mx-auto">
+  <main class="container mx-auto max-w-4xl px-4 py-8">
     <div class="mb-8">
       <h1 class="mb-4 text-3xl font-bold">Search Posts</h1>
       <form id="searchForm" class="mb-6">
@@ -17,18 +18,18 @@ export const prerender = true; // SSG mode with client-side search
             type="text"
             id="searchInput"
             placeholder="Search by title, description, or tags..."
-            class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             required
           />
         </div>
       </form>
-      <div id="loading" class="hidden mb-4 text-gray-600 dark:text-gray-400">
+      <div id="loading" class="mb-4 hidden text-gray-600 dark:text-gray-400">
         Searching...
       </div>
-      <div id="error" class="hidden mb-4 text-red-600 dark:text-red-400"></div>
-  <!-- debug UI removed -->
+      <div id="error" class="mb-4 hidden text-red-600 dark:text-red-400"></div>
+      <!-- debug UI removed -->
       <div id="results" class="hidden">
-        <div class="flex items-center justify-between mb-4">
+        <div class="mb-4 flex items-center justify-between">
           <h2 id="resultsTitle" class="text-xl font-semibold"></h2>
           <button
             id="clearBtn"
@@ -44,8 +45,13 @@ export const prerender = true; // SSG mode with client-side search
       </div>
 
       <!-- Search suggestions -->
-      <div id="suggestions" class="mt-8 p-4 bg-gray-50 rounded-lg dark:bg-gray-800">
-        <h3 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">Popular keywords:</h3>
+      <div
+        id="suggestions"
+        class="mt-8 rounded-lg bg-gray-50 p-4 dark:bg-gray-800"
+      >
+        <h3 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
+          Popular keywords:
+        </h3>
         <div id="suggestionTags" class="flex flex-wrap gap-2">
           <!-- Suggestions will be loaded here -->
         </div>
