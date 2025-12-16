@@ -4,7 +4,7 @@
   .prose {
     color: var(--foreground);
     max-width: none;
-    line-height: 1.75;
+    line-height: 1.8;
   }
 
   .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {

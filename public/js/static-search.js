@@ -404,6 +404,32 @@
       }
     });
 
+    // Real-time search as user types (with debounce)
+    let debounceTimer;
+    searchInput.addEventListener("input", e => {
+      clearTimeout(debounceTimer);
+      const query = e.target.value.trim();
+      
+      if (!query) {
+        clearResults();
+        return;
+      }
+
+      debounceTimer = setTimeout(async () => {
+        showLoading();
+        try {
+          if (!window.staticSearch.isLoaded) {
+            await window.staticSearch.loadSearchData();
+          }
+          const result = window.staticSearch.search(query, { limit: 20 });
+          showResults(result);
+        } catch (error) {
+          showError("Search failed. Please try again.");
+          console.error("Search error:", error);
+        }
+      }, 300); // 300ms debounce
+    });
+
     // Clear button
     if (clearBtn) {
       clearBtn.addEventListener("click", clearResults);
