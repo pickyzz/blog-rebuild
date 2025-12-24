@@ -2,7 +2,7 @@ import satori from "satori";
 import { SITE } from "@/config";
 import loadGoogleFonts from "../loadGoogleFont";
 
-export default async post => {
+export default async (post: { data: { title: string; author: string } }) => {
   return satori(
     {
       type: "div",
