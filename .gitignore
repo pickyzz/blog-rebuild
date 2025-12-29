@@ -38,6 +38,9 @@ pnpm-debug.log*
 /public/pagefind/
 .vercel
 
+# Generated search data (synced from Notion)
+/public/data/search.json
+
 # other
 .github/copilot-instructions.md
 .agents/memory.instruction.md
@@ -59,3 +62,6 @@ blog-rebuild/blog-rebuild/
 middleware/
 src/assets/images/
 ```
+
+# notion-monitor-worker
+notion-monitor-worker/

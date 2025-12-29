@@ -185,7 +185,7 @@ class NotionSync {
       title,
       description,
       pubDatetime: ensureDate(pubDatetimeRaw) ?? new Date(),
-      modDatetime: ensureDate(modDatetimeRaw),
+      modDatetime: ensureDate(modDatetimeRaw) ?? undefined,
       featured,
       draft,
       tags,
@@ -218,7 +218,7 @@ class NotionSync {
 
       // Ensure directory exists
       await fs.mkdir(path.dirname(imagePath), { recursive: true });
-      await fs.writeFile(imagePath, Buffer.from(buffer));
+      await fs.writeFile(imagePath, new Uint8Array(buffer));
 
       console.log(`✅ Downloaded image: ${filename}`);
 
@@ -352,15 +352,27 @@ async generateFrontmatter(postData: NotionPostData): Promise<string> {
     }
   }
 
+  // Helper function to escape YAML string values
+  const escapeYamlString = (str: string): string => {
+    // If string contains special characters, wrap in quotes and escape internal quotes
+    if (/[:\n\r"'#\[\]{}!&*?|><%@`]/.test(str) || str.trim() !== str) {
+      return `"${str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`;
+    }
+    return `"${str}"`;
+  };
+
   // Helper function to format frontmatter values
   const formatValue = (key: string, value: any): string => {
     if (Array.isArray(value)) {
-      return `${key}: [${value.map(v => `"${v}"`).join(", ")}]`;
+      return `${key}: [${value.map(v => escapeYamlString(String(v))).join(", ")}]`;
     }
     if (value instanceof Date) {
       return `${key}: ${value.toISOString()}`;
     }
-    return `${key}: ${typeof value === "string" ? `"${value}"` : value}`;
+    if (typeof value === "string") {
+      return `${key}: ${escapeYamlString(value)}`;
+    }
+    return `${key}: ${value}`;
   };
 
   const frontmatterStr = Object.entries(frontmatter)
