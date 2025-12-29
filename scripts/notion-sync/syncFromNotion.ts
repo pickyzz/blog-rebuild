@@ -71,6 +71,208 @@ class NotionSync {
       auth: config.notionToken,
     });
     this.n2m = new NotionToMarkdown({ notionClient: this.notion });
+
+    // Custom transformer for video blocks to render as HTML embed
+    // Supports: YouTube, Vimeo, Loom, TikTok, Dailymotion, Twitch, Streamable, Bilibili, Wistia
+    this.n2m.setCustomTransformer("video", async (block: any) => {
+      const { video } = block;
+      const videoUrl = video?.file?.url || video?.external?.url;
+      const caption = video?.caption?.[0]?.plain_text || "";
+
+      if (!videoUrl) return "";
+
+      try {
+        const url = new URL(videoUrl);
+        const hostname = url.hostname.replace(/^www\./, "");
+
+        // YouTube
+        if (hostname === "youtube.com" || hostname === "youtu.be") {
+          let videoId = "";
+          if (hostname === "youtu.be") {
+            videoId = url.pathname.slice(1).split("/")[0];
+          } else if (url.searchParams.has("v")) {
+            videoId = url.searchParams.get("v") || "";
+          } else if (url.pathname.startsWith("/embed/")) {
+            videoId = url.pathname.replace("/embed/", "").split("/")[0];
+          }
+          if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://www.youtube.com/embed/${videoId}"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Vimeo
+        if (hostname === "vimeo.com" || hostname === "player.vimeo.com") {
+          let videoId = "";
+          if (hostname === "player.vimeo.com") {
+            videoId = url.pathname.replace("/video/", "").split("/")[0];
+          } else {
+            videoId = url.pathname.slice(1).split("/")[0];
+          }
+          if (videoId && /^\d+$/.test(videoId)) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://player.vimeo.com/video/${videoId}"
+    title="Vimeo video player" frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Loom
+        if (hostname === "loom.com" || hostname === "www.loom.com") {
+          const shareMatch = url.pathname.match(/\/share\/([a-zA-Z0-9]+)/);
+          const embedMatch = url.pathname.match(/\/embed\/([a-zA-Z0-9]+)/);
+          const videoId = shareMatch?.[1] || embedMatch?.[1];
+          if (videoId) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://www.loom.com/embed/${videoId}"
+    title="Loom video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // TikTok
+        if (hostname === "tiktok.com" || hostname.endsWith(".tiktok.com")) {
+          const videoMatch = url.pathname.match(/\/video\/(\d+)/);
+          if (videoMatch?.[1]) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="740" src="https://www.tiktok.com/embed/v2/${videoMatch[1]}"
+    title="TikTok video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Dailymotion
+        if (hostname === "dailymotion.com" || hostname === "dai.ly") {
+          let videoId = "";
+          if (hostname === "dai.ly") {
+            videoId = url.pathname.slice(1);
+          } else {
+            const match = url.pathname.match(/\/video\/([a-zA-Z0-9]+)/);
+            videoId = match?.[1] || "";
+          }
+          if (videoId) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://www.dailymotion.com/embed/video/${videoId}"
+    title="Dailymotion video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Twitch (clips and videos)
+        if (hostname === "twitch.tv" || hostname === "clips.twitch.tv") {
+          let clipId = "";
+          let videoId = "";
+
+          // Check for clip URLs
+          const clipPathMatch = url.pathname.match(/\/clip\/([a-zA-Z0-9_-]+)/);
+          if (clipPathMatch) {
+            clipId = clipPathMatch[1];
+          } else if (hostname === "clips.twitch.tv") {
+            const directClipMatch = url.pathname.match(/\/([a-zA-Z0-9_-]+)/);
+            if (directClipMatch) {
+              clipId = directClipMatch[1];
+            }
+          }
+
+          // Check for video URLs
+          const videoPathMatch = url.pathname.match(/\/videos\/(\d+)/);
+          if (videoPathMatch) {
+            videoId = videoPathMatch[1];
+          }
+
+          if (clipId) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://clips.twitch.tv/embed?clip=${clipId}&parent=${hostname}"
+    title="Twitch clip player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+          if (videoId) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://player.twitch.tv/?video=${videoId}&parent=${hostname}"
+    title="Twitch video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Streamable
+        if (hostname === "streamable.com") {
+          const videoId = url.pathname.slice(1);
+          if (videoId) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://streamable.com/e/${videoId}"
+    title="Streamable video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Bilibili
+        if (hostname === "bilibili.com" || hostname === "b23.tv") {
+          const bvMatch = url.pathname.match(/\/video\/(BV[a-zA-Z0-9]+)/);
+          if (bvMatch?.[1]) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://player.bilibili.com/player.html?bvid=${bvMatch[1]}"
+    title="Bilibili video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+        // Wistia
+        if (hostname.includes("wistia.com") || hostname.includes("wistia.net")) {
+          const mediaMatch = url.pathname.match(/\/medias\/([a-zA-Z0-9]+)/);
+          if (mediaMatch?.[1]) {
+            return `<figure class="notion-video">
+  <iframe width="100%" height="480" src="https://fast.wistia.net/embed/iframe/${mediaMatch[1]}"
+    title="Wistia video player" frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+          }
+        }
+
+      } catch (e) {
+        // Invalid URL, fall back to generic video handling
+      }
+
+      // Handle direct video files (mp4, webm, etc.) or unsupported platforms
+      return `<figure class="notion-video">
+  <video controls width="100%">
+    <source src="${videoUrl}" type="video/mp4">
+    <source src="${videoUrl}" type="video/webm">
+    Your browser does not support the video tag.
+  </video>
+  ${caption ? `<figcaption>${caption}</figcaption>` : ""}
+</figure>`;
+    });
   }
 
   async fetchWithRetry<T>(
@@ -199,7 +401,7 @@ class NotionSync {
   async downloadImage(url: string, filename: string): Promise<string> {
     try {
       const imagePath = path.join(this.config.publicDir, "images", "blog", filename);
-      
+
       // Check if image already exists
       try {
         await fs.access(imagePath);
@@ -313,77 +515,77 @@ class NotionSync {
     return content;
   }
 
-async generateFrontmatter(postData: NotionPostData): Promise<string> {
-  const frontmatter: any = {
-    notionId: postData.id, // Store Notion page ID for content fetching
-    title: postData.title,
-    description: postData.description,
-    pubDatetime: postData.pubDatetime, // Date object for Astro
-    featured: postData.featured,
-    draft: postData.draft,
-    tags: postData.tags,
-    author: postData.author,
-  };
+  async generateFrontmatter(postData: NotionPostData): Promise<string> {
+    const frontmatter: any = {
+      notionId: postData.id, // Store Notion page ID for content fetching
+      title: postData.title,
+      description: postData.description,
+      pubDatetime: postData.pubDatetime, // Date object for Astro
+      featured: postData.featured,
+      draft: postData.draft,
+      tags: postData.tags,
+      author: postData.author,
+    };
 
-  if (postData.modDatetime) {
-    frontmatter.modDatetime = postData.modDatetime; // Date object for Astro
-  }
-  if (postData.readingTime) {
-    frontmatter.readingTime = postData.readingTime;
-  }
-  if (postData.canonicalURL) {
-    frontmatter.canonicalURL = postData.canonicalURL;
-  }
-  if (postData.ogImage) {
-    // Always download ogImage if it's an external URL
-    if (postData.ogImage.startsWith('http')) {
-      try {
-        const extension = path.extname(new URL(postData.ogImage).pathname) || '.jpg';
-        // Use slug as filename for ogImage
-        const filename = `${postData.slug}${extension}`;
-        const localPath = await this.downloadImage(postData.ogImage, filename);
-        frontmatter.ogImage = localPath;
-      } catch (error) {
-        console.warn(`Failed to download ogImage for ${postData.slug}:`, error);
-        frontmatter.ogImage = "/pickyzz-og.png"; // Fallback to default image
+    if (postData.modDatetime) {
+      frontmatter.modDatetime = postData.modDatetime; // Date object for Astro
+    }
+    if (postData.readingTime) {
+      frontmatter.readingTime = postData.readingTime;
+    }
+    if (postData.canonicalURL) {
+      frontmatter.canonicalURL = postData.canonicalURL;
+    }
+    if (postData.ogImage) {
+      // Always download ogImage if it's an external URL
+      if (postData.ogImage.startsWith('http')) {
+        try {
+          const extension = path.extname(new URL(postData.ogImage).pathname) || '.jpg';
+          // Use slug as filename for ogImage
+          const filename = `${postData.slug}${extension}`;
+          const localPath = await this.downloadImage(postData.ogImage, filename);
+          frontmatter.ogImage = localPath;
+        } catch (error) {
+          console.warn(`Failed to download ogImage for ${postData.slug}:`, error);
+          frontmatter.ogImage = "/pickyzz-og.png"; // Fallback to default image
+        }
+      } else {
+        frontmatter.ogImage = postData.ogImage;
       }
-    } else {
-      frontmatter.ogImage = postData.ogImage;
     }
-  }
 
-  // Helper function to escape YAML string values
-  const escapeYamlString = (str: string): string => {
-    // If string contains special characters, wrap in quotes and escape internal quotes
-    if (/[:\n\r"'#\[\]{}!&*?|><%@`]/.test(str) || str.trim() !== str) {
-      return `"${str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`;
-    }
-    return `"${str}"`;
-  };
+    // Helper function to escape YAML string values
+    const escapeYamlString = (str: string): string => {
+      // If string contains special characters, wrap in quotes and escape internal quotes
+      if (/[:\n\r"'#\[\]{}!&*?|><%@`]/.test(str) || str.trim() !== str) {
+        return `"${str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`;
+      }
+      return `"${str}"`;
+    };
 
-  // Helper function to format frontmatter values
-  const formatValue = (key: string, value: any): string => {
-    if (Array.isArray(value)) {
-      return `${key}: [${value.map(v => escapeYamlString(String(v))).join(", ")}]`;
-    }
-    if (value instanceof Date) {
-      return `${key}: ${value.toISOString()}`;
-    }
-    if (typeof value === "string") {
-      return `${key}: ${escapeYamlString(value)}`;
-    }
-    return `${key}: ${value}`;
-  };
+    // Helper function to format frontmatter values
+    const formatValue = (key: string, value: any): string => {
+      if (Array.isArray(value)) {
+        return `${key}: [${value.map(v => escapeYamlString(String(v))).join(", ")}]`;
+      }
+      if (value instanceof Date) {
+        return `${key}: ${value.toISOString()}`;
+      }
+      if (typeof value === "string") {
+        return `${key}: ${escapeYamlString(value)}`;
+      }
+      return `${key}: ${value}`;
+    };
 
-  const frontmatterStr = Object.entries(frontmatter)
-    .map(([key, value]) => formatValue(key, value))
-    .join("\n");
+    const frontmatterStr = Object.entries(frontmatter)
+      .map(([key, value]) => formatValue(key, value))
+      .join("\n");
 
-  return `---
+    return `---
 ${frontmatterStr}
 ---
 `;
-}
+  }
 
   async syncPost(page: any): Promise<void> {
     try {
@@ -406,11 +608,11 @@ ${frontmatterStr}
     try {
       // Ensure content directory exists
       await fs.mkdir(this.config.contentDir, { recursive: true });
-      
+
       // Ensure blog images directory exists
       const blogImagesPath = path.join(this.config.publicDir, "images", "blog");
       await fs.mkdir(blogImagesPath, { recursive: true });
-      
+
       console.log("📁 Verified directories exist");
     } catch (error) {
       console.warn("Failed to ensure directories:", error);
