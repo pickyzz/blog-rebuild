@@ -1,6 +1,13 @@
 ---
 import { SITE } from "@/config";
 import "@/styles/global.css";
+import "@fontsource/ibm-plex-sans-thai/100.css";
+import "@fontsource/ibm-plex-sans-thai/200.css";
+import "@fontsource/ibm-plex-sans-thai/300.css";
+import "@fontsource/ibm-plex-sans-thai/400.css";
+import "@fontsource/ibm-plex-sans-thai/500.css";
+import "@fontsource/ibm-plex-sans-thai/600.css";
+import "@fontsource/ibm-plex-sans-thai/700.css";
 import { ClientRouter } from "astro:transitions";
 
 export interface Props {
@@ -168,20 +175,7 @@ const structuredData = {
       })}
     />
 
-    <!-- Load Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="preload"
-      href="https://fonts.gstatic.com/s/ibmplexsansthai/v11/mnnQ_yR64i3h593V_mE4gn0iV29Yw2Y.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Font optimization: using @fontsource/ibm-plex-sans-thai in global css instead -->
 
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light dark" />
@@ -205,6 +199,7 @@ const structuredData = {
       (function () {
         const script = document.createElement("script");
         script.src = "https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js";
+        script.defer = true;
         script.onload = function () {
           // web-vitals is now available as window.webVitals
           function sendToAnalytics({ name, delta, value, id }) {
@@ -263,10 +258,12 @@ const structuredData = {
     <!-- Cookie -->
     <script
       is:inline
+      defer
       src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v2.8.6/dist/cookieconsent.js"
     ></script>
     <script
       is:inline
+      defer
       src="https://cdn.jsdelivr.net/gh/pickyzz/blog-rebuild@main/public/cookies.js"
     ></script>
 

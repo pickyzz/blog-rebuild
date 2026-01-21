@@ -61,7 +61,8 @@ blog-nextjs/
 blog-rebuild/blog-rebuild/
 middleware/
 src/assets/images/
-```
 
 # notion-monitor-worker
 notion-monitor-worker/
+
+.agent/*
