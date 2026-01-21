@@ -399,7 +399,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(validation.isValid ? 0 : 1);
 
     case '--export':
-      console.log(JSON.stringify(detector.exportConfig(), null, 2));
+      // Export a sanitized configuration that omits environment-derived values
+      const fullConfig = detector.exportConfig();
+      const { env, ...safeConfig } = fullConfig;
+      console.log(JSON.stringify(safeConfig, null, 2));
       break;
 
     case '--env':
