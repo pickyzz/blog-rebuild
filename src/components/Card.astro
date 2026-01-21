@@ -22,7 +22,7 @@ const headerProps = {
 };
 ---
 
-<li class="card-wrapper group relative my-6 max-h-[350px] list-none">
+<li class="card-wrapper group relative my-6 max-h-[350px] list-none opacity-0 translate-y-8 transition-all duration-700 ease-out">
   <a href={href} class="card-link">
     <!-- Image Container with Zoom Effect -->
     <div class="relative h-[13rem] w-full overflow-hidden">
@@ -104,3 +104,46 @@ const headerProps = {
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   }
 </style>
+
+<noscript>
+    <style>
+        .card-wrapper {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    </style>
+</noscript>
+
+<script>
+  // Initial Load Animation for Cards
+  document.addEventListener("astro:page-load", async () => {
+    const cards = document.querySelectorAll(".card-wrapper.opacity-0");
+    if (cards.length === 0) return;
+
+    // Helper to wait for an image to load
+    const contentLoaded = (card: Element) => {
+        const img = card.querySelector("img");
+        if (!img) return Promise.resolve();
+        if (img.complete) return Promise.resolve();
+        return new Promise((resolve) => {
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(true);
+        });
+    };
+
+    // Wait for all images in the initial batch
+    const promises = Array.from(cards).map(card => contentLoaded(card));
+    
+    // Optional: Promise.race with a timeout to prevent hanging forever if an image fails badly
+    const timeout = new Promise(resolve => setTimeout(resolve, 3000));
+    
+    await Promise.race([Promise.all(promises), timeout]);
+
+    // Staggered Reveal
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.remove("opacity-0", "translate-y-8");
+        }, index * 100); // 100ms delay between each card
+    });
+  });
+</script>

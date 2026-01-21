@@ -288,7 +288,7 @@ class EnvironmentDetector {
 
     if (presentRequired.length > 0) {
       console.log('✅ Present Required:');
-      presentRequired.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v], v)}`));
+      presentRequired.forEach(v => console.log(`   ${v}: ${this.getSafeValue(v)}`));
     }
 
     if (missingRequired.length > 0) {
@@ -301,7 +301,7 @@ class EnvironmentDetector {
 
     if (presentOptional.length > 0) {
       console.log('ℹ️  Present Optional:');
-      presentOptional.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v], v)}`));
+      presentOptional.forEach(v => console.log(`   ${v}: ${this.getSafeValue(v)}`));
     }
 
     if (missingOptional.length > 0 && !this.isDevelopment()) {
@@ -313,21 +313,27 @@ class EnvironmentDetector {
     }
   }
 
-  maskValue(value, key = '') {
-    if (!value) return '';
-
-    // Always completely mask known sensitive keys regardless of value content
+  getSafeValue(key) {
+    // 1. Check if the KEY implies sensitivity - if so, DO NOT even read the value for logging
     const sensitiveKeys = ['KEY', 'TOKEN', 'SECRET', 'PASSWORD', 'CREDENTIAL'];
     if (sensitiveKeys.some(s => key.toUpperCase().includes(s))) {
        return '********';
     }
 
-    // Also mask if the value itself looks like a secret/key/token
+    // 2. Safe to read value for content inspection
+    const value = this.env[key];
+    if (!value) return '';
+
+    return this.formatLogValue(value);
+  }
+
+  formatLogValue(value) {
+    // 3. Content-based masking (double check)
     if (value.includes('secret') || value.includes('key') || value.includes('token') || value.length > 50) {
       return '********';
     }
     
-    // For other values, show only safe ends
+    // 4. Truncate long values
     if (value.length > 20) {
       return value.substring(0, 4) + '***' + value.substring(value.length - 4);
     }

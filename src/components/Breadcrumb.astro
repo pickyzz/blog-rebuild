@@ -74,31 +74,29 @@ if (segments.length === 0 || (segments.length === 1 && segments[0] === "")) {
 // We'll render `crumbs` in the template below
 ---
 
-<nav class="mx-auto mb-1 mt-8 w-full max-w-4xl px-4" aria-label="breadcrumb">
-  <ul
-    class="font-light [&>li:not(:last-child)>a]:hover:opacity-100 [&>li]:inline"
-  >
+<nav class="breadcrumb mx-auto mb-6 mt-8 w-full max-w-4xl px-4" aria-label="breadcrumb">
+  <ul class="flex items-center gap-2 text-sm text-muted-foreground">
     <li>
-      <a href="/" class="opacity-80">Home</a>
-      <span aria-hidden="true" class="opacity-80">&raquo;</span>
+      <a href="/" class="hover:text-foreground hover:underline transition-colors">Home</a>
     </li>
+    <li class="opacity-50" aria-hidden="true">/</li>
     {
       crumbs.map((crumb, index) =>
         index + 1 === crumbs.length ? (
           <li>
             <span
-              class={`${index > 0 ? "lowercase" : "capitalize"}`}
+              class={`font-medium text-foreground ${index > 0 ? "lowercase" : "capitalize"}`}
               aria-current="page"
             >
               {crumb.label}
             </span>
           </li>
         ) : (
-          <li>
-            <a href={crumb.href} class="capitalize opacity-70">
+          <li class="flex items-center gap-2">
+            <a href={crumb.href} class="capitalize hover:text-foreground hover:underline transition-colors">
               {crumb.label}
             </a>
-            <span aria-hidden="true">&raquo;</span>
+            <span class="opacity-50" aria-hidden="true">/</span>
           </li>
         )
       )

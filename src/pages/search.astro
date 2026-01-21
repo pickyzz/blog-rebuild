@@ -11,14 +11,14 @@ export const prerender = true; // SSG mode with client-side search
   <Header />
   <main class="container mx-auto max-w-4xl px-4 py-8">
     <div class="mb-8">
-      <h1 class="mb-6 text-center text-3xl font-bold text-accent">Search Posts</h1>
-      <form id="searchForm" class="mx-auto mb-10 max-w-2xl">
+      <h1 class="reveal mb-6 text-center text-3xl font-bold text-accent">Search Posts</h1>
+      <form id="searchForm" class="reveal reveal-delay-200 mx-auto mb-10 max-w-2xl">
         <div class="relative gap-2">
           <input
             type="text"
             id="searchInput"
             placeholder="Search by title, description, or tags..."
-            class="w-full rounded-full border border-accent/20 bg-background/50 px-6 py-4 pr-12 text-lg shadow-sm backdrop-blur-md transition-all focus:border-accent focus:bg-background focus:outline-none focus:ring-2 focus:ring-accent/20"
+            class="w-full rounded-full border border-accent/20 bg-[color-mix(in_srgb,var(--background),transparent)] px-6 py-4 pr-12 text-lg text-foreground shadow-sm backdrop-blur-md transition-all focus:border-accent focus:bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         </div>
       </form>
@@ -48,7 +48,7 @@ export const prerender = true; // SSG mode with client-side search
       <!-- Search suggestions -->
       <div
         id="suggestions"
-        class="mx-auto mt-8 max-w-2xl rounded-2xl border border-accent/10 bg-accent/5 p-6 backdrop-blur-sm"
+        class="reveal reveal-delay-300 mx-auto mt-8 max-w-2xl rounded-2xl border border-accent/10 bg-accent/5 p-6 backdrop-blur-sm"
       >
         <h3 class="mb-4 text-lg font-semibold text-foreground/80">
           Popular keywords:

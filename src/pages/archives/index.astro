@@ -36,7 +36,7 @@ const months = [
 
 <Layout title={`Archives | ${SITE.title}`}>
   <Header />
-  <Main pageTitle="Archives" pageDesc="All the articles I've archived.">
+  <Main pageTitle="Archives" pageDesc="All articles">
     <div class="relative ml-4 border-l-2 border-accent/20 pl-8 pb-12">
       {
         Object.entries(
@@ -51,7 +51,7 @@ const months = [
           .map(([year, yearGroup]) => (
             <div class="relative">
               {/* Year Milestone */}
-              <div class="sticky top-28 -ml-[41px] mb-8 flex items-center bg-background/80 backdrop-blur-md p-2 -my-2 rounded-2xl border border-accent/20 shadow-sm w-fit z-10 transition-all duration-300">
+              <div class="reveal sticky top-28 -ml-[41px] mb-8 flex items-center bg-background/80 backdrop-blur-md p-2 -my-2 rounded-2xl border border-accent/20 shadow-sm w-fit z-10 transition-all duration-300">
                 <div class="flex h-5 w-5 items-center justify-center rounded-full bg-accent ring-4 ring-background shrink-0">
                   <div class="h-2 w-2 rounded-full bg-white"></div>
                 </div>
@@ -71,7 +71,7 @@ const months = [
               )
                 .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
                 .map(([month, monthGroup]) => (
-                  <div class="mb-12">
+                  <div class="reveal reveal-delay-200 mb-12">
                     {/* Month Header */}
                     <div class="mb-4 flex items-center gap-2">
                       <span class="text-lg font-semibold text-foreground/80">{months[Number(month) - 1]}</span>

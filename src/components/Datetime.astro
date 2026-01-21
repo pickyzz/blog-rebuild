@@ -49,11 +49,16 @@ const time = myDatetime.toLocaleTimeString([], {
     ></path>
   </svg>
   <span class={`italic ${size === "sm" ? "text-sm" : "text-sm sm:text-base"}`}>
+    <time datetime={myDatetime.toISOString()}>{date}</time>
+    <span aria-hidden="true" class="mx-1 opacity-50">|</span>
+    <span class="sr-only">&nbsp;at&nbsp;</span>
+    <span class="text-nowrap">{time}</span>
   </span>
   {
     modDatetime && modDatetime > pubDatetime ? (
       <span
-        class={`italic ${size === "sm" ? "text-xs" : "text-sm"} badge badge-primary ${size === "sm" ? "badge-sm" : "badge-md"} badge-outline`}
+        class={`ml-2 rounded-full border border-accent/30 bg-accent/5 px-2 py-0.5 text-xs text-accent backdrop-blur-sm ${size === "sm" ? "text-[10px]" : "text-xs"}`}
+        title="Updated content"
       >
         Edited
       </span>
@@ -61,10 +66,4 @@ const time = myDatetime.toLocaleTimeString([], {
       <span class="sr-only">Published</span>
     )
   }
-  <span class={`italic ${size === "sm" ? "text-sm" : "text-sm sm:text-base"}`}>
-    <time datetime={myDatetime.toISOString()}>{date}</time>
-    <span aria-hidden="true"> | </span>
-    <span class="sr-only">&nbsp;at&nbsp;</span>
-    <span class="text-nowrap">{time}</span>
-  </span>
 </div>

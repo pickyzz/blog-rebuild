@@ -390,7 +390,27 @@ img.img-loading {
     transform 0.5s ease-out;
 }
 
+
 img.img-loaded {
   filter: blur(0);
   opacity: 1;
 }
+
+/* Global Scroll Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: all 0.7s ease-out;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered delays for child elements if needed */
+.reveal-delay-100 { transition-delay: 100ms; }
+.reveal-delay-200 { transition-delay: 200ms; }
+.reveal-delay-300 { transition-delay: 300ms; }
+.reveal-delay-400 { transition-delay: 400ms; }
+.reveal-delay-500 { transition-delay: 500ms; }

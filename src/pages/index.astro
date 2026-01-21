@@ -40,15 +40,15 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
   <Header />
   <main id="main-content" data-layout="index">
     <section id="hero" class="pb-6 pt-8">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
+      <h1 class="reveal my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
         SAWASDEE 🙏🏻
       </h1>
-      <p>I&rsquo;m Parinya (Pickyzz) T.</p>
-      <p>Self-taught front-end developer.</p>
+      <p class="reveal reveal-delay-200">I&rsquo;m Parinya (Pickyzz) T.</p>
+      <p class="reveal reveal-delay-300">Self-taught front-end developer.</p>
       {
         // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
-          <div class="mt-4 flex flex-col sm:flex-row sm:items-center">
+          <div class="reveal mt-4 flex flex-col sm:flex-row sm:items-center reveal-delay-400">
             <Socials />
           </div>
         )
@@ -61,7 +61,7 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
       featuredPosts.length > 0 && (
         <>
           <section id="featured" class="pb-6 pt-12">
-            <h2 class="my-[1.3rem] text-center text-2xl font-semibold tracking-wide">
+            <h2 class="reveal my-[1.3rem] text-center text-2xl font-semibold tracking-wide">
               Featured
             </h2>
             <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
@@ -86,7 +86,7 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
     {
       recentPosts.length > 0 && (
         <section id="recent-posts" class="pb-6 pt-12">
-          <h2 class="my-[1.3rem] text-center text-2xl font-semibold tracking-wide">
+          <h2 class="reveal my-[1.3rem] text-center text-2xl font-semibold tracking-wide">
             Recent Posts
           </h2>
           <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
@@ -108,7 +108,7 @@ console.log(`[HOMEPAGE] Recent posts length: ${recentPosts.length}`);
       )
     }
 
-    <div class="my-8 text-center">
+    <div class="reveal my-8 text-center">
       <LinkButton href="/blog">
         All Posts
         <IconArrowRight class="inline-block" />

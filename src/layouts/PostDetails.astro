@@ -142,11 +142,11 @@ if (tags && tags.length > 0 && posts) {
   >
     <h1
       transition:name={slugifyStr(title)}
-      class="my-2 inline-block text-2xl font-bold text-accent sm:text-3xl"
+      class="reveal my-2 inline-block text-2xl font-bold text-accent sm:text-3xl"
     >
       {title}
     </h1>
-    <div class="flex items-center gap-4">
+    <div class="reveal reveal-delay-200 flex items-center gap-4">
       <Datetime
         pubDatetime={pubDatetime}
         modDatetime={modDatetime}
@@ -154,10 +154,10 @@ if (tags && tags.length > 0 && posts) {
         class="mb-2"
       />
     </div>
-    <p class="ml-1.5 text-xs font-light">
+    <p class="reveal reveal-delay-200 ml-1.5 text-xs font-light">
       By : {author}{readingTime ? ` | ${readingTime}` : ""}
     </p>
-    <article id="article" class="prose mx-auto mt-8 max-w-4xl">
+    <article id="article" class="reveal reveal-delay-300 prose mx-auto mt-8 max-w-4xl">
       <img
         class="h-[14rem] w-[100vw] overflow-hidden rounded-lg object-cover object-center"
         src={ogImageUrl}
@@ -173,7 +173,7 @@ if (tags && tags.length > 0 && posts) {
       </div>
     </article>
 
-    <ul class="my-8 flex flex-row items-center justify-center md:justify-end">
+    <ul class="reveal my-8 flex flex-row items-center justify-center md:justify-end">
       {
         (tags || []).map((tag: string) => (
           <Tag tag={slugifyStr(tag)} tagName={tag} />
@@ -181,7 +181,7 @@ if (tags && tags.length > 0 && posts) {
       }
     </ul>
     <div
-      class="flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
+      class="reveal flex flex-col items-center justify-between gap-8 sm:flex-row sm:items-end sm:gap-4"
     >
       <ShareLinks class="transition duration-200 hover:opacity-80" />
 
@@ -197,7 +197,7 @@ if (tags && tags.length > 0 && posts) {
     <hr class="my-6 border-dashed" />
 
     <!-- Previous/Next Post Buttons -->
-    <div data-pagefind-ignore class="grid grid-cols-2 gap-8">
+    <div data-pagefind-ignore class="reveal grid grid-cols-2 gap-8">
       {
         prevPost && (
           <a
@@ -231,7 +231,7 @@ if (tags && tags.length > 0 && posts) {
     <!-- Related Posts Section -->
     {
       relatedPosts && relatedPosts.length > 0 && (
-        <section class="mt-12">
+        <section class="reveal mt-12">
           <h2 class="mb-6 text-center text-2xl font-bold text-accent">
             โพสต์ที่เกี่ยวข้อง
           </h2>

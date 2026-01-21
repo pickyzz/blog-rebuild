@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 import Main from "@/layouts/Main.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
+import SkeletonCard from "@/components/SkeletonCard.astro";
 import { getCollection } from "astro:content";
 
 // Define the page props interface
@@ -62,26 +63,172 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const page = Astro.props as PageProps;
+const page = Astro.props;
 ---
 
-<Layout title={`Posts | Page ${page.currentPage}`} canonicalURL={page.url}>
+<Layout title={`Posts | Page ${page.currentPage}`} canonicalURL={`/blog/page/${page.currentPage}`}>
   <Header />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     {
       page.posts && page.posts.length > 0 ? (
-        <ul class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
-          {page.posts.map(post => (
-            <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
-          ))}
-        </ul>
+        <>
+          <ul id="post-container" class="mx-auto grid max-w-[80vw] grid-cols-1 gap-8 md:max-w-4xl md:grid-cols-2">
+            {page.posts.map(post => (
+              <Card href={`/blog/${post.slug}`} frontmatter={post.data} />
+            ))}
+          </ul>
+
+          {/* Infinite Scroll Sentinel / Loading Indicator */}
+          <div id="infinite-scroll-sentinel" class="mx-auto mt-8 grid max-w-[80vw] grid-cols-1 gap-8 opacity-0 transition-opacity duration-300 md:max-w-4xl md:grid-cols-2">
+             <SkeletonCard />
+             <SkeletonCard />
+          </div>
+        </>
       ) : (
         <p class="text-center">No posts available.</p>
       )
     }
   </Main>
 
-  <Pagination {page} />
+  {/* Hidden Pagination (Required for Infinite Scroll Logic to scrape next URL) */}
+  <div class="hidden">
+    <Pagination {page} />
+  </div>
+
+  {/* End of Content Message */}
+  <div id="end-of-content" class="mt-8 mb-12 hidden text-center text-sm text-muted-foreground opacity-70">
+    — All posts loaded —
+  </div>
 
   <Footer noMarginTop={page.totalPages > 1} />
+
+  <script is:inline>
+    // Infinite Scroll Implementation (Shared Logic)
+    document.addEventListener("astro:page-load", () => {
+      const container = document.getElementById("post-container");
+      const sentinel = document.getElementById("infinite-scroll-sentinel");
+      const endMessage = document.getElementById("end-of-content");
+      
+      if (!container || !sentinel) return;
+
+      let nextUrl = null;
+      let isLoading = false;
+      const loadedUrls = new Set();
+      
+      const updateNextUrl = () => {
+        const paginationNav = document.querySelector("nav[aria-label='Pagination']");
+        if (paginationNav) {
+            // Strictly look for the Next button using aria-label
+            const nextLink = paginationNav.querySelector("a[aria-label='Next']");
+            if (nextLink && !nextLink.classList.contains("disabled") && !nextLink.classList.contains("pointer-events-none") && nextLink.getAttribute("href")) {
+                nextUrl = nextLink.getAttribute("href");
+            } else {
+                nextUrl = null;
+            }
+        }
+      };
+
+      updateNextUrl();
+
+      if (!nextUrl) {
+        sentinel.style.display = "none";
+        if (endMessage) endMessage.classList.remove("hidden");
+        return;
+      }
+
+      const observer = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting && nextUrl && !isLoading) {
+          
+          if (loadedUrls.has(nextUrl)) return;
+
+          isLoading = true;
+          sentinel.classList.remove("opacity-0");
+          
+          try {
+            const response = await fetch(nextUrl);
+            const html = await response.text();
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const newPosts = doc.querySelectorAll("#post-container > *");
+            
+            let appendedPosts = [];
+            newPosts.forEach(post => {
+              const link = post.querySelector("a")?.getAttribute("href");
+              if (link) {
+                  const exists = container.querySelector(`a[href="${link}"]`);
+                  if (!exists) {
+                      container.appendChild(post);
+                      appendedPosts.push(post);
+                  }
+              } else {
+                   container.appendChild(post);
+                   appendedPosts.push(post);
+              }
+            });
+            
+             // If new posts were appended, wait for their images then reveal
+            if (appendedPosts.length > 0) {
+                 const imagePromises = appendedPosts.map(post => {
+                     const img = post.querySelector("img");
+                     if (!img) return Promise.resolve();
+                     if (img.complete) return Promise.resolve();
+                     return new Promise(resolve => {
+                         img.onload = () => resolve();
+                         img.onerror = () => resolve();
+                     });
+                 });
+                 
+                 // Wait for all images or timeout after 3s
+                 const timeout = new Promise(resolve => setTimeout(resolve, 3000));
+                 await Promise.race([Promise.all(imagePromises), timeout]);
+                 
+                 // Staggered Reveal
+                 appendedPosts.forEach((post, index) => {
+                     post.classList.add("opacity-0", "translate-y-8"); // Ensure classes
+                     setTimeout(() => {
+                         post.classList.remove("opacity-0", "translate-y-8");
+                     }, index * 100);
+                 });
+            }
+            
+            loadedUrls.add(nextUrl);
+            
+            // Update nextUrl logic
+            const newPagination = doc.querySelector("nav[aria-label='Pagination']");
+             if (newPagination) {
+                const nextLink = newPagination.querySelector("a[aria-label='Next']");
+                if (nextLink && !nextLink.classList.contains("disabled") && !nextLink.classList.contains("pointer-events-none") && nextLink.getAttribute("href")) {
+                    nextUrl = nextLink.getAttribute("href");
+                } else {
+                    nextUrl = null;
+                }
+             } else {
+                 nextUrl = null;
+             }
+             
+             if (appendedPosts.length === 0) {
+                 nextUrl = null;
+             }
+             
+          } catch (err) {
+            console.error("Infinite scroll error:", err);
+          } finally {
+             isLoading = false;
+             sentinel.classList.add("opacity-0");
+             
+             if (!nextUrl) {
+                 observer.disconnect();
+                 sentinel.style.display = "none";
+                 if (endMessage) endMessage.classList.remove("hidden");
+             }
+          }
+        }
+      }, {
+        rootMargin: "200px",
+      });
+
+      observer.observe(sentinel);
+    });
+  </script>
 </Layout>
