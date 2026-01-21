@@ -11,44 +11,36 @@ export interface Props {
 }
 
 const { href, frontmatter, secHeading = true, priority = "low" } = Astro.props;
-
 const { title, pubDatetime, modDatetime, description, ogImage } = frontmatter;
 
 // Use local image path or fallback to default
 const imageSrc = ogImage || "/pickyzz-og.png";
 
-// Placeholder logic removed - using native lazy loading
-// const generatePlaceholder = ...
-// const placeholderSrc = ...
-
 const headerProps = {
   style: { viewTransitionName: slugifyStr(title) },
-  class:
-    "text-white text-[1.1rem] text-center text-lg font-light decoration-dashed",
+  class: "text-white text-[1.1rem] text-center text-lg font-medium",
 };
 ---
 
-<li class="my-6 max-h-[350px]">
-  <a
-    id="card-url"
-    href={href}
-    class="decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
-  >
-    <div
-      class="relative mb-4 flex-shrink-0 overflow-hidden rounded-lg object-cover"
-    >
+<li class="card-wrapper group relative my-6 max-h-[350px] list-none">
+  <a href={href} class="card-link">
+    <!-- Image Container with Zoom Effect -->
+    <div class="relative h-[13rem] w-full overflow-hidden">
       <img
-        class="card-animate scale-115 h-[13rem] w-[100vw] object-cover object-center"
+        class="h-full w-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105 group-hover:brightness-110"
         src={imageSrc}
         loading="lazy"
         decoding="async"
         fetchpriority={priority}
-        alt={title
-          ? `Cover image for blog post: ${title}`
-          : "Blog post cover image"}
+        alt={title}
       />
+      
+      <!-- Gradient Overlay (Subtle) -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-40"></div>
+      
+      <!-- Glassmorphism Title Bar -->
       <div
-        class="absolute bottom-0 left-0 right-0 flex min-h-[35%] items-center justify-center bg-black/75 px-10 py-2"
+        class="absolute bottom-0 left-0 right-0 flex min-h-[30%] items-center justify-center border-t border-white/10 bg-black/60 px-6 py-3 backdrop-blur-md transition-all duration-300 group-hover:bg-black/50"
       >
         {
           secHeading ? (
@@ -59,30 +51,56 @@ const headerProps = {
         }
       </div>
     </div>
-    <p class="mb-4 line-clamp-2 h-[3rem] text-center text-base">
-      {description}
-    </p>
+
+    <!-- Content / Meta -->
+    <div class="card-content px-6 py-4">
+      <p class="card-description mb-3 line-clamp-2 text-sm">
+        {description}
+      </p>
+      <div class="card-datetime-wrapper flex items-center justify-center border-t border-dashed pt-3">
+        <Datetime
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          class="text-xs"
+        />
+      </div>
+    </div>
   </a>
-  <Datetime
-    pubDatetime={pubDatetime}
-    modDatetime={modDatetime}
-    class="justify-center"
-  />
 </li>
 
 <style>
-  /* fadeIn animation removed */
-
-  .card-animate {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Card styles using CSS variables for reliable theme switching */
+  .card-link {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+    background-color: var(--background);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
   }
-
-  .card-animate:hover {
-    transform: scale(1.08);
+  
+  .card-link:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent);
   }
-
-  /* Add smooth transition for parent container */
-  li a:hover .card-animate {
-    transform: scale(1.08);
+  
+  .card-description {
+    color: var(--foreground);
+    opacity: 0.8;
+  }
+  
+  .card-datetime-wrapper {
+    border-color: var(--border);
+  }
+  
+  /* Dark theme adjustments via data-theme attribute */
+  :global(html[data-theme="dark"]) .card-link {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+  
+  :global(html[data-theme="dark"]) .card-link:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   }
 </style>

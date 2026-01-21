@@ -175,8 +175,6 @@ html[data-theme="dark"] {
 
 .notion-content h2 {
   font-size: 1.5em;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.2em;
   display: inline-block;
   width: fit-content;
 }

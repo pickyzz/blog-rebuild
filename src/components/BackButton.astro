@@ -10,9 +10,9 @@ import { SITE } from "@/config";
       <LinkButton
         id="back-button"
         href="/"
-        class="focus-outline hover:text-foreground/75 mb-2 mt-8 flex"
+        class="group inline-flex items-center gap-1 rounded-full border border-accent/20 bg-background/50 px-4 py-1.5 text-sm font-medium text-foreground transition-all duration-300 hover:border-accent hover:bg-accent hover:text-white hover:shadow-md hover:-translate-y-0.5 mb-2 mt-8 backdrop-blur-sm"
       >
-        <IconChevronLeft class="inline-block size-6" />
+        <IconChevronLeft class="inline-block size-5 transition-transform group-hover:-translate-x-1" />
         <span>Go back</span>
       </LinkButton>
     </div>
@@ -20,16 +20,26 @@ import { SITE } from "@/config";
 }
 
 <script>
-  /* Update Search Praam */
-  function updateGoBackUrl() {
-    const backButton: HTMLAnchorElement | null =
-      document.querySelector("#back-button");
+  function setupBackButton() {
+    const backButton = document.querySelector("#back-button") as HTMLAnchorElement;
+    
+    if (backButton) {
+      // Logic for browser-like back behavior
+      backButton.addEventListener("click", (e) => {
+        if (window.history.length > 1) {
+          e.preventDefault();
+          window.history.back();
+        }
+      });
 
-    const backUrl = sessionStorage.getItem("backUrl");
-
-    if (backUrl && backButton) {
-      backButton.href = backUrl;
+      // Maintain existing fallback logic for href
+      const backUrl = sessionStorage.getItem("backUrl");
+      if (backUrl) {
+        backButton.href = backUrl;
+      }
     }
   }
-  updateGoBackUrl();
+
+  setupBackButton();
+  document.addEventListener("astro:after-swap", setupBackButton);
 </script>

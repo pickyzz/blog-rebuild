@@ -14,12 +14,26 @@ const { centered = false } = Astro.props;
     SOCIALS.map(social => (
       <LinkButton
         href={social.href}
-        class="p-2 hover:rotate-6 sm:p-1"
+        class="social-btn rounded-lg p-2 transition-all duration-300 sm:p-2"
         title={social.linkTitle}
       >
-        <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+        <social.icon class="inline-block size-6 scale-110 fill-transparent stroke-current stroke-2 opacity-90 transition-transform duration-300 group-hover:scale-125" />
         <span class="sr-only">{social.linkTitle}</span>
       </LinkButton>
     ))
   }
 </div>
+
+<style>
+  /* Social button styles using CSS variables */
+  :global(.social-btn) {
+    color: var(--foreground);
+  }
+  
+  :global(.social-btn:hover) {
+    color: var(--accent);
+    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 15%, transparent);
+  }
+</style>

@@ -6,6 +6,12 @@
     max-width: none;
     line-height: 1.8;
   }
+  
+  /* Force light mode text color if variable fails */
+  html[data-theme="light"] .prose,
+  :root[data-theme="light"] .prose {
+    color: #282728;
+  }
 
   .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     margin-top: 1.25em;
@@ -133,12 +139,13 @@
     font-weight: 500;
     font-style: italic;
     color: var(--foreground);
-    border-left-width: 0.25rem;
-    border-left-color: var(--accent);
+    border-left: 4px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
     quotes: "\201C" "\201D" "\2018" "\2019";
     margin-top: 1.6em;
     margin-bottom: 1.6em;
-    padding-left: 1em;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0.75rem 0.75rem 0;
   }
 
   .prose
@@ -171,6 +178,20 @@
     margin-top: 2em;
     margin-bottom: 1em;
     line-height: 1.3333333;
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Decorative underline for h2 */
+  .prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+    content: "";
+    display: block;
+    width: 2rem;
+    height: 3px;
+    background: var(--accent);
+    margin-top: 0.5rem;
+    border-radius: 99px;
+    opacity: 0.8;
   }
 
   .prose :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -230,6 +251,8 @@
     font-size: 0.875em;
     line-height: 1.4285714;
     margin-top: 0.8571429em;
+    text-align: center;
+    opacity: 0.8;
   }
 
   .prose
@@ -349,12 +372,14 @@
   }
 
   .prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    border-radius: 0.375rem;
+    border-radius: 0.75rem;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */

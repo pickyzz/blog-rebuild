@@ -19,23 +19,31 @@ const headerProps = {
 };
 ---
 
-<li class="my-6">
+<li class="my-3">
   <a
     href={href}
-    class="inline-block text-lg font-medium text-accent decoration-dashed underline-offset-4 focus-visible:no-underline focus-visible:underline-offset-0"
+    class="group block h-full rounded-xl border border-accent/20 bg-background/50 p-4 transition-all duration-300 hover:border-accent hover:bg-accent/5 hover:shadow-lg hover:-translate-y-1"
   >
-    {
-      secHeading ? (
-        <h2 {...headerProps}>{title}</h2>
-      ) : (
-        <h3 {...headerProps}>{title}</h3>
-      )
-    }
+    <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-start">
+      <div class="flex-1">
+        {
+          secHeading ? (
+            <h2 class="text-lg font-medium text-foreground group-hover:text-accent transition-colors duration-200" style={{ viewTransitionName: slugifyStr(title) }}>
+              {title}
+            </h2>
+          ) : (
+            <h3 class="text-lg font-medium text-foreground group-hover:text-accent transition-colors duration-200" style={{ viewTransitionName: slugifyStr(title) }}>
+              {title}
+            </h3>
+          )
+        }
+      </div>
+      <Datetime
+        pubDatetime={pubDatetime}
+        modDatetime={pubDatetime}
+        size="sm"
+        class="text-sm text-muted-foreground shrink-0"
+      />
+    </div>
   </a>
-  <Datetime
-    pubDatetime={pubDatetime}
-    modDatetime={pubDatetime}
-    size="sm"
-    class="text-base/60 mt-2"
-  />
 </li>

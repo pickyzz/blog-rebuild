@@ -10,27 +10,36 @@ export interface Props {
 const { tag, tagName, size = "sm" } = Astro.props;
 ---
 
-<li
-  class:list={[
-    "group inline-block group-hover:cursor-pointer",
-    size === "sm" ? "my-1 underline-offset-4" : "mx-1 my-3 underline-offset-8",
-  ]}
->
+<li class="inline-block py-1">
   <a
     href={`/tags/${tag}`}
     transition:name={tag}
     class:list={[
-      "relative pr-2 text-lg underline decoration-dashed focus-visible:p-1 group-hover:-top-0.5 group-hover:text-accent",
-      { "text-sm": size === "sm" },
+      "tag-pill group relative flex items-center gap-1 rounded-full font-medium transition-all duration-300 hover:scale-105",
+      size === "sm" ? "text-sm px-3 py-1" : "text-base px-4 py-2",
     ]}
   >
     <IconHash
       class:list={[
-        "inline-block opacity-80",
-        { "-mr-2 size-4": size === "sm" },
-        { "-mr-3 size-6": size === "lg" },
+        "size-3 opacity-60 transition-transform duration-300 group-hover:rotate-12",
+        { "size-4": size === "lg" },
       ]}
     />
-    <span class="ml-1">{tagName}</span>
+    <span>{tagName}</span>
   </a>
 </li>
+
+<style>
+  /* Tag pill styles using CSS variables */
+  .tag-pill {
+    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+    color: var(--accent);
+    border: 1px solid transparent;
+  }
+  
+  .tag-pill:hover {
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+</style>

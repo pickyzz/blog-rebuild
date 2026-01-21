@@ -13,7 +13,7 @@ const toc = generateToc(headings);
 
 {
   toc.length > 0 && (
-    <div class="border-line bg-background/85 fixed right-0 top-1/2 hidden max-h-[80vh] max-w-[13%] -translate-y-1/2 transform flex-col items-center justify-start overflow-auto rounded-lg rounded-r-none border-2 border-r-0 p-4 lg:flex">
+    <div class="toc-container fixed right-0 top-1/2 hidden max-h-[80vh] max-w-[13%] -translate-y-1/2 transform flex-col items-center justify-start overflow-auto rounded-l-2xl p-4 lg:flex">
       <h2 class="text-lg text-accent underline decoration-dashed underline-offset-4">
         Contents Table
       </h2>
@@ -25,3 +25,19 @@ const toc = generateToc(headings);
     </div>
   )
 }
+
+<style>
+  /* TOC container styles using CSS variables */
+  .toc-container {
+    background-color: color-mix(in srgb, var(--background) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    border-right: none;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  :global(html[data-theme="dark"]) .toc-container {
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+</style>

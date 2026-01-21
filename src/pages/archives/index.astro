@@ -37,60 +37,72 @@ const months = [
 <Layout title={`Archives | ${SITE.title}`}>
   <Header />
   <Main pageTitle="Archives" pageDesc="All the articles I've archived.">
-    {
-      Object.entries(
-        getPostsByGroupCondition(posts, post => {
-          const date = new Date(post.data.pubDatetime);
-          return isNaN(date.getTime())
-            ? new Date().getFullYear()
-            : date.getFullYear();
-        })
-      )
-        .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
-        .map(([year, yearGroup]) => (
-          <div>
-            <div class="my-4">
-              <span class="text-3xl font-bold">{year}</span>
-              <sup class="text-[19px]">{yearGroup.length}</sup>
-            </div>
-            {Object.entries(
-              getPostsByGroupCondition(yearGroup, post => {
-                const date = new Date(post.data.pubDatetime);
-                return isNaN(date.getTime())
-                  ? new Date().getMonth() + 1
-                  : date.getMonth() + 1;
-              })
-            )
-              .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
-              .map(([month, monthGroup]) => (
-                <div class="text-skin-base/80 ml-4 flex flex-col sm:flex-row">
-                  <div class="mr-10 mt-6 min-w-36 text-lg sm:my-6">
-                    <span class="font-bold">{months[Number(month) - 1]}</span>
-                    <sup class="text-xs">{monthGroup.length}</sup>
-                  </div>
-                  <ul>
-                    {monthGroup
-                      .sort(
-                        (a, b) =>
-                          Math.floor(
-                            new Date(b.data.pubDatetime).getTime() / 1000
-                          ) -
-                          Math.floor(
-                            new Date(a.data.pubDatetime).getTime() / 1000
-                          )
-                      )
-                      .map(post => (
-                        <CardArchives
-                          href={`/blog/${post.slug}`}
-                          frontmatter={post.data}
-                        />
-                      ))}
-                  </ul>
+    <div class="relative ml-4 border-l-2 border-accent/20 pl-8 pb-12">
+      {
+        Object.entries(
+          getPostsByGroupCondition(posts, post => {
+            const date = new Date(post.data.pubDatetime);
+            return isNaN(date.getTime())
+              ? new Date().getFullYear()
+              : date.getFullYear();
+          })
+        )
+          .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+          .map(([year, yearGroup]) => (
+            <div class="relative">
+              {/* Year Milestone */}
+              <div class="sticky top-28 -ml-[41px] mb-8 flex items-center bg-background/80 backdrop-blur-md p-2 -my-2 rounded-2xl border border-accent/20 shadow-sm w-fit z-10 transition-all duration-300">
+                <div class="flex h-5 w-5 items-center justify-center rounded-full bg-accent ring-4 ring-background shrink-0">
+                  <div class="h-2 w-2 rounded-full bg-white"></div>
                 </div>
-              ))}
-          </div>
-        ))
-    }
+                <div class="ml-4 mr-2 flex items-baseline gap-3">
+                  <span class="text-3xl font-bold text-accent">{year}</span>
+                  <span class="text-sm font-medium text-muted-foreground bg-accent/10 px-2.5 py-0.5 rounded-full">{yearGroup.length} posts</span>
+                </div>
+              </div>
+
+              {Object.entries(
+                getPostsByGroupCondition(yearGroup, post => {
+                  const date = new Date(post.data.pubDatetime);
+                  return isNaN(date.getTime())
+                    ? new Date().getMonth() + 1
+                    : date.getMonth() + 1;
+                })
+              )
+                .sort(([monthA], [monthB]) => Number(monthB) - Number(monthA))
+                .map(([month, monthGroup]) => (
+                  <div class="mb-12">
+                    {/* Month Header */}
+                    <div class="mb-4 flex items-center gap-2">
+                      <span class="text-lg font-semibold text-foreground/80">{months[Number(month) - 1]}</span>
+                      <span class="text-xs text-muted-foreground">({monthGroup.length})</span>
+                    </div>
+                    
+                    {/* Posts Grid */}
+                    <ul class="flex flex-col gap-2">
+                      {monthGroup
+                        .sort(
+                          (a, b) =>
+                            Math.floor(
+                              new Date(b.data.pubDatetime).getTime() / 1000
+                            ) -
+                            Math.floor(
+                              new Date(a.data.pubDatetime).getTime() / 1000
+                            )
+                        )
+                        .map(post => (
+                          <CardArchives
+                            href={`/blog/${post.slug}`}
+                            frontmatter={post.data}
+                          />
+                        ))}
+                    </ul>
+                  </div>
+                ))}
+            </div>
+          ))
+      }
+    </div>
   </Main>
   <Footer />
 </Layout>

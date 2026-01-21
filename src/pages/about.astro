@@ -62,56 +62,86 @@ export const prerender = true;
             >
           </p>
           <div class="my-4">
-            <p class="text-2xl font-bold">Dev Stacks</p>
-            <p class="text-lg">
-              Lua, HTML, CSS, JavaScript, TypeScript, React, NextJs, Tailwind,
-              Astro, Svelte
-            </p>
+            <h3 class="mb-3 text-2xl font-bold">Dev Stacks</h3>
+            <div class="flex flex-wrap gap-2">
+              {
+                [
+                  "Lua", "HTML", "CSS", "JavaScript", "TypeScript", 
+                  "React", "NextJs", "Tailwind", "Astro", "Svelte"
+                ].map((tech) => (
+                  <span class="rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-accent backdrop-blur-sm transition-all duration-300 hover:bg-accent hover:text-white hover:scale-105 hover:shadow-sm cursor-default">
+                    {tech}
+                  </span>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
-      <div class="-mt-6 flex flex-col items-center py-10">
-        <div class="mb-4 flex space-x-2">
-          <a
-            href="#cert1"
-            class="rounded-full bg-gray-200/50 px-3 py-1 no-underline hover:bg-gray-300"
-            >1</a
-          >
-          <a
-            href="#cert2"
-            class="rounded-full bg-gray-200/50 px-3 py-1 no-underline hover:bg-gray-300"
-            >2</a
-          >
-          <a
-            href="#cert3"
-            class="rounded-full bg-gray-200/50 px-3 py-1 no-underline hover:bg-gray-300"
-            >3</a
-          >
-        </div>
-        <div class="relative max-h-[450px] w-[90%] overflow-hidden md:w-[60%]">
-          <div id="cert1" class="w-full">
-            <img
-              src="/images/static/fcc-cert-1.png"
-              class="h-[440px] w-full border-none object-contain"
-              alt="FreeCodeCamp Certificate 1"
-            />
-          </div>
-          <div id="cert2" class="w-full">
-            <img
-              src="/images/static/fcc-cert-2.png"
-              class="h-[440px] w-full border-none object-contain"
-              alt="FreeCodeCamp Certificate 2"
-            />
-          </div>
-          <div id="cert3" class="w-full">
-            <img
-              src="/images/static/fcc-cert-3.png"
-              class="h-[440px] w-full border-none object-contain"
-              alt="FreeCodeCamp Certificate 3"
-            />
+      <div class="mt-8 flex w-full flex-col items-center py-10">
+        <h3 class="mb-8 text-2xl font-bold">Certificates</h3>
+        
+        <!-- Infinite Scroll Container -->
+        <div class="group relative flex w-full overflow-hidden bg-background/50 py-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div class="flex animate-infinite-scroll group-hover:paused gap-8 w-max">
+            {/* First Set of Images */}
+            {
+              [
+                "/images/static/fcc-cert-1.png",
+                "/images/static/fcc-cert-2.png",
+                "/images/static/fcc-cert-3.png"
+              ].map((src, index) => (
+                <div class="relative w-[300px] sm:w-[500px] flex-shrink-0">
+                  <img
+                    src={src}
+                    class="h-auto w-full border border-border/50 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+                    alt={`Certificate ${index + 1}`}
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            }
+            {/* Duplicate Set for Seamless Loop */}
+            {
+              [
+                "/images/static/fcc-cert-1.png",
+                "/images/static/fcc-cert-2.png",
+                "/images/static/fcc-cert-3.png"
+              ].map((src, index) => (
+                <div class="relative w-[300px] sm:w-[500px] flex-shrink-0" aria-hidden="true">
+                  <img
+                    src={src}
+                    class="h-auto w-full border border-border/50 rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
+                    alt={`Certificate ${index + 1} (Duplicate)`}
+                    loading="lazy"
+                  />
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
+
+      <style>
+        /* Define custom keyframe for infinite scroll */
+        @keyframes infinite-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-infinite-scroll {
+          animation: infinite-scroll 20s linear infinite;
+        }
+        
+        /* Pause animation on hover */
+        .group:hover .animate-infinite-scroll {
+          animation-play-state: paused;
+        }
+      </style>
     </section>
   </main>
   <Footer />

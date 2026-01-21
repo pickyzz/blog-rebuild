@@ -33,7 +33,7 @@ const isActive = (path: string) => {
   </a>
   <div
     id="nav-container"
-    class="border-line bg-background/65 fixed left-1/2 top-0 z-10 w-full max-w-4xl -translate-x-1/2 transform border-b-[2px] backdrop-blur"
+    class="header-glass fixed left-1/2 top-4 z-50 w-[95%] max-w-4xl -translate-x-1/2 transform rounded-2xl"
   >
     <div
       id="top-nav-wrap"
@@ -114,7 +114,7 @@ const isActive = (path: string) => {
           </li>
           {
             SITE.showArchives && (
-              <li>
+              <li class="col-span-2">
                 <LinkButton
                   href="/archives"
                   class:list={[
@@ -134,7 +134,7 @@ const isActive = (path: string) => {
           }
           {
             SITE.lightAndDarkMode && (
-              <li class="col-span-1 flex items-center justify-center">
+              <li class="col-span-2 flex items-center justify-center">
                 <button
                   id="theme-btn"
                   class="focus-outline flex justify-center p-3 transition-all duration-200 hover:rotate-6 sm:p-1 hover:[&>div]:text-accent"
@@ -165,6 +165,22 @@ const isActive = (path: string) => {
     </div>
   </div>
 </header>
+
+<style>
+  /* Header glassmorphism using CSS variables */
+  .header-glass {
+    background-color: color-mix(in srgb, var(--background) 70%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  :global(html[data-theme="dark"]) .header-glass {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+</style>
 
 <script>
   function toggleNav() {

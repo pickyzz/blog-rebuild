@@ -11,44 +11,46 @@ export const prerender = true; // SSG mode with client-side search
   <Header />
   <main class="container mx-auto max-w-4xl px-4 py-8">
     <div class="mb-8">
-      <h1 class="mb-4 text-3xl font-bold">Search Posts</h1>
-      <form id="searchForm" class="mb-6">
+      <h1 class="mb-6 text-center text-3xl font-bold text-accent">Search Posts</h1>
+      <form id="searchForm" class="mx-auto mb-10 max-w-2xl">
         <div class="relative gap-2">
           <input
             type="text"
             id="searchInput"
             placeholder="Search by title, description, or tags..."
-            class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-10 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            class="w-full rounded-full border border-accent/20 bg-background/50 px-6 py-4 pr-12 text-lg shadow-sm backdrop-blur-md transition-all focus:border-accent focus:bg-background focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         </div>
       </form>
-      <div id="loading" class="mb-4 hidden text-gray-600 dark:text-gray-400">
+
+      <div id="loading" class="mb-4 hidden text-center text-foreground/70">
         Searching...
       </div>
-      <div id="error" class="mb-4 hidden text-red-600 dark:text-red-400"></div>
-      <!-- debug UI removed -->
+      <div id="error" class="mb-4 hidden text-center text-red-500"></div>
+      
       <div id="results" class="hidden">
-        <div class="mb-4 flex items-center justify-between">
-          <h2 id="resultsTitle" class="text-xl font-semibold"></h2>
+        <div class="mb-6 flex items-center justify-between border-b border-dashed border-accent/20 pb-2">
+          <h2 id="resultsTitle" class="text-xl font-semibold text-accent"></h2>
           <button
             id="clearBtn"
-            class="text-sm text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+            class="text-sm text-foreground/60 transition-colors hover:text-accent"
           >
-            Clear
+            Clear Results
           </button>
         </div>
-        <div id="postsList" class="space-y-4"></div>
+        <div id="postsList" class="space-y-6"></div>
       </div>
-      <div id="noResults" class="hidden text-gray-600 dark:text-gray-400">
+      
+      <div id="noResults" class="hidden text-center text-lg text-foreground/60">
         No posts found matching your search.
       </div>
 
       <!-- Search suggestions -->
       <div
         id="suggestions"
-        class="mt-8 rounded-lg bg-gray-50 p-4 dark:bg-gray-800"
+        class="mx-auto mt-8 max-w-2xl rounded-2xl border border-accent/10 bg-accent/5 p-6 backdrop-blur-sm"
       >
-        <h3 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
+        <h3 class="mb-4 text-lg font-semibold text-foreground/80">
           Popular keywords:
         </h3>
         <div id="suggestionTags" class="flex flex-wrap gap-2">

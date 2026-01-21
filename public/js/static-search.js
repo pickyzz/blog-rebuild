@@ -285,29 +285,30 @@
 
       data.posts.forEach(post => {
         const postElement = document.createElement("article");
+        // Using card styles similar to the main Card component
         postElement.className =
-          "p-4 transition-shadow border border-gray-200 rounded-lg dark:border-gray-700 hover:shadow-md";
+          "group relative overflow-hidden rounded-2xl bg-background border border-accent/10 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5";
 
         const pubDate = post.pubDatetime
           ? new Date(post.pubDatetime).toLocaleDateString()
           : "";
 
         postElement.innerHTML = `
-          <h3 class="mb-2 text-lg font-semibold">
-            <a href="/blog/${post.slug}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+          <h3 class="mb-2 text-xl font-bold">
+            <a href="/blog/${post.slug}" class="text-accent hover:underline decoration-dashed underline-offset-4">
               ${post.title}
             </a>
           </h3>
-          <p class="mb-2 text-gray-600 dark:text-gray-400">${post.description}</p>
-          <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+          <p class="mb-4 text-foreground/80 line-clamp-2">${post.description}</p>
+          <div class="flex flex-wrap items-center justify-between gap-4 border-t border-dashed border-accent/20 pt-8 text-sm text-foreground/60">
             <span>${post.author || ""}${post.author ? " • " : ""}${pubDate}</span>
-            <div class="flex gap-1">
+            <div class="flex flex-wrap gap-2">
               ${
                 Array.isArray(post.tags)
                   ? post.tags
                       .map(
                         tag =>
-                          `<span class="px-2 py-1 text-xs bg-gray-100 rounded dark:bg-gray-800">${tag}</span>`
+                          `<span class="px-2 py-0.5 text-xs font-medium text-accent bg-accent/10 rounded-full border border-accent/10">${tag}</span>`
                       )
                       .join("")
                   : ""
@@ -366,7 +367,7 @@
           suggestionTags.innerHTML = uniqueSuggestions
             .map(
               term =>
-                `<button type="button" class="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800" onclick="useSuggestion('${term}')">${term}</button>`
+                `<button type="button" class="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 bg-background border border-accent/20 text-foreground hover:bg-accent hover:text-white hover:border-accent hover:shadow-md hover:-translate-y-0.5" onclick="useSuggestion('${term}')">${term}</button>`
             )
             .join("");
         }
@@ -447,7 +448,16 @@
     }
   }
 
-  // Initialize search UI when DOM is ready
+  // Initialize search UI when DOM is ready and on View Transitions
+  document.addEventListener("astro:page-load", () => {
+    initializeSearchUI();
+    // Re-load suggestions if data is already loaded but UI needs repopulating
+    if (window.staticSearch && window.staticSearch.isLoaded) {
+       loadSuggestions();
+    }
+  });
+
+  // Fallback for initial load if astro:page-load doesn't fire (e.g. if disabled)
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initializeSearchUI);
   } else {

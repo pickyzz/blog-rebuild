@@ -9,15 +9,15 @@ const URL = Astro.url;
   class="flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"
 >
   <span class="italic">Share this post on:</span>
-  <div class="text-center">
+  <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
     {
       SHARE_LINKS.map(social => (
         <LinkButton
           href={`${social.href + URL}`}
-          class="scale-90 p-2 hover:rotate-6 sm:p-1"
+          class="group flex items-center justify-center rounded-full border border-accent/10 p-2 text-foreground/80 transition-all duration-300 hover:border-accent hover:bg-accent hover:text-white hover:shadow-md hover:-translate-y-1"
           title={social.linkTitle}
         >
-          <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+          <social.icon class="size-5 fill-transparent stroke-current stroke-2" />
           <span class="sr-only">{social.linkTitle}</span>
         </LinkButton>
       ))

@@ -16,12 +16,14 @@ import LinkButton from "@/components/LinkButton.astro";
     class="mx-auto flex max-w-4xl flex-1 items-center justify-center"
   >
     <div class="mb-14 flex flex-col items-center justify-center">
-      <h1 class="text-9xl font-bold text-accent">404</h1>
-      <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p class="mt-4 text-2xl sm:text-3xl">Page Not Found</p>
+      <h1 aria-label="404 Not Found" class="text-9xl font-bold text-accent">
+        404
+      </h1>
+      <span aria-hidden="true" class="text-2xl mt-2 opacity-70">¯\_(ツ)_/¯</span>
+      <p class="mt-4 text-2xl sm:text-3xl font-medium">Page Not Found</p>
       <LinkButton
         href="/"
-        class="my-6 text-lg underline decoration-dashed underline-offset-8"
+        class="my-6 flex items-center justify-center rounded-full border border-accent/20 bg-accent/5 px-6 py-3 text-lg font-medium text-accent transition-all duration-300 hover:bg-accent hover:text-white hover:shadow-lg hover:-translate-y-1"
       >
         Go back home
       </LinkButton>
