@@ -288,7 +288,7 @@ class EnvironmentDetector {
 
     if (presentRequired.length > 0) {
       console.log('✅ Present Required:');
-      presentRequired.forEach(v => console.log(`   ${v}: ${this.getSafeValue(v)}`));
+      presentRequired.forEach(v => console.log(`   ${v}: ${this.getDiagnosticValueInfo(v)}`));
     }
 
     if (missingRequired.length > 0) {
@@ -339,6 +339,19 @@ class EnvironmentDetector {
     }
 
     return value;
+  }
+
+  getDiagnosticValueInfo(key) {
+    // For diagnostics, avoid logging actual environment variable values.
+    // Only indicate whether the variable is set (and optionally its length),
+    // which is sufficient to debug configuration without exposing secrets.
+    const raw = this.env[key];
+    if (raw === undefined || raw === null || raw === '') {
+      return '<not set>';
+    }
+
+    const lengthInfo = typeof raw === 'string' ? `, length: ${raw.length}` : '';
+    return `<set${lengthInfo}>`;
   }
 
   exportConfig() {
