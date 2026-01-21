@@ -5,6 +5,7 @@
       "name": "pickyzz-blog-rebuild",
       "dependencies": {
         "@astrojs/vercel": "^8.2.7",
+        "@fontsource/ibm-plex-sans-thai": "^5.2.8",
         "@notionhq/client": "4.0.2",
         "notion-to-md": "3.1.9",
         "reading-time": "1.5.0",
@@ -172,6 +173,8 @@
     "@eslint/object-schema": ["@eslint/object-schema@2.1.7", "", {}, "sha512-VtAOaymWVfZcmZbp6E2mympDIHvyjXs/12LqWYjVw6qjrfF+VK+fyG33kChz3nnK+SU5/NeHOqrTEHS8sXO3OA=="],
 
     "@eslint/plugin-kit": ["@eslint/plugin-kit@0.4.1", "", { "dependencies": { "@eslint/core": "^0.17.0", "levn": "^0.4.1" } }, "sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA=="],
+
+    "@fontsource/ibm-plex-sans-thai": ["@fontsource/ibm-plex-sans-thai@5.2.8", "", {}, "sha512-pddJU1HCjtqbXRcyCnbEJ8UV8pQQuUo23Hxjvdwr0DBibtUra66MVsFMDP/Et/Su5P2VeQAgalACZOCEkWaReA=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 
