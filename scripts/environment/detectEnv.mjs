@@ -301,7 +301,7 @@ class EnvironmentDetector {
 
     if (presentOptional.length > 0) {
       console.log('ℹ️  Present Optional:');
-      presentOptional.forEach(v => console.log(`   ${v}: ${this.getSafeValue(v)}`));
+      presentOptional.forEach(v => console.log(`   ${v}: <set>`));
     }
 
     if (missingOptional.length > 0 && !this.isDevelopment()) {
