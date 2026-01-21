@@ -1,5 +1,9 @@
+---
+const walineServerURL = import.meta.env.PUBLIC_WALINE_SERVER_URL;
+---
+
 <section>
-  <div id="waline" class="mx-auto mt-14 max-w-[40rem]">
+  <div id="waline" class="mx-auto mt-14 max-w-[40rem]" data-server-url={walineServerURL}>
     <script is:inline type="module">
       let walineInstance = null;
 
@@ -12,11 +16,13 @@
           walineEL;
         }
 
+        const serverURL = walineEL.dataset.serverUrl;
+
         import("https://unpkg.com/@waline/client@v3/dist/waline.js")
           .then(({ init }) => {
             walineInstance = init({
               el: "#waline",
-              serverURL: "https://comment.pickyzz.dev",
+              serverURL: serverURL,
               path: window.location.pathname.replace(/\/$/, ""),
               lang: "en-us",
               reaction: true,
