@@ -246,7 +246,7 @@ class NotionSync {
         }
 
         // Wistia
-        if (hostname.includes("wistia.com") || hostname.includes("wistia.net")) {
+        if (hostname === "wistia.com" || hostname.endsWith(".wistia.com")) {
           const mediaMatch = url.pathname.match(/\/medias\/([a-zA-Z0-9]+)/);
           if (mediaMatch?.[1]) {
             return `<figure class="notion-video">

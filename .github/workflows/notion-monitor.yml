@@ -9,6 +9,9 @@ jobs:
   check-and-deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     # 1. ตั้งค่า Environment Variables ให้กับ Job เพื่อให้ Node.js Script เข้าถึงได้
     env:
       UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}

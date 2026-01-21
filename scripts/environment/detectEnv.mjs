@@ -59,8 +59,8 @@ const OPTIONAL_ENV_VARS = [
 
 class EnvironmentDetector {
   constructor() {
-    this.detectedEnv = this.detectEnvironment();
     this.env = { ...process.env };
+    this.detectedEnv = this.detectEnvironment();
   }
 
   detectEnvironment() {
@@ -288,7 +288,7 @@ class EnvironmentDetector {
 
     if (presentRequired.length > 0) {
       console.log('✅ Present Required:');
-      presentRequired.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v])}`));
+      presentRequired.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v], v)}`));
     }
 
     if (missingRequired.length > 0) {
@@ -301,7 +301,7 @@ class EnvironmentDetector {
 
     if (presentOptional.length > 0) {
       console.log('ℹ️  Present Optional:');
-      presentOptional.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v])}`));
+      presentOptional.forEach(v => console.log(`   ${v}: ${this.maskValue(this.env[v], v)}`));
     }
 
     if (missingOptional.length > 0 && !this.isDevelopment()) {
@@ -313,17 +313,23 @@ class EnvironmentDetector {
     }
   }
 
-  maskValue(value) {
+  maskValue(value, key = '') {
     if (!value) return '';
 
-    // Mask sensitive values
-    if (value.includes('secret') || value.includes('key') || value.includes('token')) {
-      return value.substring(0, 8) + '...';
+    // Always completely mask known sensitive keys regardless of value content
+    const sensitiveKeys = ['KEY', 'TOKEN', 'SECRET', 'PASSWORD', 'CREDENTIAL'];
+    if (sensitiveKeys.some(s => key.toUpperCase().includes(s))) {
+       return '********';
     }
 
-    // Show first and last few characters
+    // Also mask if the value itself looks like a secret/key/token
+    if (value.includes('secret') || value.includes('key') || value.includes('token') || value.length > 50) {
+      return '********';
+    }
+    
+    // For other values, show only safe ends
     if (value.length > 20) {
-      return value.substring(0, 8) + '...' + value.substring(value.length - 4);
+      return value.substring(0, 4) + '***' + value.substring(value.length - 4);
     }
 
     return value;

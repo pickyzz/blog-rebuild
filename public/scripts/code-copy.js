@@ -78,16 +78,21 @@ try {
       } else {
         // existing server-rendered button: ensure it has icon + label
         if (!btn.querySelector(".icon-svg")) {
-          const existingText = (btn.textContent || "").trim();
-          const label = existingText || "Copy";
-          btn.innerHTML =
-            "" +
-            '<svg aria-hidden="true" viewBox="0 0 24 24" class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="currentColor">' +
-            '<path d="M16 4h-3.5l-.71-.71A1 1 0 0010.79 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2zM12 5.5A1.5 1.5 0 1110.5 4 1.5 1.5 0 0112 5.5z" />' +
-            "</svg>" +
-            '<span class="icon-label">' +
-            label +
-            "</span>";
+            const existingText = (btn.textContent || "").trim();
+            const label = existingText || "Copy";
+             const escapedLabel = label.replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+             btn.innerHTML =
+              "" +
+              '<svg aria-hidden="true" viewBox="0 0 24 24" class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="currentColor">' +
+              '<path d="M16 4h-3.5l-.71-.71A1 1 0 0010.79 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2zM12 5.5A1.5 1.5 0 1110.5 4 1.5 1.5 0 0112 5.5z" />' +
+              "</svg>" +
+              '<span class="icon-label">' +
+              escapedLabel +
+              "</span>";
         }
       }
       // Remove old inline onclick to avoid ReferenceError and double-handling
