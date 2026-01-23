@@ -169,6 +169,7 @@
     margin-top: 0;
     margin-bottom: 0.8888889em;
     line-height: 1.1111111;
+    text-wrap: balance;
   }
 
   .prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -180,6 +181,7 @@
     line-height: 1.3333333;
     position: relative;
     display: inline-block;
+    text-wrap: balance;
   }
 
   /* Decorative underline for h2 */
@@ -201,6 +203,7 @@
     margin-top: 1.6em;
     margin-bottom: 0.6em;
     line-height: 1.8;
+    text-wrap: balance;
   }
 
   .prose :where(h4):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -209,6 +212,7 @@
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     line-height: 1.8;
+    text-wrap: balance;
   }
 
   .prose :where(h5):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -218,6 +222,7 @@
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     line-height: 1.8;
+    text-wrap: balance;
   }
 
   .prose :where(h6):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -227,6 +232,7 @@
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     line-height: 1.8;
+    text-wrap: balance;
   }
 
   .prose

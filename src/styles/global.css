@@ -71,21 +71,25 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --muted: #343f60bf;
-  --border: #ab4b08;
+  --background: #0f172a; /* Slate 900 */
+  --foreground: #f8fafc; /* Slate 50 */
+  --accent: #38bdf8; /* Sky 400 */
+  --muted: #1e293b; /* Slate 800 */
+  --border: #334155; /* Slate 700 */
+  
+  /* Best practice: align system UI */
+  color-scheme: dark;
+
   /* Code block dark overrides */
-  --code-bg: #282a36; /* match AstroPaper subtle dark */
-  --code-fg: #e9f2fb; /* slightly brighter */
-  --code-inner-border: rgba(255, 255, 255, 0.04);
-  --copy-btn-bg: rgba(255, 255, 255, 0.03);
-  --copy-btn-fg: #e6eef8;
-  --copy-btn-hover: rgba(255, 255, 255, 0.06);
-  --muted: rgba(0, 0, 0, 0.04);
+  --code-bg: #1e293b; /* Match muted/slate 800 for seamless look */
+  --code-fg: #e2e8f0; /* Slate 200 */
+  --code-inner-border: rgba(255, 255, 255, 0.05);
+  --copy-btn-bg: rgba(255, 255, 255, 0.05);
+  --copy-btn-fg: #f1f5f9;
+  --copy-btn-hover: rgba(255, 255, 255, 0.1);
+  /* --muted is already defined above, removing duplicate */
   /* dark theme focus ring */
-  --copy-focus-ring: rgba(255, 255, 255, 0.06);
+  --copy-focus-ring: rgba(56, 189, 248, 0.4); /* Sky 400 opacity */
 }
 
 /* @theme inline {

@@ -12,7 +12,6 @@
     "url": "https://github.com/pickyzz/pickyzz.dev.git"
   },
   "dependencies": {
-    "@astrojs/vercel": "^8.2.7",
     "@fontsource/ibm-plex-sans-thai": "^5.2.8",
     "@notionhq/client": "4.0.2",
     "notion-to-md": "3.1.9",
@@ -22,7 +21,6 @@
     "satori": "0.19.1",
     "sharp": "0.34.5",
     "shiki": "^3.13.0",
-    "tailwind-merge": "3.4.0",
     "tailwindcss": "^3.4.17",
     "unified": "^11.0.5",
     "zod": "^3.21.4"

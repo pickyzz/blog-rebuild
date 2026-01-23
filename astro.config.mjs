@@ -1,4 +1,4 @@
-import { defineConfig, passthroughImageService } from "astro/config";
+import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import { SITE } from "./src/config";
 import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
@@ -21,9 +21,7 @@ export default defineConfig({
     },
   },
   trailingSlash: "never",
-  image: {
-    service: passthroughImageService(),
-  },
+    // service: passthroughImageService(),
   compressHTML: true,
   build: {
     inlineStylesheets: "auto",

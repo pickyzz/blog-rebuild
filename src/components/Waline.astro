@@ -37,12 +37,35 @@ const walineServerURL = import.meta.env.PUBLIC_WALINE_SERVER_URL;
           })
           .catch(err => console.error(err));
       }
-      document.addEventListener("DOMContentLoaded", initializeWaline);
-
       if (document.startViewTransition) {
         document.addEventListener("astro:page-load", () => {
-          initializeWaline();
+          // Lazy load Waline on scroll
+          const observer = new IntersectionObserver((entries) => {
+             entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                 initializeWaline();
+                 observer.disconnect(); // Load once
+               }
+             });
+          }, { rootMargin: '200px' }); // Load when 200px away
+          
+          const walineEl = document.getElementById("waline");
+          if (walineEl) observer.observe(walineEl);
         });
+      } else {
+        // Fallback for non-view-transition pages
+         document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+             entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                 initializeWaline();
+                 observer.disconnect();
+               }
+             });
+          }, { rootMargin: '200px' });
+          const walineEl = document.getElementById("waline");
+          if (walineEl) observer.observe(walineEl);
+         });
       }
     </script>
   </div>
