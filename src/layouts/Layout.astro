@@ -289,6 +289,27 @@ const structuredData = {
 
         const revealElements = document.querySelectorAll(".reveal");
         revealElements.forEach((el) => observer.observe(el));
+
+        // Prevent duplicate navigation
+        document.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            const href = link.getAttribute("href");
+            if (!href) return;
+
+            const url = new URL(href, window.location.origin);
+            
+            // Check if it's the same page
+            if (
+              url.origin === window.location.origin &&
+              url.pathname === window.location.pathname &&
+              !url.hash // Allow hash links to work normally (scrolling)
+            ) {
+              e.preventDefault();
+              // Optional: You could add a smooth scroll to top here if desired
+              // window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          });
+        });
       });
     </script>
   </body>
