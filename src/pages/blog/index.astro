@@ -205,12 +205,34 @@ console.log(`[BLOG INDEX SSG] Displaying ${page.posts.length} posts`);
              isLoading = false;
              sentinel.classList.add("opacity-0"); // Hide loader
              
-             if (!nextUrl) {
+            if (!nextUrl) {
                  observer.disconnect();
                  sentinel.style.display = "none";
                  if (endMessage) endMessage.classList.remove("hidden");
+             } else {
+                 // Re-check if sentinel is still visible after content load
+                 // This fixes the issue on large screens where content doesn't push sentinel out
+                 setTimeout(() => {
+                    const rect = sentinel.getBoundingClientRect();
+                    const isVisible = (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    );
+                    
+                    if (isVisible && nextUrl && !isLoading) {
+                         // Trigger load again recursively if still visible
+                         // Force a small scroll or just manually trigger logic?
+                         // Better to just manually call the logic again or rely on observing.
+                         // But Observe callback won't fire if state hasn't changed.
+                         // We can unobserve and reobserve.
+                         observer.unobserve(sentinel);
+                         requestAnimationFrame(() => observer.observe(sentinel));
+                    }
+                 }, 500); // Wait for animations
              }
-          }
+           }
         }
       }, {
         rootMargin: "200px", // Preload before reaching bottom
