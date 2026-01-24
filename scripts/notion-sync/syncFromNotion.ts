@@ -335,9 +335,11 @@ class NotionSync {
     const properties = page.properties;
 
     const title = properties.title?.title?.[0]?.plain_text || "Untitled";
-    const slug =
+    const rawSlug =
       properties.slug?.rich_text?.[0]?.plain_text ||
-      title.toLowerCase()
+      title;
+      
+    const slug = rawSlug.toLowerCase()
         .replace(/[^\w\s-]/g, "")
         .replace(/\s+/g, "-");
     const description =
