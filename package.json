@@ -36,7 +36,7 @@
     "@types/lodash.kebabcase": "4.1.9",
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/parser": "8.55.0",
-    "astro": "5.17.1",
+    "astro": "5.17.2",
     "astro-eslint-parser": "1.2.2",
     "dotenv": "17.2.4",
     "eslint": "9.39.2",
