@@ -28,8 +28,8 @@
   "devDependencies": {
     "@astrojs/check": "0.9.8",
     "@astrojs/mdx": "4.3.14",
-    "@astrojs/rss": "4.0.17",
-    "@astrojs/sitemap": "3.7.1",
+    "@astrojs/rss": "4.0.18",
+    "@astrojs/sitemap": "3.7.2",
     "@astrojs/tailwind": "6.0.2",
     "@playwright/test": "1.58.2",
     "@types/github-slugger": "2.0.0",
