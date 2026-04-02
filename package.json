@@ -38,7 +38,7 @@
     "@typescript-eslint/parser": "8.58.0",
     "astro": "5.18.1",
     "astro-eslint-parser": "1.4.0",
-    "dotenv": "17.3.1",
+    "dotenv": "17.4.0",
     "eslint": "9.39.4",
     "eslint-plugin-astro": "1.6.0",
     "globals": "17.4.0",
