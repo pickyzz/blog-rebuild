@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
-    "@astrojs/mdx": "4.3.14",
+    "@astrojs/mdx": "6.0.1",
     "@astrojs/rss": "4.0.18",
     "@astrojs/sitemap": "3.7.3",
     "@astrojs/tailwind": "6.0.2",
@@ -36,7 +36,7 @@
     "@types/lodash.kebabcase": "4.1.9",
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/parser": "8.60.1",
-    "astro": "5.18.2",
+    "astro": "6.4.2",
     "astro-eslint-parser": "1.4.0",
     "dotenv": "17.4.2",
     "eslint": "9.39.4",
