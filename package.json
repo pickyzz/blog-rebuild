@@ -37,7 +37,7 @@
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/parser": "8.64.0",
     "astro": "5.18.2",
-    "astro-eslint-parser": "1.4.0",
+    "astro-eslint-parser": "3.0.0",
     "dotenv": "17.4.2",
     "eslint": "9.39.5",
     "eslint-plugin-astro": "1.7.0",
