@@ -41,7 +41,7 @@
     "dotenv": "17.4.2",
     "eslint": "9.39.5",
     "eslint-plugin-astro": "1.7.0",
-    "globals": "17.10.0",
+    "globals": "17.11.0",
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "prettier": "3.9.6",
